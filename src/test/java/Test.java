@@ -1,4 +1,16 @@
+import java.util.Scanner;
 public class Test {
+
+    //handle user input and make sure it is valid
+    public String handleInput(String outputMessage){
+        Scanner sc = new Scanner(System.in);
+        System.out.println(outputMessage);
+        String input = sc.next();
+        sc.nextLine();//clear buffer
+        sc.close();
+        return input;
+    } 
+
     public static void main (String[] args) {
         
                 //ContainerManager cm = new ContainerManager();
