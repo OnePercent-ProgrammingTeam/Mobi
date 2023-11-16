@@ -41,10 +41,17 @@
         </dependency>
 
         <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.14</version> <!-- Latest version -->
-    </dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.14</version> <!-- Latest version -->
+        </dependency>
+
+        <!-- https://mavenlibs.com/maven/dependency/org.jfree/jfreechart-fx -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.4</version> <!-- Latest version (8/1/2023) -->
+        </dependency>
     
     </dependencies>
 
