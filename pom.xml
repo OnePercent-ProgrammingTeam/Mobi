@@ -46,19 +46,14 @@
             <version>4.5.14</version> <!-- Latest version -->
         </dependency>
 
+        <!-- https://mavenlibs.com/maven/dependency/org.jfree/jfreechart-fx -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.1</version>
-            <scope>test</scope>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.4</version> <!-- Latest version (8/1/2023) -->
         </dependency>
+    
 
-         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>
