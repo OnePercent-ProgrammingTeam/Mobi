@@ -1,13 +1,14 @@
+package gr.aueb.dmst.onepercent.programming;
+import java.io.IOException;
 import java.util.Scanner;
 public class Test {
 
     //handle user input and make sure it is valid
-    public String handleInput(String outputMessage){
+    public static String handleInput(String outputMessage){
         Scanner sc = new Scanner(System.in);
-        System.out.println(outputMessage);
+        System.out.println("Please enter the container ID to " + outputMessage + " the container: ");
         String input = sc.next();
         sc.nextLine();//clear buffer
-        sc.close();
         return input;
     } 
 
@@ -23,9 +24,14 @@ public class Test {
                 //everything is properly handled
         
                 
-                ContainerMonitor containerMonitor = new ContainerMonitor();
-                containerMonitor.initializeContainerModel();
-                containerMonitor.getContainerCreated();
+                //ContainerManagerHttp.pullImage();
+                //ContainerManagerHttp.startContainer();
+                
+                //ContainerManagerHttp.stopContainer();
+                //ContainerMonitorHttp.getContainerStats();
+                //ContainerMonitorHttp.getContainerInformation();
+                // ContainerMonitorHttp.getContainerInformation();
+                ContainerMonitorHttp.searchImages();
 
 
     }

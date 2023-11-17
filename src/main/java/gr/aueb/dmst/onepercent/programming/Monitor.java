@@ -1,3 +1,4 @@
+package gr.aueb.dmst.onepercent.programming;
 public class Monitor implements Runnable {
     private String name;
     private int time;
