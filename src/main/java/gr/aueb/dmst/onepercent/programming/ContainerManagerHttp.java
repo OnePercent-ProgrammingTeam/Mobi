@@ -12,8 +12,8 @@ import io.netty.handler.codec.http.HttpResponse;
 
 public class ContainerManagerHttp {
     
-    protected static final String dockerHost = "http://localhost:2375"; //  docker host address 
-    protected static final CloseableHttpClient httpClient = HttpClients.createDefault(); // Create an HTTP client
+    protected static final String DOCKER_HOST = "http://localhost:2375"; //  docker host address 
+    protected static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault(); // Create an HTTP client
     private static HttpPost postRequest; // Create an HTTP POST request
     protected static String containerId;
     private static HttpEntity entity;
@@ -22,27 +22,27 @@ public class ContainerManagerHttp {
     public static void startContainer() {
         String message = "start";
         containerId = Test.handleInput(message);
-        postRequest = new HttpPost(dockerHost + "/containers/" + containerId + "/" + message);
+        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpPostRequest(message);
     }
 
     public static void stopContainer() {
         String message = "stop";
         containerId = Test.handleInput(message);
-        postRequest = new HttpPost(dockerHost + "/containers/" + containerId + "/" + message);
+        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpPostRequest(message);
     }
 
     public static void pullImage() {
         String message = "pull";
         String imageName = Test.handleInput(message);
-        postRequest = new HttpPost(dockerHost + "/images/create?fromImage=" + imageName);
+        postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
         executeHttpPostRequest(message);
     }
     
     public static void executeHttpPostRequest(String message) {
         try {
-            CloseableHttpResponse response = httpClient.execute(postRequest);
+            CloseableHttpResponse response = HTTP_CLIENT.execute(postRequest);
              // Start the container
              entity = response.getEntity(); // Get the response entity
             System.out.println("Container " + message  + " was successfull.");
