@@ -19,22 +19,22 @@ public class ContainerMonitorHttp {
     public static void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
         ContainerManagerHttp.containerId = Test.handleInput(message);
-        getRequest = new HttpGet(ContainerManagerHttp.dockerHost + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.dockerHost + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
+        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
+        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
         executeHttpGetRequest(message);
     }
 
     public static CloseableHttpResponse getContainerStats() {
         String message = "stats"; // get the container statistics in json format
         ContainerManagerHttp.containerId = Test.handleInput(message);
-        getRequest = new HttpGet(ContainerManagerHttp.dockerHost + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.dockerHost + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
+        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
+        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
         return executeHttpGetRequestForStats(message);
     }
 
     public static void executeHttpGetRequest(String message) {
         try {
-            CloseableHttpResponse response = ContainerManagerHttp.httpClient.execute(getRequest);
+            CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -61,7 +61,7 @@ public class ContainerMonitorHttp {
 
     public static CloseableHttpResponse executeHttpGetRequestForStats(String message) {
         try {
-            CloseableHttpResponse response = ContainerManagerHttp.httpClient.execute(getRequest);
+            CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println("Status Code : " + statusCode);
             return response;
@@ -116,8 +116,8 @@ public class ContainerMonitorHttp {
         
         String message = "/images/search"; // get the container statistics in json format
         imageName = Test.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(ContainerManagerHttp.dockerHost + message + "?term="+ imageName + "&limit=3" );
-        System.out.println(ContainerManagerHttp.dockerHost + message + "?term="+ imageName + "&limit=3");
+        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
+        System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
         executeHttpGetRequest(message);
     }
 
