@@ -112,7 +112,7 @@ public class ContainerVisualization extends JFrame {
             ContainerVisualization example = new ContainerVisualization("Container Stats Plotter"); // Create a new ContainerVisualization object
             example.setSize(800, 600);  // Set the size of the window
             example.setLocationRelativeTo(null); // Center the window
-            example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Set the close operation
+            example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
             CloseableHttpResponse res = ContainerMonitorHttp.getContainerStats();
            
             try {
