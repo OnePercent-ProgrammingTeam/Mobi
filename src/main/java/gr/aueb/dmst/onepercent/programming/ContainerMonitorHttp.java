@@ -6,16 +6,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.io.BufferedReader;
 import java.io.IOException;
-
 import org.apache.http.impl.client.CloseableHttpClient;
-import com.fasterxml.jackson.databind.ObjectMapper; // Import the Jackson ObjectMapper class for formatting the JSON response
-import com.fasterxml.jackson.databind.JsonNode; // Import the Jackson JsonNode class for formatting the JSON response
-import com.fasterxml.jackson.core.JsonProcessingException; // Import the Jackson JsonProcessingException 
-
+/** Import the Jackson ObjectMapper class for formatting the JSON response*/
+import com.fasterxml.jackson.databind.ObjectMapper; 
+/** Import the Jackson JsonNode class for formatting the JSON response*/
+import com.fasterxml.jackson.databind.JsonNode; 
+/** Import the Jackson JsonProcessingException for handling an exception that might occur */
+import com.fasterxml.jackson.core.JsonProcessingException; 
 public class ContainerMonitorHttp {
+    
+    /** Http Get request (Get is "to get something e.g info about containers") */
     private static HttpGet getRequest;
     private static String imageName; 
 
+    /** Get information about a container that might be or might not be locallu installed
+     * @param containerId the id of the container
+     */
     public static void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
         ContainerManagerHttp.containerId = Test.handleInput(message);
@@ -24,6 +30,9 @@ public class ContainerMonitorHttp {
         executeHttpGetRequest(message);
     }
 
+    /** Get statistics about a running container sush as memory-CPU usage etc 
+     * These stats are used in ContainerVisualization in order to create a graph
+    */
     public static CloseableHttpResponse getContainerStats() {
         String message = "stats"; // get the container statistics in json format
         ContainerManagerHttp.containerId = Test.handleInput(message);
@@ -32,6 +41,18 @@ public class ContainerMonitorHttp {
         return executeHttpGetRequestForStats(message);
     }
 
+    /** Search for an image by it's name. The result is limited to 3 */
+    public static void searchImages() {
+        String message = "/images/search"; // get the container statistics in json format
+        imageName = Test.handleInput("Please type the name of the image you want to search for: ");
+        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
+        System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
+        executeHttpGetRequest(message);
+    }
+
+    /** Execute the http request for getting info about a container
+     * @throws Exception if an error occurs while executing the http request
+     */
     public static void executeHttpGetRequest(String message) {
         try {
             CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
@@ -50,15 +71,15 @@ public class ContainerMonitorHttp {
             else if (message.equals("/images/search"))
                 System.out.println(response1.toString());
                 printFormattedJsonForImage(response1);
-            
-            
-        
-        } catch (Exception e) {
+            } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to " + message + " the container: " + e.getMessage()); // Print the error message
         } 
     }
 
+    /** Execute the http request for getting stats abut a running container
+     * @throws Exception if an error occurs while executing the http request
+     */
     public static CloseableHttpResponse executeHttpGetRequestForStats(String message) {
         try {
             CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
@@ -72,7 +93,10 @@ public class ContainerMonitorHttp {
         return null;
     }
 
-
+    /** Format the json response for stats to a user-friendly message
+     *  that is real-time updated and printed to the console
+     * @throws NullPointerException if an error occurs while executing the http request
+     */
     public static double getFormattedStats(StringBuffer response1) throws JsonProcessingException  {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -85,7 +109,10 @@ public class ContainerMonitorHttp {
         return 0.0;
     }
 
-
+    /* Format the json response for container info to a user-friendly message
+     * @throws NullPointerException if an error occurs while executing the http request
+     * this Exception might occur when the image name is not found in the json file
+     */ 
     public static void printFormattedJson(StringBuffer response1) throws JsonProcessingException  {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -104,26 +131,17 @@ public class ContainerMonitorHttp {
         }
     }
 
-    public static void printFormattedJsonForImage(StringBuffer response1) throws JsonProcessingException {
+    /**
+     * Format the json response for image  -that you 've searched for- to a user-friendly message
+     * @param response1
+     * @throws JsonProcessingException
+     * @throws NullPointerException
+     * We have to fix the method because it doesn't work properly
+     */
+    public static void printFormattedJsonForImage(StringBuffer response1) throws JsonProcessingException, NullPointerException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(response1.toString());
         System.out.println("Image Name:" + jsonNode.get("name").asText());
         System.out.println("Image Description:" + jsonNode.get("description").asText());
     }
-
-
-    public static void searchImages() {
-        
-        String message = "/images/search"; // get the container statistics in json format
-        imageName = Test.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
-        System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
-        executeHttpGetRequest(message);
-    }
-
-    /** Στην εκτέλεση της τελευταίας εντολής, όπου εμφανίζεται το Image Name είναι πιθανό σε συγκεκριμένα containers να προκύψει
-     * NullPointerException. Αυτό οφείλεται στο ότι ενδέχεται στο json file να μην εμφανίζεται το Image Name. Σε αυτή την περίπτωση
-     * εμφανίζεται το μήνυμα "------------------------------------------" και συνεχίζεται η εκτέλεση του προγράμματος λόγω της
-     * χρήσης της try-catch. Σε όλες τις άλλες περιπτώσεις εμφανίζονται κανονικά όλα τα στοιχεία του container.
-     */
 }
