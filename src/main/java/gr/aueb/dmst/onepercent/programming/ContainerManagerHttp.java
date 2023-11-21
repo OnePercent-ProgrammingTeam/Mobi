@@ -10,31 +10,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import io.netty.handler.codec.http.HttpResponse;
 
-public class ContainerManagerHttp {
+public class ContainerManagerHttp extends ContainerHttpRequest{
     
-    /** Docker host address*/ 
-    protected static final String DOCKER_HOST = "http://localhost:2375"; 
-    /** Create an http client */
-    protected static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault(); 
-    /** Http Post request (Post is "do to something e.g start container") */
-    private static HttpPost postRequest; 
-    protected static String containerId;
+     
+    
+
     private static HttpEntity entity;
    
     /** Start container with http request */
-    public static void startContainer() {
+    public void startContainer() {
         String message = "start";
         containerId = Test.handleInput(message);
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
-        executeHttpPostRequest(message);
+        executeHttpRequest(message);
     }
 
     /** Stop container with http request */
-    public static void stopContainer() {
+    public void stopContainer() {
         String message = "stop";
         containerId = Test.handleInput(message);
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
-        executeHttpPostRequest(message);
+        executeHttpRequest(message);
     }
 
     /** Pull an image with http request, 
@@ -42,18 +38,18 @@ public class ContainerManagerHttp {
      *  practically is like starting a container 
      * with an image that does not exist locally
     */
-    public static void pullImage() {
+    public void pullImage() {
         String message = "pull";
         String imageName = Test.handleInput(message);
         postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
-        executeHttpPostRequest(message);
+        executeHttpRequest(message);
     }
     
     /** Execute the http request (start/stop container & pull image)
      * @param message the message that is given by the user
      * @throws Exception if an error occurs while executing the http request
      */
-    public static void executeHttpPostRequest(String message) {
+    public void executeHttpRequest(String message) {
         try {
             CloseableHttpResponse response = HTTP_CLIENT.execute(postRequest);
              // Start the container
@@ -83,7 +79,7 @@ public class ContainerManagerHttp {
     * @throws IOException If an I/O error occurs while reading the input stream.
     */
 
-    public static void handleResponse() throws IOException{
+    public void handleResponse() throws IOException{
          try (BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()))) { // Create a reader for the response content
                     String line;
                     while ((line = reader.readLine()) != null) { // Print the response line by line
