@@ -13,54 +13,63 @@ public class ContainerModel {
 
     /** Constructor */
     public ContainerModel(Container container) {
-        this.container = container;
+        this.container = container; 
     }
     /** Get the id of a container */
-    public String getContainerId()   {
+    
+    public String getId()   {
         return container.getId();
     }
 
     /** Return the name of the image
      we have concluded that: Container Name <> Image Name*/
-    public String getImageName(){  
+    
+     public String getImage(){  
         return container.getImage();
     }
 
     /** Return the id of the image
     (Starts with sha256:... indicating the cryptographic hash of the image)
     we have concluded that: Container Id <> Image Id*/
+    
     public String getImageId() {
         return container.getImageId();
     }
 
     /** Return the name of the container
      we have concluded that: Container Name <> Image Name*/
-    public String[] getNames(){
+    
+     public String[] getNames(){
         return container.getNames();
     }
 
     /** Return the size of Disk Read/Write
     if it is zero, it might mean that no disk I/O operations are occurring*/
-    public Long getReadWriteSize() {
+    
+    public Long getSizeRw() {
         return container.getSizeRw();
     }
 
     //We have to check it out further
+    
     public Long getSizeRootFs() {
         return container.getSizeRootFs();
     }
 
     /** Return a table with the ports of a container */
+    
     public ContainerPort[] getPorts() {
         return container.getPorts();
     }
 
     /** Return the command that was used to start the container*/
+    
     public String getCommand() {
         return container.getCommand();
     }
 
     /** Return a list with the mounts of the container*/
+    
     public List<ContainerMount> getMounts() {
         return container.getMounts();
     }
@@ -69,6 +78,7 @@ public class ContainerModel {
     * 1. the status of the container (Exited or Running) followed by a code 
     * 2. the time that has passed since the container was running (if it is running it prints: Up to *time*)
     */
+    
     public String getStatus() {
         return container.getStatus();
     }
@@ -76,7 +86,8 @@ public class ContainerModel {
     /**  Return the time the container was created in unix timestamp,
      * in ContainerMonitor class we have a method that converts it to a formatted date 
      */
-    public Long getCreated() {
+    
+     public Long getCreated() {
         return container.getCreated();
     }
 }
