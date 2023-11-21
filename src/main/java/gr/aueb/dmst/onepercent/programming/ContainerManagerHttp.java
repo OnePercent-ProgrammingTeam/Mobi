@@ -12,10 +12,7 @@ import io.netty.handler.codec.http.HttpResponse;
 
 public class ContainerManagerHttp extends ContainerHttpRequest{
     
-     
-    
-
-    private static HttpEntity entity;
+     private static HttpEntity entity;
    
     /** Start container with http request */
     public void startContainer() {
