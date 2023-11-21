@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.apache.http.impl.client.CloseableHttpClient;
+
 /** Import the Jackson ObjectMapper class for formatting the JSON response*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
 /** Import the Jackson JsonNode class for formatting the JSON response*/
@@ -19,7 +20,7 @@ public class ContainerMonitorHttp {
     private static HttpGet getRequest;
     private static String imageName; 
 
-    /** Get information about a container that might be or might not be locallu installed
+    /** Get information about a container that might be or might not be locally installed
      * @param containerId the id of the container
      */
     public static void getContainerInformation() {
@@ -102,7 +103,12 @@ public class ContainerMonitorHttp {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             //System.out.println(jsonNode.get("memory_stats").get("usage").asDouble());
-            return jsonNode.get("memory_stats").get("usage").asDouble();
+            double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
+                            - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
+            double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
+                            - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
+            double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
+            return (system_delta==0.0)? (cpu_delta / system_delta) * number_cpus * 100.0   : 0.0;
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
         }
