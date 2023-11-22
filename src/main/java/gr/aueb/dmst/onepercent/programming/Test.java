@@ -31,7 +31,7 @@ public class Test {
                 //ContainerMonitorHttp.getContainerStats();
                 //ContainerMonitorHttp.getContainerInformation();
                 // ContainerMonitorHttp.getContainerInformation();
-                ContainerMonitorHttp.searchImages();
+               
 
 
     }
