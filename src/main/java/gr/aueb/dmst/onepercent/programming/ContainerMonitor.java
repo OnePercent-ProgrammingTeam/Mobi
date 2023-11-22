@@ -1,8 +1,6 @@
 package gr.aueb.dmst.onepercent.programming;
-import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import java.util.List;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -10,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import com.github.dockerjava.api.model.ContainerPort;
 import com.github.dockerjava.api.model.ContainerMount;
-import java.util.Date;
+
 
 public class ContainerMonitor {
      
@@ -82,6 +80,11 @@ public class ContainerMonitor {
    * 
    *    An alternative that might result in an exception.
    *    <code>
+   *    import java.util.Date;
+   *    import java.text.SimpleDateFormat ;
+   *        .
+   *        .
+   *        .
    *    var containerInfo = ContainerManager.dc.inspectContainerCmd(c.getContainerId()).exec();
    *    var createdTimestamp = Integer.parseInt(containerInfo.getCreated());
    *    Date createdDate = new Date(createdTimestamp * 1000);
