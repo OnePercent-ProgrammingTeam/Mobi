@@ -3,11 +3,13 @@ package gr.aueb.dmst.onepercent.programming;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 
+
 import java.util.List;
 
 public class MonitorThread extends Thread implements Runnable {
 
     private DockerClient dockerClient; // declare a field dockerClient of type DockerClient that allows interaction with the Docker daemon.
+    
 
     public MonitorThread(DockerClient dockerClient) {
         this.dockerClient = dockerClient;
@@ -18,6 +20,7 @@ public class MonitorThread extends Thread implements Runnable {
         while (true) { //start a loop The thread will keep running as long as the program is running
             // Display information about containers
             displayContainerInfo(); //call the displayContainerInfo method to show information about Docker containers
+            
 
             try { //This block puts the thread to sleep for a specified interval (in this case, 5000 milliseconds or 5 seconds) before looping again. The InterruptedException is caught in case of interruption during sleep.
                 // Sleep for a specific interval before displaying information again
@@ -33,6 +36,8 @@ public class MonitorThread extends Thread implements Runnable {
 
         // Get the list of all containers
         List<Container> containers = dockerClient.listContainersCmd().withShowAll(true).exec(); //use the dockerClient to get a list of all containers, including stopped ones
+        
+        CSV.writeContainerInfoToCsv(containers , "datacontainers.csv" ) ;
 
         // Display information for each container
         for (Container container : containers) { //start a loop that iterates through each container in the list.
