@@ -1,3 +1,4 @@
+package gr.aueb.dmst.onepercent.programming;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
@@ -5,22 +6,12 @@ import com.github.dockerjava.api.model.Container;
 import java.util.Scanner;
 import java.util.List;
 
-public class ContainerManager {
+public class ContainerManager extends ContainerManagement {
 
-    protected static DockerClient dc; //docker client 
-    Scanner sc = new Scanner(System.in); //scanner for user input
-
-    //create docker client
-    public static void createDockerClient() {
-        DefaultDockerClientConfig config = DefaultDockerClientConfig
-        .createDefaultConfigBuilder()
-        .withDockerHost("tcp://localhost:2375") //daemon host
-        .build();
-        dc = DockerClientBuilder.getInstance(config).build();
-        dc.versionCmd().exec();
-    }
-
-    //handle user input and make sure it is valid
+  
+    
+    /** Handle user input and make sure it is valid */
+    @Override
     public String handleInput(){
         System.out.println("Please enter the id of the container you want to start/stop");
         String input = sc.next();
@@ -28,11 +19,11 @@ public class ContainerManager {
             System.out.println("Container does not exist");
             return null;
         }
-        sc.nextLine();//clear buffer
+        sc.nextLine(); //clear buffer
         return input;
     } 
     
-    // start container and check if it is already started
+    /** Start container and check if it is already started */
     public void startContainer() {
         String lastIdInput = handleInput();
         if (lastIdInput == null){return;} 
@@ -44,7 +35,7 @@ public class ContainerManager {
         System.out.println("Container started");
     }
 
-    // stop container, practicly kill it and check if it is already stopped
+    /** Stop container, practicly kill it and check if it is already stopped */
     public void stopContainer() {
         String lastIdInput = handleInput();
         if (lastIdInput == null){return;} 
@@ -57,7 +48,7 @@ public class ContainerManager {
     }
 
 
-    // check if container is active
+    /** Check if container is active */
     public boolean checkActiveContainerStatus(String idInput) {
         List<Container> containers;
         containers= dc.listContainersCmd().withShowAll(false).exec();
@@ -69,7 +60,7 @@ public class ContainerManager {
         return false; //container is not active
     }
 
-    // check if container exists
+    /** Check if container exists */
     public boolean checkAllContainerStatus(String idInput) {
         List<Container> containers;
         containers= dc.listContainersCmd().withShowAll(true).exec();
@@ -82,4 +73,4 @@ public class ContainerManager {
     }
 
 }
-    
+        
