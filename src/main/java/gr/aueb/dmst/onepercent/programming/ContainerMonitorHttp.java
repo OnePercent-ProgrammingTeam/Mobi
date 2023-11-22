@@ -7,53 +7,52 @@ import java.util.TimerTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.apache.http.impl.client.CloseableHttpClient;
+
 /** Import the Jackson ObjectMapper class for formatting the JSON response*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
 /** Import the Jackson JsonNode class for formatting the JSON response*/
 import com.fasterxml.jackson.databind.JsonNode; 
 /** Import the Jackson JsonProcessingException for handling an exception that might occur */
 import com.fasterxml.jackson.core.JsonProcessingException; 
-public class ContainerMonitorHttp {
-    
-    /** Http Get request (Get is "to get something e.g info about containers") */
-    private static HttpGet getRequest;
-    private static String imageName; 
 
-    /** Get information about a container that might be or might not be locallu installed
+public class ContainerMonitorHttp extends ContainerHttpRequest {
+    
+     /** Get information about a container that might be or might not be locally installed
      * @param containerId the id of the container
      */
-    public static void getContainerInformation() {
+    public void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
         ContainerManagerHttp.containerId = Test.handleInput(message);
         getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
         System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
-        executeHttpGetRequest(message);
+        executeHttpRequest(message);
     }
 
     /** Get statistics about a running container sush as memory-CPU usage etc 
      * These stats are used in ContainerVisualization in order to create a graph
     */
-    public static CloseableHttpResponse getContainerStats() {
+    public CloseableHttpResponse getContainerStats() {
         String message = "stats"; // get the container statistics in json format
         ContainerManagerHttp.containerId = Test.handleInput(message);
         getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
         System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
-        return executeHttpGetRequestForStats(message);
+        return getHttpResponse(message);
     }
 
     /** Search for an image by it's name. The result is limited to 3 */
-    public static void searchImages() {
+    public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Test.handleInput("Please type the name of the image you want to search for: ");
         getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
         System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
-        executeHttpGetRequest(message);
+        executeHttpRequest(message);
     }
 
     /** Execute the http request for getting info about a container
      * @throws Exception if an error occurs while executing the http request
      */
-    public static void executeHttpGetRequest(String message) {
+    @Override
+    public void executeHttpRequest(String message) {
         try {
             CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
@@ -80,7 +79,8 @@ public class ContainerMonitorHttp {
     /** Execute the http request for getting stats abut a running container
      * @throws Exception if an error occurs while executing the http request
      */
-    public static CloseableHttpResponse executeHttpGetRequestForStats(String message) {
+    @Override
+    public CloseableHttpResponse getHttpResponse(String message) {
         try {
             CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
@@ -102,7 +102,12 @@ public class ContainerMonitorHttp {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             //System.out.println(jsonNode.get("memory_stats").get("usage").asDouble());
-            return jsonNode.get("memory_stats").get("usage").asDouble();
+            double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
+                            - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
+            double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
+                            - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
+            double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
+            return (system_delta==0.0)? (cpu_delta / system_delta) * number_cpus * 100.0   : 0.0;
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
         }
