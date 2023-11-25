@@ -1,35 +1,29 @@
 package gr.aueb.dmst.onepercent.programming;
-
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-import com.github.dockerjava.api.model.Container;
+public class CSV {
+    
+    /**Create a csv file with the name of the container, each "column" is:
+     * Container Name, Container Id, IP Address, Mac Address, CPU Usage
+    */
+    public void writeContainerInfoToCsv () {
+        
+        ContainerMonitorHttp containerMonitorHttp = new ContainerMonitorHttp();
+        String[] info = containerMonitorHttp.prepareStorageData();
+        info[0] = info[0].substring(1);
+        String filename = info[0] + "Data";
+        String filePath = filename +".csv"; //create a file in the specified path
 
-public static class CSV {
-
-    private void writeContainerInfoToCsv(List<Container> containers, String filepath) {
-
-
-       
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
-
-            // Write header
-            writer.writeNext(new String[]{"ID", "State", "Status", "Network", "Created"});
             
-            // Write data
-            for (Container container : containers) {
-                writer.writeNext(new String[]{
-                    container.getId(),
-                    container.getState(),
-                    container.getStatus(),
-                    container.getNetworkSettings().toString(),
-                    container.getCreated()
-                    }
-                );
-            }
+            writer.writeNext(new String[]{"Container Name", " Container Id", "IP Address", "Mac Address", "CPU Usage"});  
+            
+            writer.writeNext(info);
+        
         } catch (IOException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
     }
 }
+
