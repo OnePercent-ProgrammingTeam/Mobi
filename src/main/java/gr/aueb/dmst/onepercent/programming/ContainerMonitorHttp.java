@@ -18,7 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class ContainerMonitorHttp extends ContainerHttpRequest {
     
      /** Get information about a container that might be or might not be locally installed
-     * @param containerId the id of the container
+     *
      */
     public void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
@@ -49,6 +49,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     }
 
     /** Execute the http request for getting info about a container
+     * @param message the final part of the url that is used to get the info
      * @throws Exception if an error occurs while executing the http request
      */
     @Override
@@ -59,17 +60,19 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
-            StringBuffer response1 = new StringBuffer();
+            ContainerMonitorHttp.response1 = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
             }
-            //
+            
             reader.close();
-            if (message.equals("json"))
-                printFormattedJson(response1);
-            else if (message.equals("/images/search"))
+            if (message.equals("json")){
+                printFormattedJson();
+                prepareStorageData(); 
+            }else if (message.equals("/images/search"))
                 System.out.println(response1.toString());
-                printFormattedJsonForImage(response1);
+                printFormattedJsonForImage();
+               
             } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to " + message + " the container: " + e.getMessage()); // Print the error message
@@ -77,6 +80,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     }
 
     /** Execute the http request for getting stats abut a running container
+     * @param message the final part of the url that is used to get the info
      * @throws Exception if an error occurs while executing the http request
      */
     @Override
@@ -95,31 +99,36 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
 
     /** Format the json response for stats to a user-friendly message
      *  that is real-time updated and printed to the console
+     * @param response1Buffer a StringBuffer object
      * @throws NullPointerException if an error occurs while executing the http request
      */
-    public static double getFormattedStats(StringBuffer response1) throws JsonProcessingException  {
+    public double getFormattedStats(StringBuffer response1Buffer) throws JsonProcessingException  {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
+            JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
             //System.out.println(jsonNode.get("memory_stats").get("usage").asDouble());
             double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
                             - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
             double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
                             - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
             double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
+            
+            
             return (system_delta==0.0)? (cpu_delta / system_delta) * number_cpus * 100.0   : 0.0;
+
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
         }
         return 0.0;
     }
 
+    
     /* Format the json response for container info to a user-friendly message
-     * @throws NullPointerException if an error occurs while executing the http request
+     *  NullPointerException if an error occurs while executing the http request
      * this Exception might occur when the image name is not found in the json file
      */ 
-    public static void printFormattedJson(StringBuffer response1) throws JsonProcessingException  {
-        try {
+    public void printFormattedJson() throws JsonProcessingException  {
+         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             System.out.println("Container Name: " + jsonNode.get("Name").asText());
@@ -130,20 +139,42 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             System.out.println("Gateway: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("Gateway").asText()); 
             System.out.println("IP Address: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("IPAddress").asText()); 
             System.out.println("Mac Address: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("MacAddress").asText()); 
-            System.out.println("Image Name: " + jsonNode.get("Config").get("Labels").get("org.opencontainers.image.title").asText());
+            //System.out.println("Image Name: " + jsonNode.get("Config").get("Labels").get("org.opencontainers.image.title").asText());
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
         }
     }
 
+    /** Return a String array with the prepared data that will be saved in a csv file 
+     * @return str a String array with the data that will be saved in a csv file
+     * @throws NullPointerException if an error occurs while executing the http request
+    */
+    public String[] prepareStorageData() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString());
+            String[] str = new String[5];
+            str[0] = jsonNode.get("Name").asText(); //Container Name
+            str[1] = jsonNode.get("Id").asText(); //Container ID
+            str[2] = jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("IPAddress").asText(); //IP Address
+            str[3] = jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("MacAddress").asText(); //Mac Address
+            double res = getFormattedStats(ContainerMonitorHttp.response1);
+            String result = Double.toString(res);
+            str [4] = result; //CPU Usage
+            return str;
+          }catch (Exception e) {
+            System.out.println("OOPSS SOMETHING WENT WRONG....");
+            return null;
+         }
+    }
+
     /**
      * Format the json response for image  -that you 've searched for- to a user-friendly message
-     * @param response1
      * @throws JsonProcessingException
      * @throws NullPointerException
      * We have to fix the method because it doesn't work properly
      */
-    public static void printFormattedJsonForImage(StringBuffer response1) throws JsonProcessingException, NullPointerException {
+    public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(response1.toString());
         System.out.println("Image Name:" + jsonNode.get("name").asText());
