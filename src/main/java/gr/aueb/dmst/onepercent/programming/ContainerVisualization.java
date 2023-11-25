@@ -91,7 +91,8 @@ public class ContainerVisualization extends JFrame {
     public void onRunGraph (boolean flag, BufferedReader reader, ContainerVisualization ex, Timer timer) throws IOException{
         String inputLine = reader.readLine(); // Read a new line from the response
                     if (inputLine != null) {
-                        double d = ContainerMonitorHttp.getFormattedStats(new StringBuffer(inputLine));
+                        ContainerMonitorHttp containerMonitorHttp = new ContainerMonitorHttp();
+                        double d = containerMonitorHttp.getFormattedStats(new StringBuffer(inputLine)); //
                         long currentTimestamp = System.currentTimeMillis(); // Get the current timestamp
                         updateStats(currentTimestamp, d);
                         if (!flag) {
