@@ -24,6 +24,7 @@ public abstract class ContainerHttpRequest {
     protected static String imageName;
 
     protected CloseableHttpResponse response;
+    protected static StringBuffer response1;
     
     public abstract void executeHttpRequest(String message);
 
