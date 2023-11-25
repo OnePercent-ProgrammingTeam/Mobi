@@ -62,6 +62,12 @@
             <artifactId>jfreechart</artifactId>
             <version>1.5.4</version> <!-- Latest version (8/1/2023) -->
         </dependency>
+
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.8</version>
+        </dependency>
     
 
     </dependencies>
