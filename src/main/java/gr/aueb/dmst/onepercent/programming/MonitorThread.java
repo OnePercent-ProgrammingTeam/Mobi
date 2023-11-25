@@ -36,8 +36,8 @@ public class MonitorThread extends Thread implements Runnable {
 
         // Get the list of all containers
         List<Container> containers = dockerClient.listContainersCmd().withShowAll(true).exec(); //use the dockerClient to get a list of all containers, including stopped ones
-        
-        CSV.writeContainerInfoToCsv(containers , "datacontainers.csv" ) ;
+        CSV csv = new CSV();
+        csv.writeContainerInfoToCsv() ;
 
         // Display information for each container
         for (Container container : containers) { //start a loop that iterates through each container in the list.
@@ -50,5 +50,3 @@ public class MonitorThread extends Thread implements Runnable {
         }
     }
 } //print various information about each container, such as ID, state, status, network settings, and creation time
-
-
