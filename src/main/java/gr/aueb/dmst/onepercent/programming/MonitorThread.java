@@ -19,7 +19,9 @@ public class MonitorThread extends Thread implements Runnable {
     public void run() { // run method, which will be executed when the thread starts
         while (true) { //start a loop The thread will keep running as long as the program is running
             // Display information about containers
-            displayContainerInfo(); //call the displayContainerInfo method to show information about Docker containers
+            //displayContainerInfo(); //call the displayContainerInfo method to show information about Docker containers
+            InteractionwithUser obj = new InteractionwithUser();
+            obj.printMenu();
             
 
             try { //This block puts the thread to sleep for a specified interval (in this case, 5000 milliseconds or 5 seconds) before looping again. The InterruptedException is caught in case of interruption during sleep.
@@ -36,8 +38,8 @@ public class MonitorThread extends Thread implements Runnable {
 
         // Get the list of all containers
         List<Container> containers = dockerClient.listContainersCmd().withShowAll(true).exec(); //use the dockerClient to get a list of all containers, including stopped ones
-        CSV csv = new CSV();
-        csv.writeContainerInfoToCsv() ;
+        
+       
 
         // Display information for each container
         for (Container container : containers) { //start a loop that iterates through each container in the list.
@@ -50,3 +52,5 @@ public class MonitorThread extends Thread implements Runnable {
         }
     }
 } //print various information about each container, such as ID, state, status, network settings, and creation time
+
+
