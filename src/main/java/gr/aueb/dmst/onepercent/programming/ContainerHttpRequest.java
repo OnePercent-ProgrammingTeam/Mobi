@@ -1,6 +1,6 @@
 package gr.aueb.dmst.onepercent.programming;
 
-import java.io.Closeable;
+
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
