@@ -70,7 +70,6 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
                 printFormattedJson();
                 prepareStorageData(); 
             }else if (message.equals("/images/search"))
-                System.out.println(response1.toString());
                 printFormattedJsonForImage();
                
             } catch (Exception e) {
@@ -175,9 +174,23 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
      * We have to fix the method because it doesn't work properly
      */
     public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(response1.toString());
-        System.out.println("Image Name:" + jsonNode.get("name").asText());
-        System.out.println("Image Description:" + jsonNode.get("description").asText());
-    }
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
+                
+                if (jsonNode.isArray()) {
+                    System.out.println("TOP 3 SEARCHED RESULTS\n");
+                    for (JsonNode el : jsonNode) {
+                        System.out.println("Image name: " + el.get("name") 
+                                            + "\nDescription: " 
+                                            + el.get("description") 
+                                            + "\nStar count: " 
+                                            + el.get("star_count") +"\n" );
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("OOPSSSS");
+            }
+
+   }
 }
