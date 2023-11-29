@@ -64,14 +64,17 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
             }
-            
             reader.close();
+            
             if (message.equals("json")){
                 printFormattedJson();
                 prepareStorageData(); 
-            }else if (message.equals("/images/search"))
+            }else if (message.equals("/images/search")){
                 printFormattedJsonForImage();
-               
+            } else if (message.equals("stats")) {   
+                getFormattedStats(response1);
+            }
+                               
             } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to " + message + " the container: " + e.getMessage()); // Print the error message
@@ -98,22 +101,41 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
 
     /** Format the json response for stats to a user-friendly message
      *  that is real-time updated and printed to the console
-     * @param response1Buffer a StringBuffer object
-     * @throws NullPointerException if an error occurs while executing the http request
+     *  @param response1Buffer a StringBuffer object
+     *  @throws NullPointerException if an error occurs while executing the http request
+     *
+     *  The code below should work too. Instead, it return 0.0. We have to check it further
+     *      
+     *  <code>
+     *  double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
+     *                   - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
+     *  double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
+     *                      - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
+     *  double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
+     *
+     *  return (system_delta!=0.0)? (cpu_delta / system_delta) * number_cpus * 100.0 : 0.0;
+     *  </code>
      */
-    public double getFormattedStats(StringBuffer response1Buffer) throws JsonProcessingException  {
+    
+     public double getFormattedStats(StringBuffer response1Buffer) throws JsonProcessingException  {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
-            //System.out.println(jsonNode.get("memory_stats").get("usage").asDouble());
-            double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
-                            - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
-            double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
-                            - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
-            double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
+            double  cpu_delta = jsonNode.at("/cpu_stats/cpu_usage/total_usage").asDouble()
+                            - jsonNode.at("/precpu_stats/cpu_usage/total_usage").asDouble();
             
+            double system_delta = jsonNode.at("/cpu_stats/system_cpu_usage").asDouble()
+                                - jsonNode.at("/precpu_stats/system_cpu_usage").asDouble();
             
-            return (system_delta==0.0)? (cpu_delta / system_delta) * number_cpus * 100.0   : 0.0;
+            double number_cpus = jsonNode.at("/cpu_stats/online_cpus").asDouble();
+            if (system_delta==0) {
+                System.out.println("\n\nSomething went wrong.\n"
+                                 + "The formula to calculate CPU usage is:\n"
+                                 + "(cpu_delta / system_delta) * number_cpus * 100.0\n"
+                                 + "and system_delta is 0.\nMake sure that the container is running");
+            }
+            double cpuUsage = (cpu_delta / system_delta) * number_cpus * 100.0;
+            return cpuUsage;
 
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
@@ -171,7 +193,10 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
      * Format the json response for image  -that you 've searched for- to a user-friendly message
      * @throws JsonProcessingException
      * @throws NullPointerException
-     * We have to fix the method because it doesn't work properly
+     * @prints info about the top 3 images with the name that user searched. The info contains: 
+     * 1.Image Name
+     * 2.Description
+     * 3.Star Count (the times an image has been shared)   
      */
     public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
             try {
@@ -189,8 +214,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("OOPSSSS");
+                System.out.println("Oops, something went wrong...");
             }
-
-   }
+    }
 }
