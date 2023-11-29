@@ -63,17 +63,23 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             ContainerMonitorHttp.response1 = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
+                if (message.equals("stats")){
+                    lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
+                    System.out.println("CPU Usage: " + lastCPUUsage);
+                    response.close();
+                    break;
+                }
             }
+            
             reader.close();
             
             if (message.equals("json")){
                 printFormattedJson();
-                prepareStorageData(); 
-            }else if (message.equals("/images/search")){
-                printFormattedJsonForImage();
-            } else if (message.equals("stats")) {   
-                getFormattedStats(response1);
+               // prepareStorageData(); 
             }
+            if (message.equals("/images/search")){
+                printFormattedJsonForImage();
+            } 
                                
             } catch (Exception e) {
             e.printStackTrace();
@@ -175,16 +181,17 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             String[] str = new String[5];
-            str[0] = jsonNode.get("Name").asText(); //Container Name
-            str[1] = jsonNode.get("Id").asText(); //Container ID
-            str[2] = jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("IPAddress").asText(); //IP Address
-            str[3] = jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("MacAddress").asText(); //Mac Address
-            double res = getFormattedStats(ContainerMonitorHttp.response1);
-            String result = Double.toString(res);
-            str [4] = result; //CPU Usage
+            str[0] = jsonNode.at("/Name").asText(); //Container Name
+            str[1] = jsonNode.at("/Id").asText(); //Container ID
+            str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
+            str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
+            this.getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/stats"  );
+            executeHttpRequest("stats");
+            str [4] = String.valueOf(lastCPUUsage); //CPU Usage
             return str;
           }catch (Exception e) {
             System.out.println("OOPSS SOMETHING WENT WRONG....");
+            e.printStackTrace();
             return null;
          }
     }
