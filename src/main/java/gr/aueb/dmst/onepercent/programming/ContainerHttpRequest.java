@@ -25,7 +25,8 @@ public abstract class ContainerHttpRequest {
 
     protected CloseableHttpResponse response;
     protected static StringBuffer response1;
-    
+    /** Last CPU Usage is the last metric for a running container */
+    protected static double lastCPUUsage;
     public abstract void executeHttpRequest(String message);
 
     public CloseableHttpResponse getHttpResponse(String message){
