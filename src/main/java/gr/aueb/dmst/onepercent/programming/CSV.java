@@ -10,6 +10,7 @@ public class CSV {
     public void writeContainerInfoToCsv () {
         
         ContainerMonitorHttp containerMonitorHttp = new ContainerMonitorHttp();
+        containerMonitorHttp.getContainerInformation();
         String[] info = containerMonitorHttp.prepareStorageData();
         info[0] = info[0].substring(1);
         String filename = info[0] + "Data";
