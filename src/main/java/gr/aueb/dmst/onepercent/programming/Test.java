@@ -28,12 +28,15 @@ public class Test {
                 //ContainerManagerHttp.startContainer();
                 
                 //ContainerManagerHttp.stopContainer();
-                //ContainerMonitorHttp.getContainerStats();
+                
+                
+                
                 //ContainerMonitorHttp.getContainerInformation();
                 // ContainerMonitorHttp.getContainerInformation();
                 
                 ContainerMonitorHttp obj = new ContainerMonitorHttp();
-                obj.getContainerInformation();
+                //obj.getContainerStats();
+                 obj.getContainerInformation();
                 CSV csv = new CSV();
                 csv.writeContainerInfoToCsv();
                
