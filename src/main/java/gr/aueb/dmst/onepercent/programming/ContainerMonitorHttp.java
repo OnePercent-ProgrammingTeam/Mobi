@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.apache.http.impl.client.CloseableHttpClient;
+import java.time.*;
 
 /** Import the Jackson ObjectMapper class for formatting the JSON response*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
@@ -180,14 +181,19 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
-            String[] str = new String[5];
+            String[] str = new String[6];
             str[0] = jsonNode.at("/Name").asText(); //Container Name
             str[1] = jsonNode.at("/Id").asText(); //Container ID
             str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
             str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
             this.getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/stats"  );
             executeHttpRequest("stats");
-            str [4] = String.valueOf(lastCPUUsage); //CPU Usage
+            str[4] = String.valueOf(lastCPUUsage); //CPU Usage
+            //ZonedDateTime datetime = ZonedDateTime.now();
+            //LocalDateTime datetime = LocalDateTime.now();
+            LocalDate date = LocalDate.now(); 
+            LocalTime time = LocalTime.now();
+            str[5] = date.toString()+"  "+time.toString().substring(0,8); 
             return str;
           }catch (Exception e) {
             System.out.println("OOPSS SOMETHING WENT WRONG....");
