@@ -34,9 +34,9 @@ public class Test {
                 //ContainerMonitorHttp.getContainerInformation();
                 // ContainerMonitorHttp.getContainerInformation();
                 
-                ContainerMonitorHttp obj = new ContainerMonitorHttp();
+               // ContainerMonitorHttp obj = new ContainerMonitorHttp();
                 //obj.getContainerStats();
-                 obj.getContainerInformation();
+                
                 CSV csv = new CSV();
                 csv.writeContainerInfoToCsv();
                
