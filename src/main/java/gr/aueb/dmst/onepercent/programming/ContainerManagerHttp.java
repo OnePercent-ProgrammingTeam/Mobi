@@ -17,7 +17,7 @@ public class ContainerManagerHttp extends ContainerHttpRequest{
     /** Start container with http request */
     public void startContainer() {
         String message = "start";
-        containerId = Test.handleInput(message);
+        containerId = Test.handleInput("Please type the container ID to start the container: ");
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpRequest(message);
     }
@@ -25,7 +25,7 @@ public class ContainerManagerHttp extends ContainerHttpRequest{
     /** Stop container with http request */
     public void stopContainer() {
         String message = "stop";
-        containerId = Test.handleInput(message);
+        containerId = Test.handleInput("Please type the container ID to stop the container: ");
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpRequest(message);
     }
