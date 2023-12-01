@@ -48,8 +48,6 @@ public class MenuThread extends Thread implements Runnable {
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
-        
-            
             break;
 
         default:
