@@ -23,9 +23,9 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
      */
     public void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
-        ContainerManagerHttp.containerId = Test.handleInput("Please type the container ID to get info about the container: ");
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
+        ContainerMonitorHttp.containerId = Test.handleInput("Please type the container ID to get info about the container: ");
+        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
+        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
         executeHttpRequest(message);
     }
 
@@ -34,9 +34,9 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     */
     public CloseableHttpResponse getContainerStats() {
         String message = "stats"; // get the container statistics in json format
-        ContainerManagerHttp.containerId = Test.handleInput(message);
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
+        ContainerMonitorHttp.containerId = Test.handleInput("Please type the container ID to plot diagram with CPU usage: ");
+        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
+        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
         return getHttpResponse(message);
     }
 
@@ -44,8 +44,8 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Test.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
-        System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
+        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
+        System.out.println(ContainerMonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
         executeHttpRequest(message);
     }
 
@@ -58,7 +58,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     @Override
     public void executeHttpRequest(String message) {
         try {
-            CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = ContainerMonitorHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -68,7 +68,6 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
                 response1.append(inputLine);
                 if (message.equals("stats")){
                     lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
-                    System.out.println("CPU Usage: " + lastCPUUsage);
                     response.close();
                     break;
                 }
@@ -97,7 +96,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     @Override
     public CloseableHttpResponse getHttpResponse(String message) {
         try {
-            CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = ContainerMonitorHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println("Status Code : " + statusCode);
             return response;
@@ -181,23 +180,29 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     */
     public String[] prepareStorageData() {
         try {
+            System.out.println(ContainerMonitorHttp.containerId);
+            getRequest= new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/json"  );
+            executeHttpRequest("json");
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             String[] str = new String[6];
-            str[0] = jsonNode.at("/Name").asText(); //Container Name
+            str[0] = jsonNode.at("/Name").asText().substring(1); //Container Name
+            // We use substring() in order to ignore the "/" from the container name
             str[1] = jsonNode.at("/Id").asText(); //Container ID
             str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
             str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
-            this.getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/stats"  );
+            this.getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/stats"  );
+            
             executeHttpRequest("stats");
+            
             str[4] = String.valueOf(lastCPUUsage); //CPU Usage
-            //ZonedDateTime datetime = ZonedDateTime.now();
-            //LocalDateTime datetime = LocalDateTime.now();
             LocalDate date = LocalDate.now(); 
             LocalTime time = LocalTime.now();
             str[5] = date.toString()+"  "+time.toString().substring(0,8); 
+            
             return str;
-          }catch (Exception e) {
+          
+        }catch (Exception e) {
             System.out.println("OOPSS SOMETHING WENT WRONG....");
             e.printStackTrace();
             return null;
