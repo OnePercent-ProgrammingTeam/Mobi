@@ -19,7 +19,7 @@ public class Main {
         dockerClient.versionCmd().exec();
 
         // Create and start the MonitorThread
-        MonitorThread monitorThread = new MonitorThread(dockerClient);
+        MonitorThread monitorThread = new MonitorThread();
       
         Thread thread= new Thread(monitorThread);
         thread.start();
