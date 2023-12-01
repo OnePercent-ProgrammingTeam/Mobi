@@ -23,7 +23,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
      */
     public void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
-        ContainerManagerHttp.containerId = Test.handleInput(message);
+        ContainerManagerHttp.containerId = Test.handleInput("Please type the container ID to get info about the container: ");
         getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
         System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
         executeHttpRequest(message);
@@ -48,6 +48,8 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
         System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
         executeHttpRequest(message);
     }
+
+    
 
     /** Execute the http request for getting info about a container
      * @param message the final part of the url that is used to get the info
