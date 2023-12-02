@@ -1,18 +1,16 @@
 package gr.aueb.dmst.onepercent.programming;
 import com.opencsv.CSVWriter;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Paths;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import java.util.Scanner;
+
 public class CSV {
     
     /**Create a csv file with the name of the container, each "column" is:
@@ -21,10 +19,17 @@ public class CSV {
 
     
     ContainerMonitorHttp containerMonitorHttp = new ContainerMonitorHttp();
+    private String folderPath;
+    private static final String[] HEADER = {"Container Name", "Container Id", "IP Address", "Mac Address", "CPU Usage", "Date Time"};
+
+    public void createDataFolder(String userPath) {  //Take for input the folder path given by the user
+        
+        folderPath = Paths.get(userPath, "Docker Data").toString(); 
+        File folder = new File(folderPath);// Create a File object representing the directory
+        folder.mkdirs(); // Create the directory and parent directories if they don't exist  
+    }
 
     public void createFile (String filePath) {
-        
-
         File file = new File(filePath);
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))){
             
@@ -32,7 +37,7 @@ public class CSV {
              * then print the name of the columns
              */
             if (!(file.exists() && (file.length() > 0))) { 
-                writer.writeNext(new String[]{"Container Name", "Container Id", "IP Address", "Mac Address", "CPU Usage", "Date Time"});
+                writer.writeNext(HEADER);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,9 +49,10 @@ public class CSV {
     public void getRealTimeData() {
         containerMonitorHttp.getContainerStats();
         String[] info = containerMonitorHttp.prepareStorageData();
-        info[0] = info[0].substring(1);
-        String filename = info[0] + "Data";
-        String filePath = filename +".csv"; //create a file in the specified path
+        //String filename = info[0] + "Data";
+        //String filePath = filename +".csv"; //create a file in the specified path
+        System.out.println("OK");
+        String filePath = Paths.get(folderPath, info[0] +"Data.csv").toString();
         createFile(filePath);
         Timer timer = new Timer(false); // Create a new timer
         timer.scheduleAtFixedRate(new TimerTask() { // Schedule a task to run every second
@@ -56,12 +62,7 @@ public class CSV {
                     
                 try (CSVWriter writer = new CSVWriter(new FileWriter(filePath,true))){
                     
-                    ContainerHttpRequest.getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/stats"  );
-                    containerMonitorHttp.executeHttpRequest("stats");
-                    info[4] = String.valueOf(ContainerHttpRequest.lastCPUUsage); //CPU Usage
-                    LocalDate date = LocalDate.now(); 
-                    LocalTime time = LocalTime.now();
-                    info[5] = date.toString()+"  "+time.toString().substring(0,8); 
+                    String[] info = containerMonitorHttp.prepareStorageData();
                     writer.writeNext(info);    
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -72,7 +73,13 @@ public class CSV {
 
     }
     public static void main(String[] args){
+        
         CSV csv = new CSV();
+        System.out.println("Give your path: ");
+        
+        Scanner sc = new Scanner(System.in);
+        final String path = sc.nextLine();
+        csv.createDataFolder(path); 
         
         csv.getRealTimeData();
     }
