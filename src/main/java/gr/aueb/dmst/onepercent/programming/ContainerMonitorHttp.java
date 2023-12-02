@@ -191,7 +191,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             str[1] = jsonNode.at("/Id").asText(); //Container ID
             str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
             str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
-            this.getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/stats"  );
+            ContainerHttpRequest.getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/stats"  );
             
             executeHttpRequest("stats");
             
