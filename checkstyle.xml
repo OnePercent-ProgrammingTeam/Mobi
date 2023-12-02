@@ -112,12 +112,12 @@
       <!--Eπιβάλει την απουσία κενού χώρου (whitespace) μετά από συγκεκριμένα τεκμήρια στον κώδικα-->  
 
 
-        <!-- <module name="RegexpSingleline">    -->
+      <module name="RegexpSingleline">    
         <!--  Ρύθμιση για το πρότυπο της κανονικής έκφρασης -->
-        <!--   <property name="format" value="TODO: .*"/>  -->
+            <property name="format" value="TODO: .*"/> 
         <!-- Πρόσθετες ρυθμίσεις κανονικής έκφρασης, αν χρειαστεί -->
-        <!-- <property name="illegalPattern" value="(?i).*System\.exit\(.*"/> -->
-        <!-- </module> -->
+            <property name="illegalPattern" value="(?i).*System\.exit\(.*"/> 
+      </module> 
         <!-- Στο παραπάνω παράδειγμα, η ιδιότητα (property) format καθορίζει το πρότυπο της κανονικής έκφρασης που πρέπει να ταιριάζουν οι συμβολοσειρές (strings). Στο παράδειγμα αυτό, ελέγχεται εάν οι συμβολοσειρές ξεκινούν με τη φράση "TODO: ".
         O παραπανω κανονας στα δικα μας ματια μοιαζει περιττος!
         -->
