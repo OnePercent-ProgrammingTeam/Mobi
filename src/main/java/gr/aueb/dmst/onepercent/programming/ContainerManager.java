@@ -6,24 +6,12 @@ import com.github.dockerjava.api.model.Container;
 import java.util.Scanner;
 import java.util.List;
 
-public class ContainerManager {
+public class ContainerManager extends ContainerManagement {
 
-    /** Static variable, used in many classes, representing the docker client */
-    protected static DockerClient dc;
-    /** Global variable scanner, used in the methods below */    
-    Scanner sc = new Scanner(System.in); //scanner for user input
-
-    /** Create a docker client */
-    public static void createDockerClient() {
-        DefaultDockerClientConfig config = DefaultDockerClientConfig
-        .createDefaultConfigBuilder()
-        .withDockerHost("tcp://localhost:2375") //daemon host
-        .build();
-        dc = DockerClientBuilder.getInstance(config).build();
-        dc.versionCmd().exec();
-    }
-
+  
+    
     /** Handle user input and make sure it is valid */
+    @Override
     public String handleInput(){
         System.out.println("Please enter the id of the container you want to start/stop");
         String input = sc.next();

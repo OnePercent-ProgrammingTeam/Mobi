@@ -7,70 +7,82 @@ import java.util.TimerTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.apache.http.impl.client.CloseableHttpClient;
+import java.time.*;
+
 /** Import the Jackson ObjectMapper class for formatting the JSON response*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
 /** Import the Jackson JsonNode class for formatting the JSON response*/
 import com.fasterxml.jackson.databind.JsonNode; 
 /** Import the Jackson JsonProcessingException for handling an exception that might occur */
 import com.fasterxml.jackson.core.JsonProcessingException; 
-public class ContainerMonitorHttp {
-    
-    /** Http Get request (Get is "to get something e.g info about containers") */
-    private static HttpGet getRequest;
-    private static String imageName; 
 
-    /** Get information about a container that might be or might not be locallu installed
-     * @param containerId the id of the container
+public class ContainerMonitorHttp extends ContainerHttpRequest {
+    
+     /** Get information about a container that might be or might not be locally installed
+     *
      */
-    public static void getContainerInformation() {
+    public void getContainerInformation() {
         String message = "json"; // get the container statistics in json format
-        ContainerManagerHttp.containerId = Test.handleInput(message);
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
-        executeHttpGetRequest(message);
+        ContainerMonitorHttp.containerId = Test.handleInput("Please type the container ID to get info about the container: ");
+        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
+        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
+        executeHttpRequest(message);
     }
 
     /** Get statistics about a running container sush as memory-CPU usage etc 
      * These stats are used in ContainerVisualization in order to create a graph
     */
-    public static CloseableHttpResponse getContainerStats() {
+    public CloseableHttpResponse getContainerStats() {
         String message = "stats"; // get the container statistics in json format
-        ContainerManagerHttp.containerId = Test.handleInput(message);
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerManagerHttp.DOCKER_HOST + "/containers/" + ContainerManagerHttp.containerId + "/" + message + "\n\n");
-        return executeHttpGetRequestForStats(message);
+        ContainerMonitorHttp.containerId = Test.handleInput("Please type the container ID to plot diagram with CPU usage: ");
+        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
+        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
+        return getHttpResponse(message);
     }
 
     /** Search for an image by it's name. The result is limited to 3 */
-    public static void searchImages() {
+    public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Test.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
-        System.out.println(ContainerManagerHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
-        executeHttpGetRequest(message);
+        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
+        System.out.println(ContainerMonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
+        executeHttpRequest(message);
     }
 
+    
+
     /** Execute the http request for getting info about a container
+     * @param message the final part of the url that is used to get the info
      * @throws Exception if an error occurs while executing the http request
      */
-    public static void executeHttpGetRequest(String message) {
+    @Override
+    public void executeHttpRequest(String message) {
         try {
-            CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = ContainerMonitorHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
-            StringBuffer response1 = new StringBuffer();
+            ContainerMonitorHttp.response1 = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
+                if (message.equals("stats")){
+                    lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
+                    response.close();
+                    break;
+                }
             }
-            //
+            
             reader.close();
-            if (message.equals("json"))
-                printFormattedJson(response1);
-            else if (message.equals("/images/search"))
-                System.out.println(response1.toString());
-                printFormattedJsonForImage(response1);
+            
+            if (message.equals("json")){
+                printFormattedJson();
+               // prepareStorageData(); 
+            }
+            if (message.equals("/images/search")){
+                printFormattedJsonForImage();
+            } 
+                               
             } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to " + message + " the container: " + e.getMessage()); // Print the error message
@@ -78,11 +90,13 @@ public class ContainerMonitorHttp {
     }
 
     /** Execute the http request for getting stats abut a running container
+     * @param message the final part of the url that is used to get the info
      * @throws Exception if an error occurs while executing the http request
      */
-    public static CloseableHttpResponse executeHttpGetRequestForStats(String message) {
+    @Override
+    public CloseableHttpResponse getHttpResponse(String message) {
         try {
-            CloseableHttpResponse response = ContainerManagerHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = ContainerMonitorHttp.HTTP_CLIENT.execute(getRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println("Status Code : " + statusCode);
             return response;
@@ -95,26 +109,55 @@ public class ContainerMonitorHttp {
 
     /** Format the json response for stats to a user-friendly message
      *  that is real-time updated and printed to the console
-     * @throws NullPointerException if an error occurs while executing the http request
+     *  @param response1Buffer a StringBuffer object
+     *  @throws NullPointerException if an error occurs while executing the http request
+     *
+     *  The code below should work too. Instead, it return 0.0. We have to check it further
+     *      
+     *  <code>
+     *  double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
+     *                   - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
+     *  double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
+     *                      - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
+     *  double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
+     *
+     *  return (system_delta!=0.0)? (cpu_delta / system_delta) * number_cpus * 100.0 : 0.0;
+     *  </code>
      */
-    public static double getFormattedStats(StringBuffer response1) throws JsonProcessingException  {
+    
+     public double getFormattedStats(StringBuffer response1Buffer) throws JsonProcessingException  {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
-            //System.out.println(jsonNode.get("memory_stats").get("usage").asDouble());
-            return jsonNode.get("memory_stats").get("usage").asDouble();
+            JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
+            double  cpu_delta = jsonNode.at("/cpu_stats/cpu_usage/total_usage").asDouble()
+                            - jsonNode.at("/precpu_stats/cpu_usage/total_usage").asDouble();
+            
+            double system_delta = jsonNode.at("/cpu_stats/system_cpu_usage").asDouble()
+                                - jsonNode.at("/precpu_stats/system_cpu_usage").asDouble();
+            
+            double number_cpus = jsonNode.at("/cpu_stats/online_cpus").asDouble();
+            if (system_delta==0) {
+                System.out.println("\n\nSomething went wrong.\n"
+                                 + "The formula to calculate CPU usage is:\n"
+                                 + "(cpu_delta / system_delta) * number_cpus * 100.0\n"
+                                 + "and system_delta is 0.\nMake sure that the container is running");
+            }
+            double cpuUsage = (cpu_delta / system_delta) * number_cpus * 100.0;
+            return cpuUsage;
+
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
         }
         return 0.0;
     }
 
+    
     /* Format the json response for container info to a user-friendly message
-     * @throws NullPointerException if an error occurs while executing the http request
+     *  NullPointerException if an error occurs while executing the http request
      * this Exception might occur when the image name is not found in the json file
      */ 
-    public static void printFormattedJson(StringBuffer response1) throws JsonProcessingException  {
-        try {
+    public void printFormattedJson() throws JsonProcessingException  {
+         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             System.out.println("Container Name: " + jsonNode.get("Name").asText());
@@ -125,23 +168,73 @@ public class ContainerMonitorHttp {
             System.out.println("Gateway: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("Gateway").asText()); 
             System.out.println("IP Address: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("IPAddress").asText()); 
             System.out.println("Mac Address: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("MacAddress").asText()); 
-            System.out.println("Image Name: " + jsonNode.get("Config").get("Labels").get("org.opencontainers.image.title").asText());
+            //System.out.println("Image Name: " + jsonNode.get("Config").get("Labels").get("org.opencontainers.image.title").asText());
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");
         }
     }
 
+    /** Return a String array with the prepared data that will be saved in a csv file 
+     * @return str a String array with the data that will be saved in a csv file
+     * @throws NullPointerException if an error occurs while executing the http request
+    */
+    public String[] prepareStorageData() {
+        try {
+            System.out.println(ContainerMonitorHttp.containerId);
+            getRequest= new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/json"  );
+            executeHttpRequest("json");
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString());
+            String[] str = new String[6];
+            str[0] = jsonNode.at("/Name").asText().substring(1); //Container Name
+            // We use substring() in order to ignore the "/" from the container name
+            str[1] = jsonNode.at("/Id").asText(); //Container ID
+            str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
+            str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
+            this.getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/stats"  );
+            
+            executeHttpRequest("stats");
+            
+            str[4] = String.valueOf(lastCPUUsage); //CPU Usage
+            LocalDate date = LocalDate.now(); 
+            LocalTime time = LocalTime.now();
+            str[5] = date.toString()+"  "+time.toString().substring(0,8); 
+            
+            return str;
+          
+        }catch (Exception e) {
+            System.out.println("OOPSS SOMETHING WENT WRONG....");
+            e.printStackTrace();
+            return null;
+         }
+    }
+
     /**
      * Format the json response for image  -that you 've searched for- to a user-friendly message
-     * @param response1
      * @throws JsonProcessingException
      * @throws NullPointerException
-     * We have to fix the method because it doesn't work properly
+     * @prints info about the top 3 images with the name that user searched. The info contains: 
+     * 1.Image Name
+     * 2.Description
+     * 3.Star Count (the times an image has been shared)   
      */
-    public static void printFormattedJsonForImage(StringBuffer response1) throws JsonProcessingException, NullPointerException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(response1.toString());
-        System.out.println("Image Name:" + jsonNode.get("name").asText());
-        System.out.println("Image Description:" + jsonNode.get("description").asText());
+    public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
+                
+                if (jsonNode.isArray()) {
+                    System.out.println("TOP 3 SEARCHED RESULTS\n");
+                    for (JsonNode el : jsonNode) {
+                        System.out.println("Image name: " + el.get("name") 
+                                            + "\nDescription: " 
+                                            + el.get("description") 
+                                            + "\nStar count: " 
+                                            + el.get("star_count") +"\n" );
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Oops, something went wrong...");
+            }
     }
 }

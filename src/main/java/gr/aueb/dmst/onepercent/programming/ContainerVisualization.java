@@ -20,6 +20,8 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ContainerVisualization extends JFrame {
     
@@ -91,11 +93,12 @@ public class ContainerVisualization extends JFrame {
     public void onRunGraph (boolean flag, BufferedReader reader, ContainerVisualization ex, Timer timer) throws IOException{
         String inputLine = reader.readLine(); // Read a new line from the response
                     if (inputLine != null) {
-                        double d = ContainerMonitorHttp.getFormattedStats(new StringBuffer(inputLine));
+                        ContainerMonitorHttp containerMonitorHttp = new ContainerMonitorHttp();
+                        double d = containerMonitorHttp.getFormattedStats(new StringBuffer(inputLine)); //
                         long currentTimestamp = System.currentTimeMillis(); // Get the current timestamp
                         updateStats(currentTimestamp, d);
                         if (!flag) {
-                            ex.setVisible(true); // Make the window visible to the end user, we use flag because we want to make the window visible only once
+                            //ex.setVisible(true); // Make the window visible to the end user, we use flag because we want to make the window visible only once
                             flag = true;
                         }
                     } else {
@@ -108,18 +111,38 @@ public class ContainerVisualization extends JFrame {
     
     /** Main method */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> { // Create a new thread to run the GUI
+        if (args.length != 2){System.exit(1);}
             ContainerVisualization example = new ContainerVisualization("Container Stats Plotter"); // Create a new ContainerVisualization object
             example.setSize(800, 600);  // Set the size of the window
             example.setLocationRelativeTo(null); // Center the window
-            example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
-            CloseableHttpResponse res = ContainerMonitorHttp.getContainerStats();
+            example.setDefaultCloseOperation(ContainerVisualization.DO_NOTHING_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
+            ContainerMonitorHttp containerMonitor = new ContainerMonitorHttp();
+            CloseableHttpResponse res = containerMonitor.getContainerStats();
            
+            example.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    closeWindow(example);
+                }
+            });
+
+            example.setVisible(true);
+        
+
             try {
                 example.startUpdatingStats(res, example); // Start updating the stats
             } catch (UnsupportedOperationException | IOException e) {
                 e.printStackTrace();
             } // Start updating the stats
-        });
+    
+        
+    }
+    
+    private static void closeWindow(JFrame frame) {
+        frame.setVisible(false);
     }
 }
+
+
+
+
