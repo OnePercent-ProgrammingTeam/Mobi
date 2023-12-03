@@ -20,16 +20,15 @@ public class Main {
 
         // Create and start the MonitorThread
         MonitorThread monitorThread = new MonitorThread();
-      
-        Thread thread= new Thread(monitorThread);
+
+        Thread thread = new Thread(monitorThread);
         thread.start();
         // Create and start the ExecutorThread
-        //ExecutorThread executorThread = new ExecutorThread(dockerClient);
-       // executorThread.start();
-        //monitorThread.join();
-        //executorThread.join(); //use the join method to wait for the monitorThread and executorThread to finish. This ensures that the main method doesn't exit until both threads have completed their execution.
+        // ExecutorThread executorThread = new ExecutorThread(dockerClient);
+        // executorThread.start();
+        // monitorThread.join();
+        // executorThread.join(); //use the join method to wait for the monitorThread
+        // and executorThread to finish. This ensures that the main method doesn't exit
+        // until both threads have completed their execution.
     }
 }
-
-
-
