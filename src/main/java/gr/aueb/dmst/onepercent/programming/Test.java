@@ -18,7 +18,7 @@ public class Test {
         ContainerManager.createDockerClient();
         //cm.startContainer();
         //cm.stopContainer(); 
-        // ContainerMonitorHttp obj = new ContainerMonitorHttp();
+         //ContainerMonitorHttp obj = new ContainerMonitorHttp();
         //obj.getContainerStats();
         // CSV csv = new CSV();
         //csv.writeContainerInfoToCsv();
@@ -26,9 +26,6 @@ public class Test {
         MenuThread menuThread = new MenuThread();
         Thread thread = new Thread(menuThread);
         thread.start();
-               
-
-
     }
 }
 
