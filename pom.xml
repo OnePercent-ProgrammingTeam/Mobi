@@ -75,7 +75,28 @@
             <version>2.16.0</version> 
         </dependency>
 
-</dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+
+
+
+    </dependencies>
 
 
     <!-- Built section -->
@@ -85,10 +106,9 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>10.12.5</version> <!-- Use the latest version -->
+            <version>3.3.1</version> <!-- Use the latest version -->
             <executions>
                 <execution>
-                    <?m2e execute onConfiguration?>
                     <id>validate</id>
                     <phase>validate</phase>
                     <configuration>
