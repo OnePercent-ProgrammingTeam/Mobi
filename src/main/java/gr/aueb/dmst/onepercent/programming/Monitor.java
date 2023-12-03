@@ -1,4 +1,5 @@
 package gr.aueb.dmst.onepercent.programming;
+
 public class Monitor implements Runnable {
     private String name;
     private int time;
@@ -15,7 +16,7 @@ public class Monitor implements Runnable {
 
     public void run() {
         try {
-            //dcm.monitoring();
+            // dcm.monitoring();
             Thread.sleep(time);
         } catch (InterruptedException e) {
             System.out.println("Thread " + name + " interrupted.");
@@ -29,5 +30,5 @@ public class Monitor implements Runnable {
             t.start();
         }
     }
-    
+
 }
