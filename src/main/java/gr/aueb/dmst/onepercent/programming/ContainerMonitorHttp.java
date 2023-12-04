@@ -183,7 +183,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     public String[] prepareStoragedData() {
         try {
             getRequest= new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/json"  );
-            executeHttpRequest("json");
+            executeHttpRequest("prepare storage");
             String[] str = new String[6];
 
             ObjectMapper mapper = new ObjectMapper();
