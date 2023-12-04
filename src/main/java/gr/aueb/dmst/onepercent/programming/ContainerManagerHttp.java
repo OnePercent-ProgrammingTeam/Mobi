@@ -79,6 +79,10 @@ public class ContainerManagerHttp extends ContainerHttpRequest{
             }
         }
     }
+
+    /** Print the appropriate message, based on the status code of the http response and the request that has been done
+     * @param message the message that indicates the action that is going to be executed 
+     */
     public void handleOutput(String message) {
         if (message.equals("start")){
             switch (response.getStatusLine().getStatusCode()){
