@@ -17,10 +17,7 @@ public abstract class ContainerHttpRequest implements HttpInterface {
      * Http Post request (Post is "to request to do something e.g start container")
      */
     protected static HttpPost postRequest;
-    /**
-     * Container id of the container that is going to be started, stopped or
-     * inspected
-     */
+    /** Container id of the container that is going to be started, stopped or inspected */
     protected static String containerId; // used in junit test
 
     /**
@@ -38,21 +35,14 @@ public abstract class ContainerHttpRequest implements HttpInterface {
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
 
-    /**
-     * Execute the http request
-     * 
-     * @param message the message that indicates the action that is going to be
-     *                executed
+    /** Execute the http request
+     * @param message the message that indicates the action that is going to be executed
      */
     public void executeHttpRequest(String message) {
     };
-
-    /**
-     * Get the response of the http request
-     * 
-     * @param message the message that indicates the action that is going to be
-     *                executed
-     *                it is the query for the http request
+    /** Get the response of the http request
+     * @param message the message that indicates the action that is going to be executed
+     * it is the query for the http request
      */
     public CloseableHttpResponse getHttpResponse(String message) {
         return response;
