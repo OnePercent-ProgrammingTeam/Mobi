@@ -30,9 +30,15 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     /** Get statistics about a running container sush as memory-CPU usage etc. 
      * These stats are used in ContainerVisualization in order to create a graph
     */
-    public CloseableHttpResponse getContainerStats() {
+    public CloseableHttpResponse getContainerStats(String calledby) {
         String message = "stats"; // get the container statistics in json format
-        ContainerMonitorHttp.containerId = Main.handleInput("Please type the container ID to plot diagram with CPU usage: ");
+        String outputMessage;
+        if (calledby.equals("ContainerVisualization")) {
+           outputMessage = "Please type the container ID to plot diagram with CPU usage: ";
+        } else {
+              outputMessage = "Please type the ID of the running container to save real time data: ";
+        }
+        ContainerMonitorHttp.containerId = Main.handleInput(outputMessage);
         getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
         System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
         return getHttpResponse(message);
