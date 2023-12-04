@@ -19,7 +19,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     /** Get information about a container that might be or might not be locally installed
      *
     */
-    public void getContainerInformation() {
+    public void inspectContainer() {
         String message = "json"; // get the container information in json format
         ContainerMonitorHttp.containerId = Main.handleInput("Please type the container ID to get info about the container: ");
         getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
