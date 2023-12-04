@@ -109,7 +109,7 @@ public class ContainerVisualization extends JFrame {
         cv.setSize(800, 600);  // Set the size of the window
         cv.setLocationRelativeTo(null); // Center the window
         cv.setDefaultCloseOperation(ContainerVisualization.DO_NOTHING_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
-        CloseableHttpResponse res = containerMonitorHttp.getContainerStats();
+        CloseableHttpResponse res = containerMonitorHttp.getContainerStats("ContainerVisualization");
            
         cv.addWindowListener(new WindowAdapter() {
             @Override

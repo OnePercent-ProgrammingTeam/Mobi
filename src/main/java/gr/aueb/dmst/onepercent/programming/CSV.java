@@ -88,7 +88,7 @@ public class CSV {
 
 
     private void storeRealTimeData() {
-        containerMonitorHttp.getContainerStats();
+        containerMonitorHttp.getContainerStats("CSV");
         String[] info = containerMonitorHttp.prepareStoragedData();
             
         String filePath = Paths.get(folderPath, info[0] +"Data.csv").toString();
