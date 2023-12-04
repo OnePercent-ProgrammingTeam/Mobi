@@ -49,6 +49,7 @@ public class CSV {
     private void startThreads(String filePath) {
         Thread userInputThread = new Thread(()-> {
             Scanner sc = new Scanner (System.in);
+            System.out.print( "Press -1 to terminate the process: ");
             while (true) {
                 String userInput = sc.nextLine();
                 if ("-1".equals(userInput)) {
@@ -75,7 +76,7 @@ public class CSV {
                     }
                 }
             }
-        }, 0, 10000);
+        }, 0, 1000);
         
         try {
             userInputThread.join();
