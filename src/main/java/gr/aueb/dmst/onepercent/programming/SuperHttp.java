@@ -5,17 +5,31 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientBuilder;
 
-public abstract class ContainerHttpRequest implements HttpInterface {
-    /** Docker host address */
+/**
+ * Class: SuperHttp is a superclass that contains static variables, used in other
+ * classes, representing the docker client and the http requests.
+ * It is used to create a docker client and the http requests.
+ * SuperHttp class implements the HttpInterface interface.
+ * It is the superclass of the MonitorHttp class and ManagerHttp class.
+ * @see HttpInterface
+ * @see MonitorHttp
+ * @see ManagerHttp
+ */
+public class SuperHttp implements HttpInterface {
+    /** Field: DOCKER_HOST is the docker host address */
     protected static final String DOCKER_HOST = "http://localhost:2375"; // used in junit test
 
-    /** Create an http client */
+    /** Field: HTTP_CLIENT is a http client */
     protected static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
 
-    /**
-     * Http Post request (Post is "to request to do something e.g start container")
-     */
+    /** Field: dc is a static variable, used in other classes, representing the docker client */
+    protected static DockerClient dc;
+
+    /** Field httpPost request (Post is "to request to do something e.g start container")*/
     protected static HttpPost postRequest;
     /** Container id of the container that is going to be started, stopped or inspected */
     protected static String containerId; // used in junit test
@@ -46,5 +60,14 @@ public abstract class ContainerHttpRequest implements HttpInterface {
      */
     public CloseableHttpResponse getHttpResponse(String message) {
         return response;
+    }
+
+    public static void createDockerClient() {
+        DefaultDockerClientConfig config = DefaultDockerClientConfig
+        .createDefaultConfigBuilder()
+        .withDockerHost("tcp://localhost:2375") //daemon host
+        .build();
+        dc = DockerClientBuilder.getInstance(config).build();
+        dc.versionCmd().exec();
     }
 }
