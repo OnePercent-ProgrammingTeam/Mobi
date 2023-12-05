@@ -2,10 +2,11 @@ package gr.aueb.dmst.onepercent.programming;
 
 import java.util.Scanner;
 
+/** Class: Main runs the entire program */
 public class Main {
     static final Scanner SC = new Scanner(System.in);
 
-    //handle user input and make sure it is valid
+    /** Get input from the user and handle it */
     public static String handleInput(String outputMessage){
         
         System.out.println(outputMessage);
@@ -19,5 +20,6 @@ public class Main {
         MenuThread menuThread = new MenuThread();
         Thread thread = new Thread(menuThread);
         thread.start();
+
     }
 }
