@@ -6,8 +6,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
 
 /**
  * Class: SuperHttp is a superclass that contains static variables, used in other
@@ -60,14 +58,5 @@ public class SuperHttp implements HttpInterface {
      */
     public CloseableHttpResponse getHttpResponse(String message) {
         return response;
-    }
-
-    public static void createDockerClient() {
-        DefaultDockerClientConfig config = DefaultDockerClientConfig
-        .createDefaultConfigBuilder()
-        .withDockerHost("tcp://localhost:2375") //daemon host
-        .build();
-        dc = DockerClientBuilder.getInstance(config).build();
-        dc.versionCmd().exec();
     }
 }
