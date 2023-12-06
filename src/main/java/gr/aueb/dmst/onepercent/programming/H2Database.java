@@ -43,8 +43,6 @@ public class H2Database {
                 
             stmt.execute(query);
 
-
-
             query = "SELECT * FROM " + name;
             ResultSet resultSet = stmt.executeQuery(query);
 
