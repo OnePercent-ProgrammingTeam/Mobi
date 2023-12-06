@@ -1,4 +1,4 @@
-//package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming;
 
 import com.github.dockerjava.api.model.Container;
 import java.util.List;
@@ -8,36 +8,46 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import com.github.dockerjava.api.model.ContainerPort;
-import com.github.dockerjava.api.model.ContainerMount;
 
 
-public class ContainerMonitor {
-   /** The list of container models */
+/** Class: MonitorAPI is a class that contains methods that retrieves information
+ * about the containers, it monitors the docker system. It is a subclass of SuperAPI.
+ * @see SuperAPI
+ */
+public class MonitorAPI extends SuperAPI {
+   /** Field: List<ContainerModel> is the list of container models */
    List<ContainerModel> containerModels = new ArrayList();
         
-   /** Pass the locally installed containers to a list of container models*/
+   /** Method: initializeContainerModels() pass the locally installed containers to a list of container models*/
    public void initializeContainerModels(){
       List<Container> containers;
-      containers = ContainerManager.dc.listContainersCmd().withShowAll(true).exec();
+      containers = MonitorAPI.dc.listContainersCmd().withShowAll(true).exec();
       containers.forEach(c->{
          if (c!=null)
             containerModels.add(new ContainerModel(c));
       }); // add all containers to containerModels list
    }
 
-   /** Print the names of the containers. As it is mentioned in ContainerModel class,
-    * Container Name <> Image Name
+   /** Method: getContainerList() prints the names of the locally installed containers, their ids, 
+    *  their status and the time they were created 
     */
-   public void getContainerNames() {
+   public void getContainerList() {
+      System.out.printf("%-30s%-70s%-30s%-20s%n", "Container Name", "Container Id", "Status", "Time Created");
+      System.out.println(" ");
       containerModels.forEach(c-> {
+         long unixTimestamp = c.getCreated();
+         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+         String formattedDateTime = dateTime.format(formatter);
          for (String name: c.getNames())
-            System.out.print(name + " " );
-                                    
-         System.out.println("\n"); 
+            System.out.printf("-%-29s", name.substring(1));
+
+            System.out.printf("%-70s%-30s%-20s%n", c.getId(), c.getStatus(), formattedDateTime);
+        
       });
    }
 
-   /** Print the information about the ports of the containers */  
+   /** Method: getContainerPorts() prints the information about the ports of the containers */  
    public void getContainerPorts() {
       containerModels.forEach(c-> {
          for (ContainerPort port: c.getPorts()){
@@ -50,29 +60,19 @@ public class ContainerMonitor {
       });
    }
 
-   /** Print the command that was used to create the container */  
-   public void getContainerComands() {
+   /** Method: getContainerCommands() prints the command that was used to create the container */  
+   public void getContainerCommands() {
         containerModels.forEach(c -> System.out.println(c.getCommand()));
    }
 
-   // we have to check it out further
-   public void getContainerMounts() {
-      containerModels.forEach(c ->{
-         for(ContainerMount mount: c.getMounts()){
-            System.out.println(mount.getName());
-            System.out.println(mount.getDestination());
-         }
-         System.out.println("\n--------------------------------\n");
-      });
-   }
    
-   /** Print the status of the container as described in ContainerModel.java */
+   /**  Method: getContainerStatus() prints the status of the container as described in ContainerModel.java */
    public void getContainerStatus() {
       containerModels.forEach(c -> System.out.println(c.getStatus()));
    }
 
    /**
-   * Retrieve and print the creation date of each container.
+   *  Method: convertUnixToRealTime() retrieves and prints the creation date of each container.
    * 
    * This method iterates the list of container models and prints the creation date
    * of each container. 

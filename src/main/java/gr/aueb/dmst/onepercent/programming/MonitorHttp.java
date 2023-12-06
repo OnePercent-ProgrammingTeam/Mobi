@@ -14,59 +14,62 @@ import com.fasterxml.jackson.databind.JsonNode;
 /** Import the Jackson JsonProcessingException for handling an exception that might occur */
 import com.fasterxml.jackson.core.JsonProcessingException; 
 
-public class ContainerMonitorHttp extends ContainerHttpRequest {
+/** Class: MonitorHttp is responsible for the http requests that are made to the docker daemon
+ *  in order to get information about a container, get statistics about a running container
+ *  or search for an image.
+ *  It extends the SuperHttp class.
+ *  @see SuperHttp
+ */
+public class MonitorHttp extends SuperHttp {
     
-    /** Get information about a container that might be or might not be locally installed
-     *
-    */
+    /** Method: inspectContainer() retrieves information about a container that might be or might not be locally installed*/
     public void inspectContainer() {
         String message = "json"; // get the container information in json format
-        ContainerMonitorHttp.containerId = Main.handleInput("Please type the container ID to get info about the container: ");
-        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
+        MonitorHttp.containerId = Main.handleInput("Please type the container ID to get info about the container: ");
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message );
         executeHttpRequest(message);
     }
 
-    /** Get statistics about a running container sush as memory-CPU usage etc. 
-     * These stats are used in ContainerVisualization in order to create a graph
+    /** Method: getContainerStats(String) gets statistics about a running container (especially CPU usage) 
+     *  @param calledby the name of the class that called this method
+     *  These stats are used in Graph class in order to create a graph
+     *  @see Graph
     */
     public CloseableHttpResponse getContainerStats(String calledby) {
         String message = "stats"; // get the container statistics in json format
         String outputMessage;
-        if (calledby.equals("ContainerVisualization")) {
+        if (calledby.equals("Graph")) {
            outputMessage = "Please type the container ID to plot diagram with CPU usage: ";
         } else {
               outputMessage = "Please type the ID of the running container to save real time data: ";
         }
-        ContainerMonitorHttp.containerId = Main.handleInput(outputMessage);
-        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message );
-        System.out.println("Follow the link for " + message +" info:\n" + "LINK: " + ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/" + message + "\n\n");
+        MonitorHttp.containerId = Main.handleInput(outputMessage);
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message );
         return getHttpResponse(message);
     }
 
-    /** Search for an image by it's name. The result is limited to 3 */
+    /** Method: searchImages() searches for an image by it's name. The result is limited to 3 */
     public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Main.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
-        System.out.println(ContainerMonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3");
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
         executeHttpRequest(message);
     }
 
 
-    /** Execute the http request for getting info about a container
+    /** Method: executeHttpRequest(String) executes the http request for getting info about a container
      * @param message the final part of the url that is used to get the info
      * @throws Exception if an error occurs while executing the http request
      */
     @Override
     public void executeHttpRequest(String message) {
         try {
-            CloseableHttpResponse response = ContainerMonitorHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
             //int statusCode = response.getStatusLine().getStatusCode();
             //System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
-            ContainerMonitorHttp.response1 = new StringBuffer();
+            MonitorHttp.response1 = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")){
@@ -91,14 +94,14 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
         } 
     }
 
-    /** Execute the http request for getting stats about a running container
+    /** Method: getHttpResponse(String) executes the http request for getting stats about a running container
      * @param message the final part of the url that is used to get the info
      * @throws Exception if an error occurs while executing the http request
      */
     @Override
     public CloseableHttpResponse getHttpResponse(String message) {
         try {
-            CloseableHttpResponse response = ContainerMonitorHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
             //int statusCode = response.getStatusLine().getStatusCode();
             //System.out.println("Status Code : " + statusCode);
             return response;
@@ -109,7 +112,7 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
         return null;
     }
 
-    /** Format the json response for stats to a user-friendly message
+    /** Method: getFormattedStats(StringBuffer) formats the json response for stats to a user-friendly message
      *  that is real-time updated and printed to the console
      *  @param response1Buffer a StringBuffer object
      *  @throws NullPointerException if an error occurs while executing the http request
@@ -154,8 +157,8 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
     }
 
     
-    /* Format the json response for container info to a user-friendly message
-     *  NullPointerException if an error occurs while executing the http request
+    /** Method: printFormattedInfo() reads the json response for container info to a user-friendly message
+     * NullPointerException if an error occurs while executing the http request
      * this Exception might occur when the image name is not found in the json file
      */ 
     public void printFormattedInfo() throws JsonProcessingException  {
@@ -176,13 +179,13 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
         }
     }
 
-    /** Return a String array with the prepared data that will be saved in a csv file 
-     * @return str a String array with the data that will be saved in a csv file
-     * @throws NullPointerException if an error occurs while executing the http request
-    */
+    /** Method: prepareStorageData() returns a String array with the prepared data that will be saved in a csv file 
+     *  @return str a String array with the data that will be saved in a csv file
+     *  @throws NullPointerException if an error occurs while executing the http request
+     */
     public String[] prepareStoragedData() {
         try {
-            getRequest= new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/json"  );
+            getRequest= new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/json"  );
             executeHttpRequest("prepare storage");
             String[] str = new String[6];
 
@@ -195,13 +198,13 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
             str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
             str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
 
-            ContainerHttpRequest.getRequest = new HttpGet(ContainerMonitorHttp.DOCKER_HOST + "/containers/" + ContainerMonitorHttp.containerId + "/stats"  );
+            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/stats"  );
             executeHttpRequest("stats");
             
             str[4] = String.valueOf(lastCPUUsage); //CPU Usage
             LocalDate date = LocalDate.now(); 
             LocalTime time = LocalTime.now();
-            str[5] = date.toString()+"  "+time.toString().substring(0,10); //Date and Time in one
+            str[5] = date.toString()+" "+time.toString().substring(0,10); //Date and Time in one
             
             return str;
           
@@ -212,14 +215,13 @@ public class ContainerMonitorHttp extends ContainerHttpRequest {
          }
     }
 
-    /**
-     * Format the json response for image  -that you 've searched for- to a user-friendly message
-     * @throws JsonProcessingException
-     * @throws NullPointerException
-     * @prints info about the top 3 images with the name that user searched. The info contains: 
-     * 1.Image Name
-     * 2.Description
-     * 3.Star Count (the times an image has been shared)   
+    /** Method: printFormattedJsonForImage() formats the json response for image  -that you 've searched for- to a user-friendly message
+     *  @throws JsonProcessingException
+     *  @throws NullPointerException
+     *  @prints info about the top 3 images with the name that user searched. The info contains: 
+     *  1.Image Name
+     *  2.Description
+     *  3.Star Count (the times an image has been shared)   
      */
     public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
         try {
