@@ -47,6 +47,8 @@ public class MonitorAPI extends SuperAPI {
       });
    }
 
+   
+
    /** Method: getContainerPorts() prints the information about the ports of the containers */  
    public void getContainerPorts() {
       containerModels.forEach(c-> {
@@ -108,4 +110,30 @@ public class MonitorAPI extends SuperAPI {
          System.out.println("\n--------------------------------\n");
       });
    }
+
+
+   public String[][] getContainerInfo() {//Used for database operations
+      ArrayList<String[]> containerInfo = new ArrayList<>();//Create an arraylist to store the data of all containers
+      containerModels.forEach(c -> {
+          long unixTimestamp = c.getCreated();
+          LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+          String formattedDateTime = dateTime.format(formatter);//format datetime of creation of the container
+  
+          for (String name : c.getNames()) {
+              String[] singleInfo = new String[4]; // Create a new array for temporarily storing data of each container
+  
+              singleInfo[1] = name.substring(1);//store the name
+              singleInfo[0] = c.getId();//store the id
+              singleInfo[2] = c.getImageId();//store the imageid
+              singleInfo[3] = formattedDateTime;//store creation date
+  
+              containerInfo.add(singleInfo);//add the temporary array to the arraylist
+          }
+      });
+  
+      String[][] result = new String[containerInfo.size()][4];
+      return containerInfo.toArray(result);
+  }
+  
 }
