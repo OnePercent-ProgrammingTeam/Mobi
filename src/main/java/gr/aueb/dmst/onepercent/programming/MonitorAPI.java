@@ -108,4 +108,37 @@ public class MonitorAPI extends SuperAPI {
          System.out.println("\n--------------------------------\n");
       });
    }
+
+   public String[][] getContainerInfo() {
+      ArrayList<String[]> containerInfo = new ArrayList<>();
+  
+      for (ContainerModel c : containerModels) {
+          long unixTimestamp = c.getCreated();
+          LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+          String formattedDateTime = dateTime.format(formatter);
+  
+          StringBuilder namesBuilder = new StringBuilder();
+          for (String name : c.getNames()) {
+              namesBuilder.append("-").append(name.substring(1)).append(" ");
+          }
+          String formattedNames = namesBuilder.toString().trim();
+  
+          String[] containerData = new String[4]; 
+          containerData[1] = formattedNames; 
+          containerData[0] = c.getId(); 
+          containerData[2] = c.getImageId(); 
+          containerData[3] = formattedDateTime; 
+  
+          containerInfo.add(containerData);
+      }
+  
+      // Convert ArrayList<String[]> to String[][]
+      String[][] containerArray = new String[containerInfo.size()][4];
+      for (int i = 0; i < containerInfo.size(); i++) {
+          containerArray[i] = containerInfo.get(i);
+      }
+  
+      return containerArray;
+  }
 }
