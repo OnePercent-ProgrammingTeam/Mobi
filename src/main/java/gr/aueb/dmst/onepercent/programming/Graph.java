@@ -15,24 +15,30 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class ContainerVisualization extends JFrame {
+/** Class: Graph class is responsible for the creation of the graph that shows the cpu usage of the container
+ *  in real time. It uses the JFreeChart library to create the graph.
+ *  The graph is created in a new window.
+ */
+public class Graph extends JFrame {
     
-    /** Represents a sequence of zero or more data items in the form (x, y) */
+    /** Field XYSeries represents a sequence of zero or more data items in the form (x, y) */
     private XYSeries usageSeries;
 
-    static ContainerMonitorHttp containerMonitorHttp = new ContainerMonitorHttp();
+    /** Field: monitorHttp is a MonitorHttp object */
+    static MonitorHttp monitorHttp = new MonitorHttp();
 
-    /** Constructor 
+    /** Constructor:  
      * @param title the title of the window
      * @variable dataset a collection of XYSeries objects that can be used as a dataset
     */
-    public ContainerVisualization(String title) {
+    public Graph(String title) {
         super(title);
         usageSeries = new XYSeries("CPU Usage");
         XYSeriesCollection dataset = new XYSeriesCollection(usageSeries);
@@ -48,13 +54,17 @@ public class ContainerVisualization extends JFrame {
         DateAxis dateAxis = (DateAxis) plot.getDomainAxis(); // Get the domain axis from the plot, casting it to DateAxis because it may be a subclass
         dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.SECOND, 1)); // Set the tick unit to be 1 second (it is a real time chart, so we want to update every second)
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss"); // Create a date format
+        dateAxis.setDateFormatOverride(dateFormat); // Set the date format to be the one we just created
         // The GUI component to make the chart visible to the end user
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(560, 370));
         setContentPane(chartPanel);
     }
 
-    /** Update the stats with the new data point*/
+    /** Method: updateStats(double) updates the stats with the new data point
+     * @param usage the cpu usage of the container
+    */
     private void updateStats(double usage) {
         // Add new data point to the series
         long currentTimestamp = System.currentTimeMillis(); // Get the current timestamp
@@ -65,8 +75,11 @@ public class ContainerVisualization extends JFrame {
           the parameters it gets are the x and y values of the data point (should be double)*/
     }
 
-    /** Start updating the stats in order to plot real time data-the consume of cpu resources every second */
-    public void statsPlot(CloseableHttpResponse response, ContainerVisualization ex) throws UnsupportedOperationException, IOException {
+    /** Method: statsPlot(CloseableHttpResponse) starts updating the stats in order
+     *  to plot real time data-the consume of cpu resources every second
+     *  @param response a CloseableHttpResponse object 
+     * */
+    public void statsPlot(CloseableHttpResponse response, Graph ex) throws UnsupportedOperationException, IOException {
         // Simulate real-time data update every second
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     
@@ -83,17 +96,16 @@ public class ContainerVisualization extends JFrame {
         }, 0, 1000); // Update every second (1000 milliseconds = 1 second) 
     }
     
-    /** Run the graph
-     * @param flag a boolean variable
+    /** Method: onRunGraph(BufferedReader, Graph, Timer) runs the graph
      * @param reader a BufferedReader object
-     * @param ex a ContainerVisualization object
+     * @param ex a Graph object
      * @param timer a Timer object
      * @throws IOException if an error occurs while reading the input
      */
-    public void onRunGraph (BufferedReader reader, ContainerVisualization ex, Timer timer) throws IOException{
+    public void onRunGraph (BufferedReader reader, Graph ex, Timer timer) throws IOException{
         String inputLine = reader.readLine(); // Read a new line from the response
         if (inputLine != null) {
-            double usage = containerMonitorHttp.getFormattedStats(new StringBuffer(inputLine)); 
+            double usage = monitorHttp.getFormattedStats(new StringBuffer(inputLine)); 
             updateStats(usage);
         } else {
             // No more lines to read, close the reader and cancel the timer
@@ -103,13 +115,14 @@ public class ContainerVisualization extends JFrame {
         }
     }
     
+    /** Method: executeDiagram() executes the diagram */
     public static void executeDiagram() {
 
-        ContainerVisualization cv = new ContainerVisualization("Container Stats Plotter"); // Create a new ContainerVisualization object
+        Graph cv = new Graph("Container Stats Plotter"); // Create a new Graph object
         cv.setSize(800, 600);  // Set the size of the window
         cv.setLocationRelativeTo(null); // Center the window
-        cv.setDefaultCloseOperation(ContainerVisualization.DO_NOTHING_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
-        CloseableHttpResponse res = containerMonitorHttp.getContainerStats();
+        cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
+        CloseableHttpResponse res = monitorHttp.getContainerStats("Graph");
            
         cv.addWindowListener(new WindowAdapter() {
             @Override
@@ -127,7 +140,9 @@ public class ContainerVisualization extends JFrame {
         }  
     }
     
-    //This is executed when the user presses "X" so that the window will close
+    /** Method: closeWindow(JFrame) closes the window
+     * @param frame a JFrame object
+     */
     private static void closeWindow(JFrame frame) {
         frame.setVisible(false);
     }

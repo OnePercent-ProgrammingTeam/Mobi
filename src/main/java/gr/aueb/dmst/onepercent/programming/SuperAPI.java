@@ -1,21 +1,19 @@
+package gr.aueb.dmst.onepercent.programming;
 //package gr.aueb.dmst.onepercent.programming;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
-import java.util.Scanner;
 
-public class ContainerManagement {
+/** Class: SuperAPI is a superclass that contains a static variable, used in other classes, representing the docker client.
+ * It is used to create a docker client.
+ */
+public class SuperAPI {
     
-    /** Static variable, used in many classes, representing the docker client */
+    /** Field: dc is a static variable, used in many classes, representing the docker client */
     protected static DockerClient dc;
-    
-    /** Global variable scanner, used in the methods below */    
-    Scanner sc = new Scanner(System.in); //scanner for user input
 
-    protected String input;
-
-    /** Create a docker client */
+    /** Method: createDockerClient() creates a docker client */
     public static void createDockerClient() {
         DefaultDockerClientConfig config = DefaultDockerClientConfig
         .createDefaultConfigBuilder()
@@ -25,7 +23,4 @@ public class ContainerManagement {
         dc.versionCmd().exec();
     }
 
-    public String handleInput(){
-        return this.input;
-    }
 }

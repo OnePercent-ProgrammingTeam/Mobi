@@ -1,16 +1,15 @@
-//package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.api.model.Container;
-import java.util.Scanner;
 import java.util.List;
+import java.util.Scanner;
 
-public class ContainerManager extends ContainerManagement {
-  
-    /** Handle user input and make sure it is valid */
-    @Override
+public class ManagerAPI  extends SuperAPI {
+    
+    /** Field: sc is a scanner object */
+    Scanner sc = new Scanner(System.in);
+
+    /** Method: handleInput() handles user input and make sure it is valid */
     public String handleInput(){
         System.out.println("Please enter the id of the container you want to start/stop");
         String input = sc.next();
@@ -22,7 +21,7 @@ public class ContainerManager extends ContainerManagement {
         return input;
     } 
     
-    /** Check if container has already started and if not, start it */
+    /** Method: startContainer checks if container has already started and if not, start it */
     public void startContainer() {
         String lastIdInput = handleInput();
         if (lastIdInput == null){return;} 
@@ -34,7 +33,7 @@ public class ContainerManager extends ContainerManagement {
         System.out.println("Container started");
     }
 
-    /** Check if container has already stopped and if not, stop it (practically kill it) */
+    /** Method: stopContainer() checks if container has already stopped and if not, stop it (practically kill it) */
     public void stopContainer() {
         String lastIdInput = handleInput();
         if (lastIdInput == null){return;} 
@@ -47,7 +46,7 @@ public class ContainerManager extends ContainerManagement {
     }
 
 
-    /** Check if container is active */
+    /** Method: checkActiveContainerStatus checks if container is active */
     public boolean checkActiveContainerStatus(String idInput) {
         List<Container> containers;
         containers= dc.listContainersCmd().withShowAll(false).exec();
@@ -59,7 +58,7 @@ public class ContainerManager extends ContainerManagement {
         return false; //container is not active
     }
 
-    /** Check if container exists */
+    /** Method: checkAllContainerStatus checks if container exists */
     public boolean checkAllContainerStatus(String idInput) {
         List<Container> containers;
         containers= dc.listContainersCmd().withShowAll(true).exec();
