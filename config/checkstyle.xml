@@ -9,9 +9,9 @@
     <property name="localeLanguage" value=""/>
     <property name="localeCountry" value=""/>
 
-    <!-- The following is an extra function that should be first discused, it's also included in pom.xml: <module name="SuppressionFilter">
-        <property name="file" value="config/checkstyle/suppressions.xml"/>
-    </module> -->
+    <module name="SuppressionFilter">
+        <property name="file" value="config/suppressions.xml"/>
+    </module> 
     <!--Add more checks from google style guide:-->
     <!--https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml-->
     <module name="TreeWalker">
@@ -58,21 +58,21 @@
 
         <module name="ArrayTypeStyle"/>
         <module name="Indentation">
-            <property name="basicOffset" value="2"/>
-            <property name="caseIndent" value="2"/>
-            <property name="throwsIndent" value="2"/>
-            <property name="arrayInitIndent" value="2"/>
-            <property name="lineWrappingIndentation" value="2"/>
+            <property name="basicOffset" value="4"/>
+            <property name="caseIndent" value="4"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="arrayInitIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="4"/>
         </module>
     </module>
 
     <module name="LineLength">
         <property name="ignorePattern" value="^ *\* *@see.+$"/>
-        <property name="max" value="136"/>
+        <property name="max" value="176"/>
     </module>
 
     <module name="NewlineAtEndOfFile">
-        <property name="lineSeparator" value="lf"/>
+        <property name="lineSeparator" value="crlf"/>  <!--Allow only Windows-style (CRLF) line endings-->
     </module>
     <module name="FileTabCharacter"/>
 </module>
