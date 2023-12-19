@@ -12,7 +12,7 @@ public class Main {
         System.out.println(outputMessage);
         String input = SC.next();
         System.out.println();
-        SC.nextLine();//clear buffer
+        SC.nextLine(); //clear buffer
         return input;
     } 
 
