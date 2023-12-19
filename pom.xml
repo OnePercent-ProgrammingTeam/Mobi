@@ -122,8 +122,8 @@
                     <failOnViolation>true</failOnViolation>
                     <failsOnError>true</failsOnError>
                     <configLocation>config/checkstyle.xml</configLocation>
-                    <!-- The following is an extra function that should be first discused: <suppressionsLocation>config/suppressions.xml</suppressionsLocation>
-                    <suppressionsFileExpression>suppressions.xml</suppressionsFileExpression> -->
+                    <suppressionsLocation>config/suppressions.xml</suppressionsLocation>
+                    <suppressionsFileExpression>suppressions.xml</suppressionsFileExpression> 
                 </configuration>
                 <executions>
                     <execution>
