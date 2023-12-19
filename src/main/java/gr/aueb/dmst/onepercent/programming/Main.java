@@ -7,7 +7,7 @@ public class Main {
     static final Scanner SC = new Scanner(System.in);
 
     /** Get input from the user and handle it */
-    public static String handleInput(String outputMessage){
+    public static String handleInput(String outputMessage) {
         
         System.out.println(outputMessage);
         String input = SC.next();
