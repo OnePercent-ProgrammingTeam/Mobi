@@ -37,7 +37,7 @@ public class CSV {
      */
     private void createFile(String filePath) {
         File file = new File(filePath);
-        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))){
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
             
             /*If file does not exist OR it has no content included in it,
              * then print the name of the columns
