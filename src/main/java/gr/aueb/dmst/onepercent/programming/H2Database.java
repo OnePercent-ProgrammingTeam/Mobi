@@ -1,11 +1,17 @@
 package gr.aueb.dmst.onepercent.programming;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class H2Database {
 
     static MonitorHttp containerMonitorHttp = new MonitorHttp();
-    static String url = "jdbc:h2:~"; // after the prefix jdbc:h2: put the location where you want the database file to be stored at , currently using the project folder , WIP for multiple databases at once
+
+    // After the prefix jdbc:h2: put the location where you want the database file to be stored at , currently using the project folder , WIP for multiple databases at once
+    static String url = "jdbc:h2:~"; 
     static String user = "username"; //select username 
     static  String password = "password"; //select password
     static  String query; //create the query string
@@ -115,8 +121,9 @@ public class H2Database {
         }
     }
 
-
-    public void insertContainersToDatabase() { //Method that inserts the information of containers to the cointainers table, has to run at the launch and every time a new container is created
+    //Method that inserts the information of containers to the containers table,
+    // has to run at the launch and every time a new container is created
+    public void insertContainersToDatabase() { 
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
@@ -137,8 +144,10 @@ public class H2Database {
                 name = containerInfo[i][1];
                 image = containerInfo[i][2];
                 created = containerInfo[i][3];
- 
-                query = "INSERT INTO CONTAINERS(id, imageid, name, Time_Created) VALUES ('" + id + "', '" + image + "', '" + name + "', '" + created + "')"; //query that inserts container info to the database table containers
+
+                //query that inserts container info to the database table containers
+                query = "INSERT INTO CONTAINERS(id, imageid, name, Time_Created) VALUES ('" + 
+                    id + "', '" + image + "', '" + name + "', '" + created + "')"; 
 
                 stmt.execute(query);
             }
