@@ -72,4 +72,3 @@ public class ManagerAPI  extends SuperAPI {
         return false; //container does not exist
     }
 }
-        
