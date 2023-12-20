@@ -15,61 +15,61 @@ import com.github.dockerjava.api.model.ContainerPort;
  * @see SuperAPI
  */
 public class MonitorAPI extends SuperAPI {
-   /** Field: List<ContainerModel> is the list of container models */
-   List<ContainerModel> containerModels = new ArrayList();
+    /** Field: List<ContainerModel> is the list of container models */
+    List<ContainerModel> containerModels = new ArrayList();
         
-   /** Method: initializeContainerModels() pass the locally installed containers to a list of container models*/
-   public void initializeContainerModels(){
-      List<Container> containers;
-      containers = MonitorAPI.dc.listContainersCmd().withShowAll(true).exec();
-      containers.forEach(c->{
-         if (c!=null)
-            containerModels.add(new ContainerModel(c));
-      }); // add all containers to containerModels list
-   }
+    /** Method: initializeContainerModels() pass the locally installed containers to a list of container models*/
+    public void initializeContainerModels() {
+        List<Container> containers;
+        containers = MonitorAPI.dc.listContainersCmd().withShowAll(true).exec();
+        containers.forEach(c -> {
+            if (c != null)
+                 containerModels.add(new ContainerModel(c));
+        }); // add all containers to containerModels list
+    }
 
    /** Method: getContainerList() prints the names of the locally installed containers, their ids, 
     *  their status and the time they were created 
     */
-   public void getContainerList() {
-      System.out.printf("%-30s%-70s%-30s%-20s%n", "Container Name", "Container Id", "Status", "Time Created");
-      System.out.println(" ");
-      containerModels.forEach(c-> {
-         long unixTimestamp = c.getCreated();
-         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
-         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-         String formattedDateTime = dateTime.format(formatter);
-         for (String name: c.getNames())
-            System.out.printf("-%-29s", name.substring(1));
+    public void getContainerList() {
+        System.out.printf("%-30s%-70s%-30s%-20s%n", "Container Name", "Container Id", "Status", "Time Created");
+        System.out.println(" ");
+        containerModels.forEach(c -> {
+            long unixTimestamp = c.getCreated();
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
+            for (String name: c.getNames())
+                System.out.printf("-%-29s", name.substring(1));
 
             System.out.printf("%-70s%-30s%-20s%n", c.getId(), c.getStatus(), formattedDateTime);
         
-      });
-   }
+        });
+    } 
 
    /** Method: getContainerPorts() prints the information about the ports of the containers */  
-   public void getContainerPorts() {
-      containerModels.forEach(c-> {
-         for (ContainerPort port: c.getPorts()){
-            System.out.println(port.getIp() + " " );
-            System.out.println(port.getPrivatePort() + " " );
-            System.out.println(port.getPublicPort() + " " );
-            System.out.println(port.getType() + " " );
-         }   
-         System.out.println("\n--------------------------------\n"); 
-      });
-   }
+    public void getContainerPorts() {
+        containerModels.forEach(c -> {
+            for (ContainerPort port: c.getPorts()) {
+                System.out.println(port.getIp() + " ");
+                System.out.println(port.getPrivatePort() + " ");
+                System.out.println(port.getPublicPort() + " ");
+                System.out.println(port.getType() + " ");
+            }   
+            System.out.println("\n--------------------------------\n"); 
+        });
+    }
 
-   /** Method: getContainerCommands() prints the command that was used to create the container */  
-   public void getContainerCommands() {
+    /** Method: getContainerCommands() prints the command that was used to create the container */  
+    public void getContainerCommands() {
         containerModels.forEach(c -> System.out.println(c.getCommand()));
-   }
+    }
 
    
-   /**  Method: getContainerStatus() prints the status of the container as described in ContainerModel.java */
-   public void getContainerStatus() {
-      containerModels.forEach(c -> System.out.println(c.getStatus()));
-   }
+    /**  Method: getContainerStatus() prints the status of the container as described in ContainerModel.java */
+    public void getContainerStatus() {
+        containerModels.forEach(c -> System.out.println(c.getStatus()));
+    }
 
    /**
    *  Method: convertUnixToRealTime() retrieves and prints the creation date of each container.
@@ -93,52 +93,52 @@ public class MonitorAPI extends SuperAPI {
    *    System.out.println("Container created date (Docker Java API): " + formattedDate);
    *    </code>
    */
-   public void convertUnixToRealTime() {
-      containerModels.forEach(c -> {
-         long unixTimestamp = c.getCreated();
+    public void convertUnixToRealTime() {
+        containerModels.forEach(c -> {
+            long unixTimestamp = c.getCreated();
 
-         // Convert Unix timestamp to LocalDateTime
-         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
+            // Convert Unix timestamp to LocalDateTime
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
 
-         // Format the LocalDateTime
-         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-         String formattedDateTime = dateTime.format(formatter);
-         System.out.println("Unix Timestamp: " + unixTimestamp);
-         System.out.println("Formatted Date Time: " + formattedDateTime);
-         System.out.println("\n--------------------------------\n");
-      });
-   }
+            // Format the LocalDateTime
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
+            System.out.println("Unix Timestamp: " + unixTimestamp);
+            System.out.println("Formatted Date Time: " + formattedDateTime);
+            System.out.println("\n--------------------------------\n");
+        });
+    }
 
-   public String[][] getContainerInfo() {
-      ArrayList<String[]> containerInfo = new ArrayList<>();
+    public String[][] getContainerInfo() {
+        ArrayList<String[]> containerInfo = new ArrayList<>();
   
-      for (ContainerModel c : containerModels) {
-          long unixTimestamp = c.getCreated();
-          LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-          String formattedDateTime = dateTime.format(formatter);
+        for (ContainerModel c : containerModels) {
+            long unixTimestamp = c.getCreated();
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTimestamp), ZoneId.systemDefault());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
   
-          StringBuilder namesBuilder = new StringBuilder();
-          for (String name : c.getNames()) {
-              namesBuilder.append("-").append(name.substring(1)).append(" ");
-          }
-          String formattedNames = namesBuilder.toString().trim();
+            StringBuilder namesBuilder = new StringBuilder();
+            for (String name : c.getNames()) {
+                namesBuilder.append("-").append(name.substring(1)).append(" ");
+            }
+            String formattedNames = namesBuilder.toString().trim();
   
-          String[] containerData = new String[4]; 
-          containerData[1] = formattedNames; 
-          containerData[0] = c.getId(); 
-          containerData[2] = c.getImageId(); 
-          containerData[3] = formattedDateTime; 
+            String[] containerData = new String[4]; 
+            containerData[1] = formattedNames; 
+            containerData[0] = c.getId(); 
+            containerData[2] = c.getImageId(); 
+            containerData[3] = formattedDateTime; 
   
-          containerInfo.add(containerData);
-      }
+            containerInfo.add(containerData);
+        }
   
-      // Convert ArrayList<String[]> to String[][]
-      String[][] containerArray = new String[containerInfo.size()][4];
-      for (int i = 0; i < containerInfo.size(); i++) {
-          containerArray[i] = containerInfo.get(i);
-      }
+        // Convert ArrayList<String[]> to String[][]
+        String[][] containerArray = new String[containerInfo.size()][4];
+        for (int i = 0; i < containerInfo.size(); i++) {
+            containerArray[i] = containerInfo.get(i);
+        }
   
-      return containerArray;
-  }
+        return containerArray;
+    }
 }
