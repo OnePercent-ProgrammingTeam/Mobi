@@ -11,7 +11,7 @@ public class MonitorThread extends SuperThread {
         var containerMonitorHttp = new MonitorHttp();
         if (this.userInput == 3) {
             containerMonitorHttp.searchImages();
-        } else if (this.userInput == 5 ) {
+        } else if (this.userInput == 5) {
             Graph.executeDiagram(); 
         } else if (this.userInput == 6) {
             containerMonitorHttp.inspectContainer();
