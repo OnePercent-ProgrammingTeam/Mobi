@@ -1,132 +1,78 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
-  "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
-  "https://checkstyle.org/dtds/configuration_1_3.dtd">
+        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
 
 <module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="localeLanguage" value=""/>
+    <property name="localeCountry" value=""/>
+
+    <module name="SuppressionFilter">
+        <property name="file" value="config/suppressions.xml"/>
+    </module> 
+    <!--Add more checks from google style guide:-->
+    <!--https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml-->
     <module name="TreeWalker">
-
-        <module name="FileTabCharacter">
-            <!-- Απαγόρευση χρήσης tabs -->
-            <property name="eachLine" value="true"/>
+        <property name="tabWidth" value="4"/>
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
         </module>
-
-
-        <module name="ImportControl">
-            <!-- Απαγόρευση wildcards στις εισαγωγές -->
-            <property name="importPkg" value="java.util.*"/>
-            <!-- Απαγόρευση στατικών εισαγωγών με wildcards -->
-            <property name="allowStaticMethodImports" value="false"/>
-            <!-- Αποφυγή αναδρομικών εισαγωγών (self-imports) -->
-            <property name="allowPackageProtectedMembers" value="true"/>
-            <!-- Αποδοχή εισαγωγών χωρίς πακέτο (default package) -->
-            <property name="allowDefaultPackage" value="true"/>
+        <module name="IllegalImport">
+            <property name="illegalPkgs" value="junit, org.hamcrest"/>
+            <property name="illegalClasses" value="java.util.logging.Logger"/>
         </module>
-
-        <!-- Aποφεύγει τη χρήση wildcard εισαγωγών (import some.package.*;). Ο σκοπός αυτού του κανόνα είναι να καταστήσει τις εισαγωγές πιο συγκεκριμένες, έτσι ώστε να είναι πιο ευανάγνωστος ο κώδικας και να μειωθούν πιθανές συγκρούσεις ονομάτων.  -->
+        <module name="RedundantImport"/>
         <module name="AvoidStarImport"/>
-        <!-- SOS FOR CHECKSTYLE DEVELOPERS. If a Checkstyle module doesn't have any specific properties or configurations to set, you can close the <module> tag directly without adding the </module> tag on a new line-->
-
-
-        <module name="JavadocStyle">
-            <!-- Ελέγχει το στυλ των σχολίων Javadoc για κλάσεις -->
-            <property name="tokens" value="CLASS_DEF"/>
-            <!-- Ελέγχει το στυλ των σχολίων Javadoc για μεθόδους -->
-            <property name="tokens" value="METHOD_DEF"/>
-            <!-- Ελέγχει το στυλ των σχολίων Javadoc για πεδία (μέλη) -->
-            <property name="tokens" value="VARIABLE_DEF"/>
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="true"/>
         </module>
 
+        <module name="ParenPad"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="WhitespaceAfter">
+        </module>
+        <module name="WhitespaceAround">
+        </module>
 
-         <!--Ο παρακατω ελεγχος ειναι για πιο προχωρημενο σταδιο καθως χρειαζεται για καθε μεθοδο που χρησιμοποιουμε να εχει JavaDoc τεκμηριωση-->
-         <!--  <module name="JavadocMethod"/>  και να κλεινει μετα απο 2 γραμμες με </module> αν χρησιμοποιηθει-->
-         
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
 
-         <module name="SingleLineJavadoc"/>
-         <!-- Σκοπός του κανόνα αυτού είναι να διατηρεί τα σχόλια σύντομα και συνοπτικά όταν η μέθοδος είναι αρκετά απλή και η περιγραφή χωράει σε μία γραμμή.-->
-
-
-        <module name="TypeName"/>
-        <!--Ο σκοπός αυτού του κανόνα είναι να εξασφαλίσει συνεπή ονοματολογία και κατανόηση των τύπων στον κώδικα (ΚΛΑΣΕΙΣ, ΔΙΕΠΑΦΕΣ Κ.Α)-->
-
-
-        <module name="MemberName"/>
-        <!--Ο σκοπός αυτού του κανόνα είναι να εξασφαλίσει συνεπή ονοματολογία και κατανόηση των μελών στον κώδικα (πεδία, μέθοδοι, μεταβλητές)-->
-
-
-        <module name="ParameterName"/>
-        <!--Επιβάλει τους κανόνες ονοματολογίας για τα ονόματα παραμέτρων σε μεθόδους και κατασκευαστές στον κώδικα Java εξασφαλιζοντας συνεπη ονοματολογια-->
-
-
-        <module name="LocalVariableName"/>  
-        <!--Επιβάλει τους κανόνες ονοματολογίας για τα ονόματα τοπικών μεταβλητών σε μεθόδους στον κώδικα Java εξασφαλιζοντας συνεπη ονοματολογια των τοπικων μεταβλητων-->
-
-
-        <module name="MethodName"/>
-        <!--Επιβάλει τους κανόνες ονοματολογίας για τα ονόματα μεθόδων σε κλάσεις Java. -->
+        <module name="LeftCurly"/>
+        <module name="SuperClone"/>
+        <module name="SuperFinalize"/>
+        <module name="DefaultComesLast"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="UnnecessaryParentheses"/>
+        <module name="ClassFanOutComplexity">
+            <property name="max" value="30"/>
+        </module>
+        <module name="CyclomaticComplexity">
+            <property name="max" value="15"/>
+        </module>
+        <module name="NPathComplexity"/>
 
 
-        <module name="StaticVariableName"/>
-        <!--Επιβάλει τους κανόνες ονοματολογίας για τα ονόματα στατικών (static) μεταβλητών σε κλάσεις Java.-->
-
-
-        <!--The Indentation module in Checkstyle is responsible for ensuring that your code is properly indented according to the specified rules.-->
+        <module name="ArrayTypeStyle"/>
         <module name="Indentation">
-            <!-- The basic offset is the number of spaces used for each level of indentation in your code.-->
             <property name="basicOffset" value="4"/>
-            <!--The brace adjustment is used to control the indentation of opening and closing braces in your code.-->
-            <property name="braceAdjustment" value="0"/>
-            <!--It ensures that the code inside each case block is indented by 4 spaces.-->
             <property name="caseIndent" value="4"/>
-            <!--It ensures that if a method signature has a throws clause, the exception types are indented by 4 spaces.-->
             <property name="throwsIndent" value="4"/>
-            <!-- Line wrapping occurs when a line of code is too long and needs to be broken into multiple lines. This property controls the indentation of the wrapped lines.-->
+            <property name="arrayInitIndent" value="4"/>
             <property name="lineWrappingIndentation" value="4"/>
-        </module> 
-
-
-        <module name="LineLength">
-            <!-- Ρύθμιση του μέγιστου μήκους γραμμής -->
-            <property name="max" value="200"/>
         </module>
-        <!-- Ο σκοπός αυτού του κανόνα είναι να ελέγχει το μήκος των γραμμών και να εξασφαλίσει ότι δεν υπερβαίνουν ένα καθορισμένο όριο.-->
-        
-
-        <!-- Use TabCharacter module to control tab width -->
-        <module name="TabCharacter">
-            <!-- Specify the required tab width -->
-            <property name="eachIndent" value="4"/>
-            <property name="fileExtensions" value="java"/>
-        </module>
-
-
-       <module name="NeedBraces"/>
-       <!--Eπιβάλει τη χρήση αγκίστρων γύρω από τα σώματα των if, for, και while στοιχείων ελέγχου ροής όταν αυτά περιλαμβάνουν περισσότερες από μία δηλώσεις.-->
-
-
-      <module name="NoWhitespaceAfter">
-            <!-- Ρυθμίσεις για τα τεκμήρια που θα ελεγχθούν -->
-            <property name="tokens" value="ASSIGN, EQUAL, COMMA, SEMI, DOT"/>
-      </module>
-      <!--Eπιβάλει την απουσία κενού χώρου (whitespace) μετά από συγκεκριμένα τεκμήρια στον κώδικα-->  
-
-
-      <module name="RegexpSingleline">    
-        <!--  Ρύθμιση για το πρότυπο της κανονικής έκφρασης -->
-            <property name="format" value="TODO: .*"/> 
-        <!-- Πρόσθετες ρυθμίσεις κανονικής έκφρασης, αν χρειαστεί -->
-            <property name="illegalPattern" value="(?i).*System\.exit\(.*"/> 
-      </module> 
-        <!-- Στο παραπάνω παράδειγμα, η ιδιότητα (property) format καθορίζει το πρότυπο της κανονικής έκφρασης που πρέπει να ταιριάζουν οι συμβολοσειρές (strings). Στο παράδειγμα αυτό, ελέγχεται εάν οι συμβολοσειρές ξεκινούν με τη φράση "TODO: ".
-        O παραπανω κανονας στα δικα μας ματια μοιαζει περιττος!
-        -->
-
-
-        <module name="CommentWhitespace"/>
-        <!--Επιβάλει τον τρόπο που το κενό χώρο (whitespace) χρησιμοποιείται γύρω από σχόλια στον κώδικα.-->
-
-
-
     </module>
+
+    <module name="LineLength">
+        <property name="ignorePattern" value="^ *\* *@see.+$"/>
+        <property name="max" value="176"/>
+    </module>
+
+    <module name="NewlineAtEndOfFile">
+        <property name="lineSeparator" value="crlf"/>  <!--Allow only Windows-style (CRLF) line endings-->
+    </module>
+    <module name="FileTabCharacter"/>
 </module>
