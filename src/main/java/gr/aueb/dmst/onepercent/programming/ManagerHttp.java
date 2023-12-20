@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
  *  It extends the SuperHttp class.
  *  @see SuperHttp
  */
-public class ManagerHttp extends SuperHttp{
+public class ManagerHttp extends SuperHttp {
     
     private static HttpEntity entity;
    
@@ -56,7 +56,7 @@ public class ManagerHttp extends SuperHttp{
         } catch (Exception e) {
             e.printStackTrace(); // Print the stack trace of the error
             String object = null;
-            object =(message.equals("start") || message.equals("stop"))?  "container" :  "image";
+            object = (message.equals("start") || message.equals("stop")) ?  "container" :  "image";
             System.err.println("Failed to " + message + " the" + object + e.getMessage()); // Print the error message
         } finally {
             EntityUtils.consumeQuietly(postRequest.getEntity()); // Release the resources of the request
@@ -75,7 +75,7 @@ public class ManagerHttp extends SuperHttp{
     * @param entity The HTTP response entity containing the input stream to be read.
     * @throws IOException If an I/O error occurs while reading the input stream.
     */
-    public void handleResponse() throws IOException{
+    public void handleResponse() throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()))) { // Create a reader for the response content
             String line;
             while ((line = reader.readLine()) != null) { // Print the response line by line
@@ -89,8 +89,8 @@ public class ManagerHttp extends SuperHttp{
      * @param message the message that indicates the action that is going to be executed 
      */
     public void handleOutput(String message) {
-        if (message.equals("start")){
-            switch (response.getStatusLine().getStatusCode()){
+        if (message.equals("start")) {
+            switch (response.getStatusLine().getStatusCode()) {
                 case 204:
                     System.out.println("Container " + message  + " was successfull.");
                     break;
@@ -104,7 +104,7 @@ public class ManagerHttp extends SuperHttp{
                     System.out.println("Server error!");
             }
         } else if (message.equals("stop")) {
-             switch (response.getStatusLine().getStatusCode()){
+            switch (response.getStatusLine().getStatusCode()) {
                 case 204:
                     System.out.println("Container " + message  + " was successfull.");
                     break;
@@ -118,7 +118,7 @@ public class ManagerHttp extends SuperHttp{
                     System.out.println("Server error!");
             }
         } else if (message.equals("pull")) {
-            switch(response.getStatusLine().getStatusCode()) {
+            switch (response.getStatusLine().getStatusCode()) {
                 case 200:
                     System.out.println("Image " + message + " was successfull.");
                     break;
