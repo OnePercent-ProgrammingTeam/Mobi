@@ -12,14 +12,14 @@ public class MenuThread extends Thread {
     MonitorThread monitorThread = new MonitorThread();
 
     @Override
-    public void run(){
+    public void run() {
         printMenu(); 
     }
 
     /** Method: printMenu() prints the main menu of the program indicating
      * the available options to the user
     */
-    public void printMenu(){
+    public void printMenu() {
         System.out.println("-LIST OF CONTAINERS-");
         System.out.println("------------------------------------------------------------");
         SuperAPI.createDockerClient();
@@ -27,7 +27,7 @@ public class MenuThread extends Thread {
         containerMonitor.initializeContainerModels();
         containerMonitor.getContainerList();
         System.out.println("\n");
-        do{
+        do {
             System.out.println("-MENU-");
             System.out.println("------------------------------------------------------------");
             System.out.println("1) Start container");
@@ -50,26 +50,26 @@ public class MenuThread extends Thread {
         int answer = 0;
         try {
             answer = INPUT.nextInt();
-        } catch(InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Please, enter a valid number.");
             return true;
         }
         
         switch (answer) {
-            case 1,2,4:
+            case 1, 2, 4:
                 executorThread.setUserInput(answer);
                 thread = new Thread(executorThread);
                 thread.setName("Executor"); // set name to the thread so as to be easier to recognize it. 
                 thread.start();
                 break;
-            case 3,5,6,7,8:
+            case 3, 5, 6, 7, 8:
                 monitorThread.setUserInput(answer);
                 thread = new Thread(monitorThread);
                 thread.setName("Monitor");
                 thread.start();
                 break;
             default:
-            System.out.println("Non Valid Input.");
+                System.out.println("Non Valid Input.");
         }
 
         try {
@@ -82,11 +82,11 @@ public class MenuThread extends Thread {
         System.out.print("Enter answer: ");
         char choice = INPUT.next().charAt(0);
         System.out.println();
-        if (choice == 'N'){
+        if (choice == 'N') {
             System.out.println("Thank you!");
             INPUT.close();
             System.exit(0);
         }
-        return  (choice =='Y'); 
+        return choice == 'Y'; 
     }
 }

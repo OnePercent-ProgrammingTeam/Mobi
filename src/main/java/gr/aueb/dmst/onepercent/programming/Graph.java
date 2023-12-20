@@ -10,8 +10,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
-import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -102,7 +103,7 @@ public class Graph extends JFrame {
      * @param timer a Timer object
      * @throws IOException if an error occurs while reading the input
      */
-    public void onRunGraph (BufferedReader reader, Graph ex, Timer timer) throws IOException{
+    public void onRunGraph(BufferedReader reader, Graph ex, Timer timer) throws IOException {
         String inputLine = reader.readLine(); // Read a new line from the response
         if (inputLine != null) {
             double usage = monitorHttp.getFormattedStats(new StringBuffer(inputLine)); 

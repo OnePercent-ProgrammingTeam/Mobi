@@ -26,7 +26,7 @@ public class MonitorHttp extends SuperHttp {
     public void inspectContainer() {
         String message = "json"; // get the container information in json format
         MonitorHttp.containerId = Main.handleInput("Please type the container ID to get info about the container: ");
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message );
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message);
         executeHttpRequest(message);
     }
 
@@ -39,12 +39,12 @@ public class MonitorHttp extends SuperHttp {
         String message = "stats"; // get the container statistics in json format
         String outputMessage;
         if (calledby.equals("Graph")) {
-           outputMessage = "Please type the container ID to plot diagram with CPU usage: ";
+            outputMessage = "Please type the container ID to plot diagram with CPU usage: ";
         } else {
-              outputMessage = "Please type the ID of the running container to save real time data: ";
+            outputMessage = "Please type the ID of the running container to save real time data: ";
         }
         MonitorHttp.containerId = Main.handleInput(outputMessage);
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message );
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message);
         return getHttpResponse(message);
     }
 
@@ -52,7 +52,7 @@ public class MonitorHttp extends SuperHttp {
     public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Main.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + "?term="+ imageName + "&limit=3" );
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + "?term=" + imageName + "&limit=3");
         executeHttpRequest(message);
     }
 
@@ -72,7 +72,7 @@ public class MonitorHttp extends SuperHttp {
             MonitorHttp.response1 = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
-                if (message.equals("stats")){
+                if (message.equals("stats")) {
                     lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
                     response.close();
                     break;
@@ -81,10 +81,10 @@ public class MonitorHttp extends SuperHttp {
             
             reader.close();
             
-            if (message.equals("json")){
+            if (message.equals("json")) {
                 printFormattedInfo();
             }
-            if (message.equals("/images/search")){
+            if (message.equals("/images/search")) {
                 printFormattedJsonForImage();
             } 
                                
@@ -141,7 +141,7 @@ public class MonitorHttp extends SuperHttp {
                                 - jsonNode.at("/precpu_stats/system_cpu_usage").asDouble();
             
             double number_cpus = jsonNode.at("/cpu_stats/online_cpus").asDouble();
-            if (system_delta==0) {
+            if (system_delta == 0) {
                 System.out.println("\n\nSomething went wrong.\n"
                                  + "The formula to calculate CPU usage is:\n"
                                  + "(cpu_delta / system_delta) * number_cpus * 100.0\n"
@@ -162,7 +162,7 @@ public class MonitorHttp extends SuperHttp {
      * this Exception might occur when the image name is not found in the json file
      */ 
     public void printFormattedInfo() throws JsonProcessingException  {
-         try {
+        try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
             System.out.println("Container Name: " + jsonNode.get("Name").asText().substring(1));
@@ -185,7 +185,7 @@ public class MonitorHttp extends SuperHttp {
      */
     public String[] prepareStoragedData() {
         try {
-            getRequest= new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/json"  );
+            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/json");
             executeHttpRequest("prepare storage");
             String[] str = new String[6];
 
@@ -198,21 +198,21 @@ public class MonitorHttp extends SuperHttp {
             str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
             str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
 
-            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/stats"  );
+            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/stats");
             executeHttpRequest("stats");
             
             str[4] = String.valueOf(lastCPUUsage); //CPU Usage
             LocalDate date = LocalDate.now(); 
             LocalTime time = LocalTime.now();
-            str[5] = date.toString()+" "+time.toString().substring(0,10); //Date and Time in one
+            str[5] = date.toString() + " " + time.toString().substring(0, 10); //Date and Time in one
             
             return str;
           
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Exception while preparing storage of data");
             e.printStackTrace();
             return null;
-         }
+        }
     }
 
     /** Method: printFormattedJsonForImage() formats the json response for image  -that you 've searched for- to a user-friendly message
@@ -231,11 +231,11 @@ public class MonitorHttp extends SuperHttp {
             if (jsonNode.isArray()) {
                 System.out.println("Top 3 searched results\n");
                 for (JsonNode el : jsonNode) {
-                System.out.println("Image name: " + el.get("name") 
-                    + "\nDescription: " 
-                    + el.get("description") 
-                    + "\nStar count: " 
-                    + el.get("star_count") +"\n" );
+                    System.out.println("Image name: " + el.get("name") 
+                        + "\nDescription: " 
+                        + el.get("description") 
+                        + "\nStar count: " 
+                        + el.get("star_count") + "\n");
                 }
             }
         } catch (Exception e) {

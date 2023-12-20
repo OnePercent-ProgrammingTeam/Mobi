@@ -1,17 +1,23 @@
 package gr.aueb.dmst.onepercent.programming;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class H2Database {
 
     static MonitorHttp containerMonitorHttp = new MonitorHttp();
-    static String url = "jdbc:h2:~"; // after the prefix jdbc:h2: put the location where you want the database file to be stored at , currently using the project folder , WIP for multiple databases at once
+
+    // After the prefix jdbc:h2: put the location where you want the database file to be stored at , currently using the project folder , WIP for multiple databases at once
+    static String url = "jdbc:h2:~"; 
     static String user = "username"; //select username 
     static  String password = "password"; //select password
     static  String query; //create the query string
 
 
-    public void inserMetricsToDatabase() {//Use this method to store the data of the container you want in the database, currently manual, should be automated in the future
+    public void inserMetricsToDatabase() { //Use this method to store the data of the container you want in the database, currently manual, should be automated in the future
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -58,10 +64,10 @@ public class H2Database {
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
-            Statement stmt = conn.createStatement();// Use the connection for database operations
+            Statement stmt = conn.createStatement(); // Use the connection for database operations
               
-           query = "Select * from metrics";
-           ResultSet rs = stmt.executeQuery(query);
+            query = "Select * from metrics";
+            ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
                 String id = rs.getString("id");
@@ -70,16 +76,16 @@ public class H2Database {
                 String contid = rs.getString("contid");
 
                 // Process retrieved values (e.g., print or store them)
-                System.out.println( "Container ID: " + contid +", CPU USAGE: " + cpu + ", Timestamp: " + datetime + ", Metric ID: " +id);
+                System.out.println("Container ID: " + contid + ", CPU USAGE: " + cpu + ", Timestamp: " + datetime + ", Metric ID: " + id);
             }
 
-            stmt.close();//close statement
-            conn.close();//close connection
+            stmt.close(); //close statement
+            conn.close(); //close connection
            
-        } catch (ClassNotFoundException e) {//error handling
+        } catch (ClassNotFoundException e) { //error handling
             e.printStackTrace();
-        } catch (SQLException e) {//error handling
-             e.printStackTrace();
+        } catch (SQLException e) { //error handling
+            e.printStackTrace();
  
         }
     }
@@ -89,10 +95,10 @@ public class H2Database {
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
-            Statement stmt = conn.createStatement();// Use the connection for database operations
+            Statement stmt = conn.createStatement(); // Use the connection for database operations
               
-           query = "Select * from containers";
-           ResultSet rs = stmt.executeQuery(query);
+            query = "Select * from containers";
+            ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
                 String id = rs.getString("id");
@@ -101,56 +107,58 @@ public class H2Database {
                 String created = rs.getString("Time_Created");
 
                 // Process retrieved values (e.g., print or store them)
-                System.out.println( "Container Name: " + name +", Container ID: " + id + ", Container Imageid: " + imageid + ", Container Created At: " + created);
+                System.out.println("Container Name: " + name + ", Container ID: " + id + ", Container Imageid: " + imageid + ", Container Created At: " + created);
             }
 
-            stmt.close();//close statement
-            conn.close();//close connection
+            stmt.close(); //close statement
+            conn.close(); //close connection
            
-        } catch (ClassNotFoundException e) {//error handling
+        } catch (ClassNotFoundException e) { //error handling
             e.printStackTrace();
-        } catch (SQLException e) {//error handling
-             e.printStackTrace();
+        } catch (SQLException e) { //error handling
+            e.printStackTrace();
  
         }
     }
 
-
-    public void insertContainersToDatabase() {//Method that inserts the information of containers to the cointainers table, has to run at the launch and every time a new container is created
-         try {
+    //Method that inserts the information of containers to the containers table,
+    // has to run at the launch and every time a new container is created
+    public void insertContainersToDatabase() { 
+        try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
-            Statement stmt = conn.createStatement();// Use the connection for database operations
+            Statement stmt = conn.createStatement(); // Use the connection for database operations
               
          
-        SuperAPI.createDockerClient();
-        MonitorAPI containerMonitor = new MonitorAPI();
-        containerMonitor.initializeContainerModels();
-        String[][] containerInfo = containerMonitor.getContainerInfo();
-        String id;
-        String name;
-        String image;
-        String created;
+            SuperAPI.createDockerClient();
+            MonitorAPI containerMonitor = new MonitorAPI();
+            containerMonitor.initializeContainerModels();
+            String[][] containerInfo = containerMonitor.getContainerInfo();
+            String id;
+            String name;
+            String image;
+            String created;
 
-        for (int i = 0; i < containerInfo.length; i++) {
-            id = containerInfo[i][0];
-            name = containerInfo[i][1];
-            image = containerInfo[i][2];
-            created = containerInfo[i][3];
- 
-            query = "INSERT INTO CONTAINERS(id, imageid, name, Time_Created) VALUES ('" + id + "', '" + image + "', '" + name + "', '" + created + "')";//query that inserts container info to the database table containers
+            for (int i = 0; i < containerInfo.length; i++) {
+                id = containerInfo[i][0];
+                name = containerInfo[i][1];
+                image = containerInfo[i][2];
+                created = containerInfo[i][3];
 
-             stmt.execute(query);
-        }
+                //query that inserts container info to the database table containers
+                query = "INSERT INTO CONTAINERS(id, imageid, name, Time_Created) VALUES ('" + 
+                    id + "', '" + image + "', '" + name + "', '" + created + "')"; 
+
+                stmt.execute(query);
+            }
            
-            stmt.close();//close statement
-            conn.close();//close connection
+            stmt.close(); //close statement
+            conn.close(); //close connection
            
-        } catch (ClassNotFoundException e) {//error handling
+        } catch (ClassNotFoundException e) { //error handling
             e.printStackTrace();
-        } catch (SQLException e) {//error handling
-             System.out.println(" ");
- 
+        } catch (SQLException e) { //error handling
+            System.out.println(" ");
         }
     }
 
@@ -160,41 +168,38 @@ public class H2Database {
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
-            Statement stmt = conn.createStatement();// Use the connection for database operations
+            Statement stmt = conn.createStatement(); // Use the connection for database operations
               
         
-             query = "CREATE TABLE IF NOT EXISTS containers ("//query that creates the containers table
-            + "id VARCHAR(100) PRIMARY KEY, "
-            + "imageid VARCHAR(100), "
-            + "name VARCHAR(100),"
-            + "Time_Created datetime"
-            + ");";
+            query = "CREATE TABLE IF NOT EXISTS containers (" //query that creates the containers table
+                + "id VARCHAR(100) PRIMARY KEY, "
+                + "imageid VARCHAR(100), "
+                + "name VARCHAR(100),"
+                + "Time_Created datetime"
+                + ");";
            
-            stmt.execute(query);//excecute the query
+            stmt.execute(query); //excecute the query
             
             query = "CREATE TABLE IF NOT EXISTS metrics ("//query that creates the metrics table
-        + "id INT AUTO_INCREMENT PRIMARY KEY, "
-        + "cpu_usage DECIMAL(12,10), "
-        + "datetime DATETIME, "
-        + "contid VARCHAR(100), "
-        + "CONSTRAINT fk_contid FOREIGN KEY (contid) REFERENCES containers(id)"
-        + ");";
+                + "id INT AUTO_INCREMENT PRIMARY KEY, "
+                + "cpu_usage DECIMAL(12,10), "
+                + "datetime DATETIME, "
+                + "contid VARCHAR(100), "
+                + "CONSTRAINT fk_contid FOREIGN KEY (contid) REFERENCES containers(id)"
+                + ");";
 
-        stmt.execute(query);//excecute the query
+            stmt.execute(query); //excecute the query
 
            
-            stmt.close();//close statement
-            conn.close();//close connection
+            stmt.close(); //close statement
+            conn.close(); //close connection
            
-        } catch (ClassNotFoundException e) {//error handling
+        } catch (ClassNotFoundException e) { //error handling
             e.printStackTrace();
-        } catch (SQLException e) {//error handling
+        } catch (SQLException e) { //error handling
             e.printStackTrace();
  
         }
     }
 
 }
-
-
-

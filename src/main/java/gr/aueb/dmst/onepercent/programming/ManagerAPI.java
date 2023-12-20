@@ -10,7 +10,7 @@ public class ManagerAPI  extends SuperAPI {
     Scanner sc = new Scanner(System.in);
 
     /** Method: handleInput() handles user input and make sure it is valid */
-    public String handleInput(){
+    public String handleInput() {
         System.out.println("Please enter the id of the container you want to start/stop");
         String input = sc.next();
         if (!checkAllContainerStatus(input)) {
@@ -24,7 +24,8 @@ public class ManagerAPI  extends SuperAPI {
     /** Method: startContainer checks if container has already started and if not, start it */
     public void startContainer() {
         String lastIdInput = handleInput();
-        if (lastIdInput == null){return;} 
+        if (lastIdInput == null) { 
+            return; } 
         if (checkActiveContainerStatus(lastIdInput)) {
             System.out.println("Container already started");
             return;
@@ -36,8 +37,9 @@ public class ManagerAPI  extends SuperAPI {
     /** Method: stopContainer() checks if container has already stopped and if not, stop it (practically kill it) */
     public void stopContainer() {
         String lastIdInput = handleInput();
-        if (lastIdInput == null){return;} 
-        if(!checkActiveContainerStatus(lastIdInput)) {
+        if (lastIdInput == null) {
+            return; } 
+        if (!checkActiveContainerStatus(lastIdInput)) {
             System.out.println("Container already stopped");
             return;
         }
@@ -49,7 +51,7 @@ public class ManagerAPI  extends SuperAPI {
     /** Method: checkActiveContainerStatus checks if container is active */
     public boolean checkActiveContainerStatus(String idInput) {
         List<Container> containers;
-        containers= dc.listContainersCmd().withShowAll(false).exec();
+        containers = dc.listContainersCmd().withShowAll(false).exec();
         for (Container c : containers) {
             if (c.getId().equals(idInput)) {
                 return true; //container is active
@@ -61,7 +63,7 @@ public class ManagerAPI  extends SuperAPI {
     /** Method: checkAllContainerStatus checks if container exists */
     public boolean checkAllContainerStatus(String idInput) {
         List<Container> containers;
-        containers= dc.listContainersCmd().withShowAll(true).exec();
+        containers = dc.listContainersCmd().withShowAll(true).exec();
         for (Container c : containers) {
             if (c.getId().equals(idInput)) {
                 return true; //container exists
@@ -70,4 +72,3 @@ public class ManagerAPI  extends SuperAPI {
         return false; //container does not exist
     }
 }
-        

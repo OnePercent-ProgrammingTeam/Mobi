@@ -35,14 +35,14 @@ public class CSV {
      * Container Name, Container Id, IP Address, Mac Address, CPU Usage, Date Time
      * @param filePath is the path that the file is going to be created
      */
-    private void createFile (String filePath) {
+    private void createFile(String filePath) {
         File file = new File(filePath);
-        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))){
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
             
             /*If file does not exist OR it has no content included in it,
              * then print the name of the columns
              */
-            if (!(file.exists() && (file.length() > 0))) { 
+            if (!file.exists() && (file.length()) > 0) { 
                 writer.writeNext(HEADER);
             }
         } catch (IOException e) {
@@ -59,9 +59,9 @@ public class CSV {
      *  2) Thread that waits for user's input (-1) to terminate the process 
      */
     private void startThreads(String filePath) {
-        Thread userInputThread = new Thread(()-> {
-            Scanner sc = new Scanner (System.in);
-            System.out.print( "Press -1 to terminate the process: ");
+        Thread userInputThread = new Thread(() -> {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Press -1 to terminate the process: ");
             while (true) {
                 String userInput = sc.nextLine();
                 if ("-1".equals(userInput)) {
@@ -78,8 +78,8 @@ public class CSV {
             
             @Override
             public void run() { // The task to run, this will be executed every second
-                if (exitRequested == false){
-                    try (CSVWriter writer = new CSVWriter(new FileWriter(filePath,true))){
+                if (exitRequested == false) {
+                    try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
                     
                         String[] info = monitorHttp.prepareStoragedData();
                         writer.writeNext(info);    
@@ -104,7 +104,7 @@ public class CSV {
         monitorHttp.getContainerStats("CSV");
         String[] info = monitorHttp.prepareStoragedData();
             
-        String filePath = Paths.get(folderPath, info[0] +"Data.csv").toString();
+        String filePath = Paths.get(folderPath, info[0] + "Data.csv").toString();
         createFile(filePath);
         startThreads(filePath);
     }
@@ -118,4 +118,3 @@ public class CSV {
         storeRealTimeData();
     }
 }
-
