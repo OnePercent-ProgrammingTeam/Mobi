@@ -16,9 +16,9 @@ public class SuperAPI {
     /** Method: createDockerClient() creates a docker client */
     public static void createDockerClient() {
         DefaultDockerClientConfig config = DefaultDockerClientConfig
-        .createDefaultConfigBuilder()
-        .withDockerHost("tcp://localhost:2375") //daemon host
-        .build();
+            .createDefaultConfigBuilder()
+            .withDockerHost("tcp://localhost:2375") //daemon host
+            .build();
         dc = DockerClientBuilder.getInstance(config).build();
         dc.versionCmd().exec();
     }
