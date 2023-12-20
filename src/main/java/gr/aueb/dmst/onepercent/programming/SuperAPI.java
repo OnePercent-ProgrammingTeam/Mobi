@@ -5,7 +5,8 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 
-/** Class: SuperAPI is a superclass that contains a static variable, used in other classes, representing the docker client.
+/** Class: SuperAPI is a superclass that contains a static variable, used in other classes, 
+ *  representing the docker client.
  * It is used to create a docker client.
  */
 public class SuperAPI {

@@ -23,16 +23,17 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/** Class: Graph class is responsible for the creation of the graph that shows the cpu usage of the container
- *  in real time. It uses the JFreeChart library to create the graph.
- *  The graph is created in a new window.
+/** Class: Graph class is responsible for the creation of the graph 
+ * that shows the cpu usage of the container in real time. 
+ * It uses the JFreeChart library to create the graph. The graph 
+ * is created in a new window.
  */
 public class Graph extends JFrame {
     
-    /** Field XYSeries represents a sequence of zero or more data items in the form (x, y) */
+    /** Field XYSeries represents a sequence of zero or more data items in the form (x, y). */
     private XYSeries usageSeries;
 
-    /** Field: monitorHttp is a MonitorHttp object */
+    /** Field: monitorHttp is a MonitorHttp object. */
     static MonitorHttp monitorHttp = new MonitorHttp();
 
     /** Constructor:  
@@ -51,38 +52,47 @@ public class Graph extends JFrame {
                 dataset
         ); 
         chart.setBackgroundPaint(Color.white);
-        XYPlot plot = (XYPlot) chart.getPlot(); // Get the plot from the chart, casting it to XYPlot because it may be a subclass
-        DateAxis dateAxis = (DateAxis) plot.getDomainAxis(); // Get the domain axis from the plot, casting it to DateAxis because it may be a subclass
-        dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.SECOND, 1)); // Set the tick unit to be 1 second (it is a real time chart, so we want to update every second)
+        // Get the plot from the chart, casting it to XYPlot because it may be a subclass
+        XYPlot plot = (XYPlot) chart.getPlot(); 
+        // Get the domain axis from the plot, casting it to DateAxis because it may be a subclass
+        DateAxis dateAxis = (DateAxis) plot.getDomainAxis(); 
+        /*Set the tick unit to be 1 second (it is a real time chart, 
+        so we want to update every second).*/
+        dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.SECOND, 1)); 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss"); // Create a date format
-        dateAxis.setDateFormatOverride(dateFormat); // Set the date format to be the one we just created
+        // Set the date format to be the one we just created
+        dateAxis.setDateFormatOverride(dateFormat); 
         // The GUI component to make the chart visible to the end user
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(560, 370));
         setContentPane(chartPanel);
     }
 
-    /** Method: updateStats(double) updates the stats with the new data point
+    /** Method: updateStats(double) updates the stats with the new data point.
      * @param usage the cpu usage of the container
     */
     private void updateStats(double usage) {
         // Add new data point to the series
         long currentTimestamp = System.currentTimeMillis(); // Get the current timestamp
-        long timestampInMilliseconds = new Date(currentTimestamp).getTime(); // Convert the timestamp to milliseconds, type long
+        // Convert the timestamp to milliseconds, type long
+        long timestampInMilliseconds = new Date(currentTimestamp).getTime(); 
         usageSeries.addOrUpdate(timestampInMilliseconds, usage);
         
-        /*addOrUpdate() method will add a new data point if it doesn't exist, or update the existing one if it does,
-          the parameters it gets are the x and y values of the data point (should be double)*/
+        /*addOrUpdate() method will add a new data point if it doesn't exist, 
+        or update the existing one if it does, the parameters it gets are the x and y
+        values of the data point (should be double).*/
     }
 
     /** Method: statsPlot(CloseableHttpResponse) starts updating the stats in order
-     *  to plot real time data-the consume of cpu resources every second
+     *  to plot real time data-the consume of cpu resources every second.
      *  @param response a CloseableHttpResponse object 
      * */
-    public void statsPlot(CloseableHttpResponse response, Graph ex) throws UnsupportedOperationException, IOException {
+    public void statsPlot(CloseableHttpResponse response, Graph ex) 
+        throws UnsupportedOperationException, IOException {
         // Simulate real-time data update every second
-        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
+                                                                                 .getContent()));
     
         Timer timer = new Timer(false); // Create a new timer
         timer.scheduleAtFixedRate(new TimerTask() { // Schedule a task to run every second
@@ -116,13 +126,14 @@ public class Graph extends JFrame {
         }
     }
     
-    /** Method: executeDiagram() executes the diagram */
+    /** Method: executeDiagram() executes the diagram. */
     public static void executeDiagram() {
 
         Graph cv = new Graph("Container Stats Plotter"); // Create a new Graph object
         cv.setSize(800, 600);  // Set the size of the window
         cv.setLocationRelativeTo(null); // Center the window
-        cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); // Set the close operation, so that the application exits when the window is closed
+        // Set the close operation, so that the application exits when the window is closed
+        cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
         CloseableHttpResponse res = monitorHttp.getContainerStats("Graph");
            
         cv.addWindowListener(new WindowAdapter() {

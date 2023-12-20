@@ -2,7 +2,8 @@ package gr.aueb.dmst.onepercent.programming;
 
 
 /** Class: MonitorThread is a class that contains methods that retrieves information
- *  about the containers of the docker system, it monitors the docker system. It is a subclass of SuperThread.
+ *  about the containers of the docker system, it monitors the docker system. 
+ *  It is a subclass of SuperThread.
  *  @see SuperThread
  */
 public class MonitorThread extends SuperThread {

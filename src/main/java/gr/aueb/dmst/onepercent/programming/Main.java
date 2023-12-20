@@ -2,11 +2,11 @@ package gr.aueb.dmst.onepercent.programming;
 
 import java.util.Scanner;
 
-/** Class: Main runs the entire program */
+/** Class: Main runs the entire program. */
 public class Main {
     static final Scanner SC = new Scanner(System.in);
 
-    /** Get input from the user and handle it */
+    /** Get input from the user and handle it. */
     public static String handleInput(String outputMessage) {
         
         System.out.println(outputMessage);

@@ -16,7 +16,7 @@ public class ManagerHttp extends SuperHttp {
     
     private static HttpEntity entity;
    
-    /** Method: startContainer() starts container with http request */
+    /** Method: startContainer() starts container with http request. */
     public void startContainer() {
         String message = "start";
         containerId = Main.handleInput("Please type the container ID to start the container: ");
@@ -24,7 +24,7 @@ public class ManagerHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
-    /** Method: stopContainer() stops container with http request */
+    /** Method: stopContainer() stops container with http request. */
     public void stopContainer() {
         String message = "stop";
         containerId = Main.handleInput("Please type the container ID to stop the container: ");
@@ -33,18 +33,19 @@ public class ManagerHttp extends SuperHttp {
     }
 
     /** Method: pullImage() pulls an image with http request, the image name is given by the user,
-     *  practically is like starting a container with an image that does not exist locally
+     *  practically is like starting a container with an image that does not exist locally.
      */
     public void pullImage() {
         String message = "pull";
-        String imageName = Main.handleInput("Please type the name of the image you would like to pull:");
+        String imageName;
+        imageName = Main.handleInput("Please type the name of the image you would like to pull:");
         postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
         executeHttpRequest(message);
     }
     
     /** Method: executeHttpRequest(String) executes the http request 
-     * @param message the message that is given by the user
-     * @throws Exception if an error occurs while executing the http request
+     * @param message the message that is given by the user.
+     * @throws Exception if an error occurs while executing the http request.
      */
     @Override
     public void executeHttpRequest(String message) {
@@ -57,9 +58,14 @@ public class ManagerHttp extends SuperHttp {
             e.printStackTrace(); // Print the stack trace of the error
             String object = null;
             object = (message.equals("start") || message.equals("stop")) ?  "container" :  "image";
-            System.err.println("Failed to " + message + " the" + object + e.getMessage()); // Print the error message
+            System.err.println("Failed to " + 
+                                message + 
+                                " the" + 
+                                object + 
+                                e.getMessage()); // Print the error message
         } finally {
-            EntityUtils.consumeQuietly(postRequest.getEntity()); // Release the resources of the request
+            // Release the resources of the request
+            EntityUtils.consumeQuietly(postRequest.getEntity()); 
         }
     }
     
@@ -68,15 +74,18 @@ public class ManagerHttp extends SuperHttp {
     *
     * This method takes an input stream, wraps it with a BufferedReader, and reads its content
     * line by line. Each line is then printed to the console. The BufferedReader is automatically
-    * closed (It is autoclosable. That is why we use the parenthesis in try segment of try-catch statement.
-    * It would be the same, if we had a finally statement, in which we would "close" with .close() method the 
+    * closed (It is autoclosable. That is why we use the parenthesis in try segment of try-catch
+    * statement. It would be the same, if we had a finally statement, in which we would "close"
+    * with .close() method the 
     * BufferedReader object) upon exiting the method, due to the try-with-resources statement.
     *
     * @param entity The HTTP response entity containing the input stream to be read.
     * @throws IOException If an I/O error occurs while reading the input stream.
     */
     public void handleResponse() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()))) { // Create a reader for the response content
+        // Create a reader for the response content
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(entity
+                                                                              .getContent()))) { 
             String line;
             while ((line = reader.readLine()) != null) { // Print the response line by line
                 System.out.println(line);
@@ -85,8 +94,8 @@ public class ManagerHttp extends SuperHttp {
     }
 
     /** Method handleOutput(String) prints the appropriate message, based on the status 
-     *  code of the http response and the request that has been done
-     * @param message the message that indicates the action that is going to be executed 
+     *  code of the http response and the request that has been done.
+     * @param message the message that indicates the action that is going to be executed. 
      */
     public void handleOutput(String message) {
         if (message.equals("start")) {

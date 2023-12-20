@@ -3,7 +3,7 @@ package gr.aueb.dmst.onepercent.programming;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/** Class: MenuThread is a thread that prints the menu and handles the user's input */
+/** Class: MenuThread is a thread that prints the menu and handles the user's input. */
 public class MenuThread extends Thread {
    
     private final Scanner INPUT = new Scanner(System.in);
@@ -17,7 +17,7 @@ public class MenuThread extends Thread {
     }
 
     /** Method: printMenu() prints the main menu of the program indicating
-     * the available options to the user
+     *  the available options to the user.
     */
     public void printMenu() {
         System.out.println("-LIST OF CONTAINERS-");
@@ -42,8 +42,8 @@ public class MenuThread extends Thread {
         } while (handleUserInput());
     }
     
-    /** Method: handleUserInput() handles the user's input
-     * @return true if the user wants to run the program again, false otherwise
+    /** Method: handleUserInput() handles the user's input.
+     * @return true if the user wants to run the program again, false otherwise.
      */
     public boolean handleUserInput() {
         System.out.print("Please enter a number: ");
@@ -59,7 +59,8 @@ public class MenuThread extends Thread {
             case 1, 2, 4:
                 executorThread.setUserInput(answer);
                 thread = new Thread(executorThread);
-                thread.setName("Executor"); // set name to the thread so as to be easier to recognize it. 
+                //set name to the thread so as to be easier to recognize it. 
+                thread.setName("Executor"); 
                 thread.start();
                 break;
             case 3, 5, 6, 7, 8:

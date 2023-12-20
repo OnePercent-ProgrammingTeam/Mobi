@@ -7,11 +7,11 @@ import java.io.BufferedReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/** Import the Jackson ObjectMapper class for formatting the JSON response*/
+/** Import the Jackson ObjectMapper class for formatting the JSON response.*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
-/** Import the Jackson JsonNode class for formatting the JSON response*/
+/** Import the Jackson JsonNode class for formatting the JSON response.*/
 import com.fasterxml.jackson.databind.JsonNode; 
-/** Import the Jackson JsonProcessingException for handling an exception that might occur */
+/** Import the Jackson JsonProcessingException for handling an exception that might occur. */
 import com.fasterxml.jackson.core.JsonProcessingException; 
 
 /** Class: MonitorHttp is responsible for the http requests that are made to the docker daemon
@@ -22,17 +22,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 public class MonitorHttp extends SuperHttp {
     
-    /** Method: inspectContainer() retrieves information about a container that might be or might not be locally installed*/
+    /** Method: inspectContainer() retrieves information about a container that might be 
+     * or might not be locally installed.*/
     public void inspectContainer() {
         String message = "json"; // get the container information in json format
-        MonitorHttp.containerId = Main.handleInput("Please type the container ID to get info about the container: ");
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message);
+        MonitorHttp.containerId = Main.handleInput(
+            "Please type the container ID to get info about the container: ");
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 "/containers/" + 
+                                 MonitorHttp.containerId + 
+                                 "/" + message);
         executeHttpRequest(message);
     }
 
-    /** Method: getContainerStats(String) gets statistics about a running container (especially CPU usage) 
-     *  @param calledby the name of the class that called this method
-     *  These stats are used in Graph class in order to create a graph
+    /** Method: getContainerStats(String) gets statistics about a running container 
+     *  (especially CPU usage). 
+     *  @param calledby the name of the class that called this method.
+     *  These stats are used in Graph class in order to create a graph.
      *  @see Graph
     */
     public CloseableHttpResponse getContainerStats(String calledby) {
@@ -44,22 +50,29 @@ public class MonitorHttp extends SuperHttp {
             outputMessage = "Please type the ID of the running container to save real time data: ";
         }
         MonitorHttp.containerId = Main.handleInput(outputMessage);
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/" + message);
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 "/containers/" + 
+                                 MonitorHttp.containerId + 
+                                 "/" + message);
         return getHttpResponse(message);
     }
 
-    /** Method: searchImages() searches for an image by it's name. The result is limited to 3 */
+    /** Method: searchImages() searches for an image by it's name. The result is limited to 3. */
     public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Main.handleInput("Please type the name of the image you want to search for: ");
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + "?term=" + imageName + "&limit=3");
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 message + 
+                                 "?term=" + 
+                                 imageName + "&limit=3");
         executeHttpRequest(message);
     }
 
 
-    /** Method: executeHttpRequest(String) executes the http request for getting info about a container
-     * @param message the final part of the url that is used to get the info
-     * @throws Exception if an error occurs while executing the http request
+    /** Method: executeHttpRequest(String) executes the http request for 
+     *  getting info about a container.
+     * @param message the final part of the url that is used to get the info.
+     * @throws Exception if an error occurs while executing the http request.
      */
     @Override
     public void executeHttpRequest(String message) {
@@ -67,7 +80,8 @@ public class MonitorHttp extends SuperHttp {
             CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
             //int statusCode = response.getStatusLine().getStatusCode();
             //System.out.println("Status Code : " + statusCode);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
             MonitorHttp.response1 = new StringBuffer();
             while ((inputLine = reader.readLine()) != null) {
@@ -90,13 +104,17 @@ public class MonitorHttp extends SuperHttp {
                                
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Failed to " + message + " the container: " + e.getMessage()); // Print the error message
+            System.err.println("Failed to " + 
+                                message + 
+                                " the container: " + 
+                                e.getMessage()); // Print the error message
         } 
     }
 
-    /** Method: getHttpResponse(String) executes the http request for getting stats about a running container
-     * @param message the final part of the url that is used to get the info
-     * @throws Exception if an error occurs while executing the http request
+    /** Method: getHttpResponse(String) executes the http request for getting 
+     *  stats about a running container.
+     * @param message the final part of the url that is used to get the info.
+     * @throws Exception if an error occurs while executing the http request.
      */
     @Override
     public CloseableHttpResponse getHttpResponse(String message) {
@@ -107,21 +125,25 @@ public class MonitorHttp extends SuperHttp {
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Failed to " + message + " the container: " + e.getMessage()); // Print the error message
+            System.err.println("Failed to " + 
+                                message + 
+                                " the container: " + 
+                                e.getMessage()); // Print the error message
         } 
         return null;
     }
 
-    /** Method: getFormattedStats(StringBuffer) formats the json response for stats to a user-friendly message
+    /** Method: getFormattedStats(StringBuffer) formats the json response for stats 
+     *  to a user-friendly message.
      *  that is real-time updated and printed to the console
-     *  @param response1Buffer a StringBuffer object
-     *  @throws NullPointerException if an error occurs while executing the http request
+     *  @param response1Buffer a StringBuffer object.
+     *  @throws NullPointerException if an error occurs while executing the http request.
      *
      *  The code below should work too. Instead, it return 0.0. We have to check it further
      *      
      *  <code>
      *  double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
-     *                   - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
+     *                - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
      *  double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
      *                      - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
      *  double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
@@ -145,7 +167,8 @@ public class MonitorHttp extends SuperHttp {
                 System.out.println("\n\nSomething went wrong.\n"
                                  + "The formula to calculate CPU usage is:\n"
                                  + "(cpu_delta / system_delta) * number_cpus * 100.0\n"
-                                 + "and system_delta is 0.\nMake sure that the container is running");
+                                 + "and system_delta is 0.\n" 
+                                 + "Make sure that the container is running");
             }
             double cpuUsage = (cpu_delta / system_delta) * number_cpus * 100.0;
             return cpuUsage;
@@ -157,9 +180,10 @@ public class MonitorHttp extends SuperHttp {
     }
 
     
-    /** Method: printFormattedInfo() reads the json response for container info to a user-friendly message
-     * NullPointerException if an error occurs while executing the http request
-     * this Exception might occur when the image name is not found in the json file
+    /** Method: printFormattedInfo() reads the json response for container info 
+     *  to a user-friendly message.
+     * NullPointerException if an error occurs while executing the http request.
+     * this Exception might occur when the image name is not found in the json file.
      */ 
     public void printFormattedInfo() throws JsonProcessingException  {
         try {
@@ -169,23 +193,51 @@ public class MonitorHttp extends SuperHttp {
             System.out.println("Container ID: " + jsonNode.get("Id").asText());
             System.out.println("Status: " + jsonNode.get("State").get("Status").asText());
             System.out.println("Image ID: " + jsonNode.get("Image").asText());
-            System.out.println("Network ID: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("NetworkID").asText()); 
-            System.out.println("Gateway: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("Gateway").asText()); 
-            System.out.println("IP Address: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("IPAddress").asText()); 
-            System.out.println("Mac Address: " + jsonNode.get("NetworkSettings").get("Networks").get("bridge").get("MacAddress").asText()); 
-            //System.out.println("Image Name: " + jsonNode.get("Config").get("Labels").get("org.opencontainers.image.title").asText());
+            System.out.println("Network ID: " + jsonNode
+                                                .get("NetworkSettings")
+                                                .get("Networks")
+                                                .get("bridge")
+                                                .get("NetworkID")
+                                                .asText()); 
+            System.out.println("Gateway: " + jsonNode
+                                             .get("NetworkSettings")
+                                             .get("Networks")
+                                             .get("bridge")
+                                             .get("Gateway")
+                                             .asText()); 
+            System.out.println("IP Address: " + jsonNode
+                                                .get("NetworkSettings")
+                                                .get("Networks")
+                                                .get("bridge")
+                                                .get("IPAddress")
+                                                .asText()); 
+            System.out.println("Mac Address: " + jsonNode
+                                                 .get("NetworkSettings")
+                                                 .get("Networks")
+                                                 .get("bridge")
+                                                 .get("MacAddress")
+                                                 .asText()); 
+            /*System.out.println("Image Name: " + jsonNode
+                                                  .get("Config")
+                                                  .get("Labels")
+                                                  .get("org.opencontainers.image.title")
+                                                  .asText());*/
         } catch (NullPointerException e) {
             System.out.println("Exception due to null value");
         }
     }
 
-    /** Method: prepareStorageData() returns a String array with the prepared data that will be saved in a csv file 
-     *  @return str a String array with the data that will be saved in a csv file
-     *  @throws NullPointerException if an error occurs while executing the http request
+    /** Method: prepareStorageData() returns a String array with the prepared 
+     *  data that will be saved in a csv file. 
+     *  @return str a String array with the data that will be saved in a csv file.
+     *  @throws NullPointerException if an error occurs while executing the http request.
      */
     public String[] prepareStoragedData() {
         try {
-            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/json");
+            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                    "/containers/" + 
+                                    MonitorHttp.containerId + 
+                                    "/json");
             executeHttpRequest("prepare storage");
             String[] str = new String[6];
 
@@ -195,16 +247,25 @@ public class MonitorHttp extends SuperHttp {
             str[0] = jsonNode.at("/Name").asText().substring(1); //Container Name
             // We use substring() in order to ignore the "/" from the container name
             str[1] = jsonNode.at("/Id").asText(); //Container ID
-            str[2] = jsonNode.at("/NetworkSettings/Networks/bridge/IPAddress").asText(); //IP Address
-            str[3] = jsonNode.at("/NetworkSettings/Networks/bridge/MacAddress").asText(); //Mac Address
+            str[2] = jsonNode
+                     .at("/NetworkSettings/Networks/bridge/IPAddress")
+                     .asText(); //IP Address
+            str[3] = jsonNode
+                    .at("/NetworkSettings/Networks/bridge/MacAddress")
+                    .asText(); //Mac Address
 
-            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/containers/" + MonitorHttp.containerId + "/stats");
+            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                              "/containers/" + 
+                                              MonitorHttp.containerId + 
+                                              "/stats");
             executeHttpRequest("stats");
             
             str[4] = String.valueOf(lastCPUUsage); //CPU Usage
             LocalDate date = LocalDate.now(); 
             LocalTime time = LocalTime.now();
-            str[5] = date.toString() + " " + time.toString().substring(0, 10); //Date and Time in one
+
+            //Date and Time in one
+            str[5] = date.toString() + " " + time.toString().substring(0, 10); 
             
             return str;
           
@@ -215,7 +276,8 @@ public class MonitorHttp extends SuperHttp {
         }
     }
 
-    /** Method: printFormattedJsonForImage() formats the json response for image  -that you 've searched for- to a user-friendly message
+    /** Method: printFormattedJsonForImage() formats the json response for image  
+     * -that you 've searched for- to a user-friendly message.
      *  @throws JsonProcessingException
      *  @throws NullPointerException
      *  @prints info about the top 3 images with the name that user searched. The info contains: 

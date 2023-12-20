@@ -14,33 +14,38 @@ import java.util.Scanner;
  *  The .csv file is created in a new folder.
  */
 public class CSV {
-    /** Field: monitorHttp is a MonitorHttp object */
+    /** Field: monitorHttp is a MonitorHttp object. */
     MonitorHttp monitorHttp = new MonitorHttp();
-    /** Field: folderPath is the path of the folder that is going to be created */
+    /** Field: folderPath is the path of the folder that is going to be created. */
     private String folderPath;
-    /** Field: HEADER is the header of the .csv file */
-    private static final String[] HEADER = {"Container Name", "Container Id", "IP Address", "Mac Address", "CPU Usage", "Date Time"};
+    /** Field: HEADER is the header of the .csv file. */
+    private static final String[] HEADER = {"Container Name", 
+                                            "Container Id", 
+                                            "IP Address", 
+                                            "Mac Address", 
+                                            "CPU Usage", 
+                                            "Date Time"};
 
-    /** Method: createDataFolder(String) creates a folder with the name "Docker Data"
-     * @param userPath is the path that the folder is going to be created
+    /** Method: createDataFolder(String) creates a folder with the name "Docker Data".
+     * @param userPath is the path that the folder is going to be created.
      */
-    private void createDataFolder(String userPath) {  //Take for input the folder path given by the user
+    private void createDataFolder(String userPath) {  
         
         folderPath = Paths.get(userPath, "Docker Data").toString(); 
-        File folder = new File(folderPath); // Create a File object representing the directory
-        folder.mkdirs(); // Create the directory and parent directories if they don't exist  
+        File folder = new File(folderPath); // Create a File object representing the directory.
+        folder.mkdirs(); // Create the directory and parent directories if they don't exist.  
     }
 
     /** Method: createFile(String) creates a file with the name of the container, each "column" is:
      * Container Name, Container Id, IP Address, Mac Address, CPU Usage, Date Time
-     * @param filePath is the path that the file is going to be created
+     * @param filePath is the path that the file is going to be created.
      */
     private void createFile(String filePath) {
         File file = new File(filePath);
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
             
             /*If file does not exist OR it has no content included in it,
-             * then print the name of the columns
+             * then print the name of the columns.
              */
             if (!file.exists() && (file.length()) > 0) { 
                 writer.writeNext(HEADER);
@@ -55,8 +60,8 @@ public class CSV {
     /** Method: startThreads(String)
      *  @param filePath is the path that the file is going to be created
      *  This method starts two threads: 
-     *  1) Thread that saves data into a .csv file (timer)
-     *  2) Thread that waits for user's input (-1) to terminate the process 
+     *  1) Thread that saves data into a .csv file (timer).
+     *  2) Thread that waits for user's input (-1) to terminate the process.
      */
     private void startThreads(String filePath) {
         Thread userInputThread = new Thread(() -> {
@@ -99,7 +104,7 @@ public class CSV {
         timer.cancel();
     }
 
-    /** Method: storeRealTimeData() stores real time CPU metrics into a .csv file */
+    /** Method: storeRealTimeData() stores real time CPU metrics into a .csv file. */
     private void storeRealTimeData() {
         monitorHttp.getContainerStats("CSV");
         String[] info = monitorHttp.prepareStoragedData();
@@ -109,8 +114,8 @@ public class CSV {
         startThreads(filePath);
     }
 
-    /** Method: startSavingData() asks user for the path, in which the folder and files should be stored, then
-     *  create the folder and start saving data
+    /** Method: startSavingData() asks user for the path, in which the folder 
+     *  and files should be stored, then create the folder and start saving data.
      */
     public void startSavingData() {
         String path = Main.handleInput("Enter the path in which you want the data to be stored: ");

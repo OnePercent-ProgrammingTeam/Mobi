@@ -3,7 +3,8 @@ package gr.aueb.dmst.onepercent.programming;
 import com.github.dockerjava.api.model.SwarmNode; 
 
 /** Class: MonitorCluster is a class that contains methods that retrieves information
- * about the nodes of the docker cluster, it monitors the docker system. It is a subclass of SuperAPI.
+ * about the nodes of the docker cluster, it monitors the docker system. It is a 
+ * subclass of SuperAPI.
  * @see SuperAPI
  */
 public class MonitorCluster extends SuperAPI {

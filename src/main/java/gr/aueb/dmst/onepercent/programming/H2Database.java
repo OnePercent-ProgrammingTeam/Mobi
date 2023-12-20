@@ -10,14 +10,16 @@ public class H2Database {
 
     static MonitorHttp containerMonitorHttp = new MonitorHttp();
 
-    // After the prefix jdbc:h2: put the location where you want the database file to be stored at , currently using the project folder , WIP for multiple databases at once
+    /* After the prefix jdbc:h2: put the location where you want the database file to be stored at ,
+    urrently using the project folder , WIP for multiple databases at once.*/
     static String url = "jdbc:h2:~"; 
     static String user = "username"; //select username 
     static  String password = "password"; //select password
     static  String query; //create the query string
 
-
-    public void inserMetricsToDatabase() { //Use this method to store the data of the container you want in the database, currently manual, should be automated in the future
+    /*Use this method to store the data of the container you want in the database, 
+    currently manual, should be automated in the future.*/
+    public void inserMetricsToDatabase() { 
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -59,8 +61,9 @@ public class H2Database {
     }
 
     
-
-    public void getAllMetrics() { //Prints all the metrics stored in the database, a new method for the metrics of a specific container  is WIP
+    /*Prints all the metrics stored in the database, 
+    a new method for the metrics of a specific container  is WIP.*/
+    public void getAllMetrics() { 
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
@@ -76,7 +79,14 @@ public class H2Database {
                 String contid = rs.getString("contid");
 
                 // Process retrieved values (e.g., print or store them)
-                System.out.println("Container ID: " + contid + ", CPU USAGE: " + cpu + ", Timestamp: " + datetime + ", Metric ID: " + id);
+                System.out.println("Container ID: " + 
+                                    contid + 
+                                    ", CPU USAGE: " +
+                                    cpu + 
+                                    ", Timestamp: " +
+                                     datetime + 
+                                    ", Metric ID: " + 
+                                    id);
             }
 
             stmt.close(); //close statement
@@ -90,8 +100,8 @@ public class H2Database {
         }
     }
 
-
-    public void getAllContainerInfo() { //Gives all the information of every container in the database
+    //Gives all the information of every container in the database
+    public void getAllContainerInfo() { 
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
@@ -107,7 +117,14 @@ public class H2Database {
                 String created = rs.getString("Time_Created");
 
                 // Process retrieved values (e.g., print or store them)
-                System.out.println("Container Name: " + name + ", Container ID: " + id + ", Container Imageid: " + imageid + ", Container Created At: " + created);
+                System.out.println("Container Name: " + 
+                                    name + 
+                                    ", Container ID: " +
+                                    id + 
+                                    ", Container Imageid: " + 
+                                    imageid + 
+                                    ", Container Created At: " 
+                                    + created);
             }
 
             stmt.close(); //close statement
@@ -163,15 +180,15 @@ public class H2Database {
     }
 
 
-
-    public void createDatabase() { //Creates the database, has to run one time on the launch for the programm to work
+    //Creates the database, has to run one time on the launch for the programm to work
+    public void createDatabase() { 
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             Connection conn = DriverManager.getConnection(url, user, password); // Open a connection
             Statement stmt = conn.createStatement(); // Use the connection for database operations
               
-        
-            query = "CREATE TABLE IF NOT EXISTS containers (" //query that creates the containers table
+            //query that creates the containers table
+            query = "CREATE TABLE IF NOT EXISTS containers (" 
                 + "id VARCHAR(100) PRIMARY KEY, "
                 + "imageid VARCHAR(100), "
                 + "name VARCHAR(100),"

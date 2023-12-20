@@ -6,10 +6,10 @@ import java.util.Scanner;
 
 public class ManagerAPI  extends SuperAPI {
     
-    /** Field: sc is a scanner object */
+    /** Field: sc is a scanner object. */
     Scanner sc = new Scanner(System.in);
 
-    /** Method: handleInput() handles user input and make sure it is valid */
+    /** Method: handleInput() handles user input and make sure it is valid. */
     public String handleInput() {
         System.out.println("Please enter the id of the container you want to start/stop");
         String input = sc.next();
@@ -21,7 +21,7 @@ public class ManagerAPI  extends SuperAPI {
         return input;
     } 
     
-    /** Method: startContainer checks if container has already started and if not, start it */
+    /** Method: startContainer checks if container has already started and if not, start it. */
     public void startContainer() {
         String lastIdInput = handleInput();
         if (lastIdInput == null) { 
@@ -34,7 +34,8 @@ public class ManagerAPI  extends SuperAPI {
         System.out.println("Container started");
     }
 
-    /** Method: stopContainer() checks if container has already stopped and if not, stop it (practically kill it) */
+    /** Method: stopContainer() checks if container has already stopped. 
+     * If not, stop it. */
     public void stopContainer() {
         String lastIdInput = handleInput();
         if (lastIdInput == null) {
@@ -48,7 +49,7 @@ public class ManagerAPI  extends SuperAPI {
     }
 
 
-    /** Method: checkActiveContainerStatus checks if container is active */
+    /** Method: checkActiveContainerStatus checks if container is active. */
     public boolean checkActiveContainerStatus(String idInput) {
         List<Container> containers;
         containers = dc.listContainersCmd().withShowAll(false).exec();
@@ -60,7 +61,7 @@ public class ManagerAPI  extends SuperAPI {
         return false; //container is not active
     }
 
-    /** Method: checkAllContainerStatus checks if container exists */
+    /** Method: checkAllContainerStatus checks if container exists. */
     public boolean checkAllContainerStatus(String idInput) {
         List<Container> containers;
         containers = dc.listContainersCmd().withShowAll(true).exec();
