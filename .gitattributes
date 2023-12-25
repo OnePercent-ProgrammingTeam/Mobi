@@ -1,0 +1,9 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text eol=lf
+
+# Explicitly declare files that should always have LF line endings.
+*.xml text eol=lf
+
+# Explicitly declare files that should always have CRLF line endings.
+# *.txt text eol=crlf
+
