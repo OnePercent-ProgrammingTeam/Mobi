@@ -72,7 +72,7 @@
     </module>
 
     <module name="NewlineAtEndOfFile">
-        <property name="lineSeparator" value="crlf"/>  <!--Allow only Windows-style (CRLF) line endings-->
+        <property name="lineSeparator" value="lf"/>  <!--Allow only Windows-style (CRLF) line endings-->
     </module>
     <module name="FileTabCharacter"/>
 </module>
