@@ -304,4 +304,15 @@ public class MonitorHttp extends SuperHttp {
             System.out.println("Oops, something went wrong...");
         }
     }
+
+    public CloseableHttpResponse getMetricsForDatabase(String id) {
+        String message = "stats"; // get the container statistics in json format
+        
+        MonitorHttp.containerId = id;
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 "/containers/" + 
+                                 MonitorHttp.containerId + 
+                                 "/" + message);
+        return getHttpResponse(message);
+    }
 }
