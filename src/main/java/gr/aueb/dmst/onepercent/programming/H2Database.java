@@ -19,17 +19,20 @@ public class H2Database {
 
     /*Use this method to store the data of the container you want in the database, 
     currently manual, should be automated in the future.*/
-    public void inserMetricsToDatabase() { 
+    public void insertMetricsToDatabase(String id, int i) { 
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
             Class.forName("org.h2.Driver"); // Register JDBC driver
             conn = DriverManager.getConnection(url, user, password); // Open a connection
-
+           
             MonitorHttp monitorHttp = new MonitorHttp();
-            monitorHttp.getContainerStats("CSV");
+            if (i == 1) { 
+                monitorHttp.getMetricsForDatabase(id);
+            }
             String[] info = monitorHttp.prepareStoragedData();
+          
 
             double cpuUsage = Double.parseDouble(info[4]);
             String containerId = info[1];
