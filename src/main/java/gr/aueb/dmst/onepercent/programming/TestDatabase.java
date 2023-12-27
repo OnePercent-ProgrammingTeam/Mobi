@@ -5,13 +5,15 @@ public class TestDatabase {
         IN THE BEGGINING, MORE METHODS WILL BE ADDED IN FUTURE VERSIONS
         FOR NOW YOU CAN SEE THE DATABASE IN ACTION BY COPY-PASTING A CONTAINER ID 
         ( THE COINTAINER HAS TO BE ACTIVE AND RUNNING )*/
-        H2Database h2 = new H2Database();
-        h2.createDatabase();
-        h2.insertContainersToDatabase();
-        h2.getAllContainerInfo();
+        DatabaseAPI db = new DatabaseAPI();
+        db.initializeDB();
+        db.getContainerInfo();
+        db.getMetrics();
         System.out.println(" ");
-        h2.inserMetricsToDatabase();
-        h2.getAllMetrics();
+        String id = "a7e83052644fb656db6283215634471484a141d5d5e818e8ce2037638c229f6f";
+        DatabaseThread dbt = new DatabaseThread(id);
+        dbt.start();
+       
        
     } 
 }
