@@ -10,9 +10,13 @@ public class MenuThread extends Thread {
     Thread thread;
     ExecutorThread executorThread = new ExecutorThread(); 
     MonitorThread monitorThread = new MonitorThread();
+    DataBaseThread dataThread = new DataBaseThread();
+    DataBase database = new DataBase();
 
+   
     @Override
     public void run() {
+        database.createDatabase();
         printMenu(); 
     }
 
@@ -62,23 +66,47 @@ public class MenuThread extends Thread {
                 //set name to the thread so as to be easier to recognize it. 
                 thread.setName("Executor"); 
                 thread.start();
+
+                waitThread();
+
+                /*start concurrently the database Thread*/
+                dataThread.setUserInput(answer);
+                thread = new Thread(dataThread);
+                thread.setName("DataBase"); 
+                thread.start();
+                
                 break;
             case 3, 5, 6, 7, 8:
                 monitorThread.setUserInput(answer);
                 thread = new Thread(monitorThread);
                 thread.setName("Monitor");
                 thread.start();
+
+                waitThread();
+
+                if (answer == 3) {
+                    
+                    /*start concurrently the database Thread*/
+                    dataThread.setUserInput(answer);
+                    thread = new Thread(dataThread);
+                    thread.setName("DataBase"); 
+                    thread.start();
+                }
+                
+
                 break;
             default:
                 System.out.println("Non Valid Input.");
         }
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (answer == 5) {
+            while (Graph.end == false) {
+                waitThread();
+            }
+        } else {
+            waitThread();
         }
-    
+            
+        
         System.out.println("\nWant to run again?\n\nFor YES press Y.\nFor NO press N. ");
         System.out.print("Enter answer: ");
         char choice = INPUT.next().charAt(0);
@@ -90,4 +118,15 @@ public class MenuThread extends Thread {
         }
         return choice == 'Y'; 
     }
+
+
+    public void waitThread() {
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

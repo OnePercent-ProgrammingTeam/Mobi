@@ -35,6 +35,8 @@ public class MonitorHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
+    public static String container;
+
     /** Method: getContainerStats(String) gets statistics about a running container 
      *  (especially CPU usage). 
      *  @param calledby the name of the class that called this method.
@@ -50,17 +52,22 @@ public class MonitorHttp extends SuperHttp {
             outputMessage = "Please type the ID of the running container to save real time data: ";
         }
         MonitorHttp.containerId = Main.handleInput(outputMessage);
+        container = containerId;
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  "/containers/" + 
                                  MonitorHttp.containerId + 
-                                 "/" + message);
+                                 "/" + message);                        
         return getHttpResponse(message);
     }
+
+    /*The static field "imName" is used to keep the name of the image the user want to find */
+    public static String imName;
 
     /** Method: searchImages() searches for an image by it's name. The result is limited to 3. */
     public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Main.handleInput("Please type the name of the image you want to search for: ");
+        imName = imageName;
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  message + 
                                  "?term=" + 
@@ -68,6 +75,9 @@ public class MonitorHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
+    
+
+   
 
     /** Method: executeHttpRequest(String) executes the http request for 
      *  getting info about a container.
@@ -120,8 +130,10 @@ public class MonitorHttp extends SuperHttp {
     public CloseableHttpResponse getHttpResponse(String message) {
         try {
             CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
+
             //int statusCode = response.getStatusLine().getStatusCode();
             //System.out.println("Status Code : " + statusCode);
+
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,6 +239,51 @@ public class MonitorHttp extends SuperHttp {
         }
     }
 
+
+    public String[] getTableforContainer() throws JsonProcessingException {
+        String[] info = new String[8];
+        try {
+            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                    "/containers/" + 
+                                    MonitorHttp.containerId + 
+                                    "/json");
+            executeHttpRequest("prepare storage");
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString());
+
+            info[0] = jsonNode.get("Id").asText();
+            info[1] = jsonNode.get("Name").asText().substring(1);
+            info[2] = jsonNode.get("State").get("Status").asText();
+            info[3] = jsonNode.get("Image").asText();
+            info[4] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("NetworkID")
+                            .asText();
+            info[5] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("Gateway")
+                            .asText();
+            info[6] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("IPAddress")
+                            .asText();
+            info[7] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("MacAddress")
+                            .asText();
+
+        } catch (NullPointerException e) {
+            System.out.println("Exception due to null value");
+        }
+        return info;
+
+    }
+
     /** Method: prepareStorageData() returns a String array with the prepared 
      *  data that will be saved in a csv file. 
      *  @return str a String array with the data that will be saved in a csv file.
@@ -265,7 +322,7 @@ public class MonitorHttp extends SuperHttp {
             LocalTime time = LocalTime.now();
 
             //Date and Time in one
-            str[5] = date.toString() + " " + time.toString().substring(0, 10); 
+            str[5] = date.toString() + " " + time.toString().substring(0, 8); 
             
             return str;
           
