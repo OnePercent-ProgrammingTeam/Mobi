@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,10 +30,14 @@ import java.awt.event.WindowEvent;
  * It uses the JFreeChart library to create the graph. The graph 
  * is created in a new window.
  */
+
 public class Graph extends JFrame {
     
     /** Field XYSeries represents a sequence of zero or more data items in the form (x, y). */
     private XYSeries usageSeries;
+
+    private static boolean flag;
+    public static boolean end;
 
     /** Field: monitorHttp is a MonitorHttp object. */
     static MonitorHttp monitorHttp = new MonitorHttp();
@@ -69,6 +75,7 @@ public class Graph extends JFrame {
         setContentPane(chartPanel);
     }
 
+
     /** Method: updateStats(double) updates the stats with the new data point.
      * @param usage the cpu usage of the container
     */
@@ -78,11 +85,15 @@ public class Graph extends JFrame {
         // Convert the timestamp to milliseconds, type long
         long timestampInMilliseconds = new Date(currentTimestamp).getTime(); 
         usageSeries.addOrUpdate(timestampInMilliseconds, usage);
-        
+
         /*addOrUpdate() method will add a new data point if it doesn't exist, 
         or update the existing one if it does, the parameters it gets are the x and y
         values of the data point (should be double).*/
+    
     }
+
+
+    
 
     /** Method: statsPlot(CloseableHttpResponse) starts updating the stats in order
      *  to plot real time data-the consume of cpu resources every second.
@@ -93,7 +104,6 @@ public class Graph extends JFrame {
         // Simulate real-time data update every second
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
                                                                                  .getContent()));
-    
         Timer timer = new Timer(false); // Create a new timer
         timer.scheduleAtFixedRate(new TimerTask() { // Schedule a task to run every second
             @Override
@@ -107,6 +117,7 @@ public class Graph extends JFrame {
         }, 0, 1000); // Update every second (1000 milliseconds = 1 second) 
     }
     
+    
     /** Method: onRunGraph(BufferedReader, Graph, Timer) runs the graph
      * @param reader a BufferedReader object
      * @param ex a Graph object
@@ -116,30 +127,52 @@ public class Graph extends JFrame {
     public void onRunGraph(BufferedReader reader, Graph ex, Timer timer) throws IOException {
         String inputLine = reader.readLine(); // Read a new line from the response
         if (inputLine != null) {
-            double usage = monitorHttp.getFormattedStats(new StringBuffer(inputLine)); 
+            double usage = monitorHttp.getFormattedStats(new StringBuffer(inputLine));
             updateStats(usage);
+
+            if (flag == false) {
+                LocalDate date = LocalDate.now(); 
+                LocalTime time = LocalTime.now();
+                DataBase database = new DataBase();
+
+                //Date and Time in one
+                String datetime = date.toString() + " " + time.toString().substring(0, 8);
+                int last_id = database.insertMetricsToDatabase(datetime);
+                database.insertMeasureToDatabase(last_id, usage);
+                database.getSomeMetrics(last_id); //helpful
+                database.getSomeMeasure(last_id); //helpful
+            } else {
+                //reader.close();
+                timer.cancel();
+                end = true;
+            }
+            
+            
         } else {
             // No more lines to read, close the reader and cancel the timer
             //This is executed only if there are not more responses 
             reader.close();
             timer.cancel();
         }
+        
     }
+
     
     /** Method: executeDiagram() executes the diagram. */
     public static void executeDiagram() {
-
         Graph cv = new Graph("Container Stats Plotter"); // Create a new Graph object
         cv.setSize(800, 600);  // Set the size of the window
         cv.setLocationRelativeTo(null); // Center the window
         // Set the close operation, so that the application exits when the window is closed
         cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
         CloseableHttpResponse res = monitorHttp.getContainerStats("Graph");
-           
+        flag = false;  
+        end = false;
         cv.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeWindow(cv);
+                flag = true; 
             }
         });
 
