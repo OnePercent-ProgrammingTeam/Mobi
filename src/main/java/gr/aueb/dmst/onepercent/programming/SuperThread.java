@@ -6,6 +6,7 @@ package gr.aueb.dmst.onepercent.programming;
  *  @see MenuThread
  *  @see MonitorThread
  *  @see ManagerThread
+ *  @see DataBaseThread
  */
 public abstract class SuperThread implements Runnable {
     /** Field: userInput is the input of the user that is used in threads to define his options */
