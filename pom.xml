@@ -95,6 +95,17 @@
             <version>2.2.222</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.1</version>
+        </dependency>
 
     </dependencies>
 
@@ -109,6 +120,15 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <reuseForks>false</reuseForks>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>11</release>
                 </configuration>
             </plugin>
 
@@ -135,6 +155,23 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <executions>
+                    <execution>
+                        <!-- Default configuration for running -->
+                        <!-- Usage: mvn clean javafx:run -->
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>org.openjfx.App</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
         </plugins>
     </build>
 
