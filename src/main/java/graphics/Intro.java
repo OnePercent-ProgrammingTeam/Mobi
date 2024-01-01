@@ -14,12 +14,17 @@ import java.nio.file.Paths;
 import javafx.scene.control.Button;
 
 
-
+/** Class: Intro is the class that creates the intro page of the GUI. */
 public class Intro {
 
     //protected static StackPane introayout;
 
-    /** Method: createText() creates the text for the intro page of the GUI */
+    /** Method: createText() creates the text for the intro page of the GUI
+     *  The text contains the title of the application, a greeting message,
+     *  the operating system on which the application is running and a list of the
+     *  functionalities of the application.
+     *  @return textNodes: the array of textNodes that are created
+     */
     public Text[] createText() {
         Text title = new Text("Mobi");
         Text greeting = new Text("Welcome to Mobi - your Docker Companion! ");
@@ -30,7 +35,7 @@ public class Intro {
         Text textNode3 = new Text("2.Manage Images");
         Text textNode4 = new Text("3.Container Analytics");       
         
-        /*Note for programmers: the order of the textNodes in the array is the order 
+        /*NOTE FOR PROGRAMMERS: the order of the textNodes in the array is the order 
         they will be displayed in the GUI*/
         Text[] textNodes = {title, greeting, system, textNode1, textNode2, textNode3, textNode4};
 
@@ -81,7 +86,12 @@ public class Intro {
         }
     }
 
-    /** Method: setImage(String, StackPane)  */
+    /** Method: setImage(String, StackPane) formats the image - whale 
+     *  logo that is dislayed in the intro page of the GUI, next to 
+     *  the title "Mobi". 
+     *  @param path: the path of the image
+     *  @param introLayout: the StackPane (layout) in which the image will be placed
+     */
     public void setImage(String path, StackPane introLayout) {
         Path imagePath = Paths.get(path);
         Image image = new Image(imagePath.toUri().toString());
@@ -93,6 +103,13 @@ public class Intro {
         introLayout.setStyle("-fx-background-color: linear-gradient(to left, #037ADF, #2A2A72);");
     }
 
+    /** Method: createStartButton(StackPane) creates the start button
+     *  that is displayed in the intro page of the GUI. When pressed,
+     *  it takes the user to the main page of the GUI. The action 
+     *  functionality takes place in the GUI class.
+     *  @param introLayout: the StackPane (layout) in which the button will be placed
+     *  @return startButton: the button that is created
+     */
     public Button createStartButton(StackPane introLayout) {
         Button startButton = new Button("Start");
         
@@ -108,6 +125,12 @@ public class Intro {
         return startButton;
     }
 
+    /** Method: createIntroScene(StackPane) creates the intro scene
+     *  of the GUI. It is the first scene that the user sees when
+     *  the application is launched.
+     *  @param introLayout: the StackPane (layout) in which the scene will be placed
+     *  @return introScene: the scene that is created
+     */
     public Scene createIntroScene(StackPane introLayout) {
         Screen screen = Screen.getPrimary();
         javafx.geometry.Rectangle2D bounds = screen.getVisualBounds();
