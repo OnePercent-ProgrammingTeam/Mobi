@@ -51,10 +51,15 @@ public class MainPage {
         Button images = buttons[1];
         Button analytics = buttons[2];
         
+        VBox.setMargin(containers, new javafx.geometry.Insets(70, 0, 0, 75));
+        VBox.setMargin(images, new javafx.geometry.Insets(0, 0, 0, 75));
+        VBox.setMargin(analytics, new javafx.geometry.Insets(0, 0, 0, 75));
+        
         VBox menu = new VBox(30);
         menu.getChildren().addAll(containers, images, analytics);
 
         menu.setStyle("-fx-background-color: #2A2A72;");
+        menu.setPrefWidth(300);
         return menu;
     }
 
