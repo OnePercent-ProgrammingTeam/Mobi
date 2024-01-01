@@ -1,25 +1,18 @@
-package org.openjfx;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+package graphics;
+
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import java.io.IOException;
 import javafx.scene.text.FontWeight;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Stack;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+
 
 
 public class Intro {
@@ -30,13 +23,15 @@ public class Intro {
     public Text[] createText() {
         Text title = new Text("Mobi");
         Text greeting = new Text("Welcome to Mobi - your Docker Companion! ");
-        Text system = new Text("You are running Mobi on: " + System.getProperty("os.name").toLowerCase());
+        Text system = new Text("You are running Mobi on: " + 
+                                System.getProperty("os.name").toLowerCase());
         Text textNode1 = new Text("Mobi offers a suite of powerful tools allowing you to:");
         Text textNode2 = new Text("1.Manage Containers");
         Text textNode3 = new Text("2.Manage Images");
         Text textNode4 = new Text("3.Container Analytics");       
         
-        /*Note for programmers: the order of the textNodes in the array is the order they will be displayed in the GUI*/
+        /*Note for programmers: the order of the textNodes in the array is the order 
+        they will be displayed in the GUI*/
         Text[] textNodes = {title, greeting, system, textNode1, textNode2, textNode3, textNode4};
 
         return textNodes;
@@ -48,33 +43,38 @@ public class Intro {
      */
     public void formatText(Text[] textNodes, StackPane introLayout) {
         if (textNodes.length > 0) {
-            textNodes[0].setFont(Font.font("Monotype Corsiva",FontWeight.BOLD, 50)); // book old ..
+            textNodes[0].setFont(Font.font("Monotype Corsiva", FontWeight.BOLD, 50)); // book old ..
             textNodes[0].setStyle("-fx-fill: white;");
             introLayout.getChildren().add(textNodes[0]);
             StackPane.setAlignment(textNodes[0], Pos.TOP_CENTER);
             StackPane.setMargin(textNodes[0], new javafx.geometry.Insets(40, 0, 0, 0));
-            for (int i=1; i<textNodes.length; i++) {
+            for (int i = 1; i < textNodes.length; i++) {
                 textNodes[i].setFont(Font.font("Arial", 20));
                 textNodes[i].setStyle("-fx-fill: white;");
                 
                 StackPane.setAlignment(textNodes[i], Pos.CENTER);
-                int top=0,left=0,bottom=0,right=0;
+                int top = 0;
+                int left = 0;
+                int bottom = 0;
+                int right = 0;
     
-                if(i==1) {
-                    bottom=100;
+                if (i == 1) {
+                    bottom = 100;
                 }
-                if (i==2) {
-                     top = i*40;
-                     left =60;
-                } else if (i==4) {
-                    top = i*40; 
-                    right=30;
-                }else  {
-                     top = i*40;
-                     left = 0;
+                if (i == 2) {
+                    top = i * 40;
+                    left = 60;
+                } else if (i == 4) {
+                    top = i * 40; 
+                    right = 30;
+                } else {
+                    top = i * 40;
+                    left = 0;
                 }
                 
-                StackPane.setMargin(textNodes[i], new javafx.geometry.Insets(top, right, bottom, left));
+                StackPane
+                .setMargin(textNodes[i], new javafx.geometry.Insets(top, right, bottom, left));
+                
                 introLayout.getChildren().add(textNodes[i]);
             }
             
@@ -83,7 +83,7 @@ public class Intro {
 
     /** Method: setImage(String, StackPane)  */
     public void setImage(String path, StackPane introLayout) {
-        Path imagePath =Paths.get(path);
+        Path imagePath = Paths.get(path);
         Image image = new Image(imagePath.toUri().toString());
         
         ImageView imageView = new ImageView(image);
@@ -95,7 +95,13 @@ public class Intro {
 
     public Button createStartButton(StackPane introLayout) {
         Button startButton = new Button("Start");
-        startButton.setStyle("-fx-background-color: #2A2A72; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        
+        startButton
+            .setStyle("-fx-background-color: #2A2A72;" + 
+                      "-fx-text-fill: white;" + 
+                      "-fx-font-size: 20px;" +  
+                      "-fx-font-weight: bold;");
+        
         StackPane.setAlignment(startButton, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(startButton, new javafx.geometry.Insets(0, 30, 30, 0));
         introLayout.getChildren().add(startButton);
