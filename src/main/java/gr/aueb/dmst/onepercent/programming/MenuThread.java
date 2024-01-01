@@ -60,7 +60,9 @@ public class MenuThread extends Thread {
         }
         
         switch (answer) {
-            case 1, 2, 4:
+            case 1:
+            case 2:
+            case 4:
                 executorThread.setUserInput(answer);
                 thread = new Thread(executorThread);
                 //set name to the thread so as to be easier to recognize it. 
@@ -76,7 +78,11 @@ public class MenuThread extends Thread {
                 thread.start();
                 
                 break;
-            case 3, 5, 6, 7, 8:
+            case 3:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
                 monitorThread.setUserInput(answer);
                 thread = new Thread(monitorThread);
                 thread.setName("Monitor");
