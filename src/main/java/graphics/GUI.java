@@ -61,11 +61,11 @@ public class GUI extends Application {
                         "/Semester 3" +
                         "/Programming II" +
                         "/Assignment" +
-                        "/hellofx" +
+                        "/OnePercent" +
                         "/src" +
                         "/main" +
                         "/resources" +
-                        "/whale.png";
+                        "/containerwhales.png";
         introPage.setImage(path, introLayout);
 
         // MENU CREATION

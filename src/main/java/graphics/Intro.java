@@ -97,8 +97,10 @@ public class Intro {
         Image image = new Image(imagePath.toUri().toString());
         
         ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(300);
+        imageView.setFitWidth(300);
         StackPane.setAlignment(imageView, Pos.TOP_CENTER);
-        StackPane.setMargin(imageView, new javafx.geometry.Insets(40, 0, 0, 160));
+        StackPane.setMargin(imageView, new javafx.geometry.Insets(70, 0, 0, 0));
         introLayout.getChildren().add(imageView);
         introLayout.setStyle("-fx-background-color: linear-gradient(to left, #037ADF, #2A2A72);");
     }
