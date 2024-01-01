@@ -158,4 +158,69 @@ public class MonitorAPI extends SuperAPI {
   
         return containerArray;
     }
+
+    public ArrayList<String> getNameList() {
+        ArrayList<String> nameList = new ArrayList<>();
+        for (ContainerModel c : containerModels) {
+            StringBuilder namesBuilder = new StringBuilder();
+            for (String name : c.getNames()) {
+                namesBuilder.append(name.substring(1)).append(" ");
+            }
+            String formattedNames = namesBuilder.toString().trim();
+            nameList.add(formattedNames);
+        }
+        return nameList;
+    }
+
+    public ArrayList<String> getIdList() {
+        ArrayList<String> id = new ArrayList<String>();
+        containerModels.forEach(c -> {
+            id.add(c.getId());
+        });
+        return id;
+    }
+
+    public ArrayList<String> getStatusList() {
+        ArrayList<String> status = new ArrayList<String>();
+        containerModels.forEach(c -> {
+            status.add(c.getStatus());
+        });
+        return status;
+    }
+
+    public ArrayList<String> getTimeCreatedList() {
+        ArrayList<String> created = new ArrayList<String>();
+        containerModels.forEach(c -> {
+            long unixTimestamp = c.getCreated();
+
+            // Convert Unix timestamp to LocalDateTime
+            LocalDateTime dateTime = LocalDateTime
+                                    .ofInstant(Instant
+                                               .ofEpochSecond(unixTimestamp), 
+                                                              ZoneId.systemDefault());
+
+            // Format the LocalDateTime
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
+            created.add(formattedDateTime);
+        }); 
+        return created;
+    }
+
+    public ArrayList<String> getImageIdList() {
+        ArrayList<String> imageid = new ArrayList<String>();
+        containerModels.forEach(c -> {
+            imageid.add(c.getImageId());
+        });
+        return imageid;
+    }
+
+    public ArrayList<String> getImageNameList() {
+        ArrayList<String> imagename = new ArrayList<String>();
+        containerModels.forEach(c -> {
+            imagename.add(c.getImage());
+        });
+        return imagename;
+    }
+
 }
