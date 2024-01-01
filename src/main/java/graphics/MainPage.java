@@ -5,9 +5,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 
-
+/** Class: MainPage is the class that creates the main page of the GUI. */
 public class MainPage {
     
+    /** Method: createButtons() creates the buttons that lead to the functionalities
+     *  of the application.
+     *  @return buttons: the array of buttons that are created
+     */
     public Button[] createButtons() {
         Button containers = new Button("Containers");
         Button images = new Button("Images");
@@ -36,6 +40,9 @@ public class MainPage {
         return buttons;
     }
 
+    /** Method: createMenu() creates the menu of the main page of the GUI.
+     *  @return menu: the VBox (layout) that is created
+     */
     public VBox createMenu() {
         
         Button[] buttons = createButtons();
@@ -51,6 +58,10 @@ public class MainPage {
         return menu;
     }
 
+    /** Method: createMainScene(BorderPane) creates the main scene of the GUI.
+     *  @param borderPane: the BorderPane (layout) in which the scene will be placed
+     *  @return mainScene: the scene that is created
+     */
     public Scene createMainScene(BorderPane borderPane) {
         Screen screen = Screen.getPrimary();
         javafx.geometry.Rectangle2D bounds = screen.getVisualBounds();
