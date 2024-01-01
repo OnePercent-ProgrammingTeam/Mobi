@@ -1,4 +1,4 @@
-package org.openjfx;
+package graphics;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -13,9 +13,23 @@ public class MainPage {
         Button images = new Button("Images");
         Button analytics = new Button("Analytics");
 
-        containers.setStyle("-fx-background-color: #2A2A72; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
-        images.setStyle("-fx-background-color: #2A2A72; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
-        analytics.setStyle("-fx-background-color: #2A2A72; -fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+        containers
+            .setStyle("-fx-background-color: #2A2A72;" +  
+                      "-fx-text-fill: white;" + 
+                      "-fx-font-size: 20px;" + 
+                      "-fx-font-weight: bold;");
+        
+        images
+             .setStyle("-fx-background-color: #2A2A72;" +
+                      "-fx-text-fill: white;" +
+                      "-fx-font-size: 20px;" + 
+                      "-fx-font-weight: bold;");
+        
+        analytics
+            .setStyle("-fx-background-color: #2A2A72;" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 20px;" + 
+            "-fx-font-weight: bold;");
     
         Button[] buttons = {containers, images, analytics};
 
