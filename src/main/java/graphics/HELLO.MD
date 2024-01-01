@@ -1,1 +1,1 @@
-         hello, this is the directory for GUI
+hello, this is the directory for GUI
