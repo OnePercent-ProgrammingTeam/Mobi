@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -61,22 +60,23 @@ public class GUI extends Application {
                         "/Semester 3" +
                         "/Programming II" +
                         "/Assignment" +
-                        "/OnePercent" +
+                        "/hellofx" +
                         "/src" +
                         "/main" +
-                        "/resources" +
+                        "/resources" + "/org/openjfx" +
                         "/containerwhales.png";
         introPage.setImage(path, introLayout);
 
         // MENU CREATION
         VBox menu = mainPage.createMenu();
         borderPane.setLeft(menu);
-
-        //LIST CREATION 
-        GridPane grid = list.createList();
-        borderPane.setCenter(grid);
-
         
+        // VBOX
+        VBox vbox = list.createList();
+        borderPane.setCenter(vbox);
+
+
+
         window.setScene(introScene); 
         window.show();
     }
