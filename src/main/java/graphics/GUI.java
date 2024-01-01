@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -34,6 +35,7 @@ public class GUI extends Application {
        
         Intro introPage = new Intro();
         MainPage mainPage = new MainPage();
+        ListPane list = new ListPane();
         
         // SCENES CREATION
         Scene introScene = introPage.createIntroScene(introLayout);
@@ -69,6 +71,11 @@ public class GUI extends Application {
         // MENU CREATION
         VBox menu = mainPage.createMenu();
         borderPane.setLeft(menu);
+
+        //LIST CREATION 
+        GridPane grid = list.createList();
+        borderPane.setCenter(grid);
+
         
         window.setScene(introScene); 
         window.show();
