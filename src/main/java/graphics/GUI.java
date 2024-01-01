@@ -1,4 +1,4 @@
-package org.openjfx;
+package graphics;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -12,9 +12,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import javafx.scene.control.Button;
 
-/**
- * JavaFX App
- */
+/** Class: GUI is the  */
 public class GUI extends Application {
 
     @Override
@@ -43,7 +41,20 @@ public class GUI extends Application {
         introPage.formatText(textNodes, introLayout);
 
         // IMAGE CREATION
-        String path = "C:/Users/scobi/OneDrive/Έγγραφα/UNIVERSITY/AUEB/Semester 3/Programming II/Assignment/hellofx/src/main/resources/org/openjfx/whale.png";
+        String path = "C:/Users" +
+                        "/scobi" +
+                        "/OneDrive" +
+                        "/Έγγραφα" +
+                        "/UNIVERSITY" +
+                        "/AUEB" +
+                        "/Semester 3" +
+                        "/Programming II" +
+                        "/Assignment" +
+                        "/hellofx" +
+                        "/src" +
+                        "/main" +
+                        "/resources" +
+                        "/whale.png";
         introPage.setImage(path, introLayout);
 
         // MENU CREATION
