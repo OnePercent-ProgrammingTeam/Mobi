@@ -16,26 +16,23 @@ public class MainPage {
         Button containers = new Button("Containers");
         Button images = new Button("Images");
         Button analytics = new Button("Analytics");
+        Button help = new Button("Help");
+        Button close = new Button("Close Program");
 
-        containers
-            .setStyle("-fx-background-color: #2A2A72;" +  
-                      "-fx-text-fill: white;" + 
-                      "-fx-font-size: 20px;" + 
-                      "-fx-font-weight: bold;");
+        String style = "-fx-background-color: #2A2A72;" +
+                       "-fx-text-fill: white;" +
+                       "-fx-font-size: 20px;" + 
+                       "-fx-font-weight: bold;";
+        containers.setStyle(style);
+        images.setStyle(style);
+        analytics.setStyle(style);
         
-        images
-             .setStyle("-fx-background-color: #2A2A72;" +
-                      "-fx-text-fill: white;" +
-                      "-fx-font-size: 20px;" + 
-                      "-fx-font-weight: bold;");
+        help.setStyle(style);
+
+        close.setStyle(style);
+        close.setOnAction(e -> closeProgram());
         
-        analytics
-            .setStyle("-fx-background-color: #2A2A72;" +
-            "-fx-text-fill: white;" +
-            "-fx-font-size: 20px;" + 
-            "-fx-font-weight: bold;");
-    
-        Button[] buttons = {containers, images, analytics};
+        Button[] buttons = {containers, images, analytics, help, close};
 
         return buttons;
     }
@@ -43,20 +40,23 @@ public class MainPage {
     /** Method: createMenu() creates the menu of the main page of the GUI.
      *  @return menu: the VBox (layout) that is created
      */
-    public VBox createMenu() {
-        
-        Button[] buttons = createButtons();
+    public VBox createMenu(Button[] buttons) {
         
         Button containers = buttons[0];
         Button images = buttons[1];
         Button analytics = buttons[2];
+        Button help = buttons[3];
+        Button close = buttons[4];
+
         
         VBox.setMargin(containers, new javafx.geometry.Insets(70, 0, 0, 75));
         VBox.setMargin(images, new javafx.geometry.Insets(0, 0, 0, 75));
         VBox.setMargin(analytics, new javafx.geometry.Insets(0, 0, 0, 75));
-        
+        VBox.setMargin(help, new javafx.geometry.Insets(0, 0, 0, 75));
+        VBox.setMargin(close, new javafx.geometry.Insets(300, 0, 0, 75));
+
         VBox menu = new VBox(30);
-        menu.getChildren().addAll(containers, images, analytics);
+        menu.getChildren().addAll(containers, images, analytics, help, close);
 
         menu.setStyle("-fx-background-color: #2A2A72;");
         menu.setPrefWidth(300);
@@ -73,5 +73,15 @@ public class MainPage {
         Scene mainScene = new Scene(borderPane, bounds.getWidth(), bounds.getHeight());
         return mainScene;
     }
+
+    public void closeProgram() {
+        Boolean answer = ConfirmBox.display("Exit", "Sure you want to exit?");
+        
+        if (answer && GUI.window != null)  // Check for null before calling close()
+             GUI.window.close();
+    }
+    
+
+
 
 }
