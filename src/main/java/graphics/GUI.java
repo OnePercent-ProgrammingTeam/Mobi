@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import java.io.IOException;
 import javafx.scene.control.Button;
-
+//import javafx.scene.control.TreeView;
 /** Class: GUI is the core class that runs the Graphics of
  * the application. It uses the Intro and MainPage classes
  * @see Intro
@@ -19,14 +19,22 @@ import javafx.scene.control.Button;
  */
 public class GUI extends Application {
 
+    static Stage window;
+    
 
     /** Method: start(Stage) is the method that runs the application.
      * @param window is the stage of the application.
      * @throws IOException
      */
     @Override
-    public void start(Stage window) throws IOException {
+    public void start(Stage stage) throws IOException {
        
+        window = stage;
+        window.setOnCloseRequest(e -> {
+            e.consume();
+            closeProgram();
+        });
+
         // WINDOW CREATION
         window.setTitle("Mobi");
         StackPane introLayout = new StackPane();
@@ -36,12 +44,13 @@ public class GUI extends Application {
         MainPage mainPage = new MainPage();
         ListPane list = new ListPane();
         
+        
         // SCENES CREATION
         Scene introScene = introPage.createIntroScene(introLayout);
         
         BorderPane borderPane = new BorderPane();
         Scene mainScene = mainPage.createMainScene(borderPane);
-
+        
         // BUTTON CREATION
         Button startButton = introPage.createStartButton(introLayout);
         startButton.setOnAction(e -> window.setScene(mainScene));
@@ -67,11 +76,20 @@ public class GUI extends Application {
                         "/containerwhales.png";
         introPage.setImage(path, introLayout);
 
-        // MENU CREATION
-        VBox menu = mainPage.createMenu();
+        // Create the tree menu on the left of the main page
+        Tree treeobj = new Tree();
+        //TreeView<String> tree = treeobj.createTree();
+        //tree.setStyle("-fx-background-color: #2A2A72;");
+
+        //VBox menu = new VBox();
+       // menu.getChildren().add(tree);
+        //borderPane.setLeft(menu);
+        //menu.setStyle("-fx-background-color: #2A2A72;");
+        VBox menu = treeobj.createTree();
         borderPane.setLeft(menu);
-        
-        // VBOX
+    
+
+        // Create list of containers in the center of the main page
         VBox vbox = list.createList();
         borderPane.setCenter(vbox);
 
@@ -100,6 +118,13 @@ public class GUI extends Application {
         return fxmlLoader.load();
     }
     
+    public void closeProgram() {
+        Boolean answer = ConfirmBox.display("Exit", "Sure you want to exit?");
+        
+        if (answer && window != null)  // Check for null before calling close()
+             window.close();
+    }
+
     public static void main(String[] args) {
         //System.out.println(javafx.scene.text.Font.getFamilies());
         launch(args);
