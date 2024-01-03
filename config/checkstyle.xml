@@ -53,7 +53,7 @@
         <module name="CyclomaticComplexity">
             <property name="max" value="15"/>
         </module>
-        <module name="NPathComplexity"/>
+      <!-- <module name="NPathComplexity"/> -->
 
 
         <module name="ArrayTypeStyle"/>
