@@ -30,7 +30,7 @@ public class SuperHttp implements HttpInterface {
     /** Field httpPost request (Post is "to request to do something e.g start container")*/
     protected static HttpPost postRequest;
     /** Container id of the container that is going to be started, stopped or inspected */
-    protected static String containerId; // used in junit test
+    public static String containerId; // used in junit test
 
     /**
      * Http Get request (Get is "to request to get something e.g info about
@@ -42,7 +42,7 @@ public class SuperHttp implements HttpInterface {
     /** Http response return by the executed http request */
     protected CloseableHttpResponse response;
     /** Http response, read using StringBuffer */
-    protected static StringBuffer response1; // used in junit test
+    public static StringBuffer response1; // used in junit test
 
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
