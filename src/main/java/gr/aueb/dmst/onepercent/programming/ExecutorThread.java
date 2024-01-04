@@ -13,11 +13,25 @@ public class ExecutorThread extends SuperThread {
     public void run() { 
         var containerManagerHttp = new ManagerHttp();
         if (this.userInput == 1) {
-            containerManagerHttp.startContainer();
+            //for command line 
+            //containerManagerHttp.startContainer();
+
+            //for GUI
+            containerManagerHttp.startContainerGUI();
+
         } else if (this.userInput == 2) {
-            containerManagerHttp.stopContainer();
+            //for command line 
+            //containerManagerHttp.stopContainer();
+
+            //for GUI
+            containerManagerHttp.stopContainerGUI();
+
         } else if (this.userInput == 4) {
+            //for command line 
             containerManagerHttp.pullImage();
+
+            //for GUI
+            //containerManagerHttp.pullImageGUI();
         }
     }  
 }
