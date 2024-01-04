@@ -97,47 +97,62 @@ public class ManagerHttp extends SuperHttp {
      *  code of the http response and the request that has been done.
      * @param message the message that indicates the action that is going to be executed. 
      */
-    public void handleOutput(String message) {
+    public String handleOutput(String message) {
+        String output = "";
+        if (response == null) {
+            output = "response has not been initialized";
+        } else {
+            output = provideMessage(message);
+        }
+        
+      
+        System.out.println(output);
+        return output;
+
+    }
+
+    private String provideMessage(String message) {
+        String output = "";
         if (message.equals("start")) {
             switch (response.getStatusLine().getStatusCode()) {
                 case 204:
-                    System.out.println("Container " + message  + " was successfull.");
+                    output = "Container " + message  + " was successfull.";
                     break;
                 case 304:
-                    System.out.println("Container already started.");
+                    output = "Container already started.";
                     break;
                 case 404:
-                    System.out.println("There is no such container. Try again");
+                    output = "There is no such container. Try again";
                     break;
                 case 500:
-                    System.out.println("Server error!");
+                    output = "Server error!";
             }
         } else if (message.equals("stop")) {
             switch (response.getStatusLine().getStatusCode()) {
                 case 204:
-                    System.out.println("Container " + message  + " was successfull.");
+                    output = "Container " + message  + " was successfull.";
                     break;
                 case 304:
-                    System.out.println("Container already stopped.");
+                    output = "Container already stopped.";
                     break;
                 case 404:
-                    System.out.println("There is no such container. Try again");
+                    output = "There is no such container. Try again";
                     break;
                 case 500:
-                    System.out.println("Server error!");
+                    output = "Server error!";
             }
         } else if (message.equals("pull")) {
             switch (response.getStatusLine().getStatusCode()) {
                 case 200:
-                    System.out.println("Image " + message + " was successfull.");
+                    output = "Image " + message + " was successfull.";
                     break;
                 case 404:
-                    System.out.println("Image not found.");
+                    output = "Image not found.";
                     break;
                 case 500:
-                    System.out.println("Server error!");
+                    output = "Server error!";
             }
         }
-
+        return output;
     }
 }
