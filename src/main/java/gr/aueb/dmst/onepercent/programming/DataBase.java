@@ -198,7 +198,7 @@ public class DataBase {
             Connection connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
 
-            String container = MonitorHttp.container;
+            String container = MonitorHttp.conId;
 
             query = "INSERT INTO Measure (ID, C_ID, Cpu_usage) VALUES ('" 
                     + last_id + "','" + container + "','" + cpu + "');";
@@ -363,6 +363,37 @@ public class DataBase {
                 
                 System.out.println("ID of metrics: " + id);
                 System.out.println("Date of metrics: " + datetime);
+                System.out.println();
+            }
+
+            statement.close(); 
+            connection.close(); 
+           
+        } catch (ClassNotFoundException | SQLException e) { 
+            e.printStackTrace();
+        } 
+    }
+
+    /*Method for check for "Image"*/
+    public void getImageForSearch() {
+        try {
+            Class.forName("org.h2.Driver"); 
+            Connection connection = DriverManager.getConnection(url); 
+            Statement statement = connection.createStatement(); 
+              
+            query = "SELECT DISTINCT NAME"
+                    + "FROM Image"
+                    + "ORDER BY ID DESC"
+                    + "LIMIT 5";
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                int id = result.getInt("ID");
+                String imname = result.getString("NAME");
+
+                
+                System.out.println("ID of metrics: " + id);
+                System.out.println("Name of Image: " + imname);
                 System.out.println();
             }
 
