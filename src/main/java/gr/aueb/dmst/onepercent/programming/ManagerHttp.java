@@ -24,10 +24,28 @@ public class ManagerHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
+    /** Method: startContainerGUI() starts container with http request 
+     * without showing messages to command line. 
+     */
+    public void startContainerGUI() {
+        String message = "start";
+        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
+        executeHttpRequest(message);
+    }
+
     /** Method: stopContainer() stops container with http request. */
     public void stopContainer() {
         String message = "stop";
         containerId = Main.handleInput("Please type the container ID to stop the container: ");
+        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
+        executeHttpRequest(message);
+    }
+
+    /** Method: stopContainerGUI() stops container with http request
+     * without showing messages to command line. 
+     */
+    public void stopContainerGUI() {
+        String message = "stop";
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpRequest(message);
     }
