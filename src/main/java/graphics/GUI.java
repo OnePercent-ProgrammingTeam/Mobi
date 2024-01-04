@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import java.io.IOException;
 import javafx.scene.control.Button;
+import gr.aueb.dmst.onepercent.programming.MenuThread;
 //import javafx.scene.control.TreeView;
 /** Class: GUI is the core class that runs the Graphics of
  * the application. It uses the Intro and MainPage classes
@@ -20,7 +21,7 @@ import javafx.scene.control.Button;
 public class GUI extends Application {
 
     static Stage window;
-    
+    static MenuThread menuThread;
 
     /** Method: start(Stage) is the method that runs the application.
      * @param window is the stage of the application.
@@ -29,6 +30,8 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) throws IOException {
        
+        createMenuThread();
+
         window = stage;
         window.setOnCloseRequest(e -> {
             e.consume();
@@ -76,24 +79,18 @@ public class GUI extends Application {
                         "/containerwhales.png";
         introPage.setImage(path, introLayout);
 
-        // Create the tree menu on the left of the main page
-        Tree treeobj = new Tree();
-        //TreeView<String> tree = treeobj.createTree();
-        //tree.setStyle("-fx-background-color: #2A2A72;");
 
-        //VBox menu = new VBox();
-       // menu.getChildren().add(tree);
-        //borderPane.setLeft(menu);
-        //menu.setStyle("-fx-background-color: #2A2A72;");
-        VBox menu = treeobj.createTree();
-        borderPane.setLeft(menu);
     
 
         // Create list of containers in the center of the main page
         VBox vbox = list.createList();
         borderPane.setCenter(vbox);
 
-
+        // Create the tree menu on the left of the main page
+        Tree treeobj = new Tree();
+        
+        VBox menu = treeobj.createTree(list);
+        borderPane.setLeft(menu);
 
         window.setScene(introScene); 
         window.show();
@@ -128,6 +125,12 @@ public class GUI extends Application {
     public static void main(String[] args) {
         //System.out.println(javafx.scene.text.Font.getFamilies());
         launch(args);
+    }
+
+    private void createMenuThread() {
+        menuThread = new MenuThread();
+        Thread thread = new Thread(menuThread);
+        thread.start();
     }
 
 }
