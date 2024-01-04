@@ -9,8 +9,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.Node;
-//import java.lang.reflect.Array;
 import java.util.ArrayList;
 import javafx.scene.control.CheckBox;
 public class ListPane {
@@ -18,6 +16,7 @@ public class ListPane {
     GridPane grid;
     static ArrayList<String> ids;
     ArrayList<CheckBox> checkboxesList = new ArrayList<>();
+    ArrayList<Integer> selectedIndices = new ArrayList<>();
 
     public GridPane getGrid() {
         
@@ -109,26 +108,9 @@ public class ListPane {
         return listOfContainers;
     }
 
-    ArrayList<Integer> selectedIndices = new ArrayList<>();
     
-    public ArrayList<Integer> getSelectedIndices() {
-        ArrayList<CheckBox> selectedCheckboxes = new ArrayList<>();
-        for (Node node : grid.getChildren()) {
-            if (node instanceof CheckBox) {
-                CheckBox checkBox = (CheckBox) node;
-                if (checkBox.isSelected()) {
-                    selectedCheckboxes.add(checkBox);
-                    int index = selectedCheckboxes.indexOf(checkBox);
-                    selectedIndices.add(index);
-                    System.out.println(index);
-                }
-            }
-        }
-        return selectedIndices;
-        //return selectedCheckboxes;
-    }
  
-    public ArrayList<Integer> getSelectedIndices2() {
+    public ArrayList<Integer> getSelectedIndices() {
         for (CheckBox checkBox : checkboxesList) {
             if (checkBox.isSelected()) {
                 int index = checkboxesList.indexOf(checkBox);
