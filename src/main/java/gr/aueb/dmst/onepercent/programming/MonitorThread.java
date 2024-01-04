@@ -11,15 +11,30 @@ public class MonitorThread extends SuperThread {
     public void run() { 
         var containerMonitorHttp = new MonitorHttp();
         if (this.userInput == 3) {
-            containerMonitorHttp.searchImages();
+            //for command line
+            //containerMonitorHttp.searchImages();
+
+            //for GUI
+            containerMonitorHttp.searchImagesGUI();
+            
         } else if (this.userInput == 5) {
-            Graph.executeDiagram(); 
+
+            //for command line
+            Graph.executeDiagram();
+
         } else if (this.userInput == 6) {
-            containerMonitorHttp.inspectContainer();
+            //for command line
+            //containerMonitorHttp.inspectContainer();
+
+            //for GUI
+            containerMonitorHttp.inspectContainerGUI();
+
         } else if (this.userInput == 7) {
+            //for command line
             CSV csv = new CSV();
             csv.startSavingData();   
         } else if (this.userInput == 8) {
+            //only for command line
             SuperAPI.createDockerClient();
             MonitorAPI containerMonitor = new MonitorAPI();
             containerMonitor.initializeContainerModels();
