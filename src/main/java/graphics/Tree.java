@@ -72,13 +72,13 @@ public class Tree {
                     // Code to be executed when the tree item Start is clicked
                     //System.out.println(newValue.getValue());
                     int answer = 1; // Start container option, keeping compatibility with CLI
-                    startContainers(listPane, answer);
+                    executeFunctionality(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Stop")) {
                     // Code to be executed when the tree item Stop is clicked
                     int aswer = 2;
-                    stopContainers(listPane, aswer);
+                    executeFunctionality(listPane, aswer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Info")) {
@@ -115,34 +115,19 @@ public class Tree {
         return menu;
     }
 
-    private void startContainers(ListPane listPane, int answer) {
-        //ArrayList<CheckBox> checkboxes = listPane.getSelectedIndices();
-        ArrayList<Integer> indices = listPane.getSelectedIndices2();
+    private void executeFunctionality(ListPane listPane, int answer) {
+        ArrayList<Integer> indices = listPane.getSelectedIndices();
         
-        for (int i : indices) {
-            ManagerHttp.containerId = ListPane.ids.get(i);
-            GUI.menuThread.handleUserInputGUI(1);
-            //manager.startContainerGUI(ListPane.ids.get(i));
-            System.out.println("-----------------------------------------------");
-            System.out.println(ListPane.ids.get(i));
-            System.out.println("START");
-            System.out.println("-----------------------------------------------");
-        }
-    }
-
-    private void stopContainers(ListPane listPane, int answer) {
-        
-        ArrayList<Integer> indices = listPane.getSelectedIndices2();
         for (int i : indices) {
             ManagerHttp.containerId = ListPane.ids.get(i);
             GUI.menuThread.handleUserInputGUI(answer);
+            //manager.startContainerGUI(ListPane.ids.get(i));
             System.out.println("-----------------------------------------------");
             System.out.println(ListPane.ids.get(i));
-            System.out.println("STOP");
             System.out.println("-----------------------------------------------");
-
         }
     }
+
 
 
     //Create Branches for your Tree
