@@ -13,8 +13,13 @@ public abstract class SuperThread implements Runnable {
     protected int userInput;
 
     /** Method: setUserInput() sets the user input */
-    protected void setUserInput(int userInput) {
+    public void setUserInput(int userInput) {
         this.userInput = userInput;
+    }
+
+    /** Method: getUserInput() gets the user input */
+    public int getUserInput() {
+        return this.userInput;
     }
 
     // This must be implemented as SuperThread implements Runnable
