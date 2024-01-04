@@ -17,6 +17,8 @@ public class ListPane {
     
     GridPane grid;
     static ArrayList<String> ids;
+    ArrayList<CheckBox> checkboxesList = new ArrayList<>();
+
     public GridPane getGrid() {
         
         grid = new GridPane();
@@ -58,14 +60,14 @@ public class ListPane {
         ArrayList<String> statuses = monitorAPI.getStatusList();
         ArrayList<String> times = monitorAPI.getTimeCreatedList();
 
-
+        int count = 0;
         //Create CheckBoxes
         for (int i = 0; i < names.size(); i++) {
             CheckBox checkBox = new CheckBox();
             GridPane.setConstraints(checkBox, 0, i + 1);
             grid.getChildren().add(checkBox);
             GridPane.setHalignment(checkBox, HPos.RIGHT);
-            
+            checkboxesList.add(checkBox);
         }
 
         for (int i = 0; i < names.size(); i++) {
@@ -108,10 +110,9 @@ public class ListPane {
     }
 
     ArrayList<Integer> selectedIndices = new ArrayList<>();
+    
     public ArrayList<Integer> getSelectedIndices() {
         ArrayList<CheckBox> selectedCheckboxes = new ArrayList<>();
-    
-
         for (Node node : grid.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) node;
@@ -126,6 +127,19 @@ public class ListPane {
         return selectedIndices;
         //return selectedCheckboxes;
     }
+ 
+    public ArrayList<Integer> getSelectedIndices2() {
+        for (CheckBox checkBox : checkboxesList) {
+            if (checkBox.isSelected()) {
+                int index = checkboxesList.indexOf(checkBox);
+                selectedIndices.add(index);
+                System.out.println(index);
+            }
+        }
+        return selectedIndices;
+    }
+
+
 
     public VBox createList() {
         GridPane grid = getGrid();
