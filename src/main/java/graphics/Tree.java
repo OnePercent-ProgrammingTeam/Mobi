@@ -5,13 +5,17 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.util.ArrayList;
+import gr.aueb.dmst.onepercent.programming.ManagerHttp;
 
+//import javafx.scene.control.CheckBox;
 public class Tree {
 
     Stage window;
     TreeView<String> tree;
+    ManagerHttp manager = new ManagerHttp();
 
-    public VBox createTree() {
+    public VBox createTree(ListPane listPane) {
 
         TreeItem<String> root;
         TreeItem<String> containers;
@@ -66,12 +70,15 @@ public class Tree {
             .addListener((V, oldValue, newValue) -> {
                 if (newValue != null && newValue.getValue().equals("Start")) {
                     // Code to be executed when the tree item Start is clicked
-                    System.out.println(newValue.getValue());
+                    //System.out.println(newValue.getValue());
+                    int answer = 1; // Start container option, keeping compatibility with CLI
+                    startContainers(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Stop")) {
                     // Code to be executed when the tree item Stop is clicked
-                    System.out.println(newValue.getValue()); 
+                    int aswer = 2;
+                    stopContainers(listPane, aswer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Info")) {
@@ -107,6 +114,29 @@ public class Tree {
 
         return menu;
     }
+
+    private void startContainers(ListPane listPane, int answer) {
+        //ArrayList<CheckBox> checkboxes = listPane.getSelectedIndices();
+        ArrayList<Integer> indices = listPane.getSelectedIndices();
+        
+        for (int i : indices) {
+            ManagerHttp.containerId = ListPane.ids.get(i);
+            GUI.menuThread.handleUserInputGUI(1);
+            //manager.startContainerGUI(ListPane.ids.get(i));
+            //System.out.println(ListPane.ids.get(i));
+        }
+    }
+
+    private void stopContainers(ListPane listPane, int answer) {
+        
+        ArrayList<Integer> indices = listPane.getSelectedIndices();
+        for (int i : indices) {
+            ManagerHttp.containerId = ListPane.ids.get(i);
+            GUI.menuThread.handleUserInputGUI(answer);
+
+        }
+    }
+
 
     //Create Branches for your Tree
     public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
