@@ -24,12 +24,19 @@ public class ManagerHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
+    public void startContainerGUI(String containerId) {
+        String message = "start";
+        this.containerId = containerId;
+        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
+        executeHttpRequest(message);
+    }
+
     /** Method: startContainerGUI() starts container with http request 
      * without showing messages to command line. 
      */
     public void startContainerGUI() {
         String message = "start";
-        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
+        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + this.containerId + "/" + message);
         executeHttpRequest(message);
     }
 
