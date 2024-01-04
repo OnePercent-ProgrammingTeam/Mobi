@@ -9,12 +9,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.Node;
+//import java.lang.reflect.Array;
 import java.util.ArrayList;
 import javafx.scene.control.CheckBox;
 public class ListPane {
+    
+    GridPane grid;
+    static ArrayList<String> ids;
     public GridPane getGrid() {
         
-        GridPane grid = new GridPane();
+        grid = new GridPane();
         grid.setHgap(70);
         grid.setVgap(20);
         grid.setAlignment(javafx.geometry.Pos.TOP_CENTER);
@@ -49,7 +54,7 @@ public class ListPane {
         monitorAPI.initializeContainerModels();
 
         ArrayList<String> names = monitorAPI.getNameList();
-        ArrayList<String> ids = monitorAPI.getIdList();
+        ids = monitorAPI.getIdList();
         ArrayList<String> statuses = monitorAPI.getStatusList();
         ArrayList<String> times = monitorAPI.getTimeCreatedList();
 
@@ -60,10 +65,8 @@ public class ListPane {
             GridPane.setConstraints(checkBox, 0, i + 1);
             grid.getChildren().add(checkBox);
             GridPane.setHalignment(checkBox, HPos.RIGHT);
-
+            
         }
-
-        
 
         for (int i = 0; i < names.size(); i++) {
             Label name1 = new Label(names.get(i));
@@ -101,10 +104,27 @@ public class ListPane {
         Text listOfContainers = new Text("List of Containers");
         listOfContainers.setFont(Font.font("Tahoma", FontWeight.BOLD, 30)); // book old ..
         listOfContainers.setStyle("-fx-fill: #2A2A72;");
-        //stackpane.getChildren().add(listOfContainers);
-        //StackPane.setAlignment(listOfContainers, Pos.TOP_CENTER);
-        //StackPane.setMargin(listOfContainers, new javafx.geometry.Insets(40, 0, 0, 0));
         return listOfContainers;
+    }
+
+    ArrayList<Integer> selectedIndices = new ArrayList<>();
+    public ArrayList<Integer> getSelectedIndices() {
+        ArrayList<CheckBox> selectedCheckboxes = new ArrayList<>();
+    
+
+        for (Node node : grid.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) node;
+                if (checkBox.isSelected()) {
+                    selectedCheckboxes.add(checkBox);
+                    int index = selectedCheckboxes.indexOf(checkBox);
+                    selectedIndices.add(index);
+                    System.out.println(index);
+                }
+            }
+        }
+        return selectedIndices;
+        //return selectedCheckboxes;
     }
 
     public VBox createList() {
