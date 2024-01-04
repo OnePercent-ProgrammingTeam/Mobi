@@ -117,22 +117,29 @@ public class Tree {
 
     private void startContainers(ListPane listPane, int answer) {
         //ArrayList<CheckBox> checkboxes = listPane.getSelectedIndices();
-        ArrayList<Integer> indices = listPane.getSelectedIndices();
+        ArrayList<Integer> indices = listPane.getSelectedIndices2();
         
         for (int i : indices) {
             ManagerHttp.containerId = ListPane.ids.get(i);
             GUI.menuThread.handleUserInputGUI(1);
             //manager.startContainerGUI(ListPane.ids.get(i));
-            //System.out.println(ListPane.ids.get(i));
+            System.out.println("-----------------------------------------------");
+            System.out.println(ListPane.ids.get(i));
+            System.out.println("START");
+            System.out.println("-----------------------------------------------");
         }
     }
 
     private void stopContainers(ListPane listPane, int answer) {
         
-        ArrayList<Integer> indices = listPane.getSelectedIndices();
+        ArrayList<Integer> indices = listPane.getSelectedIndices2();
         for (int i : indices) {
             ManagerHttp.containerId = ListPane.ids.get(i);
             GUI.menuThread.handleUserInputGUI(answer);
+            System.out.println("-----------------------------------------------");
+            System.out.println(ListPane.ids.get(i));
+            System.out.println("STOP");
+            System.out.println("-----------------------------------------------");
 
         }
     }
