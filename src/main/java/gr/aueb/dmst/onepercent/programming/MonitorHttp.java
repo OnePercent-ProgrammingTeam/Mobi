@@ -35,7 +35,23 @@ public class MonitorHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
-    public static String container;
+    /** Method: inspectContainerGUI() retrieves information about a container that might be 
+     * or might not be locally installed. 
+     * This method does not show messages to command line. 
+     */
+    public void inspectContainerGUI() {
+        String message = "json"; // get the container information in json format
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 "/containers/" + 
+                                 MonitorHttp.containerId + 
+                                 "/" + message);
+        executeHttpRequest(message);
+    }
+
+    /**The static field "conId" is used to keep the id of the container the user wants to find,  
+     * in order to be visible in the database. 
+     */
+    public static String conId;
 
     /** Method: getContainerStats(String) gets statistics about a running container 
      *  (especially CPU usage). 
@@ -52,7 +68,7 @@ public class MonitorHttp extends SuperHttp {
             outputMessage = "Please type the ID of the running container to save real time data: ";
         }
         MonitorHttp.containerId = Main.handleInput(outputMessage);
-        container = containerId;
+        conId = containerId;
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  "/containers/" + 
                                  MonitorHttp.containerId + 
@@ -60,13 +76,27 @@ public class MonitorHttp extends SuperHttp {
         return getHttpResponse(message);
     }
 
-    /*The static field "imName" is used to keep the name of the image the user want to find */
+    /**The static field "imName" is used to keep the name of the image the user wants to find,  
+     * in order to be visible in the database. 
+     */
     public static String imName;
 
     /** Method: searchImages() searches for an image by it's name. The result is limited to 3. */
     public void searchImages() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Main.handleInput("Please type the name of the image you want to search for: ");
+        imName = imageName;
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 message + 
+                                 "?term=" + 
+                                 imageName + "&limit=3");
+        executeHttpRequest(message);
+    }
+
+    /** Method: searchImagesGUI() searches for an image by it's name. The result is limited to 3. 
+     * This method does not show messages to command line. */
+    public void searchImagesGUI() {
+        String message = "/images/search"; // get the container statistics in json format
         imName = imageName;
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  message + 
