@@ -6,7 +6,9 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+
 import gr.aueb.dmst.onepercent.programming.ManagerHttp;
+import gr.aueb.dmst.onepercent.programming.MonitorHttp;
 
 /**
  * Class: Tree is the class that creates the tree menu of the GUI.
@@ -78,11 +80,12 @@ public class Tree {
          */
         tree.getSelectionModel().selectedItemProperty()
             .addListener((V, oldValue, newValue) -> {
+                int answer = 0;
                 if (newValue != null && newValue.getValue().equals("Start")) {
                     /* Execute functionality 1 which is start the container. We keep
                      * compatibility with the CLI application.
                      */
-                    int answer = 1; 
+                    answer = 1; 
                     executeFunctionality(listPane, answer);
                 }
 
@@ -90,8 +93,8 @@ public class Tree {
                     /* Execute functionality 2 which is stop the container. We do this in
                      *  order to keep compatibility with the CLI application.
                     */
-                    int aswer = 2;
-                    executeFunctionality(listPane, aswer);
+                    answer = 2;
+                    executeFunctionality(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Info")) {
@@ -111,7 +114,8 @@ public class Tree {
 
                 if (newValue != null && newValue.getValue().equals("CPU usage")) {
                     // Code to be executed when the tree item CPU usage is clicked
-                    System.out.println(newValue.getValue()); 
+                    answer = 5;
+                    executeFunctionalityGraph(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("CSV")) {
@@ -138,6 +142,20 @@ public class Tree {
         
         for (int i : indices) {
             ManagerHttp.containerId = ListPane.ids.get(i);
+            MonitorHttp.containerId = ListPane.ids.get(i);
+            GUI.menuThread.handleUserInputGUI(answer);
+            //manager.startContainerGUI(ListPane.ids.get(i));
+            System.out.println("-----------------------------------------------");
+            System.out.println(ListPane.ids.get(i));
+            System.out.println("-----------------------------------------------");
+        }
+    }
+
+    private void executeFunctionalityGraph(ListPane listPane, int answer) {
+        ArrayList<Integer> indices = listPane.getSelectedIndices();
+        
+        for (int i : indices) {
+            MonitorHttp.containerId = ListPane.ids.get(i);
             GUI.menuThread.handleUserInputGUI(answer);
             //manager.startContainerGUI(ListPane.ids.get(i));
             System.out.println("-----------------------------------------------");
