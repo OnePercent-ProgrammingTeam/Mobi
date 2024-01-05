@@ -112,10 +112,10 @@ public class Tree {
                     System.out.println(newValue.getValue());
                 } 
 
-                if (newValue != null && newValue.getValue().equals("CPU usage")) {
+                if (newValue != null && newValue.getValue().equals("CPU Usage")) {
                     // Code to be executed when the tree item CPU usage is clicked
                     answer = 5;
-                    executeFunctionalityGraph(listPane, answer);
+                    executeFunctionality(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("CSV")) {
@@ -144,23 +144,6 @@ public class Tree {
             ManagerHttp.containerId = ListPane.ids.get(i);
             MonitorHttp.containerId = ListPane.ids.get(i);
             GUI.menuThread.handleUserInputGUI(answer);
-            //manager.startContainerGUI(ListPane.ids.get(i));
-            System.out.println("-----------------------------------------------");
-            System.out.println(ListPane.ids.get(i));
-            System.out.println("-----------------------------------------------");
-        }
-    }
-
-    private void executeFunctionalityGraph(ListPane listPane, int answer) {
-        ArrayList<Integer> indices = listPane.getSelectedIndices();
-        
-        for (int i : indices) {
-            MonitorHttp.containerId = ListPane.ids.get(i);
-            GUI.menuThread.handleUserInputGUI(answer);
-            //manager.startContainerGUI(ListPane.ids.get(i));
-            System.out.println("-----------------------------------------------");
-            System.out.println(ListPane.ids.get(i));
-            System.out.println("-----------------------------------------------");
         }
     }
 
