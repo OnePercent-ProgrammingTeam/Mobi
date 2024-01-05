@@ -8,13 +8,27 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import gr.aueb.dmst.onepercent.programming.ManagerHttp;
 
-//import javafx.scene.control.CheckBox;
+/**
+ * Class: Tree is the class that creates the tree menu of the GUI.
+ * The tree menu contains the options that the user can choose from.
+ * It's located on the left side of the main page of the GUI.
+ * @see GUI
+ */
 public class Tree {
 
+    /** Field: window is the stage of the GUI.*/
     Stage window;
+    /** Field: tree is the tree menu of the GUI.*/
     TreeView<String> tree;
+    /** Field: manager is the object of the class ManagerHttp.*/
     ManagerHttp manager = new ManagerHttp();
 
+    /** Method: createTree() creates the tree menu of the GUI.
+     *  Contains the options that the user can choose from.
+     *  By pressing each option, the user can execute the corresponding functionality.
+     *  @param listPane: the list of containers.
+     *  @return menu: the tree menu of the GUI.
+     */
     public VBox createTree(ListPane listPane) {
 
         TreeItem<String> root;
@@ -23,17 +37,16 @@ public class Tree {
         TreeItem<String> analytics;
         
         
-        // Create the Root of the tree
+        /* Create the root of the tree. */
         root = new TreeItem<>();
-        // root.setExpanded(true);         This shows all the tree items from the very beginning.
+        // root.setExpanded(true);  This shows all the tree items from the very beginning.
 
-        // Tree item Containers with parent the root
+        /* Create the branches of the tree.*/
         containers = makeBranch("Containers", root);
         makeBranch("Start", containers);
         makeBranch("Stop", containers);
         makeBranch("Info", containers); 
         
-
         images = makeBranch("Images", root);
         makeBranch("Search", images);
         makeBranch("Pull", images);
@@ -42,13 +55,12 @@ public class Tree {
         makeBranch("CPU Usage", analytics);
         makeBranch("CSV", analytics);
 
-        // Create Tree
+        /* Create the tree. */
         tree = new TreeView<>(root);
         tree.setShowRoot(false);
         
-        
+        /* Set the style of the tree. */
         tree.setStyle("-fx-background-color: #2A2A72; -fx-text-fill: white;");
-
         tree.getStyleClass().add("tree-view");
         tree.lookup(".tree-view")
             .setStyle(
@@ -61,22 +73,23 @@ public class Tree {
                 "-fx-font-weight: bold;" + 
                 "-fx-font-size: 20px;");
             
-        
-        
-        
-        
-        // Implement code to be executed every time a tree item is clicked
+        /* Set the action of each branch of the tree. Implement the code that
+         * is executed when each branch is clicked.
+         */
         tree.getSelectionModel().selectedItemProperty()
             .addListener((V, oldValue, newValue) -> {
                 if (newValue != null && newValue.getValue().equals("Start")) {
-                    // Code to be executed when the tree item Start is clicked
-                    //System.out.println(newValue.getValue());
-                    int answer = 1; // Start container option, keeping compatibility with CLI
+                    /* Execute functionality 1 which is start the container. We keep
+                     * compatibility with the CLI application.
+                     */
+                    int answer = 1; 
                     executeFunctionality(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Stop")) {
-                    // Code to be executed when the tree item Stop is clicked
+                    /* Execute functionality 2 which is stop the container. We do this in
+                     *  order to keep compatibility with the CLI application.
+                    */
                     int aswer = 2;
                     executeFunctionality(listPane, aswer);
                 }
@@ -107,14 +120,19 @@ public class Tree {
                 }
             });
 
+        /* Create the menu that contains the tree. */
         VBox menu = new VBox();
         menu.getChildren().add(tree);
         menu.setStyle("-fx-background-color: #2A2A72;");
 
-
         return menu;
     }
 
+    /** Method: executeFunctionality() executes the functionality that the user
+     *  has chosen from the tree menu.
+     *  @param listPane: the list of containers.
+     *  @param answer: the answer that relates to the functionality of the user.
+     */
     private void executeFunctionality(ListPane listPane, int answer) {
         ArrayList<Integer> indices = listPane.getSelectedIndices();
         
@@ -128,14 +146,16 @@ public class Tree {
         }
     }
 
-
-
-    //Create Branches for your Tree
+    /** Method: makeBranch() creates a branch of the tree.
+     *  @param title: the title of the branch.
+     *  @param parent: the parent of the branch.
+     *  @return item: the branch of the tree.
+     */
     public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
         TreeItem<String> item = new TreeItem<>(title);
-        //This shows all the tree items of this specific item without clicking it.
-        // item.setExpanded(false);   
-        
+        /*This shows all the tree items of this specific item without clicking it.
+        * item.setExpanded(false);   
+        */
         parent.getChildren().add(item);
         return item;
     }
