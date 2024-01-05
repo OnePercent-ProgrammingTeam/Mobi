@@ -12,9 +12,9 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import javafx.scene.control.Button;
 import gr.aueb.dmst.onepercent.programming.MenuThread;
-//import javafx.scene.control.TreeView;
+
 /** Class: GUI is the core class that runs the Graphics of
- * the application. It uses the Intro and MainPage classes
+ * the application. It uses the Intro and MainPage classes.
  * @see Intro
  * @see MainPage
  */
@@ -38,7 +38,7 @@ public class GUI extends Application {
             closeProgram();
         });
 
-        // WINDOW CREATION
+        /*  Create the intro page.*/
         window.setTitle("Mobi");
         StackPane introLayout = new StackPane();
         introLayout.setAlignment(Pos.TOP_CENTER);
@@ -48,21 +48,23 @@ public class GUI extends Application {
         ListPane list = new ListPane();
         
         
-        // SCENES CREATION
+        /* Create the intro scene.*/
         Scene introScene = introPage.createIntroScene(introLayout);
         
         BorderPane borderPane = new BorderPane();
         Scene mainScene = mainPage.createMainScene(borderPane);
         
-        // BUTTON CREATION
+        /* Create the button that starts the app (changes the page from
+         * the intro to the main).
+         */
         Button startButton = introPage.createStartButton(introLayout);
         startButton.setOnAction(e -> window.setScene(mainScene));
         
-        //TEXT CREATION
+        /* Create the texts of the intro page.*/
         Text[] textNodes = introPage.createText();
         introPage.formatText(textNodes, introLayout);
 
-        // IMAGE CREATION
+        /* Set image in the intro page.*/
         String path = "C:/Users" +
                         "/scobi" +
                         "/OneDrive" +
@@ -79,16 +81,12 @@ public class GUI extends Application {
                         "/containerwhales.png";
         introPage.setImage(path, introLayout);
 
-
-    
-
-        // Create list of containers in the center of the main page
+        /* Create list of containers in the center of the main page.*/
         VBox vbox = list.createList();
         borderPane.setCenter(vbox);
 
-        // Create the tree menu on the left of the main page
+        /*  Create the tree menu on the left of the main page. */
         Tree treeobj = new Tree();
-        
         VBox menu = treeobj.createTree(list);
         borderPane.setLeft(menu);
 
@@ -115,6 +113,9 @@ public class GUI extends Application {
         return fxmlLoader.load();
     }
     
+    /** Method: closeProgram() is the method that closes the application
+     *  when the user presses the X button.
+     */
     public void closeProgram() {
         Boolean answer = ConfirmBox.display("Exit", "Sure you want to exit?");
         
@@ -127,6 +128,10 @@ public class GUI extends Application {
         launch(args);
     }
 
+    /** Method: createMenuThread() is the method that creates the thread
+     *  that runs the menu. This thread is the underlying power of the
+     *  application.
+     */
     private void createMenuThread() {
         menuThread = new MenuThread();
         Thread thread = new Thread(menuThread);
