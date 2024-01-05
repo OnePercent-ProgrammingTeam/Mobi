@@ -65,20 +65,7 @@ public class GUI extends Application {
         introPage.formatText(textNodes, introLayout);
 
         /* Set image in the intro page.*/
-        String path = "C:/Users" +
-                        "/scobi" +
-                        "/OneDrive" +
-                        "/Έγγραφα" +
-                        "/UNIVERSITY" +
-                        "/AUEB" +
-                        "/Semester 3" +
-                        "/Programming II" +
-                        "/Assignment" +
-                        "/hellofx" +
-                        "/src" +
-                        "/main" +
-                        "/resources" + "/org/openjfx" +
-                        "/containerwhales.png";
+        String path = "src\\main\\resources\\containerwhales.png";
         introPage.setImage(path, introLayout);
 
         /* Create list of containers in the center of the main page.*/
