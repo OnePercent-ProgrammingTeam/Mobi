@@ -76,6 +76,16 @@ public class MonitorHttp extends SuperHttp {
         return getHttpResponse(message);
     }
 
+    public CloseableHttpResponse getContainerStatsGUIforGraph() {
+        String message = "stats"; // get the container statistics in json format
+        conId = containerId;
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 "/containers/" + 
+                                 MonitorHttp.containerId + 
+                                 "/" + message);                        
+        return getHttpResponse(message);
+    }
+
     /**The static field "imName" is used to keep the name of the image the user wants to find,  
      * in order to be visible in the database. 
      */
