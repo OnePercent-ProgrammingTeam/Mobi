@@ -20,7 +20,10 @@ public class MonitorThread extends SuperThread {
         } else if (this.userInput == 5) {
 
             //for command line
-            Graph.executeDiagram();
+            //Graph.executeDiagram();
+
+            //for GUI 
+            Graph.executeDiagramGUI();
 
         } else if (this.userInput == 6) {
             //for command line
