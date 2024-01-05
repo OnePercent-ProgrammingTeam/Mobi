@@ -4,6 +4,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 
+/**
+ * Class: HelpPage is the class that creates the help page of the GUI.
+ * The help page contains information about the usage of the GUI and the 
+ * requirements for it to work properly.
+ */
 public class HelpPage {
     
     /** Method: createMainScene(BorderPane) creates the main scene of the GUI.
