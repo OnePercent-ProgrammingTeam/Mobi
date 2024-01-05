@@ -43,8 +43,8 @@ public class Intro {
     }
     
     /** Method: formatText(Text[], StackPane) formats the text in a modern and good-looking manner.
-     * @param textNodes: the array of textNodes to be formatted
-     * @param root: the StackPane (layout) in which the textNodes will be placed
+     * @param textNodes: the array of textNodes to be formatted.
+     * @param root: the StackPane (layout) in which the textNodes will be placed.
      */
     public void formatText(Text[] textNodes, StackPane introLayout) {
         if (textNodes.length > 0) {
@@ -63,6 +63,7 @@ public class Intro {
                 int bottom = 0;
                 int right = 0;
     
+                /* Arrange the text in the center of the intro page as wanted.*/
                 if (i == 1) {
                     bottom = 100;
                 }
