@@ -184,6 +184,36 @@ public class Graph extends JFrame {
             e.printStackTrace();
         }  
     }
+
+
+    /** Method: executeDiagramGUI() executes the diagram. 
+     * This method does not show any messages to command line. 
+     */
+    public static void executeDiagramGUI() {
+        Graph cv = new Graph("Container Stats Plotter"); // Create a new Graph object
+        cv.setSize(800, 600);  // Set the size of the window
+        cv.setLocationRelativeTo(null); // Center the window
+        // Set the close operation, so that the application exits when the window is closed
+        cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
+        CloseableHttpResponse res = monitorHttp.getContainerStatsGUIforGraph();
+        flag = false;  
+        end = false;
+        cv.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow(cv);
+                flag = true; 
+            }
+        });
+
+        cv.setVisible(true); // Make the window visible to the end user
+        
+        try {
+            cv.statsPlot(res, cv); // Start updating the stats
+        } catch (UnsupportedOperationException | IOException e) {
+            e.printStackTrace();
+        }  
+    }
     
     /** Method: closeWindow(JFrame) closes the window
      * @param frame a JFrame object
