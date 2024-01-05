@@ -52,6 +52,7 @@ public class GUI extends Application {
         Scene introScene = introPage.createIntroScene(introLayout);
         
         BorderPane borderPane = new BorderPane();
+        borderPane.setStyle("-fx-background-color: #E8E9EB;");
         Scene mainScene = mainPage.createMainScene(borderPane);
         
         /* Create the button that starts the app (changes the page from
@@ -72,11 +73,14 @@ public class GUI extends Application {
         VBox vbox = list.createList();
         borderPane.setCenter(vbox);
 
+        
         /*  Create the tree menu on the left of the main page. */
         Tree treeobj = new Tree();
         VBox menu = treeobj.createTree(list);
         borderPane.setLeft(menu);
 
+
+        
         window.setScene(introScene); 
         window.show();
     }
