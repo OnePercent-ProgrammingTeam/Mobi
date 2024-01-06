@@ -1,27 +1,77 @@
 package graphics;
 
+import java.util.ArrayList;
+
+import gr.aueb.dmst.onepercent.programming.DataBase;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class SearchBar {
     
     TextField searchField = new TextField();
+    
     ListView<String> autoCompleteListView = new ListView<>();
 
-    public VBox makeBar() {
-        ObservableList<String> suggestions = FXCollections.observableArrayList(
-                "Apple", "Banana", "Cherry", "Date", "Grape", "Lemon", "Orange", "Peach"
-        );
+    public VBox createBar() {
+        DataBase database = new DataBase();
+        ArrayList<String> names = database.getImageForSearch();
+        ObservableList<String> suggestions = FXCollections.observableArrayList(names);
 
+        searchField.setMaxWidth(150);
+        searchField.setMaxHeight(5);
+
+        autoCompleteListView.setMaxWidth(150);
+        //autoCompleteListView.setMaxWidth(150);
+        searchField.setStyle("-fx-background-color: #FFFFFF;" +
+                            "-fx-text-fill: black;");
+        searchField.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+
+        autoCompleteListView.setStyle("-fx-control-inner-background: #FFFFFF;" + 
+                                        // Background color of the entire ListView
+                                        "-fx-selection-bar: #E8E9EB;" +              
+                                        // Color of the selected cell  #DCDCDC
+                                        "-fx-background-color: #FFFFFF;" +
+                                        // Background color of unselected cells
+                                        //"-fx-font-family: 'Tahoma'; " +
+                                        "-fx-font-weight: bold; " +
+                                        "-fx-font-size: 15; ");
+                                        
+        
+                                        
         
         autoCompleteListView.setMaxHeight(250); // Set the maximum height of the list
 
         autoCompleteListView.setVisible(false);
+
+        autoCompleteListView.setCellFactory(listView -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("-fx-text-fill: black;");
+                } else {
+                    setText(item);
+
+                    if (autoCompleteListView.getSelectionModel().getSelectedItem() != null &&
+                            item.equals(autoCompleteListView
+                                                        .getSelectionModel().getSelectedItem())) {
+                        setStyle("-fx-text-fill: #2E5894; -fx-font-weight: bold;");
+                    } else {
+                        setStyle("-fx-text-fill: black;");
+                    }
+                }
+            }
+        });
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             String userInput = newValue.toLowerCase();
@@ -115,8 +165,19 @@ public class SearchBar {
         int currentIndex = autoCompleteListView.getSelectionModel().getSelectedIndex();
         int newIndex = currentIndex + direction;
 
+        int size = autoCompleteListView.getItems().size();
+
+        /* 
         if (newIndex >= 0 && newIndex < autoCompleteListView.getItems().size()) {
             autoCompleteListView.getSelectionModel().select(newIndex);
+        }
+        */
+        if (size > 0) {
+            newIndex = (newIndex + size) % size; // Wrap around if going beyond bounds
+            autoCompleteListView.getSelectionModel().select(newIndex);
+    
+            // Scroll to the selected index
+            autoCompleteListView.scrollTo(newIndex);
         }
     }
    
