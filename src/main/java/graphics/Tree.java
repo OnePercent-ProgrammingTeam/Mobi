@@ -6,7 +6,6 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-
 import gr.aueb.dmst.onepercent.programming.ManagerHttp;
 import gr.aueb.dmst.onepercent.programming.MonitorHttp;
 
@@ -37,12 +36,12 @@ public class Tree {
         TreeItem<String> containers;
         TreeItem<String> images;
         TreeItem<String> analytics;
-        
+        TreeItem<String> search;
         
         /* Create the root of the tree. */
         root = new TreeItem<>();
         // root.setExpanded(true);  This shows all the tree items from the very beginning.
-
+        
         /* Create the branches of the tree.*/
         containers = makeBranch("Containers", root);
         makeBranch("Start", containers);
@@ -50,7 +49,12 @@ public class Tree {
         makeBranch("Info", containers); 
         
         images = makeBranch("Images", root);
-        makeBranch("Search", images);
+        //makeBranch("Search", images);
+        search = makeBranch("Search", images);
+        
+
+
+        makeBranch("Search bar", search);
         makeBranch("Pull", images);
 
         analytics = makeBranch("Analytics", root);
@@ -162,5 +166,8 @@ public class Tree {
         parent.getChildren().add(item);
         return item;
     }
-    
+
 }
+
+
+    
