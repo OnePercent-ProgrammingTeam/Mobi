@@ -167,15 +167,13 @@ public class MenuThread extends Thread {
                 thread.start();
 
                 waitThread();
-
-                if (answer == 3) {
                     
-                    /*start concurrently the database Thread*/
-                    dataThread.setUserInput(answer);
-                    thread = new Thread(dataThread);
-                    thread.setName("DataBase"); 
-                    thread.start();
-                }
+                /*start concurrently the database Thread*/
+                dataThread.setUserInput(answer);
+                thread = new Thread(dataThread);
+                thread.setName("DataBase"); 
+                thread.start();
+
                 
 
                 break;
