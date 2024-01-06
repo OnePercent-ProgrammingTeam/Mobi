@@ -11,6 +11,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import gr.aueb.dmst.onepercent.programming.MonitorHttp;
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
  * @see GUI
@@ -27,13 +29,14 @@ public class ListPane {
     ArrayList<Integer> selectedIndices = new ArrayList<>();
     /** Field: gridInfo is the grid that contains the information about the containers.*/
     GridPane gridInfo;
+    ArrayList<RadioButton> radioButtonsList = new ArrayList<>();
 
     /** Method: getGrid() creates the grid that contains the list of containers, with
      *  information about their name, id, status and time created. The returned grid
      *  contains the checkboxes of the containers as well.
      * @return grid: the grid that contains the list of containers.
      */
-    public GridPane getListGrid() {
+    public GridPane getListGrid(String calledFor) {
         
         /* Create and set the grid.*/
         grid = new GridPane();
@@ -76,7 +79,13 @@ public class ListPane {
 
         MonitorAPI monitorAPI = new MonitorAPI();
         MonitorAPI.createDockerClient();
-        monitorAPI.initializeContainerModels();
+        
+        if (calledFor.equals("CHECKBOXES")) {
+            monitorAPI.initializeContainerModels(true);
+        } else if (calledFor.equals("CHOICEBOXES")) {
+            monitorAPI.initializeContainerModels(false);
+        }
+        
 
         /* Get the information about the containers.*/
         ArrayList<String> names = monitorAPI.getNameList();
@@ -84,13 +93,10 @@ public class ListPane {
         ArrayList<String> statuses = monitorAPI.getStatusList();
         ArrayList<String> times = monitorAPI.getTimeCreatedList();
 
-        /* Create the checkboxes of the containers and add them to a list.*/
-        for (int i = 0; i < names.size(); i++) {
-            CheckBox checkBox = new CheckBox();
-            GridPane.setConstraints(checkBox, 0, i + 1);
-            grid.getChildren().add(checkBox);
-            GridPane.setHalignment(checkBox, HPos.RIGHT);
-            checkboxesList.add(checkBox);
+        if (calledFor.equals("CHECKBOXES")) {
+            createCheckBoxesColumn();
+        } else if (calledFor.equals("CHOICEBOXES")) {
+            createChoiceBoxesColumn();
         }
 
         /* Create the labels with the names of the containers.*/
@@ -130,6 +136,31 @@ public class ListPane {
         return grid;
     }
 
+    private void createCheckBoxesColumn() {
+         /* Create the checkboxes of the containers and add them to a list.*/
+        for (int i = 0; i < ids.size(); i++) {
+            CheckBox checkBox = new CheckBox();
+            GridPane.setConstraints(checkBox, 0, i + 1);
+            grid.getChildren().add(checkBox);
+            GridPane.setHalignment(checkBox, HPos.RIGHT);
+            checkboxesList.add(checkBox);
+        }
+    }
+
+    private void createChoiceBoxesColumn() {
+        /* Create the choiceboxes of the containers and add them to a list.*/
+        ToggleGroup group = new ToggleGroup();
+        for (int i = 0; i < ids.size(); i++) {
+            RadioButton radioButton = new RadioButton();
+            radioButton.setToggleGroup(group);
+            GridPane.setConstraints(radioButton, 0, i + 1);
+            grid.getChildren().add(radioButton);
+            GridPane.setHalignment(radioButton, HPos.RIGHT);
+            radioButtonsList.add(radioButton);
+        }
+    }
+
+
     /** Method: getTitle() creates the title of the list of containers.
      * @return listOfContainers: the title of the list of containers.
      */
@@ -158,7 +189,8 @@ public class ListPane {
      * @return vbox: the list of containers.
      */
     public VBox createList() {
-        GridPane grid = getListGrid();
+       
+        GridPane grid = getListGrid("CHECKBOXES");
         grid.setStyle("-fx-background-color: #FFFFFF;");
         ScrollPane listScrollPane = new ScrollPane(grid);
         
