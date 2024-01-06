@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -375,24 +376,27 @@ public class DataBase {
     }
 
     /*Method for check for "Image"*/
-    public void getImageForSearch() {
+    public ArrayList<String> getImageForSearch() {
+        ArrayList<String> names = new ArrayList<String>();
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(url); 
             Statement statement = connection.createStatement(); 
               
-            query = "SELECT DISTINCT NAME"
-                    + "FROM Image"
-                    + "ORDER BY ID DESC"
-                    + "LIMIT 5";
+            query = "SELECT DISTINCT NAME "
+                    + "FROM (SELECT NAME, ID "
+                    +        "FROM Image "
+                    +        "ORDER BY ID DESC "
+                    +        "LIMIT 5)";
+
+                        
+                    
             ResultSet result = statement.executeQuery(query);
-
+    
             while (result.next()) {
-                int id = result.getInt("ID");
                 String imname = result.getString("NAME");
-
-                
-                System.out.println("ID of metrics: " + id);
+                names.add(imname);
+                System.out.println("GUI");
                 System.out.println("Name of Image: " + imname);
                 System.out.println();
             }
@@ -403,6 +407,7 @@ public class DataBase {
         } catch (ClassNotFoundException | SQLException e) { 
             e.printStackTrace();
         } 
+        return names;
     }
 
 }
