@@ -13,7 +13,7 @@ public class DataBaseThread extends SuperThread {
         String datetime;
         int last_id;
 
-        if (this.userInput == 1 || this.userInput == 2) {
+        if (this.userInput == 1 || this.userInput == 2 || this.userInput == 6) {
             datetime = database.getDateTime();
             last_id = database.insertMetricsToDatabase(datetime);
             database.insertContainerToDatabase(last_id);
@@ -27,6 +27,7 @@ public class DataBaseThread extends SuperThread {
             database.insertImageToDatabase(last_id);
             database.getAllMetrics(); //helpful
             database.getAllImage(); //helpful
+            database.getImageForSearch();
 
         } 
     }
