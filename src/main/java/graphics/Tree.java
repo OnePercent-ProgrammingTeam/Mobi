@@ -145,6 +145,7 @@ public class Tree {
             ManagerHttp.containerId = ListPane.ids.get(i);
             MonitorHttp.containerId = ListPane.ids.get(i);
             GUI.menuThread.handleUserInputGUI(answer);
+            listPane.updateGridPane();
         }
     }
 
