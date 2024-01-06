@@ -24,7 +24,8 @@ public class GUI extends Application {
     static MenuThread menuThread;
     static Scene imagesScene;
     Scene introScene;
-    Scene mainScene;
+    static Scene mainScene;
+    static Scene analyticsScene;
     static final ListPane LIST = new ListPane();
 
     /** Method: start(Stage) is the method that runs the application.
@@ -48,16 +49,29 @@ public class GUI extends Application {
         BorderPane mainBorderPane = new BorderPane();
         mainScene = mainPage.createMainScene(mainBorderPane);
         createBasicScene(mainPage, mainBorderPane);
-        
         /* Create list of containers in the center of the main page.*/
         VBox vbox = LIST.createList();
         mainBorderPane.setCenter(vbox);
         
-        /* Create the info page.*/
+        /* Create the image page.*/
+        ImagePage imagePage = new ImagePage();
         BorderPane imagesBorderPane = new BorderPane();
         imagesScene = mainPage.createMainScene(imagesBorderPane);
         createBasicScene(mainPage, imagesBorderPane);
-        
+        /* Create list of containers in the center of the main page.*/
+        VBox vboxImages = imagePage.createList();
+        imagesBorderPane.setCenter(vboxImages);
+
+
+        /* Create the analytics page */
+        AnalyticsPage analyticsPage = new AnalyticsPage();
+        BorderPane analyticsBorderPane = new BorderPane();
+        analyticsScene = mainPage.createMainScene(analyticsBorderPane);
+        createBasicScene(mainPage, analyticsBorderPane);
+        VBox vboxAnalytics = analyticsPage.createList();
+        analyticsBorderPane.setCenter(vboxAnalytics);
+
+
         window.setScene(introScene); 
         window.show();
     }
