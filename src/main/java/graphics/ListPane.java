@@ -25,6 +25,8 @@ public class ListPane {
     ArrayList<CheckBox> checkboxesList = new ArrayList<>();
     /** Field: selectedIndices is the list of the indices of the selected containers.*/
     ArrayList<Integer> selectedIndices = new ArrayList<>();
+    /** Field: gridInfo is the grid that contains the information about the containers.*/
+    GridPane gridInfo;
 
     /** Method: getGrid() creates the grid that contains the list of containers, with
      *  information about their name, id, status and time created. The returned grid
@@ -195,12 +197,13 @@ public class ListPane {
     
     }
 
+    
     public GridPane getInfoGrid() {
         /* Create and set the grid.*/
-        grid = new GridPane();
-        grid.setHgap(70);
+        gridInfo = new GridPane();
+        gridInfo.setHgap(70);
         //grid.setVgap(10);
-        grid.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
+        gridInfo.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
        
         /* Create the title of the column, containing the names of the containers.*/
         Label name = new Label("Container Name:");
@@ -235,11 +238,7 @@ public class ListPane {
         macAddress.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
         GridPane.setConstraints(macAddress, 0, 7);
         
-
-        MonitorHttp monitorHttp = new MonitorHttp();
-        String[] containerInfos = monitorHttp.getContainerInfoForGUI();
-
-        grid.getChildren().addAll(name, 
+        gridInfo.getChildren().addAll(name, 
                                   id, 
                                   status, 
                                   imageId, 
@@ -247,18 +246,22 @@ public class ListPane {
                                   gateway, 
                                   ipAddress, 
                                   macAddress);
-        
+        return gridInfo;
+    }
+
+    public void updateGridPane() {
+        MonitorHttp monitorHttp = new MonitorHttp();
+        String[] containerInfos = monitorHttp.getContainerInfoForGUI();
+
         Label blank = new Label(" ");
         GridPane.setConstraints(blank, 0, 8);
         for (int i = 0; i < containerInfos.length; i++) {
             Label containerInfo = new Label(containerInfos[i]);
             containerInfo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
             GridPane.setConstraints(containerInfo, 1, i);
-            grid.getChildren().add(containerInfo);
+            gridInfo.getChildren().add(containerInfo);
         }
         GridPane.setConstraints(blank, 1, 8);
-
-        return grid;
     }
     
 
