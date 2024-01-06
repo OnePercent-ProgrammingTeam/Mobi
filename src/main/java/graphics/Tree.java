@@ -99,6 +99,11 @@ public class Tree {
         tree.getSelectionModel().selectedItemProperty()
             .addListener((V, oldValue, newValue) -> {
                 int answer = 0;
+
+                if (newValue != null && newValue.getValue().equals("Images")) {
+                    GUI.window.setScene(GUI.imagesScene);
+                }
+
                 if (newValue != null && newValue.getValue().equals("Start")) {
                     /* Execute functionality 1 which is start the container. We keep
                      * compatibility with the CLI application.
