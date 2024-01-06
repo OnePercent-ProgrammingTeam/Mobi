@@ -24,6 +24,10 @@ public class Tree {
     /** Field: manager is the object of the class ManagerHttp.*/
     ManagerHttp manager = new ManagerHttp();
 
+    SearchBar searchObject = new SearchBar();
+
+    
+
     /** Method: createTree() creates the tree menu of the GUI.
      *  Contains the options that the user can choose from.
      *  By pressing each option, the user can execute the corresponding functionality.
@@ -51,10 +55,17 @@ public class Tree {
         images = makeBranch("Images", root);
         //makeBranch("Search", images);
         search = makeBranch("Search", images);
-        
+
+        //Create the search bar TreeItem and initially hide it
+        TreeItem<String> searchBarItem = new TreeItem<>("");
+        VBox searchBarvbox = searchObject.createBar();
+        searchBarItem.setGraphic(searchBarvbox); // Set the graphic (content) of the TreeItem
+        searchBarItem.setExpanded(false); // This shows the search bar only when "Search" is clicked
+        search.getChildren().add(searchBarItem); 
+        // Add search bar TreeItem as a child of "Search" branch
 
 
-        makeBranch("Search bar", search);
+        //makeBranch("", search);
         makeBranch("Pull", images);
 
         analytics = makeBranch("Analytics", root);
@@ -64,6 +75,7 @@ public class Tree {
         /* Create the tree. */
         tree = new TreeView<>(root);
         tree.setShowRoot(false);
+        tree.setPrefHeight(900);
         
         /* Set the style of the tree. */
         tree.setStyle("-fx-background-color: #2A2A72; -fx-text-fill: white;");
@@ -78,6 +90,8 @@ public class Tree {
                 "-fx-tree-cell-border-color: #2A2A72;" + 
                 "-fx-font-weight: bold;" + 
                 "-fx-font-size: 20px;");
+
+        VBox menu = new VBox();
             
         /* Set the action of each branch of the tree. Implement the code that
          * is executed when each branch is clicked.
@@ -109,7 +123,8 @@ public class Tree {
 
                 if (newValue != null && newValue.getValue().equals("Search")) {
                     // Code to be executed when the tree item Search is clicked
-                    System.out.println(newValue.getValue()); 
+                    searchBarvbox.setVisible(!searchBarvbox.isVisible());
+                    
                 }
 
                 if (newValue != null && newValue.getValue().equals("Pull")) {
@@ -130,7 +145,6 @@ public class Tree {
             });
 
         /* Create the menu that contains the tree. */
-        VBox menu = new VBox();
         menu.getChildren().add(tree);
         menu.setStyle("-fx-background-color: #2A2A72;");
 
