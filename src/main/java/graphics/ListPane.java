@@ -11,7 +11,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import javafx.scene.control.CheckBox;
-
+import gr.aueb.dmst.onepercent.programming.MonitorHttp;
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
  * @see GUI
  */
@@ -235,6 +235,10 @@ public class ListPane {
         macAddress.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
         GridPane.setConstraints(macAddress, 0, 7);
         
+
+        MonitorHttp monitorHttp = new MonitorHttp();
+        String[] containerInfos = MonitorHttp.containerInfoForGUI;
+
         grid.getChildren().addAll(name, 
                                   id, 
                                   status, 
@@ -243,6 +247,16 @@ public class ListPane {
                                   gateway, 
                                   ipAddress, 
                                   macAddress);
+        
+        Label blank = new Label(" ");
+        GridPane.setConstraints(blank, 0, 8);
+        for (int i = 0; i < containerInfos.length; i++) {
+            Label containerInfo = new Label(containerInfos[i]);
+            containerInfo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+            GridPane.setConstraints(containerInfo, 1, i);
+            grid.getChildren().add(containerInfo);
+        }
+        GridPane.setConstraints(blank, 1, 8);
 
         return grid;
     }
