@@ -99,7 +99,8 @@ public class Tree {
 
                 if (newValue != null && newValue.getValue().equals("Info")) {
                     // Code to be executed when the tree item Info is clicked
-                    System.out.println(newValue.getValue()); 
+                    answer = 6; 
+                    executeFunctionality(listPane, answer);
                 }
 
                 if (newValue != null && newValue.getValue().equals("Search")) {
