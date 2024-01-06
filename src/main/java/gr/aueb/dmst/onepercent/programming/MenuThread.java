@@ -29,7 +29,7 @@ public class MenuThread extends Thread {
         System.out.println("------------------------------------------------------------");
         SuperAPI.createDockerClient();
         MonitorAPI containerMonitor = new MonitorAPI();
-        containerMonitor.initializeContainerModels();
+        containerMonitor.initializeContainerModels(true);
         containerMonitor.getContainerList();
         System.out.println("\n");
         do {
