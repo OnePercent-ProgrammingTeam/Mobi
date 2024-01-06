@@ -22,6 +22,10 @@ public class GUI extends Application {
 
     static Stage window;
     static MenuThread menuThread;
+    static Scene imagesScene;
+    Scene introScene;
+    Scene mainScene;
+    static final ListPane LIST = new ListPane();
 
     /** Method: start(Stage) is the method that runs the application.
      * @param window is the stage of the application.
@@ -33,56 +37,82 @@ public class GUI extends Application {
         createMenuThread();
 
         window = stage;
+        window.setTitle("Mobi");
+        closeProgramBox(window);
+        
+        /* Create the intro scene.*/
+        createIntroScene();
+        
+        /* Create the main page.*/
+        MainPage mainPage = new MainPage();
+        BorderPane mainBorderPane = new BorderPane();
+        mainScene = mainPage.createMainScene(mainBorderPane);
+        createBasicScene(mainPage, mainBorderPane);
+        
+        /* Create list of containers in the center of the main page.*/
+        VBox vbox = LIST.createList();
+        mainBorderPane.setCenter(vbox);
+        
+        /* Create the info page.*/
+        BorderPane imagesBorderPane = new BorderPane();
+        imagesScene = mainPage.createMainScene(imagesBorderPane);
+        createBasicScene(mainPage, imagesBorderPane);
+        
+        window.setScene(introScene); 
+        window.show();
+    }
+
+    /** Method: createMenuThread() is the method that creates the thread
+     *  that runs the menu. This thread is the underlying power of the
+     *  application.
+     */
+    private void createMenuThread() {
+        menuThread = new MenuThread();
+        Thread thread = new Thread(menuThread);
+        thread.start();
+    }
+
+    private void closeProgramBox(Stage window) {
         window.setOnCloseRequest(e -> {
             e.consume();
             closeProgram();
         });
+    }
 
-        /*  Create the intro page.*/
-        window.setTitle("Mobi");
+    /** Method: closeProgram() is the method that closes the application
+     *  when the user presses the X button.
+     */
+    public void closeProgram() {
+        Boolean answer = ConfirmBox.display("Exit", "Sure you want to exit?");
+        
+        if (answer && window != null)  // Check for null before calling close()
+             window.close();
+    }
+
+    private void createIntroScene() {
         StackPane introLayout = new StackPane();
         introLayout.setAlignment(Pos.TOP_CENTER);
-       
         Intro introPage = new Intro();
-        MainPage mainPage = new MainPage();
-        ListPane list = new ListPane();
-        
-        
-        /* Create the intro scene.*/
-        Scene introScene = introPage.createIntroScene(introLayout);
-        
-        BorderPane borderPane = new BorderPane();
-        borderPane.setStyle("-fx-background-color: #E8E9EB;");
-        Scene mainScene = mainPage.createMainScene(borderPane);
-        
+        introScene = introPage.createIntroScene(introLayout);
         /* Create the button that starts the app (changes the page from
-         * the intro to the main).
-         */
+         * the intro to the main).*/
         Button startButton = introPage.createStartButton(introLayout);
         startButton.setOnAction(e -> window.setScene(mainScene));
-        
         /* Create the texts of the intro page.*/
         Text[] textNodes = introPage.createText();
         introPage.formatText(textNodes, introLayout);
-
         /* Set image in the intro page.*/
         String path = "src\\main\\resources\\containerwhales.png";
         introPage.setImage(path, introLayout);
+    }
 
-        /* Create list of containers in the center of the main page.*/
-        VBox vbox = list.createList();
-        borderPane.setCenter(vbox);
-
+    private void createBasicScene(MainPage mainPage, BorderPane borderPane) {
         
+        borderPane.setStyle("-fx-background-color: #E8E9EB;");
         /*  Create the tree menu on the left of the main page. */
         Tree treeobj = new Tree();
-        VBox menu = treeobj.createTree(list);
+        VBox menu = treeobj.createTree(LIST);
         borderPane.setLeft(menu);
-
-
-        
-        window.setScene(introScene); 
-        window.show();
     }
 
     /** Method: setRoot(String) is the method that sets the root of the
@@ -104,29 +134,12 @@ public class GUI extends Application {
         return fxmlLoader.load();
     }
     
-    /** Method: closeProgram() is the method that closes the application
-     *  when the user presses the X button.
-     */
-    public void closeProgram() {
-        Boolean answer = ConfirmBox.display("Exit", "Sure you want to exit?");
-        
-        if (answer && window != null)  // Check for null before calling close()
-             window.close();
-    }
-
+    
     public static void main(String[] args) {
         //System.out.println(javafx.scene.text.Font.getFamilies());
         launch(args);
     }
 
-    /** Method: createMenuThread() is the method that creates the thread
-     *  that runs the menu. This thread is the underlying power of the
-     *  application.
-     */
-    private void createMenuThread() {
-        menuThread = new MenuThread();
-        Thread thread = new Thread(menuThread);
-        thread.start();
-    }
+
 
 }
