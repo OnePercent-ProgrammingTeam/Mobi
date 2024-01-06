@@ -40,7 +40,7 @@ public class MonitorThread extends SuperThread {
             //only for command line
             SuperAPI.createDockerClient();
             MonitorAPI containerMonitor = new MonitorAPI();
-            containerMonitor.initializeContainerModels();
+            containerMonitor.initializeContainerModels(true);
             containerMonitor.getContainerList();
         }
     }
