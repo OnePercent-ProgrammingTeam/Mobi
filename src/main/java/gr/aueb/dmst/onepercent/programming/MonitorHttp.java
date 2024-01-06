@@ -22,6 +22,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 public class MonitorHttp extends SuperHttp {
     
+    private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
+        "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
+
     /** Method: inspectContainer() retrieves information about a container that might be 
      * or might not be locally installed.*/
     public void inspectContainer() {
@@ -40,12 +43,19 @@ public class MonitorHttp extends SuperHttp {
      * This method does not show messages to command line. 
      */
     public void inspectContainerGUI() {
-        String message = "json"; // get the container information in json format
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 "/containers/" + 
-                                 MonitorHttp.containerId + 
-                                 "/" + message);
-        executeHttpRequest(message);
+        try {
+            containerInfoForGUI = new String[8];
+            containerInfoForGUI = getTableforContainer();
+        } catch (Exception e) {
+            System.out.print("ERROR FROM inspectContainerGUI() method ");
+            for (int i = 0; i < containerInfoForGUI.length; i++) {
+                containerInfoForGUI[i] = "Not Found";
+            }
+        }
+    }
+
+    public String[] getContainerInfoForGUI() {
+        return containerInfoForGUI;
     }
 
     /**The static field "conId" is used to keep the id of the container the user wants to find,  
@@ -147,6 +157,7 @@ public class MonitorHttp extends SuperHttp {
             
             if (message.equals("json")) {
                 printFormattedInfo();
+                
             }
             if (message.equals("/images/search")) {
                 printFormattedJsonForImage();
@@ -279,6 +290,7 @@ public class MonitorHttp extends SuperHttp {
         }
     }
 
+    
 
     public String[] getTableforContainer() throws JsonProcessingException {
         String[] info = new String[8];
