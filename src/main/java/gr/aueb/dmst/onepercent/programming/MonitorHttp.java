@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 /** Import the Jackson ObjectMapper class for formatting the JSON response.*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
@@ -125,7 +126,14 @@ public class MonitorHttp extends SuperHttp {
         executeHttpRequest(message);
     }
 
-    
+    public void getImagesListGUI() {
+        String message = "/images/json";
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + 
+                                "?boolean=false&shared-size=true");
+        executeHttpRequest(message);
+        System.out.println(MonitorHttp.DOCKER_HOST + message + 
+                                "?boolean=false&shared-size=true");
+    }
 
    
 
@@ -162,6 +170,10 @@ public class MonitorHttp extends SuperHttp {
             if (message.equals("/images/search")) {
                 printFormattedJsonForImage();
             } 
+
+            if (message.equals("/images/json")) {
+                System.out.println("Inside executeHttpRequest() method");
+            }
                                
         } catch (Exception e) {
             e.printStackTrace();
@@ -411,6 +423,42 @@ public class MonitorHttp extends SuperHttp {
             }
         } catch (Exception e) {
             System.out.println("Oops, something went wrong...");
+        }
+    }
+
+    public ArrayList<String> getFormattedImageIdsList() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString()); 
+            ArrayList<String> ids = new ArrayList<String>();
+            if (jsonNode.isArray()) {
+                for (JsonNode el : jsonNode) {
+                    ids.add(el.get("Id").asText());
+                }
+            }
+            return ids;
+        } catch (Exception e) {
+            System.out.println("Oops, something went wrong...");
+            return null;
+        }
+    }
+
+    public ArrayList<String> getFormattedImageNamesList() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString()); 
+            ArrayList<String> names = new ArrayList<String>();
+            if (jsonNode.isArray()) {
+                for (JsonNode jn : jsonNode) {
+                    
+                    
+                    names.add(jn.get("RepoTags").get(0).asText());
+                }
+            }
+            return names;
+        } catch (Exception e) {
+            System.out.println("Oops, something went wrong...");
+            return null;
         }
     }
 }
