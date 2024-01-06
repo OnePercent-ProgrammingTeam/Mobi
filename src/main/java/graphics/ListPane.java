@@ -237,7 +237,7 @@ public class ListPane {
         
 
         MonitorHttp monitorHttp = new MonitorHttp();
-        String[] containerInfos = MonitorHttp.containerInfoForGUI;
+        String[] containerInfos = monitorHttp.getContainerInfoForGUI();
 
         grid.getChildren().addAll(name, 
                                   id, 
