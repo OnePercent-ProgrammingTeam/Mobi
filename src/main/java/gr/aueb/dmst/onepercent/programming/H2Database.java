@@ -149,7 +149,7 @@ public class H2Database {
          
             SuperAPI.createDockerClient();
             MonitorAPI containerMonitor = new MonitorAPI();
-            containerMonitor.initializeContainerModels();
+            containerMonitor.initializeContainerModels(true);
             String[][] containerInfo = containerMonitor.getContainerInfo();
             String id;
             String name;
