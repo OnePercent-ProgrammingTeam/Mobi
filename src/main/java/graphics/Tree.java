@@ -1,6 +1,5 @@
 package graphics;
 
-
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.VBox;
@@ -99,6 +98,14 @@ public class Tree {
         tree.getSelectionModel().selectedItemProperty()
             .addListener((V, oldValue, newValue) -> {
                 int answer = 0;
+
+                if (newValue != null && newValue.getValue().equals("Containers")) {
+                    GUI.window.setScene(GUI.mainScene);
+                }
+
+                if (newValue != null && newValue.getValue().equals("Analytics")) {
+                    GUI.window.setScene(GUI.analyticsScene);
+                }
 
                 if (newValue != null && newValue.getValue().equals("Images")) {
                     GUI.window.setScene(GUI.imagesScene);
