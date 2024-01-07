@@ -15,6 +15,16 @@ import java.io.InputStreamReader;
 public class ManagerHttp extends SuperHttp {
     
     private static HttpEntity entity;
+    // Regular Colors
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
    
     /** Method: startContainer() starts container with http request. */
     public void startContainer() {
@@ -141,30 +151,30 @@ public class ManagerHttp extends SuperHttp {
         if (message.equals("start")) {
             switch (response.getStatusLine().getStatusCode()) {
                 case 204:
-                    output = "Container " + message  + " was successfull.";
+                    output = ANSI_RED + "Container " + message  + " was successfull." + ANSI_RESET;
                     break;
                 case 304:
-                    output = "Container already started.";
+                    output = ANSI_RED + "Container already started." + ANSI_RESET;
                     break;
                 case 404:
-                    output = "There is no such container. Try again";
+                    output = ANSI_RED + "There is no such container. Try again" + ANSI_RESET;
                     break;
                 case 500:
-                    output = "Server error!";
+                    output = ANSI_RED + "Server error!" + ANSI_RESET;
             }
         } else if (message.equals("stop")) {
             switch (response.getStatusLine().getStatusCode()) {
                 case 204:
-                    output = "Container " + message  + " was successfull.";
+                    output = ANSI_RED + "Container " + message  + " was successfull." + ANSI_RESET;
                     break;
                 case 304:
-                    output = "Container already stopped.";
+                    output = ANSI_RED + "Container already stopped." + ANSI_RESET;
                     break;
                 case 404:
-                    output = "There is no such container. Try again";
+                    output = ANSI_RED + "There is no such container. Try again" + ANSI_RESET;
                     break;
                 case 500:
-                    output = "Server error!";
+                    output = ANSI_RED + "Server error!" + ANSI_RESET;
             }
         } else if (message.equals("pull")) {
             switch (response.getStatusLine().getStatusCode()) {
