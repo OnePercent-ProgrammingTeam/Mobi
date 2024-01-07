@@ -83,12 +83,13 @@ public class ImagePage {
         listScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         listScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         listScrollPane.setMinHeight(500);
+       
         
        /*  scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         */
         ListPane listPane = new ListPane();
-        Text title = listPane.getText("List Of Containers");
+        Text title = listPane.getText("List Of Images");
         VBox vbox = new VBox();
     
         vbox.getChildren().add(title);
@@ -102,4 +103,3 @@ public class ImagePage {
     }
 
 }
-
