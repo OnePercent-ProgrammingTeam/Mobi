@@ -20,9 +20,9 @@ public class MonitorAPI extends SuperAPI {
         
     /** Method: initializeContainerModels() pass the locally installed 
      *  containers to a list of container models.*/
-    public void initializeContainerModels(boolean flag) {
+    public void initializeContainerModels(boolean showAll) {
         List<Container> containers;
-        containers = MonitorAPI.dc.listContainersCmd().withShowAll(flag).exec();
+        containers = MonitorAPI.dc.listContainersCmd().withShowAll(showAll).exec();
         containers.forEach(c -> {
             if (c != null)
                  containerModels.add(new ContainerModel(c));
