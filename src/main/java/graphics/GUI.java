@@ -62,15 +62,7 @@ public class GUI extends Application {
         VBox vboxImages = imagePage.createList();
         imagesBorderPane.setCenter(vboxImages);
 
-
-        /* Create the analytics page */
-        AnalyticsPage analyticsPage = new AnalyticsPage();
-        BorderPane analyticsBorderPane = new BorderPane();
-        analyticsScene = mainPage.createMainScene(analyticsBorderPane);
-        createBasicScene(mainPage, analyticsBorderPane);
-        VBox vboxAnalytics = analyticsPage.createList();
-        analyticsBorderPane.setCenter(vboxAnalytics);
-
+       
 
         window.setScene(introScene); 
         window.show();
@@ -153,7 +145,4 @@ public class GUI extends Application {
         //System.out.println(javafx.scene.text.Font.getFamilies());
         launch(args);
     }
-
-
-
 }
