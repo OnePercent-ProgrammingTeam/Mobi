@@ -17,8 +17,8 @@ public class DataBaseThread extends SuperThread {
             datetime = database.getDateTime();
             last_id = database.insertMetricsToDatabase(datetime);
             database.insertContainerToDatabase(last_id);
-            database.getAllMetrics(); //helpful
-            database.getAllContainer(); //helpful
+          //  database.getAllMetrics(); //NOT helpful
+          //  database.getAllContainer(); //NOT helpful
 
 
         } else if (this.userInput == 3) {
