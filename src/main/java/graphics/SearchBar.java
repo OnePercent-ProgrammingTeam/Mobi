@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+
 public class SearchBar {
     
     TextField searchField = new TextField();
@@ -143,7 +144,6 @@ public class SearchBar {
                 
             }
         });
-
         VBox layout = new VBox(searchField, autoCompleteListView);
         //layout.setSpacing(10);
         layout.setPadding(new Insets(10));
