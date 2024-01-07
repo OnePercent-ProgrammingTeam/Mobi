@@ -3,6 +3,7 @@ import gr.aueb.dmst.onepercent.programming.MonitorAPI;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -10,10 +11,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import gr.aueb.dmst.onepercent.programming.MonitorHttp;
+import javafx.scene.control.ToggleGroup;
+
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
  * @see GUI
  */
@@ -22,21 +22,21 @@ public class ListPane {
     /** Field: grid is the grid that contains the list.*/
     GridPane grid;
     /** Field: static ids is the list of ids of the containers.*/
-    static ArrayList<String> ids;
+    static ArrayList<String> ids = new ArrayList<>();
     /** Field: checkboxesList is the list of checkboxes of the containers.*/
-    ArrayList<CheckBox> checkboxesList = new ArrayList<>();
+    ArrayList<RadioButton> radioButtons = new ArrayList<>();
     /** Field: selectedIndices is the list of the indices of the selected containers.*/
     ArrayList<Integer> selectedIndices = new ArrayList<>();
     /** Field: gridInfo is the grid that contains the information about the containers.*/
     GridPane gridInfo;
-    ArrayList<RadioButton> radioButtonsList = new ArrayList<>();
+    static ArrayList<String> names = new ArrayList<>();
 
     /** Method: getGrid() creates the grid that contains the list of containers, with
      *  information about their name, id, status and time created. The returned grid
      *  contains the checkboxes of the containers as well.
      * @return grid: the grid that contains the list of containers.
      */
-    public GridPane getListGrid(String calledFor) {
+    public GridPane getListGrid() {
         
         /* Create and set the grid.*/
         grid = new GridPane();
@@ -79,55 +79,54 @@ public class ListPane {
 
         MonitorAPI monitorAPI = new MonitorAPI();
         MonitorAPI.createDockerClient();
-        
-        if (calledFor.equals("CHECKBOXES")) {
-            monitorAPI.initializeContainerModels(true);
-        } else if (calledFor.equals("CHOICEBOXES")) {
-            monitorAPI.initializeContainerModels(false);
-        }
-        
-
+        monitorAPI.initializeContainerModels(true);
+    
         /* Get the information about the containers.*/
-        ArrayList<String> names = monitorAPI.getNameList();
+        names = monitorAPI.getNameList();
         ids = monitorAPI.getIdList();
         ArrayList<String> statuses = monitorAPI.getStatusList();
         ArrayList<String> times = monitorAPI.getTimeCreatedList();
 
-        if (calledFor.equals("CHECKBOXES")) {
-            createCheckBoxesColumn();
-        } else if (calledFor.equals("CHOICEBOXES")) {
-            createChoiceBoxesColumn();
+        /* Create the checkboxes of the containers and add them to a list.*/
+        ToggleGroup group = new ToggleGroup();
+        for (int i = 0; i < ids.size(); i++) {
+            RadioButton radioButton = new RadioButton();
+            group.getToggles().add(radioButton);
+            GridPane.setConstraints(radioButton, 0, i + 1);
+            grid.getChildren().add(radioButton);
+            GridPane.setHalignment(radioButton, HPos.RIGHT);
+            radioButtons.add(radioButton);
+        
         }
-
         /* Create the labels with the names of the containers.*/
-        for (int i = 0; i < names.size(); i++) {
-            Label name1 = new Label(names.get(i));
+        for (int j = 0; j < names.size(); j++) {
+            Label name1 = new Label(names.get(j));
             name1.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-            GridPane.setConstraints(name1, 1, i + 1);
+            GridPane.setConstraints(name1, 1, j + 1);
             grid.getChildren().add(name1);
         }
 
         /* Create the labels with the ids of the containers.*/
-        for (int i = 0; i < ids.size(); i++) {
-            Label id1 = new Label(ids.get(i));
+        for (int k = 0; k < ids.size(); k++) {
+            Label id1 = new Label(ids.get(k));
             id1.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-            GridPane.setConstraints(id1, 2, i + 1);
+            GridPane.setConstraints(id1, 2, k + 1);
             grid.getChildren().add(id1);
         }
 
         /* Create the labels with the statuses of the containers.*/
-        for (int i = 0; i < statuses.size(); i++) {
-            Label status1 = new Label(statuses.get(i));
+        for (int n = 0; n < statuses.size(); n++) {
+            Label status1 = new Label(statuses.get(n));
             status1.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-            GridPane.setConstraints(status1, 3, i + 1);
+            GridPane.setConstraints(status1, 3, n + 1);
             grid.getChildren().add(status1);
         }
 
         /* Create the labels with the times the containers were created.*/
-        for (int i = 0; i < times.size(); i++) {
-            Label time1 = new Label(times.get(i));
+        for (int l = 0; l < times.size(); l++) {
+            Label time1 = new Label(times.get(l));
             time1.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-            GridPane.setConstraints(time1, 4, i + 1);
+            GridPane.setConstraints(time1, 4, l + 1);
             grid.getChildren().add(time1);
         }
 
@@ -136,29 +135,8 @@ public class ListPane {
         return grid;
     }
 
-    private void createCheckBoxesColumn() {
-         /* Create the checkboxes of the containers and add them to a list.*/
-        for (int i = 0; i < ids.size(); i++) {
-            CheckBox checkBox = new CheckBox();
-            GridPane.setConstraints(checkBox, 0, i + 1);
-            grid.getChildren().add(checkBox);
-            GridPane.setHalignment(checkBox, HPos.RIGHT);
-            checkboxesList.add(checkBox);
-        }
-    }
 
-    private void createChoiceBoxesColumn() {
-        /* Create the choiceboxes of the containers and add them to a list.*/
-        ToggleGroup group = new ToggleGroup();
-        for (int i = 0; i < ids.size(); i++) {
-            RadioButton radioButton = new RadioButton();
-            radioButton.setToggleGroup(group);
-            GridPane.setConstraints(radioButton, 0, i + 1);
-            grid.getChildren().add(radioButton);
-            GridPane.setHalignment(radioButton, HPos.RIGHT);
-            radioButtonsList.add(radioButton);
-        }
-    }
+
 
 
     /** Method: getTitle() creates the title of the list of containers.
@@ -171,18 +149,20 @@ public class ListPane {
         return listOfContainers;
     }
 
+    
     /** Method: getSelectedIndices() returns the indices of the selected containers.
      * @return selectedIndices: the indices of the selected containers.
      */
-    public ArrayList<Integer> getSelectedIndices() {
-        for (CheckBox checkBox : checkboxesList) {
-            if (checkBox.isSelected()) {
-                int index = checkboxesList.indexOf(checkBox);
-                selectedIndices.add(index);
+    public int getSelectedIndices() {
+        for (RadioButton radioButton : radioButtons) {
+            if (radioButton.isSelected()) {
+                int index = radioButtons.indexOf(radioButton);
                 System.out.println(index);
+                return index;
             }
         }
-        return selectedIndices;
+        System.out.println("No radio button selected");
+        return -1;
     }
 
     /** Method: createList() creates the list of containers.
@@ -190,7 +170,7 @@ public class ListPane {
      */
     public VBox createList() {
        
-        GridPane grid = getListGrid("CHECKBOXES");
+        GridPane grid = getListGrid();
         grid.setStyle("-fx-background-color: #FFFFFF;");
         ScrollPane listScrollPane = new ScrollPane(grid);
         
@@ -281,23 +261,31 @@ public class ListPane {
         return gridInfo;
     }
 
+    String[] containerInfos = new String[8];
     public void updateGridPane() {
         MonitorHttp monitorHttp = new MonitorHttp();
-        String[] containerInfos = monitorHttp.getContainerInfoForGUI();
+        containerInfos = monitorHttp.getContainerInfoForGUI();
 
-        Label blank = new Label(" ");
-        GridPane.setConstraints(blank, 0, 8);
+        
         for (int i = 0; i < containerInfos.length; i++) {
             Label containerInfo = new Label(containerInfos[i]);
             containerInfo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
             GridPane.setConstraints(containerInfo, 1, i);
             gridInfo.getChildren().add(containerInfo);
         }
-        GridPane.setConstraints(blank, 1, 8);
+        
     }
-    
 
-
+    public void setBlankGridPane() {
+        
+        for (int i = 0; i < containerInfos.length; i++) {
+            Label containerInfo = new Label(containerInfos[i]);
+            containerInfo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+            containerInfo.setStyle("-fx-text-fill: #FFFFFF;");
+            GridPane.setConstraints(containerInfo, 1, i);
+            gridInfo.getChildren().add(containerInfo);
+        }
+    }
 
 
 }
