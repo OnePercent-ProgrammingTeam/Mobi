@@ -180,13 +180,13 @@ public class MenuThread extends Thread {
             default:
                 System.out.println("Non Valid Input.");
         }
-        if (answer == 5) {
-            while (Graph.end == false) {
-                waitThread();
-            }
-        } else {
-            waitThread();
-        }   
+       // if (answer == 5) {
+       //     while (Graph.end == false) {
+       //         waitThread();
+       //     }
+       // } else {
+       //     waitThread();
+       // }   
     }
 
 }
