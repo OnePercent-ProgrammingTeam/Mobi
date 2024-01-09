@@ -4,22 +4,20 @@ import java.util.Scanner;
 
 /** Class: Main runs the entire program. */
 public class Main {
-    static final Scanner SC = new Scanner(System.in);
 
     /** Get input from the user and handle it. */
     public static String handleInput(String outputMessage) {
-        
+        Scanner scanner = new Scanner(System.in);
         System.out.println(outputMessage);
-        String input = SC.next();
+        String input = scanner.next();
         System.out.println();
-        SC.nextLine(); //clear buffer
+        scanner.nextLine(); 
         return input;
     } 
 
     public static void main(String[] args) {
-        MenuThread menuThread = new MenuThread();
-        Thread thread = new Thread(menuThread);
+        MenuThreadCLI menuThreadCLI = new MenuThreadCLI();
+        Thread thread = new Thread(menuThreadCLI);
         thread.start();
-
     }
 }

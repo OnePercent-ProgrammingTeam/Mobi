@@ -2,11 +2,9 @@ package gr.aueb.dmst.onepercent.programming;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+
 
 /** Import the Jackson ObjectMapper class for formatting the JSON response.*/
 import com.fasterxml.jackson.databind.ObjectMapper; 
@@ -21,168 +19,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  *  It extends the SuperHttp class.
  *  @see SuperHttp
  */
-public class MonitorHttp extends SuperHttp {
+public abstract class MonitorHttp extends SuperHttp {
     
-    private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
-        "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
-
-    /** Method: inspectContainer() retrieves information about a container that might be 
-     * or might not be locally installed.*/
-    public void inspectContainer() {
-        String message = "json"; // get the container information in json format
-        MonitorHttp.containerId = Main.handleInput(
-            "Please type the container ID to get info about the container: ");
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 "/containers/" + 
-                                 MonitorHttp.containerId + 
-                                 "/" + message);
-        executeHttpRequest(message);
-    }
-
-    /** Method: inspectContainerGUI() retrieves information about a container that might be 
-     * or might not be locally installed. 
-     * This method does not show messages to command line. 
-     */
-    public void inspectContainerGUI() {
-        try {
-            containerInfoForGUI = new String[8];
-            containerInfoForGUI = getTableforContainer();
-        } catch (Exception e) {
-            System.out.print("ERROR FROM inspectContainerGUI() method ");
-            for (int i = 0; i < containerInfoForGUI.length; i++) {
-                containerInfoForGUI[i] = "Not Found";
-            }
-        }
-    }
-
-    public String[] getContainerInfoForGUI() {
-        return containerInfoForGUI;
-    }
-
     /**The static field "conId" is used to keep the id of the container the user wants to find,  
      * in order to be visible in the database. 
      */
     public static String conId;
-
-    /** Method: getContainerStats(String) gets statistics about a running container 
-     *  (especially CPU usage). 
-     *  @param calledby the name of the class that called this method.
-     *  These stats are used in Graph class in order to create a graph.
-     *  @see Graph
-    */
-    public CloseableHttpResponse getContainerStats(String calledby) {
-        String message = "stats"; // get the container statistics in json format
-        String outputMessage;
-        if (calledby.equals("Graph")) {
-            outputMessage = "Please type the container ID to plot diagram with CPU usage: ";
-        } else {
-            outputMessage = "Please type the ID of the running container to save real time data: ";
-        }
-        MonitorHttp.containerId = Main.handleInput(outputMessage);
-        conId = containerId;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 "/containers/" + 
-                                 MonitorHttp.containerId + 
-                                 "/" + message);                        
-        return getHttpResponse(message);
-    }
-
-    public CloseableHttpResponse getContainerStatsGUIforGraph() {
-        String message = "stats"; // get the container statistics in json format
-        conId = containerId;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 "/containers/" + 
-                                 MonitorHttp.containerId + 
-                                 "/" + message);                        
-        return getHttpResponse(message);
-    }
 
     /**The static field "imName" is used to keep the name of the image the user wants to find,  
      * in order to be visible in the database. 
      */
     public static String imName;
 
-    /** Method: searchImages() searches for an image by it's name. The result is limited to 3. */
-    public void searchImages() {
-        String message = "/images/search"; // get the container statistics in json format
-        imageName = Main.handleInput("Please type the name of the image you want to search for: ");
-        imName = imageName;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 message + 
-                                 "?term=" + 
-                                 imageName + "&limit=3");
-        executeHttpRequest(message);
-    }
+    public abstract void inspectContainer();
 
-    /** Method: searchImagesGUI() searches for an image by it's name. The result is limited to 3. 
-     * This method does not show messages to command line. */
-    public void searchImagesGUI() {
-        String message = "/images/search"; // get the container statistics in json format
-        imName = imageName;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 message + 
-                                 "?term=" + 
-                                 imageName + "&limit=3");
-        executeHttpRequest(message);
-    }
+    public abstract CloseableHttpResponse getContainerStats(String MIGHT_GOT_TO_REMOVE_PARAMETER);
 
-    public void getImagesListGUI() {
-        String message = "/images/json";
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + 
-                                "?boolean=false&shared-size=true");
-        executeHttpRequest(message);
-        System.out.println(MonitorHttp.DOCKER_HOST + message + 
-                                "?boolean=false&shared-size=true");
-    }
-
-   
-
-    /** Method: executeHttpRequest(String) executes the http request for 
-     *  getting info about a container.
-     * @param message the final part of the url that is used to get the info.
-     * @throws Exception if an error occurs while executing the http request.
-     */
-    @Override
-    public void executeHttpRequest(String message) {
-        try {
-            CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
-            //int statusCode = response.getStatusLine().getStatusCode();
-            //System.out.println("Status Code : " + statusCode);
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
-            String inputLine;
-            MonitorHttp.response1 = new StringBuffer();
-            while ((inputLine = reader.readLine()) != null) {
-                response1.append(inputLine);
-                if (message.equals("stats")) {
-                    lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
-                    response.close();
-                    break;
-                }
-            }
-            
-            reader.close();
-            
-            if (message.equals("json")) {
-                printFormattedInfo();
-                
-            }
-            if (message.equals("/images/search")) {
-                printFormattedJsonForImage();
-            } 
-
-            if (message.equals("/images/json")) {
-                System.out.println("Inside executeHttpRequest() method");
-            }
-                               
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Failed to " + 
-                                message + 
-                                " the container: " + 
-                                e.getMessage()); // Print the error message
-        } 
-    }
+    public abstract void searchImage();
+    
 
     /** Method: getHttpResponse(String) executes the http request for getting 
      *  stats about a running container.
@@ -190,7 +44,7 @@ public class MonitorHttp extends SuperHttp {
      * @throws Exception if an error occurs while executing the http request.
      */
     @Override
-    public CloseableHttpResponse getHttpResponse(String message) {
+    public CloseableHttpResponse getHttpResponse() {
         try {
             CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
 
@@ -200,10 +54,7 @@ public class MonitorHttp extends SuperHttp {
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Failed to " + 
-                                message + 
-                                " the container: " + 
-                                e.getMessage()); // Print the error message
+            System.err.println(e.getMessage()); // Print the error message
         } 
         return null;
     }
@@ -255,55 +106,6 @@ public class MonitorHttp extends SuperHttp {
     }
 
     
-    /** Method: printFormattedInfo() reads the json response for container info 
-     *  to a user-friendly message.
-     * NullPointerException if an error occurs while executing the http request.
-     * this Exception might occur when the image name is not found in the json file.
-     */ 
-    public void printFormattedInfo() throws JsonProcessingException  {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
-            System.out.println("Container Name: " + jsonNode.get("Name").asText().substring(1));
-            System.out.println("Container ID: " + jsonNode.get("Id").asText());
-            System.out.println("Status: " + jsonNode.get("State").get("Status").asText());
-            System.out.println("Image ID: " + jsonNode.get("Image").asText());
-            System.out.println("Network ID: " + jsonNode
-                                                .get("NetworkSettings")
-                                                .get("Networks")
-                                                .get("bridge")
-                                                .get("NetworkID")
-                                                .asText()); 
-            System.out.println("Gateway: " + jsonNode
-                                             .get("NetworkSettings")
-                                             .get("Networks")
-                                             .get("bridge")
-                                             .get("Gateway")
-                                             .asText()); 
-            System.out.println("IP Address: " + jsonNode
-                                                .get("NetworkSettings")
-                                                .get("Networks")
-                                                .get("bridge")
-                                                .get("IPAddress")
-                                                .asText()); 
-            System.out.println("Mac Address: " + jsonNode
-                                                 .get("NetworkSettings")
-                                                 .get("Networks")
-                                                 .get("bridge")
-                                                 .get("MacAddress")
-                                                 .asText()); 
-            /*System.out.println("Image Name: " + jsonNode
-                                                  .get("Config")
-                                                  .get("Labels")
-                                                  .get("org.opencontainers.image.title")
-                                                  .asText());*/
-        } catch (NullPointerException e) {
-            System.out.println("Exception due to null value");
-        }
-    }
-
-    
-
     public String[] getTableforContainer() throws JsonProcessingException {
         String[] info = new String[8];
         try {
@@ -348,6 +150,7 @@ public class MonitorHttp extends SuperHttp {
 
     }
 
+    //TO DO: It's Kiritsai's, might be deleted
     /** Method: prepareStorageData() returns a String array with the prepared 
      *  data that will be saved in a csv file. 
      *  @return str a String array with the data that will be saved in a csv file.
@@ -393,71 +196,6 @@ public class MonitorHttp extends SuperHttp {
         } catch (Exception e) {
             System.out.println("Exception while preparing storage of data");
             e.printStackTrace();
-            return null;
-        }
-    }
-
-    /** Method: printFormattedJsonForImage() formats the json response for image  
-     * -that you 've searched for- to a user-friendly message.
-     *  @throws JsonProcessingException
-     *  @throws NullPointerException
-     *  @prints info about the top 3 images with the name that user searched. The info contains: 
-     *  1.Image Name
-     *  2.Description
-     *  3.Star Count (the times an image has been shared)   
-     */
-    public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
-                
-            if (jsonNode.isArray()) {
-                System.out.println("Top 3 searched results\n");
-                for (JsonNode el : jsonNode) {
-                    System.out.println("Image name: " + el.get("name") 
-                        + "\nDescription: " 
-                        + el.get("description") 
-                        + "\nStar count: " 
-                        + el.get("star_count") + "\n");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Oops, something went wrong...");
-        }
-    }
-
-    public ArrayList<String> getFormattedImageIdsList() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString()); 
-            ArrayList<String> ids = new ArrayList<String>();
-            if (jsonNode.isArray()) {
-                for (JsonNode el : jsonNode) {
-                    ids.add(el.get("Id").asText());
-                }
-            }
-            return ids;
-        } catch (Exception e) {
-            System.out.println("Oops, something went wrong...");
-            return null;
-        }
-    }
-
-    public ArrayList<String> getFormattedImageNamesList() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString()); 
-            ArrayList<String> names = new ArrayList<String>();
-            if (jsonNode.isArray()) {
-                for (JsonNode jn : jsonNode) {
-                    
-                    
-                    names.add(jn.get("RepoTags").get(0).asText());
-                }
-            }
-            return names;
-        } catch (Exception e) {
-            System.out.println("Oops, something went wrong...");
             return null;
         }
     }

@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import gr.aueb.dmst.onepercent.programming.ManagerHttp;
+import gr.aueb.dmst.onepercent.programming.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.MonitorHttp;
 
 /**
@@ -26,7 +27,7 @@ public class Tree {
     /** Field: tree is the tree menu of the GUI.*/
     TreeView<String> tree;
     /** Field: manager is the object of the class ManagerHttp.*/
-    ManagerHttp manager = new ManagerHttp();
+    ManagerHttpGUI manager = new ManagerHttpGUI();
 
     SearchBar searchObject = new SearchBar();
 
@@ -158,7 +159,7 @@ public class Tree {
         int index = listPane.getSelectedIndices();
         ManagerHttp.containerId = ListPane.ids.get(index);
         MonitorHttp.containerId = ListPane.ids.get(index);
-        GUI.menuThread.handleUserInputGUI(answer);
+        GUI.menuThreadGUI.handleUserInputGUI(answer);
         
         if (answer == 6) {
             listPane.setBlankGridPane();
@@ -266,8 +267,6 @@ public class Tree {
             Tree.executeFunctionality(Tree.listPane, answer);
         }
     }
-
-
 
     /** Method: makeBranch() creates a branch of the tree.
      *  @param title: the title of the branch.

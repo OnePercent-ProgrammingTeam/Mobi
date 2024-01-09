@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class CSV {
     /** Field: monitorHttp is a MonitorHttp object. */
-    MonitorHttp monitorHttp = new MonitorHttp();
+    MonitorHttp monitorHttp = new MonitorHttpCLI();
     /** Field: folderPath is the path of the folder that is going to be created. */
     private String folderPath;
     /** Field: HEADER is the header of the .csv file. */

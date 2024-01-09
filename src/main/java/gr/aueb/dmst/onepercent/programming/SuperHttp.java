@@ -56,7 +56,7 @@ public class SuperHttp implements HttpInterface {
      * @param message the message that indicates the action that is going to be executed
      * it is the query for the http request
      */
-    public CloseableHttpResponse getHttpResponse(String message) {
+    public CloseableHttpResponse getHttpResponse() {
         return response;
     }
 }

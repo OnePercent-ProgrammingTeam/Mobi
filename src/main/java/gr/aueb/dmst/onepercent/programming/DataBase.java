@@ -20,7 +20,7 @@ public class DataBase {
      */
     
     String query;
-    MonitorHttp contanerMonitorHttp = new MonitorHttp();
+    MonitorHttp contanerMonitorHttp = new MonitorHttpCLI();
 
 
     /*Creation of 4 tables: 

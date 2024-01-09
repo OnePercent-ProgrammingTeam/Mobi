@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import java.io.IOException;
 import javafx.scene.control.Button;
-import gr.aueb.dmst.onepercent.programming.MenuThread;
+import gr.aueb.dmst.onepercent.programming.MenuThreadGUI;
 
 /** Class: GUI is the core class that runs the Graphics of
  * the application. It uses the Intro and MainPage classes.
@@ -21,7 +21,7 @@ import gr.aueb.dmst.onepercent.programming.MenuThread;
 public class GUI extends Application {
 
     static Stage window;
-    static MenuThread menuThread;
+    static MenuThreadGUI menuThreadGUI;
     static Scene imagesScene;
     Scene introScene;
     static Scene mainScene;
@@ -62,8 +62,6 @@ public class GUI extends Application {
         VBox vboxImages = imagePage.createList();
         imagesBorderPane.setCenter(vboxImages);
 
-       
-
         window.setScene(introScene); 
         window.show();
     }
@@ -73,8 +71,8 @@ public class GUI extends Application {
      *  application.
      */
     private void createMenuThread() {
-        menuThread = new MenuThread();
-        Thread thread = new Thread(menuThread);
+        menuThreadGUI = new MenuThreadGUI();
+        Thread thread = new Thread(menuThreadGUI);
         thread.start();
     }
 

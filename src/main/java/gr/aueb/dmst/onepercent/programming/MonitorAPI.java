@@ -29,20 +29,6 @@ public class MonitorAPI extends SuperAPI {
         }); // add all containers to containerModels list
     }
 
-    
- /* List<ContainerModel> containerRunning = new ArrayList();
-
-    public void initializeContainerRunning() {
-        List<Container> containers;
-        containers = MonitorAPI.dc.listContainersCmd().withShowAll(false).exec();
-        containers.forEach(c -> {
-            if (c != null)
-                 containerRunning.add(new ContainerModel(c));
-        }); // add only running containers to containerModels list
-    }
-*/ 
-
-
    /** Method: getContainerList() prints the names of the locally installed containers, their ids, 
     *  their status and the time they were created. 
     */
@@ -136,7 +122,7 @@ public class MonitorAPI extends SuperAPI {
             System.out.println("\n--------------------------------\n");
         });
     }
-
+    //TO DO: Check if it is needed
     public String[][] getContainerInfo() {
         ArrayList<String[]> containerInfo = new ArrayList<>();
   

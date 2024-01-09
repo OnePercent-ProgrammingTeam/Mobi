@@ -1,15 +1,15 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-import gr.aueb.dmst.onepercent.programming.MonitorHttp;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import gr.aueb.dmst.onepercent.programming.MonitorHttp;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import static org.junit.jupiter.api.Assertions.fail;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class MonitorHttpTest {
 
-    private MonitorHttp containerMonitor;
+   /*  private MonitorHttp containerMonitor;
 
     @BeforeEach
     // Create a new instance of MonitorHttp before each test

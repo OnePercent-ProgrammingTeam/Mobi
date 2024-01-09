@@ -5,7 +5,7 @@ package gr.aueb.dmst.onepercent.programming;
  *  It is used to create a mock object for the MenuThread class in the test classes.
  *  @see MenuThread
  *  @see MonitorThread
- *  @see ManagerThread
+ *  @see ExecutorThread
  *  @see DataBaseThread
  */
 public abstract class SuperThread implements Runnable {

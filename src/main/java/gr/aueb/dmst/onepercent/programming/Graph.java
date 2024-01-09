@@ -14,8 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
+//import java.time.LocalDate;
+//import java.time.LocalTime;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +32,19 @@ import java.awt.event.WindowEvent;
  */
 
 public class Graph extends JFrame {
+
+    private static Graph graph;
+
+    private Graph() { }
+
+    public static Graph getInstance() {
+        if (graph == null) {
+            graph = new Graph();
+        }
+        return graph;
+    }
+
+
     
     /** Field XYSeries represents a sequence of zero or more data items in the form (x, y). */
     private XYSeries usageSeries;
@@ -40,7 +53,7 @@ public class Graph extends JFrame {
     public static boolean end;
 
     /** Field: monitorHttp is a MonitorHttp object. */
-    static MonitorHttp monitorHttp = new MonitorHttp();
+    static MonitorHttpCLI monitorHttpCLI = new MonitorHttpCLI();
 
     /** Constructor:  
      * @param title the title of the window
@@ -127,11 +140,11 @@ public class Graph extends JFrame {
     public void onRunGraph(BufferedReader reader, Graph ex, Timer timer) throws IOException {
         String inputLine = reader.readLine(); // Read a new line from the response
         if (inputLine != null) {
-            double usage = monitorHttp.getFormattedStats(new StringBuffer(inputLine));
+            double usage = monitorHttpCLI.getFormattedStats(new StringBuffer(inputLine));
             updateStats(usage);
 
             if (flag == false) {
-                LocalDate date = LocalDate.now(); 
+              /*  LocalDate date = LocalDate.now(); 
                 LocalTime time = LocalTime.now();
                 DataBase database = new DataBase();
 
@@ -140,7 +153,7 @@ public class Graph extends JFrame {
                 int last_id = database.insertMetricsToDatabase(datetime);
                 database.insertMeasureToDatabase(last_id, usage);
                 database.getSomeMetrics(last_id); //helpful
-                database.getSomeMeasure(last_id); //helpful
+                database.getSomeMeasure(last_id); //helpful*/
             } else {
                 //reader.close();
                 timer.cancel();
@@ -165,7 +178,7 @@ public class Graph extends JFrame {
         cv.setLocationRelativeTo(null); // Center the window
         // Set the close operation, so that the application exits when the window is closed
         cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
-        CloseableHttpResponse res = monitorHttp.getContainerStats("Graph");
+        CloseableHttpResponse res = monitorHttpCLI.getContainerStats("Graph");
         flag = false;  
         end = false;
         cv.addWindowListener(new WindowAdapter() {
@@ -185,17 +198,17 @@ public class Graph extends JFrame {
         }  
     }
 
-
+    MonitorHttpGUI monitorHttpGUI = new MonitorHttpGUI();
     /** Method: executeDiagramGUI() executes the diagram. 
      * This method does not show any messages to command line. 
      */
-    public static void executeDiagramGUI() {
+    public void executeDiagramGUI() {
         Graph cv = new Graph("Container Stats Plotter"); // Create a new Graph object
         cv.setSize(800, 600);  // Set the size of the window
         cv.setLocationRelativeTo(null); // Center the window
         // Set the close operation, so that the application exits when the window is closed
         cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
-        CloseableHttpResponse res = monitorHttp.getContainerStatsGUIforGraph();
+        CloseableHttpResponse res = monitorHttpGUI.getContainerStats("GOT TO DELETE!!!");
         flag = false;  
         end = false;
         cv.addWindowListener(new WindowAdapter() {

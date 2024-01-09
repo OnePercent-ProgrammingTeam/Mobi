@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
-import gr.aueb.dmst.onepercent.programming.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
 import javafx.scene.control.ToggleGroup;
 
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
@@ -263,7 +263,7 @@ public class ListPane {
 
     String[] containerInfos = new String[8];
     public void updateGridPane() {
-        MonitorHttp monitorHttp = new MonitorHttp();
+        MonitorHttpGUI monitorHttp = new MonitorHttpGUI();
         containerInfos = monitorHttp.getContainerInfoForGUI();
 
         

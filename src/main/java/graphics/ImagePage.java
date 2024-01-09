@@ -9,7 +9,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
  * @see GUI
  */
@@ -42,7 +42,7 @@ public class ImagePage {
         GridPane.setConstraints(idColumn, 1, 0);
 
 
-        MonitorHttp monitorHttp = new MonitorHttp();
+        MonitorHttpGUI monitorHttp = new MonitorHttpGUI();
         monitorHttp.getImagesListGUI();
         ArrayList<String> ids = new ArrayList<String>();
         ids = monitorHttp.getFormattedImageIdsList();
