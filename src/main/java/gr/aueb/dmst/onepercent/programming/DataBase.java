@@ -9,12 +9,17 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.annotations.VisibleForTesting;
 
 
 public class DataBase {
 
     static final String url = "jdbc:h2:./data";
 
+    @VisibleForTesting
+    public String getUrl() {
+        return url;
+    }
     /* static String user = "username";
      * static String password = "password";
      */
