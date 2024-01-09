@@ -12,8 +12,7 @@ public class Main {
         String input = scanner.next();
         System.out.println();
         scanner.nextLine(); 
-        //TO DO: check if it can be implented for testing 
-        //scanner.close();;
+       
         return input;
     } 
 
