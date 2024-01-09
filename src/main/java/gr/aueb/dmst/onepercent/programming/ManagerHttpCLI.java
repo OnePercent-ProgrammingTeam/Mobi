@@ -2,6 +2,8 @@ package gr.aueb.dmst.onepercent.programming;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 
+import com.google.common.annotations.VisibleForTesting;
+
 public class ManagerHttpCLI extends ManagerHttp {
     
     // Regular Colors
@@ -49,6 +51,7 @@ public class ManagerHttpCLI extends ManagerHttp {
      * @param message the message that is given by the user.
      * @throws Exception if an error occurs while executing the http request.
      */
+
     @Override
     public void executeHttpRequest(String message) {
         try {
@@ -87,7 +90,10 @@ public class ManagerHttpCLI extends ManagerHttp {
         return output;
 
     }
-
+    @VisibleForTesting
+    public String getProvideMessage(String message) {
+        return provideMessage(message);
+    }
     private String provideMessage(String message) {
         String output = "";
         if (message.equals("start")) {
