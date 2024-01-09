@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class MenuThreadCLI extends MenuThread {
     
-    private final Scanner INPUT = new Scanner(System.in);
+    
     ExecutorThreadCLI executorThreadCLI = ExecutorThreadCLI.getInstance();
     MonitorThreadCLI monitorThreadCLI = MonitorThreadCLI.getInstance();
 
@@ -45,6 +45,7 @@ public class MenuThreadCLI extends MenuThread {
      * @return true if the user wants to run the program again, false otherwise.
      */
     public boolean handleUserInput() {
+        Scanner INPUT = new Scanner(System.in);
         System.out.print("Please enter a number: ");
         int answer = 0;
         try {
