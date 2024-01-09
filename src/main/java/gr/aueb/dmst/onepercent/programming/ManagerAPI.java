@@ -6,11 +6,12 @@ import java.util.Scanner;
 
 public class ManagerAPI  extends SuperAPI {
     
-    /** Field: sc is a scanner object. */
-    Scanner sc = new Scanner(System.in);
+    
 
     /** Method: handleInput() handles user input and make sure it is valid. */
     public String handleInput() {
+        /** Field: sc is a scanner object. */
+        Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the id of the container you want to start/stop");
         String input = sc.next();
         if (!checkAllContainerStatus(input)) {
@@ -18,6 +19,7 @@ public class ManagerAPI  extends SuperAPI {
             return null;
         }
         sc.nextLine(); //clear buffer
+        sc.close();
         return input;
     } 
     
