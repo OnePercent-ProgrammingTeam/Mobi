@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import com.github.dockerjava.api.model.ContainerPort;
+import com.google.common.annotations.VisibleForTesting;
 
 
 /** Class: MonitorAPI is a class that contains methods that retrieves information
@@ -17,6 +18,11 @@ import com.github.dockerjava.api.model.ContainerPort;
 public class MonitorAPI extends SuperAPI {
     /** Field: List<ContainerModel> is the list of container models. */
     List<ContainerModel> containerModels = new ArrayList();
+
+    @VisibleForTesting
+    public List<ContainerModel> getContainerModels() {
+        return containerModels;
+    }
         
     /** Method: initializeContainerModels() pass the locally installed 
      *  containers to a list of container models.*/
