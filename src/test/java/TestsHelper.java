@@ -30,6 +30,7 @@ public class TestsHelper {
     }
     /*create a dockerClient for testing */
     protected DockerClient dc;
+
     private void createDockerClient() {
         DefaultDockerClientConfig config = DefaultDockerClientConfig
             .createDefaultConfigBuilder()
@@ -47,6 +48,11 @@ public class TestsHelper {
             }
         }
         return false;
+    }
+
+    //for testing with the list of all containers
+    public List<Container> getAllContainers() {
+        return dc.listContainersCmd().withShowAll(true).exec();
     }
 
 
