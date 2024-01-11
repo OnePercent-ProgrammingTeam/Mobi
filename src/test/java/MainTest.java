@@ -1,11 +1,11 @@
-/*import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import gr.aueb.dmst.onepercent.programming.Main;
-*/
+
 public class MainTest {
-   /*  @Test
+    @Test
     public void handleInputTest() {
         String s = "demo";
         String temp = s + "\n";
@@ -14,5 +14,5 @@ public class MainTest {
         String result = Main.handleInput("test");
         System.setIn(System.in);
         assertEquals(s, result);
-    }  */
+    }  
 }
