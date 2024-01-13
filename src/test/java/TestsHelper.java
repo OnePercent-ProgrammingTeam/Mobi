@@ -54,8 +54,17 @@ public class TestsHelper {
     public List<Container> getAllContainers() {
         return dc.listContainersCmd().withShowAll(true).exec();
     }
+    public Container getTesContainer() {
+        List<Container> containers;
+        containers = dc.listContainersCmd().withShowAll(true).exec();
+        for (Container c : containers) {
+            if (c.getId().equals(getTestid())) {
+                return c; 
+            }
+        }
+        return null;
 
-
+    }
 
     
 }
