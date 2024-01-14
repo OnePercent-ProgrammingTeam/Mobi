@@ -14,6 +14,15 @@ public class SuperAPI {
     
     /** Field: dc is a static variable, used in many classes, representing the docker client */
     protected static DockerClient dc;
+
+    /**
+     * Gets the Docker client instance.
+     *
+     * @return The DockerClient instance represented by the static variable dc.
+     *
+     * This method is intended for testing purposes.
+     * It should only be used in testing scenarios to expose certain behavior for testing.
+     */
     @VisibleForTesting
     public static DockerClient getDc() {
         return dc;
@@ -29,4 +38,10 @@ public class SuperAPI {
         dc.versionCmd().exec();
     }
 
+    /**
+     * Default Constructor
+     */
+    public SuperAPI() {
+
+    }
 }
