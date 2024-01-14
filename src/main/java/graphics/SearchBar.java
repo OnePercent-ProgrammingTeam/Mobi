@@ -14,13 +14,25 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-
+/**
+ * The SearchBar class represents a JavaFX component for creating a search bar 
+ * with auto-complete functionality.
+ * It includes methods to handle user input, display suggestions, 
+ * and allow for navigation within the suggestions list.
+ */
 public class SearchBar {
     
     TextField searchField = new TextField();
     
     ListView<String> autoCompleteListView = new ListView<>();
 
+    /**
+     * Creates and returns a VBox containing the search bar and auto-complete suggestions list.
+     * The search bar allows users to input text, 
+     * and the auto-complete list provides suggestions based on the input.
+     *
+     * @return A VBox containing the search bar and auto-complete list.
+     */
     public VBox createBar() {
         DataBase database = new DataBase();
         ArrayList<String> names = database.getImageForSearch();
@@ -181,5 +193,10 @@ public class SearchBar {
         }
     }
    
-    
+    /**
+     * Default Constructor
+     */
+    public SearchBar() {
+
+    }
 }
