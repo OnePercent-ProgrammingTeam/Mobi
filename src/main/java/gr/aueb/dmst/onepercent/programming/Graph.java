@@ -37,6 +37,11 @@ public class Graph extends JFrame {
 
     private Graph() { }
 
+    /**
+     * Method: getInstance() gets the singleton instance of the Graph class.
+     *
+     * @return the singleton instance of the Graph class
+     */
     public static Graph getInstance() {
         if (graph == null) {
             graph = new Graph();
@@ -50,15 +55,21 @@ public class Graph extends JFrame {
     private XYSeries usageSeries;
 
     private static boolean flag;
+
+    /**
+     * Field: end represents whether the graph should end or continue updating.
+     */
     public static boolean end;
 
     /** Field: monitorHttp is a MonitorHttp object. */
     static MonitorHttpCLI monitorHttpCLI = new MonitorHttpCLI();
 
-    /** Constructor:  
+    /**
+     * Constructor:
+     *
      * @param title the title of the window
-     * @variable dataset a collection of XYSeries objects that can be used as a dataset
-    */
+     * Dataset is a collection of XYSeries objects that can be used as a dataset
+     */
     public Graph(String title) {
         super(title);
         usageSeries = new XYSeries("CPU Usage");
@@ -111,7 +122,9 @@ public class Graph extends JFrame {
     /** Method: statsPlot(CloseableHttpResponse) starts updating the stats in order
      *  to plot real time data-the consume of cpu resources every second.
      *  @param response a CloseableHttpResponse object 
-     * */
+     *  @param ex a Graph object
+     *  @throws IOException if an error occurs while reading the input
+     */
     public void statsPlot(CloseableHttpResponse response, Graph ex) 
         throws UnsupportedOperationException, IOException {
         // Simulate real-time data update every second
@@ -198,7 +211,11 @@ public class Graph extends JFrame {
         }  
     }
 
+    /**
+     * Create an instance of MonitorHttpGUI for monitoring purposes.
+     */
     MonitorHttpGUI monitorHttpGUI = new MonitorHttpGUI();
+
     /** Method: executeDiagramGUI() executes the diagram. 
      * This method does not show any messages to command line. 
      */
