@@ -10,6 +10,10 @@ import org.apache.http.client.methods.HttpGet;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Class: MonitorHttpGUI extends MonitorHttp
+ * This class provides HTTP-related functionality for the graphical user interface.
+ */
 public class MonitorHttpGUI extends MonitorHttp {
 
     private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
@@ -32,6 +36,20 @@ public class MonitorHttpGUI extends MonitorHttp {
         }
     }
 
+    /**
+     * Method: getContainerInfoForGUI()
+     * Retrieves the container information formatted for the graphical user interface.
+     *
+     * @return An array containing container information for the GUI, including:
+     *         - Container ID
+     *         - Container Name
+     *         - Container Status
+     *         - Image ID
+     *         - Network ID
+     *         - Gateway
+     *         - IP Address
+     *         - Mac Address
+     */
     public String[] getContainerInfoForGUI() {
         return containerInfoForGUI;
     }
@@ -60,6 +78,12 @@ public class MonitorHttpGUI extends MonitorHttp {
         executeHttpRequest(message);
     }
 
+    /**
+     * Method: getImagesListGUI()
+     * Sends an HTTP request to retrieve a list of images with additional information.
+     * The request includes parameters to exclude intermediate images and include shared image size.
+     * Prints the request URL to the console.
+     */
     public void getImagesListGUI() {
         String message = "/images/json";
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + 
@@ -73,7 +97,7 @@ public class MonitorHttpGUI extends MonitorHttp {
     /** Method: executeHttpRequest(String) executes the http request for 
      *  getting info about a container.
      * @param message the final part of the url that is used to get the info.
-     * @throws Exception if an error occurs while executing the http request.
+     * may throw Exception if an error occurs while executing the http request.
      */
     @Override
     public void executeHttpRequest(String message) {
@@ -109,6 +133,13 @@ public class MonitorHttpGUI extends MonitorHttp {
         } 
     }
 
+    /**
+     * Method: getFormattedImageIdsList()
+     * Parses the JSON response to extract formatted image IDs.
+     *
+     * @return An ArrayList containing formatted image IDs.
+     *         If an error occurs during parsing, returns null.
+     */
     public ArrayList<String> getFormattedImageIdsList() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -126,6 +157,13 @@ public class MonitorHttpGUI extends MonitorHttp {
         }
     }
 
+    /**
+     * Method: getFormattedImageNamesList()
+     * Parses the JSON response to extract formatted image names.
+     *
+     * @return An ArrayList containing formatted image names.
+     *         If an error occurs during parsing, returns null.
+     */
     public ArrayList<String> getFormattedImageNamesList() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -145,5 +183,10 @@ public class MonitorHttpGUI extends MonitorHttp {
         }
     }
 
+    /**
+     * Default Constructor
+     */
+    public MonitorHttpGUI() {
 
+    }
 }
