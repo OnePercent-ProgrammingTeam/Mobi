@@ -4,11 +4,21 @@ import com.github.dockerjava.api.model.Container;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Class: ManagerAPI extends SuperAPI and provides methods for handling user input
+ * and managing container states using Docker commands.
+ *
+ * @see SuperAPI
+ */
 public class ManagerAPI  extends SuperAPI {
     
     
 
-    /** Method: handleInput() handles user input and make sure it is valid. */
+    /** 
+     * Method: handleInput() handles user input and make sure it is valid. 
+     * 
+     * @return The entered container ID if it exists; otherwise, null.
+     */
     public String handleInput() {
         /** Field: sc is a scanner object. */
         Scanner sc = new Scanner(System.in);
@@ -51,7 +61,11 @@ public class ManagerAPI  extends SuperAPI {
     }
 
 
-    /** Method: checkActiveContainerStatus checks if container is active. */
+    /** 
+     * Method: checkActiveContainerStatus checks if container is active. 
+     * @param idInput The ID of the container to check.
+     * @return true if the container is active; false if the container is not active.
+     */
     public boolean checkActiveContainerStatus(String idInput) {
         List<Container> containers;
         containers = dc.listContainersCmd().withShowAll(false).exec();
@@ -63,7 +77,11 @@ public class ManagerAPI  extends SuperAPI {
         return false; //container is not active
     }
 
-    /** Method: checkAllContainerStatus checks if container exists. */
+    /** 
+     * Method: checkAllContainerStatus checks if container exists. 
+     * @param idInput The ID of the container to check.
+     * @return true if the container exists; false if the container does not exist.
+     */
     public boolean checkAllContainerStatus(String idInput) {
         List<Container> containers;
         containers = dc.listContainersCmd().withShowAll(true).exec();
@@ -73,5 +91,12 @@ public class ManagerAPI  extends SuperAPI {
             }
         }
         return false; //container does not exist
+    }
+
+    /**
+     * Default Constructor
+     */
+    public ManagerAPI() {
+
     }
 }

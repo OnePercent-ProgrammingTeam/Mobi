@@ -28,9 +28,10 @@ public class GUI extends Application {
     static Scene analyticsScene;
     static final ListPane LIST = new ListPane();
 
-    /** Method: start(Stage) is the method that runs the application.
-     * @param window is the stage of the application.
-     * @throws IOException
+    /** 
+     * Method: start(Stage) is the method that runs the application.
+     * @param stage is the stage of the application.
+     * Throws IOException, add exception block
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -138,9 +139,19 @@ public class GUI extends Application {
         return fxmlLoader.load();
     }
     
-    
+    /**
+     * Start the GUI app
+     * @param args no need to use it
+     */
     public static void main(String[] args) {
         //System.out.println(javafx.scene.text.Font.getFamilies());
         launch(args);
+    }
+
+    /**
+     * Default Constructor
+     */
+    public GUI() {
+
     }
 }

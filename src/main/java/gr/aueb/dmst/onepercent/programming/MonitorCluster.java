@@ -21,4 +21,11 @@ public class MonitorCluster extends SuperAPI {
             System.out.println("Node Description: " + node.getDescription()); 
         }
     }
+
+    /**
+     * Default Constructor
+     */
+    public MonitorCluster() {
+        
+    }
 }

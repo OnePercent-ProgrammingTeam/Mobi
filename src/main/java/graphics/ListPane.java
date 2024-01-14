@@ -140,6 +140,7 @@ public class ListPane {
 
 
     /** Method: getTitle() creates the title of the list of containers.
+     * @param text name of Container
      * @return listOfContainers: the title of the list of containers.
      */
     public Text getText(String text) {
@@ -209,7 +210,14 @@ public class ListPane {
     
     }
 
-    
+    /**
+     * Method: getInfoGrid() creates and sets up a GridPane with labeled rows 
+     * for displaying container information.
+     * The grid includes labels for 
+     * container name, ID, status, image ID, network ID, gateway, IP address, and MAC address.
+     *
+     * @return gridInfo: the GridPane containing labeled rows for container information
+     */
     public GridPane getInfoGrid() {
         /* Create and set the grid.*/
         gridInfo = new GridPane();
@@ -262,6 +270,14 @@ public class ListPane {
     }
 
     String[] containerInfos = new String[8];
+
+    /**
+     * Method: updateGridPane() retrieves container information from MonitorHttpGUI 
+     * and updates the existing GridPane
+     * with labels for each container attribute, such as name, ID, status, image ID,
+     *  network ID, gateway, IP address, and MAC address.
+     * The information is displayed in the second column of the GridPane.
+     */
     public void updateGridPane() {
         MonitorHttpGUI monitorHttp = new MonitorHttpGUI();
         containerInfos = monitorHttp.getContainerInfoForGUI();
@@ -276,6 +292,12 @@ public class ListPane {
         
     }
 
+    /**
+     * Method: setBlankGridPane() populates the existing GridPane with blank labels,
+     *  setting their styles and constraints.
+     * This is useful for initializing or clearing the GridPane 
+     * before updating it with new container information.
+     */
     public void setBlankGridPane() {
         
         for (int i = 0; i < containerInfos.length; i++) {
@@ -285,6 +307,13 @@ public class ListPane {
             GridPane.setConstraints(containerInfo, 1, i);
             gridInfo.getChildren().add(containerInfo);
         }
+    }
+
+    /**
+     * Default Constructor
+     */
+    public ListPane() {
+
     }
 
 

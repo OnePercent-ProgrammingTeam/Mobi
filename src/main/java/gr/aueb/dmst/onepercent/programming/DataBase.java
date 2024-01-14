@@ -11,11 +11,21 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.VisibleForTesting;
 
-
+/**
+ * Class: DataBase is responsible for interacting with the H2 database.
+ * It provides methods for creating tables, inserting data, and querying information.
+ */
 public class DataBase {
 
     static final String url = "jdbc:h2:./data";
 
+    /**
+     * Gets the URL used for connecting to the H2 database.
+     * This method is marked with {@code @VisibleForTesting} to make it accessible
+     * for testing purposes within the same package.
+     *
+     * @return The URL for connecting to the H2 database.
+     */
     @VisibleForTesting
     public String getUrl() {
         return url;
@@ -28,12 +38,14 @@ public class DataBase {
     MonitorHttp contanerMonitorHttp = new MonitorHttpCLI();
 
 
-    /*Creation of 4 tables: 
+    /**
+     * Method: createDatabase() creates tables in the H2 database.
+     * Creation of 4 tables: 
      * 1) Metrics (ID, Date)
      * 2) Container(ID,C_ID, C_NAME, Status, Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)
      * 3) Image (ID,NAME)
      * 4) Measure (ID,C_ID, Cpu_usage)
-    */
+     */
     public void createDatabase() {
         try {
             Class.forName("org.h2.Driver"); //Register JDBC driver 
@@ -108,7 +120,10 @@ public class DataBase {
     }
 
 
-    /*Get the last id in the "Metrics" table*/
+    /**
+     * Method returns as a String the local date time
+     * @return The datetime
+     */
     public String getDateTime() {
         LocalDate date = LocalDate.now(); 
         LocalTime time = LocalTime.now();
@@ -119,7 +134,12 @@ public class DataBase {
     }
 
 
-    /*Insert data into "Metrics" */
+    /**
+     * Insert data into "Metrics"
+     *
+     * @param datetime The datetime to be inserted.
+     * @return The ID of the last inserted record.
+     */
     public int insertMetricsToDatabase(String datetime) {
         int last_id = 0;
 
@@ -149,7 +169,11 @@ public class DataBase {
 
 
 
-    /* Insert data into "Container"*/
+    /**
+     * Insert data into "Container"
+     *
+     * @param last_id The last inserted ID in the "Metrics" table.
+     */
     public void insertContainerToDatabase(int last_id) {
         try {
             Class.forName("org.h2.Driver");
@@ -177,7 +201,11 @@ public class DataBase {
     }
 
 
-    /*Insert data into "Image"*/
+    /**
+     * Insert data into "Image"
+     *
+     * @param last_id The last inserted ID in the "Metrics" table.
+     */
     public void insertImageToDatabase(int last_id) {
         try {
             Class.forName("org.h2.Driver");
@@ -197,7 +225,12 @@ public class DataBase {
         }
     }
     
-     
+    /**
+     * Insert data into "Measure"
+     *
+     * @param last_id The last inserted ID in the "Metrics" table.
+     * @param cpu     The CPU usage to be inserted.
+     */
     public void insertMeasureToDatabase(int last_id, double cpu) {
         try {
             Class.forName("org.h2.Driver");
@@ -222,7 +255,9 @@ public class DataBase {
 
 
 
-    /*Method for check for "Metrics"*/
+    /**
+     * Method for showing all metrics
+     */
     public void getAllMetrics() {
         try {
             Class.forName("org.h2.Driver"); 
@@ -250,7 +285,10 @@ public class DataBase {
         } 
     }
 
-    /*Method for check for "Container"*/
+    /**
+     * Method for showing the elements 
+     * of all the containers
+     */
     public void getAllContainer() {
         try {
             Class.forName("org.h2.Driver"); 
@@ -293,7 +331,9 @@ public class DataBase {
     }
 
 
-    /*Method for check for "Image"*/
+    /**
+     * Method for showing the id and name of images
+     */
     public void getAllImage() {
         try {
             Class.forName("org.h2.Driver"); 
@@ -322,7 +362,11 @@ public class DataBase {
     }
 
 
-     /*Method for check for "Measure"*/
+    /**
+     * Method for checking for "Measure"
+     *
+     * @param last_id The last inserted ID in the "Metrics" table.
+     */
     public void getSomeMeasure(int last_id) {
         try {
             Class.forName("org.h2.Driver"); 
@@ -352,7 +396,11 @@ public class DataBase {
         } 
     }
 
-    /*Method for check for some "Metrics"*/
+    /**
+     * Method for checking for some "Metrics"
+     *
+     * @param last_id The last inserted ID in the "Metrics" table.
+     */
     public void getSomeMetrics(int last_id) {
         try {
             Class.forName("org.h2.Driver"); 
@@ -380,7 +428,11 @@ public class DataBase {
         } 
     }
 
-    /*Method for check for "Image"*/
+    /**
+     * Method for checking for "Image"
+     *
+     * @return An ArrayList containing names of images.
+     */
     public ArrayList<String> getImageForSearch() {
         ArrayList<String> names = new ArrayList<String>();
         try {
@@ -413,6 +465,13 @@ public class DataBase {
             e.printStackTrace();
         } 
         return names;
+    }
+
+    /**
+     * Constructor: Constructs a new DataBase instance.
+     */
+    public DataBase() {
+        // Default constructor
     }
 
 }

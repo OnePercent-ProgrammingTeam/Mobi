@@ -18,6 +18,11 @@ public class ImagePage {
     GridPane grid;
     GridPane gridInfo;
 
+    /**
+     * Method: getListGrid() creates and sets up a GridPane with columns for image names and IDs.
+     *
+     * @return grid: the GridPane containing the list of images
+     */
     public GridPane getListGrid() {
         
         /* Create and set the grid.*/
@@ -100,6 +105,13 @@ public class ImagePage {
         
         return vbox;
     
+    }
+
+    /**
+     * Default Constructor
+     */
+    public ImagePage() {
+
     }
 
 }

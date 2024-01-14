@@ -19,13 +19,28 @@ public class MonitorAPI extends SuperAPI {
     /** Field: List<ContainerModel> is the list of container models. */
     List<ContainerModel> containerModels = new ArrayList();
 
+    /**
+     * Retrieves the list of ContainerModels.
+     * This method is annotated with @VisibleForTesting 
+     * to indicate that its visibility has been expanded
+     * for testing purposes, allowing tests to access the containerModels directly.
+     *
+     * @return List of ContainerModels containing information about locally installed containers.
+     */
     @VisibleForTesting
     public List<ContainerModel> getContainerModels() {
         return containerModels;
     }
         
-    /** Method: initializeContainerModels() pass the locally installed 
-     *  containers to a list of container models.*/
+    /**
+     * Method: initializeContainerModels(boolean showAll) initializes container models 
+     * based on the locally installed containers.
+     * It retrieves a list of containers, considering the 'showAll' parameter
+     * and creates corresponding ContainerModel instances.
+     *
+     * @param showAll Indicates whether to include stopped containers (true) 
+     * or only running ones (false).
+     */
     public void initializeContainerModels(boolean showAll) {
         List<Container> containers;
         containers = MonitorAPI.dc.listContainersCmd().withShowAll(showAll).exec();
@@ -92,7 +107,7 @@ public class MonitorAPI extends SuperAPI {
    * 
    * This method iterates the list of container models and prints the creation date
    * of each container. 
-   * @param unixTimestamp is expressed in seconds since the Unix epoch 
+   * unixTimestamp is expressed in seconds since the Unix epoch 
    * (January 1, 1970, 00:00:00 UTC).
    * 
    *    An alternative that might result in an exception.
@@ -129,6 +144,14 @@ public class MonitorAPI extends SuperAPI {
         });
     }
     //TO DO: Check if it is needed
+    /**
+     * Retrieves information about containers, including their IDs, names, image IDs
+     * and creation timestamps.
+     * Converts Unix timestamps to human-readable date-time format.
+     *
+     * @return A 2D array containing container information, where each row represents a container
+     *         and columns contain ID, formatted names, image ID, and creation timestamp.
+     */
     public String[][] getContainerInfo() {
         ArrayList<String[]> containerInfo = new ArrayList<>();
   
@@ -165,6 +188,11 @@ public class MonitorAPI extends SuperAPI {
         return containerArray;
     }
 
+    /**
+     * Retrieves a list of formatted container names from the ContainerModels.
+     *
+     * @return An ArrayList of Strings representing the formatted container names.
+     */
     public ArrayList<String> getNameList() {
         ArrayList<String> nameList = new ArrayList<>();
         for (ContainerModel c : containerModels) {
@@ -178,6 +206,11 @@ public class MonitorAPI extends SuperAPI {
         return nameList;
     }
 
+    /**
+     * Retrieves a list of container IDs from the ContainerModels.
+     *
+     * @return An ArrayList of Strings representing the container IDs.
+     */
     public ArrayList<String> getIdList() {
         ArrayList<String> id = new ArrayList<String>();
         containerModels.forEach(c -> {
@@ -186,6 +219,11 @@ public class MonitorAPI extends SuperAPI {
         return id;
     }
 
+    /**
+     * Retrieves a list of container statuses from the ContainerModels.
+     *
+     * @return An ArrayList of Strings representing the container statuses.
+     */
     public ArrayList<String> getStatusList() {
         ArrayList<String> status = new ArrayList<String>();
         containerModels.forEach(c -> {
@@ -194,6 +232,11 @@ public class MonitorAPI extends SuperAPI {
         return status;
     }
 
+    /**
+     * Retrieves a list of formatted creation timestamps for each container in ContainerModels.
+     *
+     * @return An ArrayList of Strings representing the formatted creation timestamps.
+     */
     public ArrayList<String> getTimeCreatedList() {
         ArrayList<String> created = new ArrayList<String>();
         containerModels.forEach(c -> {
@@ -213,6 +256,11 @@ public class MonitorAPI extends SuperAPI {
         return created;
     }
 
+    /**
+     * Retrieves a list of image IDs associated with the containers from the ContainerModels.
+     *
+     * @return An ArrayList of Strings representing the image IDs.
+     */
     public ArrayList<String> getImageIdList() {
         ArrayList<String> imageid = new ArrayList<String>();
         containerModels.forEach(c -> {
@@ -221,6 +269,11 @@ public class MonitorAPI extends SuperAPI {
         return imageid;
     }
 
+    /**
+     * Retrieves a list of image names associated with the containers from the ContainerModels.
+     *
+     * @return An ArrayList of Strings representing the image names.
+     */
     public ArrayList<String> getImageNameList() {
         ArrayList<String> imagename = new ArrayList<String>();
         containerModels.forEach(c -> {
@@ -229,4 +282,10 @@ public class MonitorAPI extends SuperAPI {
         return imagename;
     }
 
+    /**
+     * Default Constructor
+     */
+    public MonitorAPI() {
+
+    }
 }

@@ -1,5 +1,13 @@
 package gr.aueb.dmst.onepercent.programming;
 
+/**
+ * MenuThreadGUI class represents the graphical user interface (GUI) implementation 
+ * of the main menu thread.
+ * It extends the abstract MenuThread class and is responsible for 
+ * handling user input in a GUI environment.
+ *
+ * @see MenuThread
+ */
 public class MenuThreadGUI extends MenuThread {
  
     ExecutorThreadGUI executorThreadGUI = ExecutorThreadGUI.getInstance();
@@ -10,6 +18,12 @@ public class MenuThreadGUI extends MenuThread {
         database.createDatabase();
     }
 
+    /**
+     * Method: handleUserInputGUI(int answer) handles the user's input in a GUI environment.
+     * It initiates the appropriate threads based on the user's choice.
+     *
+     * @param answer The user's input representing the chosen action.
+     */
     public void handleUserInputGUI(int answer) {
         switch (answer) {
             case 1:
@@ -60,5 +74,10 @@ public class MenuThreadGUI extends MenuThread {
        // }   
     }
 
+    /**
+     * Default Constructor
+     */
+    public MenuThreadGUI() {
 
+    }
 }

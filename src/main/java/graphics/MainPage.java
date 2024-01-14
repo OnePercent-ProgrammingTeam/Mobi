@@ -38,7 +38,8 @@ public class MainPage {
     }
 
     /** Method: createMenu() creates the menu of the main page of the GUI.
-     *  @return menu: the VBox (layout) that is created
+     * @param buttons the buttons with our app's functionalities
+     * @return menu: the VBox (layout) that is created
      */
     public VBox createMenu(Button[] buttons) {
         
@@ -74,6 +75,11 @@ public class MainPage {
         return mainScene;
     }
 
+    /**
+     * Closes the application by displaying a confirmation dialog and closing the main window.
+     * The method uses a custom ConfirmBox to prompt the user for confirmation before closing.
+     * If the user confirms and the main window is not null, it is closed.
+     */
     public void closeProgram() {
         Boolean answer = ConfirmBox.display("Exit", "Sure you want to exit?");
         
@@ -82,6 +88,11 @@ public class MainPage {
     }
     
 
+    /**
+     * Default Constructor
+     */
+    public MainPage() {
 
+    }
 
 }

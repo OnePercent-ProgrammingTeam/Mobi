@@ -15,6 +15,18 @@ import javafx.scene.text.Text;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
+/**
+ * AnalyticsPage class represents a page containing a grid with a list of containers,
+ * along with associated fields to manage container information.
+ *
+ * The class includes a grid for the list, an array of container IDs, a list of checkboxes,
+ * a list of selected container indices, a grid for container information, 
+ * and an array of container names.
+ *
+ * @see javafx.scene.layout.GridPane
+ * @see javafx.scene.control.RadioButton
+ * @see java.util.ArrayList
+ */
 public class AnalyticsPage {
     
     /** Field: grid is the grid that contains the list.*/
@@ -29,7 +41,11 @@ public class AnalyticsPage {
     GridPane gridInfo;
     static ArrayList<String> names = new ArrayList<>();
 
-
+    /**
+     * Default constructor for the AnalyticsPage class.
+     */
+    public AnalyticsPage() {
+    }
 
 
 
@@ -138,6 +154,13 @@ public class AnalyticsPage {
     }
 
 
+    /**
+      * Creates a VBox with a list of containers, including a white-background GridPane
+      * within a ScrollPane. The list has adjustable scroll bars and is accompanied by
+      * a title ("List Of Containers"). Custom styling and padding are applied.
+      *
+      * @return The VBox containing the list of containers and additional components.
+     */
     public VBox createList() {
         GridPane grid = getListGrid();
         grid.setStyle("-fx-background-color: #FFFFFF;");

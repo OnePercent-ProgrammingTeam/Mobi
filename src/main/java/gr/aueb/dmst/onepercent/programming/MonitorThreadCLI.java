@@ -1,5 +1,11 @@
 package gr.aueb.dmst.onepercent.programming;
 
+/**
+ * MonitorThreadCLI is a thread class specifically designed 
+ * for command-line interface (CLI) interactions
+ * in the monitoring system. It extends SuperThread and handles various user inputs by invoking
+ * corresponding methods from MonitorHttpCLI, Graph, CSV, and other related classes.
+ */
 public class MonitorThreadCLI extends SuperThread {
     
     //Singleton
@@ -7,6 +13,11 @@ public class MonitorThreadCLI extends SuperThread {
 
     private MonitorThreadCLI() { }
 
+    /**
+     * Gets the instance of MonitorThreadCLI using the singleton pattern.
+     *
+     * @return The MonitorThreadCLI instance.
+     */
     public static MonitorThreadCLI getInstance() {
         if (monitorThreadCLI == null) {
             monitorThreadCLI = new MonitorThreadCLI();

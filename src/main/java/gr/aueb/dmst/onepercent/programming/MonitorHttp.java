@@ -31,17 +31,34 @@ public abstract class MonitorHttp extends SuperHttp {
      */
     public static String imName;
 
+    /**
+     * Abstract method to inspect details of a container.
+     * Implementation should provide the specific logic for inspecting container information.
+     */
     public abstract void inspectContainer();
 
+    /**
+     * Abstract method to retrieve statistics for a container.
+     *
+     * @param MIGHT_GOT_TO_REMOVE_PARAMETER The ID of the container 
+     * for which statistics are requested.
+     * 
+     * @return CloseableHttpResponse containing container statistics.
+     *         Implementation should handle the specific logic for obtaining container stats.
+     */
     public abstract CloseableHttpResponse getContainerStats(String MIGHT_GOT_TO_REMOVE_PARAMETER);
 
+    /**
+     * Abstract method to search for Docker images.
+     * Implementation should provide the specific logic for searching images.
+     */
     public abstract void searchImage();
     
 
     /** Method: getHttpResponse(String) executes the http request for getting 
      *  stats about a running container.
-     * @param message the final part of the url that is used to get the info.
-     * @throws Exception if an error occurs while executing the http request.
+     * throws Exception if an error occurs while executing the http request.
+     * @return response
      */
     @Override
     public CloseableHttpResponse getHttpResponse() {
@@ -63,7 +80,7 @@ public abstract class MonitorHttp extends SuperHttp {
      *  to a user-friendly message.
      *  that is real-time updated and printed to the console
      *  @param response1Buffer a StringBuffer object.
-     *  @throws NullPointerException if an error occurs while executing the http request.
+     *  @throws JsonProcessingException if an error occurs while executing the http request.
      *
      *  The code below should work too. Instead, it return 0.0. We have to check it further
      *      
@@ -76,6 +93,8 @@ public abstract class MonitorHttp extends SuperHttp {
      *
      *  return (system_delta!=0.0)? (cpu_delta / system_delta) * number_cpus * 100.0 : 0.0;
      *  </code>
+     * 
+     * @return cpu usage
      */
     
     public double getFormattedStats(StringBuffer response1Buffer) throws JsonProcessingException {
@@ -105,7 +124,21 @@ public abstract class MonitorHttp extends SuperHttp {
         return 0.0;
     }
 
-    
+    /**
+     * Method: getTableforContainer() retrieves information about a container
+     * and formats it into an array for table representation.
+     * 
+     * @return An array containing container information:
+     *         [0] Container ID
+     *         [1] Container Name
+     *         [2] Container Status
+     *         [3] Image ID
+     *         [4] Network ID
+     *         [5] Gateway
+     *         [6] IP Address
+     *         [7] Mac Address
+     * @throws JsonProcessingException if there is an error processing the JSON response.
+     */
     public String[] getTableforContainer() throws JsonProcessingException {
         String[] info = new String[8];
         try {
@@ -198,5 +231,12 @@ public abstract class MonitorHttp extends SuperHttp {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Default Constructor
+     */
+    public MonitorHttp() {
+
     }
 }

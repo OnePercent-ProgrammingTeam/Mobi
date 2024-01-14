@@ -122,4 +122,9 @@ public class CSV {
         createDataFolder(path); 
         storeRealTimeData();
     }
+
+    /** Default constructor for the CSV class. */
+    public CSV() {
+        
+    }
 }

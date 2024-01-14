@@ -1,11 +1,22 @@
 package gr.aueb.dmst.onepercent.programming;
 
+/**
+ * Class: ExecutorThreadGUI is a class that extends SuperThread and represents
+ * a graphical user interface (GUI) implementation of an executor thread.
+ *
+ * @see gr.aueb.dmst.onepercent.programming.SuperThread
+ */
 public class ExecutorThreadGUI extends SuperThread {
-    //Singleton
+    // Singleton
     private static ExecutorThreadGUI executorThreadGUI;
 
     private ExecutorThreadGUI() { }
 
+    /**
+     * Method: getInstance provides a singleton instance of ExecutorThreadGUI.
+     *
+     * @return The singleton instance of ExecutorThreadGUI.
+     */
     public static ExecutorThreadGUI getInstance() {
         if (executorThreadGUI == null) {
             executorThreadGUI = new ExecutorThreadGUI();
@@ -13,6 +24,10 @@ public class ExecutorThreadGUI extends SuperThread {
         return executorThreadGUI;
     }
 
+    /**
+     * This method is called when the executor thread is started.
+     * It contains the logic for handling different user inputs.
+     */
     @Override
     public void run() { 
         var containerManagerHttp = new ManagerHttpGUI();
@@ -24,7 +39,7 @@ public class ExecutorThreadGUI extends SuperThread {
                 containerManagerHttp.stopContainer();
                 break;
             case 4:
-                //TO DO: containerManagerHttp.pullImageGUI();
+                // TO DO: containerManagerHttp.pullImageGUI();
                 break;
         }
     }
