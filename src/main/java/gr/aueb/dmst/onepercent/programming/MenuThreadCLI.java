@@ -2,6 +2,17 @@ package gr.aueb.dmst.onepercent.programming;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * MenuThreadCLI class represents the command-line interface (CLI) implementation 
+ * of the main menu thread.
+ * It extends the abstract MenuThread class and is responsible 
+ * for printing the main menu, handling user input,
+ * and executing corresponding actions through the ExecutorThreadCLI and MonitorThreadCLI.
+ *
+ * @see MenuThread
+ * @see ExecutorThreadCLI
+ * @see MonitorThreadCLI
+ */
 public class MenuThreadCLI extends MenuThread {
     
     
@@ -120,7 +131,11 @@ public class MenuThreadCLI extends MenuThread {
         return choice == 'Y'; 
     }
         
-    
-
+    /**
+     * Default Constructor
+     */
+    public MenuThreadCLI() {
+        
+    }
 
 }
