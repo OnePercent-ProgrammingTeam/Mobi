@@ -10,6 +10,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Class: MonitorHttpCLI extends MonitorHttp
+ * 
+ * Description: Provides CLI-specific implementation 
+ * for monitoring Docker containers through HTTP requests.
+ */
 public class MonitorHttpCLI extends MonitorHttp {
      /** Method: inspectContainer() retrieves information about a container that might be 
      * or might not be locally installed.*/
@@ -62,11 +68,14 @@ public class MonitorHttpCLI extends MonitorHttp {
         executeHttpRequest(message);
     }
 
-     /** Method: printFormattedInfo() reads the json response for container info 
-     *  to a user-friendly message.
-     * NullPointerException if an error occurs while executing the http request.
-     * this Exception might occur when the image name is not found in the json file.
-     */ 
+    /**
+     * Method: printFormattedInfo() reads the JSON response for container info 
+     * to a user-friendly message.
+     * Throws NullPointerException if an error occurs while executing the HTTP request.
+     * This exception might occur when the image name is not found in the JSON file.
+     * 
+     * @throws JsonProcessingException if there is an error processing the JSON response.
+     */
     public void printFormattedInfo() throws JsonProcessingException  {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -114,7 +123,7 @@ public class MonitorHttpCLI extends MonitorHttp {
     /** Method: executeHttpRequest(String) executes the http request for 
      *  getting info about a container.
      * @param message the final part of the url that is used to get the info.
-     * @throws Exception if an error occurs while executing the http request.
+     * may throw Exception if an error occurs while executing the http request.
      */
     @Override
     public void executeHttpRequest(String message) {
@@ -158,14 +167,16 @@ public class MonitorHttpCLI extends MonitorHttp {
         } 
     }
 
-        /** Method: printFormattedJsonForImage() formats the json response for image  
-     * -that you 've searched for- to a user-friendly message.
-     *  @throws JsonProcessingException
-     *  @throws NullPointerException
-     *  @prints info about the top 3 images with the name that user searched. The info contains: 
-     *  1.Image Name
-     *  2.Description
-     *  3.Star Count (the times an image has been shared)   
+    /**
+     * Method: printFormattedJsonForImage() formats the JSON response for an image 
+     * -that you've searched for- to a user-friendly message.
+     * 
+     * @throws JsonProcessingException if there is an error processing the JSON response.
+     * @throws NullPointerException if there is a null value in the JSON response.
+     * prints info about the top 3 images with the name that the user searched. The info contains:
+     *   1. Image Name
+     *   2. Description
+     *   3. Star Count (the times an image has been shared)
      */
     public void printFormattedJsonForImage() throws JsonProcessingException, NullPointerException {
         try {
@@ -185,6 +196,13 @@ public class MonitorHttpCLI extends MonitorHttp {
         } catch (Exception e) {
             System.out.println("Oops, something went wrong...");
         }
+    }
+
+    /**
+     * Default Constructor
+     */
+    public MonitorHttpCLI() {
+
     }
 }
 
