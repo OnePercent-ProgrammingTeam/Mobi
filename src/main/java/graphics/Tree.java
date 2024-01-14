@@ -32,14 +32,50 @@ public class Tree {
     SearchBar searchObject = new SearchBar();
 
     // Regular Colors
+
+    /**
+     * ANSI escape code for resetting text formatting to default.
+     */
     public static final String ANSI_RESET = "\u001B[0m";
+
+    /**
+     * ANSI escape code for black text.
+     */
     public static final String ANSI_BLACK = "\u001B[30m";
+
+    /**
+     * ANSI escape code for red text.
+     */
     public static final String ANSI_RED = "\u001B[31m";
+
+    /**
+     * ANSI escape code for green text.
+     */
     public static final String ANSI_GREEN = "\u001B[32m";
+
+    /**
+     * ANSI escape code for yellow text.
+     */
     public static final String ANSI_YELLOW = "\u001B[33m";
+
+    /**
+     * ANSI escape code for blue text.
+     */
     public static final String ANSI_BLUE = "\u001B[34m";
+
+    /**
+     * ANSI escape code for purple text.
+     */
     public static final String ANSI_PURPLE = "\u001B[35m";
+
+    /**
+     * ANSI escape code for cyan text.
+     */
     public static final String ANSI_CYAN = "\u001B[36m";
+
+    /**
+     * ANSI escape code for white text.
+     */
     public static final String ANSI_WHITE = "\u001B[37m";
 
 
@@ -167,6 +203,10 @@ public class Tree {
         }
     }
 
+    /**
+     * CustomTreeCell extends TreeCell<String> and represents a customized tree cell for displaying
+     * buttons and handling button actions in a TreeView.
+     */
     class CustomTreeCell extends TreeCell<String> {
 
         private Button startButton;
@@ -296,7 +336,12 @@ public class Tree {
         }
     }
 
+    /**
+     * Default Constructor
+     */
+    public Tree() {
 
+    }
 }
 
 
