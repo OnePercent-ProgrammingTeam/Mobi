@@ -53,10 +53,17 @@ public class SuperHttp implements HttpInterface {
     public void executeHttpRequest(String message) {
     };
     /** Get the response of the http request
-     * @param message the message that indicates the action that is going to be executed
+     *  @return the response that indicates the action that is going to be executed
      * it is the query for the http request
      */
     public CloseableHttpResponse getHttpResponse() {
         return response;
+    }
+
+    /**
+     * Default Constructor
+     */
+    public SuperHttp() {
+
     }
 }
