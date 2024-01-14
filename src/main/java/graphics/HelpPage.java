@@ -22,8 +22,19 @@ public class HelpPage {
         return helpScene;
     }
 
+    /**
+     * Creating of help page menu in the app
+     * Not yet built
+     */
     public void createHelpPageMenu() {
         
+    }
+
+    /**
+     * Defualt Constructor
+     */
+    public HelpPage() {
+
     }
 
 }
