@@ -5,5 +5,10 @@ package gr.aueb.dmst.onepercent.programming;
  * @see SuperHttp
  */
 public interface HttpInterface {
+    /**
+     * Method: executeHttpRequest(String message) is responsible for executing an HTTP request.
+     *
+     * @param message the message to be included in the HTTP request
+     */
     void executeHttpRequest(String message);
 }
