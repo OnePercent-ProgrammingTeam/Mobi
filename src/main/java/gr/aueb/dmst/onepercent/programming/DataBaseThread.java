@@ -31,5 +31,12 @@ public class DataBaseThread extends SuperThread {
 
         } 
     }
+
+    /**
+     * Default Constructor
+     */
+    public DataBaseThread() {
+
+    }
     
 }
