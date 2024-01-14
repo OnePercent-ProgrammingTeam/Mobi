@@ -44,7 +44,7 @@ public class Intro {
     
     /** Method: formatText(Text[], StackPane) formats the text in a modern and good-looking manner.
      * @param textNodes: the array of textNodes to be formatted.
-     * @param root: the StackPane (layout) in which the textNodes will be placed.
+     * @param introLayout: the StackPane (layout) in which the textNodes will be placed.
      */
     public void formatText(Text[] textNodes, StackPane introLayout) {
         if (textNodes.length > 0) {
@@ -139,6 +139,13 @@ public class Intro {
         javafx.geometry.Rectangle2D bounds = screen.getVisualBounds();
         Scene introScene = new Scene(introLayout, bounds.getWidth(), bounds.getHeight());
         return introScene;
+    }
+
+    /**
+     * Defualt Constructor
+     */
+    public Intro() {
+        
     }
 } 
 
