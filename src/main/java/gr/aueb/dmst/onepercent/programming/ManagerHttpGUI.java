@@ -2,8 +2,21 @@ package gr.aueb.dmst.onepercent.programming;
 
 import org.apache.http.client.methods.HttpPost;
 
+/**
+ * ManagerHttpGUI extends ManagerHttp and provides GUI-specific functionality 
+ * for managing Docker containers
+ * using HTTP requests.
+ *
+ * This class allows starting and stopping containers with HTTP requests without displaying messages
+ * to the command line. The pullImage method is not implemented in this class.
+ *
+ * @see ManagerHttp
+ */
 public class ManagerHttpGUI extends ManagerHttp {
     
+    /**
+     * Default constructor for ManagerHttpGUI.
+     */
     public ManagerHttpGUI() { }
 
     /** Method: startContainerGUI() starts container with http request 
