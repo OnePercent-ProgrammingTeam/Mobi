@@ -4,17 +4,58 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.common.annotations.VisibleForTesting;
 
+/**
+ * ManagerHttpCLI class extends ManagerHttp and provides an implementation 
+ * of managing Docker containers and images
+ * using HTTP requests. It includes methods to start, stop containers, and pull images.
+ * Regular ANSI color codes are defined as constants for colorful console output.
+ */
 public class ManagerHttpCLI extends ManagerHttp {
     
     // Regular Colors
+    /**
+     * ANSI color code for resetting text color.
+     */
     public static final String ANSI_RESET = "\u001B[0m";
+
+    /**
+     * ANSI color code for black text.
+     */
     public static final String ANSI_BLACK = "\u001B[30m";
+
+    /**
+     * ANSI color code for red text.
+     */
     public static final String ANSI_RED = "\u001B[31m";
+
+    /**
+     * ANSI color code for green text.
+     */
     public static final String ANSI_GREEN = "\u001B[32m";
+
+    /**
+     * ANSI color code for yellow text.
+     */
     public static final String ANSI_YELLOW = "\u001B[33m";
+
+    /**
+     * ANSI color code for blue text.
+     */
     public static final String ANSI_BLUE = "\u001B[34m";
+
+    /**
+     * ANSI color code for purple text.
+     */
     public static final String ANSI_PURPLE = "\u001B[35m";
+
+    /**
+     * ANSI color code for cyan text.
+     */
     public static final String ANSI_CYAN = "\u001B[36m";
+
+    /**
+     * ANSI color code for white text.
+     */
     public static final String ANSI_WHITE = "\u001B[37m";
 
     /** Method: startContainer() starts container with http request. */
@@ -47,11 +88,10 @@ public class ManagerHttpCLI extends ManagerHttp {
         executeHttpRequest(message);
     }
 
-/** Method: executeHttpRequest(String) executes the http request 
+    /** Method: executeHttpRequest(String) executes the http request 
      * @param message the message that is given by the user.
-     * @throws Exception if an error occurs while executing the http request.
+     * throws Exception if an error occurs while executing the http request.
      */
-
     @Override
     public void executeHttpRequest(String message) {
         try {
@@ -76,6 +116,7 @@ public class ManagerHttpCLI extends ManagerHttp {
     /** Method handleOutput(String) prints the appropriate message, based on the status 
      *  code of the http response and the request that has been done.
      * @param message the message that indicates the action that is going to be executed. 
+     * @return the correct message
      */
     public String handleOutput(String message) {
         String output = "";
@@ -90,6 +131,19 @@ public class ManagerHttpCLI extends ManagerHttp {
         return output;
 
     }
+
+    /**
+     * Retrieves the message provided by {@code provideMessage(String)} method.
+     *
+     * This method is intended for testing purposes to access the private
+     * {@code provideMessage} method, which generates output based on the HTTP
+     * response status code and the given message.
+     *
+     * @param message The message that indicates the action that is going to be executed.
+     * @return The generated output message 
+     * based on the HTTP response status code and the input message.
+     * @see #provideMessage(String)
+     */
     @VisibleForTesting
     public String getProvideMessage(String message) {
         return provideMessage(message);
@@ -139,5 +193,10 @@ public class ManagerHttpCLI extends ManagerHttp {
         return output;
     }
 
-    
+    /**
+     * Default Constructor
+     */
+    public ManagerHttpCLI() {
+
+    }
 }
