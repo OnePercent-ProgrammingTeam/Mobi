@@ -15,16 +15,32 @@ import java.io.InputStreamReader;
 public abstract class ManagerHttp extends SuperHttp {
     
     static HttpEntity entity;
-    
+
+    /**
+     * Method: startContainer() - Abstract method to start a container.
+     * Implementing classes should provide the necessary logic 
+     * to initiate the start of a Docker container.
+     */
     public abstract void startContainer();
 
+    /**
+     * Method: stopContainer() - Abstract method to stop a container.
+     * Implementing classes should provide the necessary logic 
+     * to initiate the stop of a Docker container.
+     */
     public abstract void stopContainer();
-    
+
+    /**
+     * Method: pullImage() - Abstract method to pull a Docker image.
+     * Implementing classes should provide the necessary logic 
+     * to download a Docker image from a registry.
+     */
     public abstract void pullImage();
     
     /** Method: executeHttpRequest(String) executes the http request 
      * @param message the message that is given by the user.
-     * @throws Exception if an error occurs while executing the http request.
+     * You should add try-catch block to use @ for
+     * throws Exception if an error occurs while executing the http request.
      */
     @Override
     public void executeHttpRequest(String message) {
@@ -57,7 +73,6 @@ public abstract class ManagerHttp extends SuperHttp {
     * with .close() method the 
     * BufferedReader object) upon exiting the method, due to the try-with-resources statement.
     *
-    * @param entity The HTTP response entity containing the input stream to be read.
     * @throws IOException If an I/O error occurs while reading the input stream.
     */
     public void handleResponse() throws IOException {
@@ -71,5 +86,10 @@ public abstract class ManagerHttp extends SuperHttp {
         }
     }
 
-    
+    /**
+     * Default Constructor
+     */
+    public ManagerHttp() {
+
+    }
 }
