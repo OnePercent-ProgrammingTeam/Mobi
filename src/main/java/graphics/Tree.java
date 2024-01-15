@@ -32,50 +32,14 @@ public class Tree {
     SearchBar searchObject = new SearchBar();
 
     // Regular Colors
-
-    /**
-     * ANSI escape code for resetting text formatting to default.
-     */
     public static final String ANSI_RESET = "\u001B[0m";
-
-    /**
-     * ANSI escape code for black text.
-     */
     public static final String ANSI_BLACK = "\u001B[30m";
-
-    /**
-     * ANSI escape code for red text.
-     */
     public static final String ANSI_RED = "\u001B[31m";
-
-    /**
-     * ANSI escape code for green text.
-     */
     public static final String ANSI_GREEN = "\u001B[32m";
-
-    /**
-     * ANSI escape code for yellow text.
-     */
     public static final String ANSI_YELLOW = "\u001B[33m";
-
-    /**
-     * ANSI escape code for blue text.
-     */
     public static final String ANSI_BLUE = "\u001B[34m";
-
-    /**
-     * ANSI escape code for purple text.
-     */
     public static final String ANSI_PURPLE = "\u001B[35m";
-
-    /**
-     * ANSI escape code for cyan text.
-     */
     public static final String ANSI_CYAN = "\u001B[36m";
-
-    /**
-     * ANSI escape code for white text.
-     */
     public static final String ANSI_WHITE = "\u001B[37m";
 
 
@@ -87,6 +51,7 @@ public class Tree {
     TreeItem<String> containers;
     TreeItem<String> images;
     TreeItem<String> analytics;
+    TreeItem<String> help;
     VBox searchBarvbox;
     static ListPane listPane;
 
@@ -127,6 +92,11 @@ public class Tree {
         analytics = makeBranch("Analytics", root);
         makeBranch("CPU Usage", analytics);
         makeBranch("CSV", analytics);
+
+        help = makeBranch("Help", root);
+        makeBranch("About", help);
+        makeBranch("Exit Mobi", help);
+
 
         /* Create the tree. */
         tree = new TreeView<>(root);
@@ -177,11 +147,10 @@ public class Tree {
                 event.consume(); // Consume the event to prevent it from triggering default behavior
             }
         });
-
+       
         /* Create the menu that contains the tree. */
         menu.getChildren().add(tree);
         menu.setStyle("-fx-background-color: #2A2A72;");
-
         return menu;
     }
 
@@ -203,10 +172,6 @@ public class Tree {
         }
     }
 
-    /**
-     * CustomTreeCell extends TreeCell<String> and represents a customized tree cell for displaying
-     * buttons and handling button actions in a TreeView.
-     */
     class CustomTreeCell extends TreeCell<String> {
 
         private Button startButton;
@@ -214,15 +179,48 @@ public class Tree {
         private Button infoButton;
         private Button pullButton;
         private Button CPUButton;
-        private Button CSVButton;
+        private Button aboutButton;
+        private Button exitButton;;
 
         CustomTreeCell() {
             startButton = new Button("Start");
+
+            startButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                                 "-fx-text-fill: #e2e2f4;" +
+                                 "-fx-font-size: 20px;" + 
+                                 "-fx-font-weight: bold;");
             stopButton = new Button("Stop");
+            stopButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                                "-fx-text-fill: #e2e2f4;" +
+                                "-fx-font-size: 20px;" + 
+                                "-fx-font-weight: bold;");
             infoButton = new Button("Info");
+            infoButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                                "-fx-text-fill: #e2e2f4;" +
+                                "-fx-font-size: 20px;" + 
+                                "-fx-font-weight: bold;");
             pullButton = new Button("Pull");
+            pullButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                                "-fx-text-fill: #e2e2f4;" +
+                                "-fx-font-size: 20px;" + 
+                                "-fx-font-weight: bold;");
             CPUButton = new Button("CPU Usage");
-            CSVButton = new Button("CSV");
+            CPUButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                               "-fx-text-fill: #e2e2f4;" +
+                               "-fx-font-size: 20px;" + 
+                               "-fx-font-weight: bold;");
+            aboutButton = new Button("About");
+            aboutButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                                 "-fx-text-fill: #e2e2f4;" +
+                                 "-fx-font-size: 20px;" + 
+                                 "-fx-font-weight: bold;");
+            exitButton = new Button("Exit Mobi");
+            exitButton.setStyle("-fx-background-color: #3a3a9d;" + 
+                                "-fx-text-fill: #e2e2f4;" +
+                                "-fx-font-size: 20px;" + 
+                                "-fx-font-weight: bold;");
+
+            //CSVButton = new Button("CSV");
 
             
             startButton.setOnAction(event -> {
@@ -245,10 +243,19 @@ public class Tree {
                 int answer = 5;
                 handleButtonAction("CPU Usage", answer);
             });
-            CSVButton.setOnAction(event -> {
-                int answer = 0;
-                handleButtonAction("CSV", answer);
+            aboutButton.setOnAction(event -> {
+                System.out.println("Help button pressed");
+                GUI.window.setScene(GUI.helpScene);
             });
+            exitButton.setOnAction(event -> {
+                System.out.println("Exit button pressed");
+                GUI gui = new GUI();
+                gui.closeProgram();
+            });
+            //CSVButton.setOnAction(event -> {
+                //int answer = 0;
+                //handleButtonAction("CSV", answer);
+            //});
 
         }
 
@@ -289,8 +296,14 @@ public class Tree {
                         case "CPU Usage":
                             setGraphic(CPUButton);
                             break;
-                        case "CSV":
-                            setGraphic(CSVButton);
+                        //case "CSV":
+                            //setGraphic(CSVButton);
+                            //break;
+                        case "About":
+                            setGraphic(aboutButton);
+                            break;
+                        case "Exit Mobi":
+                            setGraphic(exitButton);
                             break;
                         default:
                             setGraphic(null);
@@ -336,12 +349,13 @@ public class Tree {
         }
     }
 
-    /**
-     * Default Constructor
+    /** 
+     * Default
      */
     public Tree() {
 
     }
+
 }
 
 
