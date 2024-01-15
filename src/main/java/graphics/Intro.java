@@ -6,6 +6,7 @@ import javafx.stage.Screen;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.FontWeight;
@@ -44,7 +45,7 @@ public class Intro {
     
     /** Method: formatText(Text[], StackPane) formats the text in a modern and good-looking manner.
      * @param textNodes: the array of textNodes to be formatted.
-     * @param introLayout: the StackPane (layout) in which the textNodes will be placed.
+     * @param root: the StackPane (layout) in which the textNodes will be placed.
      */
     public void formatText(Text[] textNodes, StackPane introLayout) {
         if (textNodes.length > 0) {
@@ -87,6 +88,27 @@ public class Intro {
         }
     }
 
+    public void format(Text[] textNodes, StackPane introLayout) {
+        VBox vbox = new VBox();
+        if (textNodes.length > 0) {
+            textNodes[0].setFont(Font.font("Monotype Corsiva", FontWeight.BOLD, 50)); // book old ..
+            textNodes[0].setStyle("-fx-fill: white;");
+            introLayout.getChildren().add(textNodes[0]);
+            for (int i = 1; i < textNodes.length; i++) {
+                textNodes[i].setFont(Font.font("Arial", 20));
+                textNodes[i].setStyle("-fx-fill: white;");
+                vbox.getChildren().add(textNodes[i]);
+                vbox.setSpacing(20);
+                
+            }
+            vbox.setAlignment(Pos.CENTER);
+            vbox.setPadding(new javafx.geometry.Insets(100, 0, 0, 0));
+        }
+        introLayout.getChildren().add(vbox);
+    }
+
+
+
     /** Method: setImage(String, StackPane) formats the image - whale 
      *  logo that is dislayed in the intro page of the GUI, next to 
      *  the title "Mobi". 
@@ -117,9 +139,9 @@ public class Intro {
         Button startButton = new Button("Start");
         
         startButton
-            .setStyle("-fx-background-color: #2A2A72;" + 
-                      "-fx-text-fill: white;" + 
-                      "-fx-font-size: 20px;" +  
+            .setStyle("-fx-background-color: #3a3a9d;" + 
+                      "-fx-text-fill: #e2e2f4;" +
+                      "-fx-font-size: 20px;" + 
                       "-fx-font-weight: bold;");
         
         StackPane.setAlignment(startButton, Pos.BOTTOM_RIGHT);
@@ -142,11 +164,9 @@ public class Intro {
     }
 
     /**
-     * Defualt Constructor
+     * Default constructor
      */
     public Intro() {
-        
-    }
-} 
-
+    } 
+}
 
