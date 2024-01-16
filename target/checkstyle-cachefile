@@ -1,4 +1,4 @@
-#Tue Jan 16 17:03:29 EET 2024
+#Tue Jan 16 19:19:10 EET 2024
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\exceptions\\UserExistsException.java=1705416983727
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\exceptions\\UserNotFoundException.java=1705417039080
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\CSV.java=1705410566348
@@ -21,25 +21,25 @@ C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorCluster.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorHttp.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorHttpCLI.java=1705410566363
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorHttpGUI.java=1705410566363
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorHttpGUI.java=1705425540118
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorHttpSuper.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorThreadCLI.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\MonitorThreadGUI.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\SuperAPI.java=1705410566363
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\SuperHttp.java=1705410566363
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\SuperHttp.java=1705420697130
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\gr\\aueb\\dmst\\onepercent\\programming\\SuperThread.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\AnalyticsPage.java=1705410566363
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\ConfirmBox.java=1705410566363
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\DataUsers.java=1705415681058
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\DataUsers.java=1705423908534
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\GUI.java=1705416918269
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\HelpPage.java=1705410566379
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\ImagePage.java=1705410566379
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\Intro.java=1705417392796
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\ImagePage.java=1705425226091
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\Intro.java=1705422282406
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\ListPane.java=1705410566379
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\MainPage.java=1705410566379
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\RunMain.java=1705410566379
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\SearchBar.java=1705412626054
-C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\Tree.java=1705416528852
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\SearchBar.java=1705425277425
+C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\main\\java\\graphics\\Tree.java=1705421454708
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\test\\java\\DataBaseTest.java=1705410566394
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\test\\java\\ExecutorThreadCLITest.java=1705410566394
 C\:\\Users\\koron\\Documents\\Projects\\Repository\\OnePercent\\src\\test\\java\\ExecutorThreadGUITest.java=1705410566394
