@@ -201,6 +201,10 @@ public class SearchBar {
     }
 
 
+    /**
+     * to do
+     * @return to do
+     */
     public TextField pullBar() {
         pullField.setPromptText("Enter your text");
         pullField.setMaxWidth(150);

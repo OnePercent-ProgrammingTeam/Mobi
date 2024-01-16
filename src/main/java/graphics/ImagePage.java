@@ -120,6 +120,11 @@ public class ImagePage {
     
     }
 
+
+    /**
+     * Creates the field in which the output of the serach will appear
+     * @return ScrollPane that will appear in the screen
+     */
     public ScrollPane getSearchArea() {
 
         gridSearch = new GridPane();
@@ -146,6 +151,11 @@ public class ImagePage {
         return searchScrollPane;
     }
 
+
+    /**
+     * Creates the field in which the output of the pull will appear
+     * @return ScrollPane that will appear in the screen
+     */
     public ScrollPane getPullArea() {
         gridPull = new GridPane();
         gridPull.setHgap(70);
@@ -168,6 +178,13 @@ public class ImagePage {
 
     }
 
+
+    /**
+     * Creates the HBox
+     * @param scroll1 the first scrolpane
+     * @param scroll2 to do
+     * @return the hbox
+     */
     public HBox searchAndpull(ScrollPane scroll1, ScrollPane scroll2) {
         hbox = new HBox(200);
 
@@ -175,6 +192,12 @@ public class ImagePage {
         return hbox;
     }
 
+    /**
+     * to do
+     * @param text1 to do
+     * @param text2 to do
+     * @return to do
+     */
     public HBox titles(Text text1, Text text2) {
         hbox = new HBox(600);
 
