@@ -19,6 +19,8 @@ public class MonitorHttpGUI extends MonitorHttp {
     private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
         "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
 
+    private StringBuilder searchResult;
+
     /** Method: inspectContainerGUI() retrieves information about a container that might be 
      * or might not be locally installed. 
      * This method does not show messages to command line. 
@@ -131,6 +133,30 @@ public class MonitorHttpGUI extends MonitorHttp {
                                 " the container: " + 
                                 e.getMessage()); // Print the error message
         } 
+    }
+
+
+    private void initializeSearchResult() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
+                
+            if (jsonNode.isArray()) {
+                for (JsonNode el : jsonNode) {
+                    searchResult.append("Image name: " + el.get("name") 
+                        + "\nDescription: " 
+                        + el.get("description") 
+                        + "\nStar count: " 
+                        + el.get("star_count") + "\n");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Oops, something went wrong...");
+        }
+    }
+
+    public StringBuilder getSearchResult() {
+        return this.searchResult;
     }
 
     /**
