@@ -21,6 +21,13 @@ public class DataUsers {
     String query;
 
     /**
+     * Default constructor
+     */
+    public DataUsers() {
+    }
+
+
+    /**
      * Method: createUser() creates a table in the H2 database.
      * The table is named "Users" and contains the names and the passwords 
      * of the users that are signed up in our application.
@@ -58,6 +65,8 @@ public class DataUsers {
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
+     * @throws UserExistsException If the user tries to Sign up but the account already exists 
+     * @throws UserNotFoundException If the user tries to Log in but the account does not exist 
      */
     public void insertUsers(String username, String password) {
         try {
@@ -92,9 +101,13 @@ public class DataUsers {
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
+     * @param isForSignUp The isForSignUp shows if the method is being called 
+     * for the functionality Sign Up or for the functionality Log In 
+     * @throws UserExistsException If the user tries to Sign up but the account already exists 
+     * @throws UserNotFoundException If the user tries to Log in but the account does not exist 
      * @return If the user has already sign up or it is the first time
      */
-    public boolean getUserExistance(String name, String password,
+    public boolean getUserExistance(String username, String password,
                                      boolean isForSignUp) 
                                      throws UserExistsException, UserNotFoundException {
         boolean flag = false;
@@ -104,7 +117,7 @@ public class DataUsers {
             Statement statement = connection.createStatement(); 
             
             query = "SELECT count(*) AS COUNT_USERS FROM Users WHERE NAME = '" +
-                     name + "' AND PASSWORD = '" + password + "'";
+                     username + "' AND PASSWORD = '" + password + "'";
 
             
             ResultSet result = statement.executeQuery(query);
@@ -123,9 +136,9 @@ public class DataUsers {
             e.printStackTrace();
         } 
         if (flag && isForSignUp) {
-            throw new UserExistsException(name);
+            throw new UserExistsException(username);
         } else if (!flag && !isForSignUp) {
-            throw new UserNotFoundException(name);
+            throw new UserNotFoundException(username);
         }
         return flag;
     }
