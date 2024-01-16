@@ -12,8 +12,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.VisibleForTesting;
 
 /**
- * Class: DataBase is responsible for interacting with the H2 database.
- * It provides methods for creating tables, inserting data, and querying information.
+ * Class: DataBase is responsible for interacting with the embedded form of H2 database.
+ * It has methods for storing data about mentrics, containers, images and measures.
+ * As a result it helps in creating tables, inserting data, and querying information.
  */
 public class DataBase {
 
