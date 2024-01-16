@@ -1,6 +1,9 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.cli;
 
 import com.opencsv.CSVWriter;
+
+import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Paths;

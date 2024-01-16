@@ -1,4 +1,7 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.gui;
+
+import gr.aueb.dmst.onepercent.programming.core.Graph;
+import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 /**
  * MonitorThreadGUI is a thread class designed for graphical user interface (GUI) interactions

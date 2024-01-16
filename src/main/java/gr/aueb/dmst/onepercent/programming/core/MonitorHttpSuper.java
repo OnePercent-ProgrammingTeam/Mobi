@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
 
 /**
  * MonitorHttpSuper serves as a base class for HTTP-related functionality 

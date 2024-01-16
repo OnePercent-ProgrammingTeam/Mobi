@@ -1,10 +1,15 @@
-package gr.aueb.dmst.onepercent.programming;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.util.EntityUtils;
+package gr.aueb.dmst.onepercent.programming.cli;
+
+import com.google.common.annotations.VisibleForTesting;
+
+import exceptions.PullImageException;
 import exceptions.StartContainerException;
 import exceptions.StopContainerException;
-import exceptions.PullImageException;
-import com.google.common.annotations.VisibleForTesting;
+
+import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 
 /**
  * ManagerHttpCLI class extends ManagerHttp and provides an implementation 

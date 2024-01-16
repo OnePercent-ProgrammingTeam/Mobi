@@ -1,16 +1,16 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
 
 /**
  * Class: SuperThread is a superclass that contains a static variable, used in other classes,
  * representing the user input collected by the MenuThread.
  * It is used to create a mock object for the MenuThread class in the test classes.
  *
- * @see gr.aueb.dmst.onepercent.programming.MenuThread
- * @see gr.aueb.dmst.onepercent.programming.MonitorThreadCLI
- * @see gr.aueb.dmst.onepercent.programming.MonitorThreadGUI
- * @see gr.aueb.dmst.onepercent.programming.ExecutorThreadCLI
- * @see gr.aueb.dmst.onepercent.programming.ExecutorThreadGUI
- * @see gr.aueb.dmst.onepercent.programming.DataBaseThread
+ * @see gr.aueb.dmst.onepercent.programming.core.MenuThread
+ * @see gr.aueb.dmst.onepercent.programming.cli.MonitorThreadCLI
+ * @see gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI
+ * @see gr.aueb.dmst.onepercent.programming.cli.ExecutorThreadCLI
+ * @see gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI
+ * @see gr.aueb.dmst.onepercent.programming.core.DataBaseThread
  */
 public abstract class SuperThread implements Runnable {
     /**

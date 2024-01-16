@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.gui;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
 
 /**
  * Class: MonitorHttpGUI extends MonitorHttp
@@ -201,18 +204,23 @@ public class MonitorHttpGUI extends MonitorHttp {
     public ArrayList<String> getFormattedImageNamesList() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString()); 
+            JsonNode jsonNode = mapper.readTree(response1.toString());     
             ArrayList<String> names = new ArrayList<String>();
+            
             if (jsonNode.isArray()) {
                 for (JsonNode jn : jsonNode) {
                     
-                    
-                    names.add(jn.get("RepoTags").get(0).asText());
+                    if (jn.get("RepoTags").size() != 0) {
+                        names.add(jn.get("RepoTags").get(0).asText());
+                    }
                 }
             }
             return names;
-        } catch (Exception e) {
-            System.out.println("Oops, something went wrong...");
+        } catch (JsonProcessingException e) {
+            System.out.println("-------------------------------------");
+            System.out.println("Exception in getFormattedImageNamesList() method");
+            System.out.println(e.getClass());
+            System.out.println("-------------------------------------");
             return null;
         }
     }

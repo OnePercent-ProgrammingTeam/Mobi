@@ -1,9 +1,19 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
+
 /** Class: MenuThread is a thread that prints the menu and handles the user's input. */
 public class MenuThread extends Thread {
    
-    Thread thread;
-    DataBaseThread dataThread = new DataBaseThread();
+    /**
+     * The thread that runs the menu.
+     */
+    protected Thread thread;
+    /**
+     * The thread that runs the database.
+     */
+    protected DataBaseThread dataThread = new DataBaseThread();
+    /*
+     * The database.
+     */
     DataBase database = new DataBase();
 
     @Override

@@ -9,7 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
-import gr.aueb.dmst.onepercent.programming.DataBase;
+
+import gr.aueb.dmst.onepercent.programming.core.DataBase;
 
 public class DataBaseTest {
     DataBase obj = new DataBase();

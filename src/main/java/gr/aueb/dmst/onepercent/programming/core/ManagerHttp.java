@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
 
 
 import org.apache.http.util.EntityUtils;
@@ -14,7 +14,10 @@ import java.io.InputStreamReader;
  */
 public abstract class ManagerHttp extends SuperHttp {
     
-    static HttpEntity entity;
+    /**
+     * The entity of the http response.
+     */
+    protected static HttpEntity entity;
 
     /**
      * Method: startContainer() - Abstract method to start a container.

@@ -1,6 +1,8 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.cli;
 
 import java.util.Scanner;
+
+
 
 /** Class: Main runs the entire program. */
 public class Main {

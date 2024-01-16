@@ -1,5 +1,11 @@
 package exceptions;
 
+/**
+ * Exception class that extends RuntimeException.
+ * It is used to throw an exception when the user tries to pull an image that
+ * does not exist in the registry.
+ * @see java.lang.RuntimeException
+ */
 public class PullImageException extends RuntimeException {
 
     // Regular Colors
@@ -23,7 +29,7 @@ public class PullImageException extends RuntimeException {
 
     /**
      * Constructor with message.
-     * @param message
+     * @param message the message to be displayed.
      */
     public PullImageException(String message) {
         super(ANSI_RED + message + ANSI_RESET);

@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
 
 /** Class: DataBaseThread is a class that contains methods that 
  *  insert data in the tables so as to store the actions of the customer.

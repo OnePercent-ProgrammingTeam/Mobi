@@ -10,9 +10,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import gr.aueb.dmst.onepercent.programming.ManagerHttp;
-import gr.aueb.dmst.onepercent.programming.ManagerHttpGUI;
-import gr.aueb.dmst.onepercent.programming.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
+import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
 /**
  * Class: Tree is the class that creates the tree menu of the GUI.

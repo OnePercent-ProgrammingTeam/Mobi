@@ -1,5 +1,8 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.gui;
 
+import gr.aueb.dmst.onepercent.programming.core.DataBase;
+import gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI;
+import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 import graphics.DataUsers;
 
 /**

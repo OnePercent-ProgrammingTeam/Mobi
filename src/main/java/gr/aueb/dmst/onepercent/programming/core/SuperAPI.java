@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
 //package gr.aueb.dmst.onepercent.programming;
 
 import com.github.dockerjava.api.DockerClient;

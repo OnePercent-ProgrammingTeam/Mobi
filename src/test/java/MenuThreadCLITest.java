@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Test;
-import gr.aueb.dmst.onepercent.programming.MenuThreadCLI;
+import gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI;
 
 public class MenuThreadCLITest {
     MenuThreadCLI obj = new MenuThreadCLI();

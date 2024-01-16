@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import com.github.dockerjava.api.model.Container;
 
-//import gr.aueb.dmst.onepercent.programming.ContainerModel;
-import gr.aueb.dmst.onepercent.programming.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
 
 
 public class MonitorApiTest {

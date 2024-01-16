@@ -26,7 +26,7 @@ public class StartContainerException extends RuntimeException {
 
     /**
      * Constructor with message.
-     * @param message
+     * @param message the message to be displayed.
      */
     public StartContainerException(String message) {
         super(ANSI_RED + message + ANSI_RESET);

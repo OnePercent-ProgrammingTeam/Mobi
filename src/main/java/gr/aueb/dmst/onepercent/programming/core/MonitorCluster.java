@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
 
 import com.github.dockerjava.api.model.SwarmNode; 
 

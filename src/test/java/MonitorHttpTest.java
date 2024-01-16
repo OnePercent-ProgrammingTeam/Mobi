@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
-import gr.aueb.dmst.onepercent.programming.MonitorHttp;
-import gr.aueb.dmst.onepercent.programming.MonitorHttpCLI;
+
+import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

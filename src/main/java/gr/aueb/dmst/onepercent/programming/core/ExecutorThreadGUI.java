@@ -1,10 +1,12 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.core;
+
+import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
 /**
  * Class: ExecutorThreadGUI is a class that extends SuperThread and represents
  * a graphical user interface (GUI) implementation of an executor thread.
  *
- * @see gr.aueb.dmst.onepercent.programming.SuperThread
+ * @see gr.aueb.dmst.onepercent.programming.core.SuperThread
  */
 public class ExecutorThreadGUI extends SuperThread {
     // Singleton

@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import gr.aueb.dmst.onepercent.programming.ManagerHttpGUI;
-import gr.aueb.dmst.onepercent.programming.SuperHttp;
+import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
+import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
 public class ManagerHttpGUITest {
     ManagerHttpGUI managerHttp = new ManagerHttpGUI();

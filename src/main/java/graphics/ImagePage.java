@@ -10,7 +10,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
+
+import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
  * @see GUI
  */
@@ -55,10 +56,12 @@ public class ImagePage {
         ArrayList<String> ids = new ArrayList<String>();
         ids = monitorHttp.getFormattedImageIdsList();
         ArrayList<String> names = new ArrayList<String>();
+    
         names = monitorHttp.getFormattedImageNamesList();
-
+        
 
         /* Create the labels with the names of the containers.*/
+       
         for (int i = 0; i < names.size(); i++) {
             Label namesLabel = new Label(names.get(i));
             namesLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));

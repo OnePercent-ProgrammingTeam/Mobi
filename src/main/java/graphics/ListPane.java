@@ -1,5 +1,4 @@
 package graphics;
-import gr.aueb.dmst.onepercent.programming.MonitorAPI;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -11,7 +10,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
-import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
+
+import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 import javafx.scene.control.ToggleGroup;
 
 /** Class: ListPane is the class that creates the list of containers in the main of the GUI.
@@ -82,6 +83,7 @@ public class ListPane {
         monitorAPI.initializeContainerModels(true);
     
         /* Get the information about the containers.*/
+        
         names = monitorAPI.getNameList();
         ids = monitorAPI.getIdList();
         ArrayList<String> statuses = monitorAPI.getStatusList();

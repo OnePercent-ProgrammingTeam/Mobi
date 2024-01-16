@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import gr.aueb.dmst.onepercent.programming.MonitorThreadGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI;
 
 public class MonitorThreadGUITest {
     @Test

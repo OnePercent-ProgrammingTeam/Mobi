@@ -1,4 +1,10 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.cli;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,15 +12,13 @@ import java.io.InputStreamReader;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * Class: MonitorHttpCLI extends MonitorHttp
  * 
  * Description: Provides CLI-specific implementation 
  * for monitoring Docker containers through HTTP requests.
+ * @see gr.aueb.dmst.onepercent.programming.core.MonitorHttp
+ * @see gr.aueb.dmst.onepercent.programming.core.Graph
  */
 public class MonitorHttpCLI extends MonitorHttp {
      /** Method: inspectContainer() retrieves information about a container that might be 
@@ -35,7 +39,6 @@ public class MonitorHttpCLI extends MonitorHttp {
      *  (especially CPU usage). 
      *  @param calledby the name of the class that called this method.
      *  These stats are used in Graph class in order to create a graph.
-     *  @see Graph
     */
     @Override
     public CloseableHttpResponse getContainerStats(String calledby) {

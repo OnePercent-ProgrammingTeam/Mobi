@@ -2,7 +2,7 @@ package graphics;
 
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

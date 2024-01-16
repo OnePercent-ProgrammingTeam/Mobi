@@ -1,4 +1,9 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.cli;
+
+import gr.aueb.dmst.onepercent.programming.core.Graph;
+import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
+import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 /**
  * MonitorThreadCLI is a thread class specifically designed 

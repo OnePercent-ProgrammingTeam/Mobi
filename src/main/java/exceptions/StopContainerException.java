@@ -25,7 +25,7 @@ public class StopContainerException extends RuntimeException {
 
     /**
      * Constructor with message.
-     * @param message
+     * @param message the message to be displayed.
      */
     public StopContainerException(String message) {
         super(ANSI_RED + message + ANSI_RESET);

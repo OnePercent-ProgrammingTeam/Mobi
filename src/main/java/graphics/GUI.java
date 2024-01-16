@@ -17,11 +17,9 @@ import javafx.scene.text.TextFlow;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-
-
-import gr.aueb.dmst.onepercent.programming.MenuThreadGUI;
 
 
 /** Class: GUI is the core class that runs the Graphics of

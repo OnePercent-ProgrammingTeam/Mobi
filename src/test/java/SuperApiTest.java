@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import gr.aueb.dmst.onepercent.programming.SuperAPI;
+import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
 
 
 public class SuperApiTest {

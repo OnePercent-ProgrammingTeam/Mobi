@@ -1,6 +1,8 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.gui;
 
 import org.apache.http.client.methods.HttpPost;
+
+import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
 
 /**
  * ManagerHttpGUI extends ManagerHttp and provides GUI-specific functionality 

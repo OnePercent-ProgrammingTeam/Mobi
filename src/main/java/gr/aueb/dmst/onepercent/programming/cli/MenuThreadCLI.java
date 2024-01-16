@@ -1,8 +1,15 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.cli;
+
+import exceptions.InvalidInputException;
+
+import gr.aueb.dmst.onepercent.programming.core.Graph;
+import gr.aueb.dmst.onepercent.programming.core.MenuThread;
+import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import exceptions.InvalidInputException;
 
 /**
  * MenuThreadCLI class represents the command-line interface (CLI) implementation 

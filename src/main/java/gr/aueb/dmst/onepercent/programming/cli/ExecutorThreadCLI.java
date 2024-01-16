@@ -1,10 +1,12 @@
-package gr.aueb.dmst.onepercent.programming;
+package gr.aueb.dmst.onepercent.programming.cli;
+
+import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 /**
  * Class: ExecutorThreadCLI is a class that extends SuperThread and represents
  * a command-line interface (CLI) implementation of an executor thread.
  *
- * @see gr.aueb.dmst.onepercent.programming.SuperThread
+ * @see gr.aueb.dmst.onepercent.programming.core.SuperThread
  */
 public class ExecutorThreadCLI extends SuperThread {
     // Singleton

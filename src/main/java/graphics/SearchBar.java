@@ -2,7 +2,7 @@ package graphics;
 
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 //import gr.aueb.dmst.onepercent.programming.DataBase;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
