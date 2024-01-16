@@ -43,6 +43,7 @@ public class Tree {
     TreeItem<String> analytics;
     TreeItem<String> help;
     VBox searchBarvbox;
+    TextField pullBarTextField;
     static ListPane listPane;
 
     /** Method: createTree() creates the tree menu of the GUI.
@@ -53,20 +54,31 @@ public class Tree {
      */
     public VBox createTree(ListPane listPane) {
 
+
         
         this.listPane = listPane;
         // root.setExpanded(true);  This shows all the tree items from the very beginning.
         
         /* Create the branches of the tree.*/
         containers = makeBranch("Containers", root);
+        containers.expandedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                GUI.window.setScene(GUI.mainScene);
+            }
+        });
+
         makeBranch("Start", containers);
         makeBranch("Stop", containers);
         makeBranch("Info", containers); 
         
         images = makeBranch("Images", root);
-        //makeBranch("Search", images);
-        TreeItem<String> search = makeBranch("Search", images);
+        images.expandedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                GUI.window.setScene(GUI.imagesScene);
+            }
+        });
 
+        TreeItem<String> search = makeBranch("Search", images);
         //Create the search bar TreeItem and initially hide it
         TreeItem<String> searchBarItem = new TreeItem<>("Search");
         searchBarvbox = searchObject.createBar();
@@ -76,10 +88,21 @@ public class Tree {
         // Add search bar TreeItem as a child of "Search" branch
 
 
-        //makeBranch("", search);
-        makeBranch("Pull", images);
+        //makeBranch("Pull", images);
+        TreeItem<String> pull = makeBranch("Pull", images);
+        TreeItem<String> pullBarTextItem = new TreeItem<>("Pull");
+        pullBarTextField = searchObject.pullBar();
+        pullBarTextItem.setGraphic(pullBarTextField);
+        pullBarTextItem.setExpanded(false);
+        pull.getChildren().add(pullBarTextItem);
+
 
         analytics = makeBranch("Analytics", root);
+        analytics.expandedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                GUI.window.setScene(GUI.mainScene);
+            }
+        });
         makeBranch("CPU Usage", analytics);
         makeBranch("CSV", analytics);
 
@@ -167,7 +190,6 @@ public class Tree {
         private Button startButton;
         private Button stopButton;
         private Button infoButton;
-        private Button pullButton;
         private Button CPUButton;
         private Button aboutButton;
         private Button exitButton;;
@@ -189,11 +211,7 @@ public class Tree {
                                 "-fx-text-fill: #e2e2f4;" +
                                 "-fx-font-size: 20px;" + 
                                 "-fx-font-weight: bold;");
-            pullButton = new Button("Pull");
-            pullButton.setStyle("-fx-background-color: #3a3a9d;" + 
-                                "-fx-text-fill: #e2e2f4;" +
-                                "-fx-font-size: 20px;" + 
-                                "-fx-font-weight: bold;");
+
             CPUButton = new Button("CPU Usage");
             CPUButton.setStyle("-fx-background-color: #3a3a9d;" + 
                                "-fx-text-fill: #e2e2f4;" +
@@ -224,10 +242,6 @@ public class Tree {
             infoButton.setOnAction(event -> {
                 int answer = 6;
                 handleButtonAction("Info", answer);
-            });
-            pullButton.setOnAction(event -> {
-                int answer = 0;
-                handleButtonAction("Pull", answer);
             });
             CPUButton.setOnAction(event -> {
                 int answer = 5;
@@ -260,7 +274,8 @@ public class Tree {
                 TreeItem<String> treeItem = (TreeItem<String>) getTreeItem();
 
                 if (treeItem != null && treeItem.getParent() == root || 
-                    treeItem.getParent() == images && treeItem.getValue().equals("Search")) {
+                    treeItem.getParent() == images && treeItem.getValue().equals("Search") ||
+                    treeItem.getParent() == images && treeItem.getValue().equals("Pull")) {
                     // This is a parent branch, show the text
                     Text text = new Text("Containers");
                     setGraphic(null); // You can also set graphic for parent branches if needed
@@ -281,7 +296,7 @@ public class Tree {
                             setGraphic(searchBarvbox);
                             break;
                         case "Pull":
-                            setGraphic(pullButton);
+                            setGraphic(pullBarTextField);
                             break;
                         case "CPU Usage":
                             setGraphic(CPUButton);
