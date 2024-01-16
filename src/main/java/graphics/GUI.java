@@ -17,8 +17,6 @@ import javafx.scene.text.TextFlow;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 
@@ -415,10 +413,19 @@ public class GUI extends Application {
         introLayout.setAlignment(Pos.TOP_CENTER);
         Intro introPage = new Intro();
         introScene = introPage.createIntroScene(introLayout);
+
+        Button signButton = introPage.createSignButton();
+        Button logButton = introPage.createLogButton();
+
+        introPage.createButtons(introLayout, signButton, logButton);
+
         /* Create the button that starts the app (changes the page from
          * the intro to the main).*/
         Button startButton = introPage.createStartButton(introLayout);
         startButton.setOnAction(e -> window.setScene(mainScene));
+        startButton.setDisable(true);
+
+
         /* Create the texts of the intro page.*/
         Text[] textNodes = introPage.createText();
         introPage.formatText(textNodes, introLayout);
