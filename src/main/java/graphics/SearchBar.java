@@ -35,7 +35,11 @@ public class SearchBar {
      */
     public VBox createBar() {
         DataBase database = new DataBase();
-        ArrayList<String> names = database.getImageForSearch();
+
+        //ArrayList<String> names = database.getImageForSearch();
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Apple");
+        names.add("watermelon");
         ObservableList<String> suggestions = FXCollections.observableArrayList(names);
 
         searchField.setMaxWidth(150);
