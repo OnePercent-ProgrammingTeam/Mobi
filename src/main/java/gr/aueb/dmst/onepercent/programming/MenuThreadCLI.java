@@ -2,6 +2,8 @@ package gr.aueb.dmst.onepercent.programming;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import exceptions.InvalidInputException;
+
 /**
  * MenuThreadCLI class represents the command-line interface (CLI) implementation 
  * of the main menu thread.
@@ -28,7 +30,7 @@ public class MenuThreadCLI extends MenuThread {
     /** Method: printMenu() prints the main menu of the program indicating
      *  the available options to the user.
     */
-    public void printMenu() {
+    private void printMenu() {
         System.out.println("-LIST OF CONTAINERS-");
         System.out.println("------------------------------------------------------------");
         SuperAPI.createDockerClient();
@@ -57,15 +59,38 @@ public class MenuThreadCLI extends MenuThread {
      */
     public boolean handleUserInput() {
         Scanner INPUT = new Scanner(System.in);
+        /*TO DO:Find a way to run the test with INPUT being global.*/
         System.out.print("Please enter a number: ");
         int answer = 0;
         try {
             answer = INPUT.nextInt();
+            executeUserChoice(answer);
         } catch (InputMismatchException e) {
             System.out.println("Please, enter a valid number.");
             return true;
+        } catch (InvalidInputException e) {
+            System.out.println(e.getMessage());
+            return true;
+        } finally {
+            INPUT.nextLine();
         }
-        
+        System.out.println("\nWant to run again?\n\nFor YES press Y.\nFor NO press N. ");
+        System.out.print("Enter answer: ");
+        char choice = INPUT.next().charAt(0);
+        System.out.println();
+        if (choice == 'N' || choice == 'n') {
+            System.out.println("Thank you!");
+            INPUT.close();
+            System.exit(0);
+        }
+        return choice == 'Y' || choice == 'y'; 
+    }
+
+
+    /**
+     * 
+     */
+    private void executeUserChoice(int answer) throws InvalidInputException {
         switch (answer) {
             case 1:
             case 2:
@@ -109,7 +134,7 @@ public class MenuThreadCLI extends MenuThread {
 
                 break;
             default:
-                System.out.println("Non Valid Input.");
+                throw new InvalidInputException("Please, enter a valid number.");
         }
         if (answer == 5) {
             while (Graph.end == false) {
@@ -118,17 +143,8 @@ public class MenuThreadCLI extends MenuThread {
         } else {
             waitThread();
         }
-            
-        System.out.println("\nWant to run again?\n\nFor YES press Y.\nFor NO press N. ");
-        System.out.print("Enter answer: ");
-        char choice = INPUT.next().charAt(0);
-        System.out.println();
-        if (choice == 'N') {
-            System.out.println("Thank you!");
-            INPUT.close();
-            System.exit(0);
-        }
-        return choice == 'Y'; 
+
+
     }
         
     /**

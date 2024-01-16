@@ -1,7 +1,9 @@
 package gr.aueb.dmst.onepercent.programming;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
-
+import exceptions.StartContainerException;
+import exceptions.StopContainerException;
+import exceptions.PullImageException;
 import com.google.common.annotations.VisibleForTesting;
 
 /**
@@ -12,22 +14,11 @@ import com.google.common.annotations.VisibleForTesting;
  */
 public class ManagerHttpCLI extends ManagerHttp {
     
-    // Regular Colors
     /**
      * ANSI color code for resetting text color.
      */
     public static final String ANSI_RESET = "\u001B[0m";
-
-    /**
-     * ANSI color code for black text.
-     */
-    public static final String ANSI_BLACK = "\u001B[30m";
-
-    /**
-     * ANSI color code for red text.
-     */
-    public static final String ANSI_RED = "\u001B[31m";
-
+    
     /**
      * ANSI color code for green text.
      */
@@ -37,26 +28,6 @@ public class ManagerHttpCLI extends ManagerHttp {
      * ANSI color code for yellow text.
      */
     public static final String ANSI_YELLOW = "\u001B[33m";
-
-    /**
-     * ANSI color code for blue text.
-     */
-    public static final String ANSI_BLUE = "\u001B[34m";
-
-    /**
-     * ANSI color code for purple text.
-     */
-    public static final String ANSI_PURPLE = "\u001B[35m";
-
-    /**
-     * ANSI color code for cyan text.
-     */
-    public static final String ANSI_CYAN = "\u001B[36m";
-
-    /**
-     * ANSI color code for white text.
-     */
-    public static final String ANSI_WHITE = "\u001B[37m";
 
     /** Method: startContainer() starts container with http request. */
     @Override
@@ -123,10 +94,17 @@ public class ManagerHttpCLI extends ManagerHttp {
         if (this.response == null) {
             output = "response has not been initialized";
         } else {
-            output = provideMessage(message);
-        }
+            try {
+                output = provideMessage(message);
+            } catch (StartContainerException e) {
+                output = e.getMessage();
+            } catch (StopContainerException e) {
+                output = e.getMessage();
+            } catch (PullImageException e) {
+                output = e.getMessage();
+            }
         
-      
+        }
         System.out.println(output);
         return output;
 
@@ -153,41 +131,38 @@ public class ManagerHttpCLI extends ManagerHttp {
         if (message.equals("start")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 204:
-                    output = ANSI_RED + "Container " + message  + " was successfull." + ANSI_RESET;
+                    output = ANSI_GREEN + "Container " + message  + " was successfull." +
+                        ANSI_RESET;
                     break;
                 case 304:
-                    output = ANSI_RED + "Container already started." + ANSI_RESET;
-                    break;
+                    throw new StartContainerException("Container already started.");
                 case 404:
-                    output = ANSI_RED + "There is no such container. Try again" + ANSI_RESET;
-                    break;
+                    throw new StartContainerException("There is no such container. Try again");
                 case 500:
-                    output = ANSI_RED + "Server error!" + ANSI_RESET;
+                    throw new StartContainerException("Server error!");
             }
         } else if (message.equals("stop")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 204:
-                    output = ANSI_RED + "Container " + message  + " was successfull." + ANSI_RESET;
+                    output = ANSI_GREEN + "Container " + message  + " was successfull." + 
+                        ANSI_RESET;
                     break;
                 case 304:
-                    output = ANSI_RED + "Container already stopped." + ANSI_RESET;
-                    break;
+                    throw new StopContainerException("Container already stopped.");
                 case 404:
-                    output = ANSI_RED + "There is no such container. Try again" + ANSI_RESET;
-                    break;
+                    throw new StopContainerException("There is no such container. Try again");
                 case 500:
-                    output = ANSI_RED + "Server error!" + ANSI_RESET;
+                    throw new StopContainerException("Server error!");
             }
         } else if (message.equals("pull")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 200:
-                    output = "Image " + message + " was successfull.";
+                    output = ANSI_GREEN + "Image " + message + " was successfull." + ANSI_RESET;
                     break;
                 case 404:
-                    output = "Image not found.";
-                    break;
+                    throw new PullImageException("Image not found.");
                 case 500:
-                    output = "Server error!";
+                    throw new PullImageException("Server error!");
             }
         }
         return output;
