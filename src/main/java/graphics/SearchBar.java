@@ -2,7 +2,8 @@ package graphics;
 
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.DataBase;
+import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
+//import gr.aueb.dmst.onepercent.programming.DataBase;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,8 +24,13 @@ import javafx.scene.text.FontWeight;
 public class SearchBar {
     
     TextField searchField = new TextField();
+    TextField pullField = new TextField();
     
     ListView<String> autoCompleteListView = new ListView<>();
+
+    MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
+
+    private StringBuilder result;
 
     /**
      * Creates and returns a VBox containing the search bar and auto-complete suggestions list.
@@ -34,7 +40,7 @@ public class SearchBar {
      * @return A VBox containing the search bar and auto-complete list.
      */
     public VBox createBar() {
-        DataBase database = new DataBase();
+        //DataBase database = new DataBase();
 
         //ArrayList<String> names = database.getImageForSearch();
         ArrayList<String> names = new ArrayList<>();
@@ -42,15 +48,16 @@ public class SearchBar {
         names.add("watermelon");
         ObservableList<String> suggestions = FXCollections.observableArrayList(names);
 
+
+        //Make better the look of the search bar
         searchField.setMaxWidth(150);
         searchField.setMaxHeight(5);
-
-        autoCompleteListView.setMaxWidth(150);
-        //autoCompleteListView.setMaxWidth(150);
         searchField.setStyle("-fx-background-color: #FFFFFF;" +
                             "-fx-text-fill: black;");
         searchField.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
 
+
+        autoCompleteListView.setMaxWidth(150);
         autoCompleteListView.setStyle("-fx-control-inner-background: #FFFFFF;" + 
                                         // Background color of the entire ListView
                                         "-fx-selection-bar: #E8E9EB;" +              
@@ -61,11 +68,7 @@ public class SearchBar {
                                         "-fx-font-weight: bold; " +
                                         "-fx-font-size: 15; ");
                                         
-        
-                                        
-        
         autoCompleteListView.setMaxHeight(250); // Set the maximum height of the list
-
         autoCompleteListView.setVisible(false);
 
         autoCompleteListView.setCellFactory(listView -> new ListCell<String>() {
@@ -196,6 +199,24 @@ public class SearchBar {
             autoCompleteListView.scrollTo(newIndex);
         }
     }
+
+
+    public TextField pullBar() {
+        pullField.setPromptText("Enter your text");
+        pullField.setMaxWidth(150);
+        pullField.setMaxHeight(5);
+        pullField.setStyle("-fx-background-color: #FFFFFF;" +
+                            "-fx-text-fill: black;");
+        pullField.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+
+        // Add an event handler for text changes
+        pullField.textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Text changed: " + newValue);
+        });
+
+        return pullField;
+    }
+
    
     /**
      * Default Constructor
