@@ -136,6 +136,9 @@ public class MonitorHttpGUI extends MonitorHttp {
     }
 
 
+    /**
+     * to do
+     */
     private void initializeSearchResult() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -155,6 +158,11 @@ public class MonitorHttpGUI extends MonitorHttp {
         }
     }
 
+
+    /**
+     * to do
+     * @return to do
+     */
     public StringBuilder getSearchResult() {
         return this.searchResult;
     }
