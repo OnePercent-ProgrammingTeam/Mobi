@@ -1,5 +1,7 @@
 package gr.aueb.dmst.onepercent.programming;
 
+import graphics.DataUsers;
+
 /**
  * MenuThreadGUI class represents the graphical user interface (GUI) implementation 
  * of the main menu thread.
@@ -15,7 +17,10 @@ public class MenuThreadGUI extends MenuThread {
 
     @Override
     public void run() {
-        database.createDatabase();
+        DataUsers user = new DataUsers();
+        user.createUser();
+        DataBase contain = new DataBase();
+        contain.createDatabase();
     }
 
     /**
