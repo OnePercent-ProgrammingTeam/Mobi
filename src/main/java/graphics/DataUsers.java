@@ -122,6 +122,7 @@ public class DataUsers {
 
             while (result.next()) {
                 int count = result.getInt("COUNT_USERS");
+                System.out.println("number " + count);
                 if (count == 1) {
                     flag = true;
                 }
