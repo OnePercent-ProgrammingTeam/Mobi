@@ -3,4 +3,4 @@
 Welcome to MObi, your docker companion - a cutting edge docker container manager
 
 ##Documentation
--[UML Diagram](docs/UML.png)
+-[UML Diagram](docs/UML.pdf)
