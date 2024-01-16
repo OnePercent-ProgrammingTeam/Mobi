@@ -1,10 +1,15 @@
 package graphics;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -12,11 +17,18 @@ import javafx.scene.text.Text;
 import javafx.scene.text.FontWeight;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import exceptions.UserExistsException;
+import exceptions.UserNotFoundException;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 
 /** Class: Intro is the class that creates the intro page of the GUI. */
 public class Intro {
+
+    Button startButton;
 
     //protected static StackPane introayout;
 
@@ -136,7 +148,7 @@ public class Intro {
      *  @return startButton: the button that is created
      */
     public Button createStartButton(StackPane introLayout) {
-        Button startButton = new Button("Start");
+        startButton = new Button("Start");
         
         startButton
             .setStyle("-fx-background-color: #3a3a9d;" + 
@@ -149,6 +161,156 @@ public class Intro {
         introLayout.getChildren().add(startButton);
         return startButton;
     }
+
+
+    public Button createLogButton() {
+        Button logButton = new Button("Log in");
+        logButton
+            .setStyle("-fx-background-color: #2A2A72;" + 
+                      "-fx-text-fill: white;" + 
+                      "-fx-font-size: 15px;" +  
+                      "-fx-font-weight: bold;");
+        return logButton; 
+    }
+
+    public Button createSignButton() {
+        Button signButton = new Button("Sign up");
+        signButton
+            .setStyle("-fx-background-color: #2A2A72;" + 
+                      "-fx-text-fill: white;" + 
+                      "-fx-font-size: 15px;" +  
+                      "-fx-font-weight: bold;");
+        return signButton; 
+    }
+
+    private void openLoginWindow() {
+        Stage loginStage = new Stage();
+        loginStage.initModality(Modality.APPLICATION_MODAL);
+        loginStage.setTitle("Log In");
+
+        VBox loginLayout = new VBox(20);
+        GridPane grid = getUserWindows("Log in", true);
+        loginLayout.getChildren()
+            .add(grid); // Add your log-in form components here
+        loginLayout.setAlignment(Pos.CENTER);
+
+        Scene loginScene = new Scene(loginLayout, 300, 300);
+        loginStage.setScene(loginScene);
+        loginStage.showAndWait();
+    }
+
+    private void openSignupWindow() {
+        Stage signupStage = new Stage();
+        signupStage.initModality(Modality.APPLICATION_MODAL);
+        signupStage.setTitle("Sign Up");
+
+        VBox signupLayout = new VBox(20);
+        GridPane grid = getUserWindows("Sign up", false);
+
+
+        StackPane stacksign = new StackPane();
+        Label labelsign = new Label("dehweiujojeojewjod");
+        stacksign.getChildren().add(labelsign);
+
+
+        signupLayout.getChildren()
+            .addAll(grid, stacksign); // Add your sign-up form components here
+        signupLayout.setAlignment(Pos.CENTER);
+
+
+        Scene signupScene = new Scene(signupLayout, 300, 300);
+        signupStage.setScene(signupScene);
+        signupStage.showAndWait();
+    }
+
+    public void createButtons(StackPane introLayout, Button signButton, Button logButton) {
+        HBox hbox = new HBox(30);
+        hbox.getChildren().addAll(logButton, signButton);
+        hbox.setMinWidth(500);
+        // Add functionality to the button
+        signButton.setOnAction(event -> {
+            openSignupWindow();
+        });
+
+         // Add functionality to the button
+        logButton.setOnAction(event -> {
+            openLoginWindow();
+        });
+
+        StackPane.setAlignment(hbox, Pos.TOP_RIGHT);
+        StackPane.setMargin(hbox, new javafx.geometry.Insets(10, 20, 0, 0));
+
+        introLayout.getChildren().add(hbox);            
+
+    }
+
+    DataUsers userTable = new DataUsers();
+
+    public GridPane getUserWindows(String string, boolean flag) {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+
+        grid.setVgap(8);
+        grid.setHgap(10);
+
+        //name label
+        Label name = new Label("      User name");
+        GridPane.setConstraints(name, 0, 0);
+
+        //name input
+        TextField input = new TextField();
+        input.setPromptText("name");
+        GridPane.setConstraints(input, 1, 0);
+
+        //password label
+        Label password = new Label("User password");
+        GridPane.setConstraints(password, 0, 1);
+
+        //name input
+        TextField input2 = new TextField();
+        input2.setPromptText("password");
+        GridPane.setConstraints(input2, 1, 1);
+        Button log = new Button(string);
+        if (flag) {
+            log.setOnAction(event -> {
+                System.out.println("log in name " + input.getText() + " pass " + input2.getText());
+                String name2 = input.getText().toString();
+                String pass2 = input2.getText().toString();
+                windowClose(log);
+                startButton.setDisable(flag);
+                try {
+                    userTable.getUserExistance(name2, pass2, false);
+                } catch (UserExistsException e) {
+                    System.out.println(e.getMessage());
+                } catch (UserNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+                
+
+            });
+        } else {
+            log.setOnAction(event -> {
+                System.out.println("sign name " + input.getText() + "pass " + input2.getText());
+                windowClose(log);
+                startButton.setDisable(flag);
+                userTable.insertUsers(input.getText(), input2.getText()); 
+                userTable.getAllUsers();
+            });
+        }
+       
+        log.setPrefSize(80, 30); // Set the preferred width and height
+        GridPane.setConstraints(log, 1, 4);
+        grid.getChildren().addAll(name, input, password, input2, log);
+
+        return grid;
+    }
+
+    private void windowClose(Button log) {
+        Scene scenelog = log.getScene();
+        Stage stagelog = (Stage) scenelog.getWindow();
+        stagelog.close();
+    }
+
 
     /** Method: createIntroScene(StackPane) creates the intro scene
      *  of the GUI. It is the first scene that the user sees when
