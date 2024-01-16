@@ -309,16 +309,19 @@ public class Intro {
         if (flag) {
             log.setOnAction(event -> {
                 System.out.println("log in name " + input.getText() + " pass " + input2.getText());
-                String name2 = input.getText().toString();
-                String pass2 = input2.getText().toString();
-                windowClose(log);
-                startButton.setDisable(flag);
+                boolean key = false;
                 try {
-                    userTable.getUserExistance(name2, pass2, false);
+                    key = userTable.getUserExistance(
+                                                input.getText(), input.getText(), false);
+                    userTable.getAllUsers();
                 } catch (UserExistsException e) {
                     System.out.println(e.getMessage());
                 } catch (UserNotFoundException e) {
                     System.out.println(e.getMessage());
+                }
+                if (key) {
+                    windowClose(log);
+                    startButton.setDisable(flag);
                 }
                 
 
