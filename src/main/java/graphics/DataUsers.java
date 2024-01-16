@@ -10,11 +10,21 @@ import java.sql.Statement;
 import exceptions.UserExistsException;
 import exceptions.UserNotFoundException;
 
+/**
+ * Class: DataUser is responsible for interacting with the embedded form of H2 database.
+ * It has methods for storing data about users that use our app.
+ * As a result it helps in creating tables, inserting data, and querying information.
+ */
 public class DataUsers {
     static final String urlgeneral = "jdbc:h2:./user";
 
     String query;
 
+    /**
+     * Method: createUser() creates a table in the H2 database.
+     * The table is named "Users" and contains the names and the passwords 
+     * of the users that are signed up in our application.
+     */
     public void createUser() {
         try {
             Class.forName("org.h2.Driver"); //Register JDBC driver 
@@ -42,6 +52,13 @@ public class DataUsers {
         }
     }
 
+
+    /**
+     * Insert data into "Users" if the user does not already exist
+     *
+     * @param username The name of the user that is provided through the Sign up.
+     * @param password The password of the user that is provided through the Sign up.
+     */
     public void insertUsers(String username, String password) {
         try {
             Class.forName("org.h2.Driver");
@@ -70,6 +87,13 @@ public class DataUsers {
         }
     }
 
+    /**
+     * Method that checks the existance of the user in the table "Users"
+     *
+     * @param username The name of the user that is provided through the Sign up.
+     * @param password The password of the user that is provided through the Sign up.
+     * @return If the user has already sign up or it is the first time
+     */
     public boolean getUserExistance(String name, String password,
                                      boolean isForSignUp) 
                                      throws UserExistsException, UserNotFoundException {
@@ -106,7 +130,10 @@ public class DataUsers {
         return flag;
     }
 
-
+    /**
+     * Method that shows all the users in the database in the table "Users". 
+     * This method is mainly for checking that the users are inserted in the database.
+     */
     public void getAllUsers() {
         try {
             Class.forName("org.h2.Driver"); 
