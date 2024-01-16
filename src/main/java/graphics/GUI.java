@@ -40,8 +40,8 @@ public class GUI extends Application {
     static final ListPane LIST = new ListPane();
 
     /** Method: start(Stage) is the method that runs the application.
-     * @param window is the stage of the application.
-     * @throws IOException
+     * @param stage is the stage of the application.
+     * @throws IOException If an error occurs while reading the input
      */
     @Override
     public void start(Stage stage) throws IOException {
