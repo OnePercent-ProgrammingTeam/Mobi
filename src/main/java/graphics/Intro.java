@@ -57,7 +57,7 @@ public class Intro {
     
     /** Method: formatText(Text[], StackPane) formats the text in a modern and good-looking manner.
      * @param textNodes: the array of textNodes to be formatted.
-     * @param root: the StackPane (layout) in which the textNodes will be placed.
+     * @param introLayout: the StackPane (introLayout) in which the textNodes will be placed.
      */
     public void formatText(Text[] textNodes, StackPane introLayout) {
         if (textNodes.length > 0) {
@@ -162,7 +162,12 @@ public class Intro {
         return startButton;
     }
 
-
+    /** Method: createLogButton() creates the log button
+     *  that is displayed in the intro page of the GUI. When pressed,
+     *  it opens a window that make the user to log in. The action 
+     *  functionality takes place in the GUI class.
+     *  @return logButton: the button that is created
+     */
     public Button createLogButton() {
         Button logButton = new Button("Log in");
         logButton
@@ -173,6 +178,12 @@ public class Intro {
         return logButton; 
     }
 
+    /** Method: createSignButton() creates the sign button
+     *  that is displayed in the intro page of the GUI. When pressed,
+     *  it opens a window that make the user to sign up. The action 
+     *  functionality takes place in the GUI class.
+     *  @return signButton: the button that is created
+     */
     public Button createSignButton() {
         Button signButton = new Button("Sign up");
         signButton
