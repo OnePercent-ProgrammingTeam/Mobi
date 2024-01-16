@@ -38,7 +38,7 @@ public class SuperHttp implements HttpInterface {
      */
     protected static HttpGet getRequest;
     /** Image name of the image that is going to be pulled or searched */
-    protected static String imageName;
+    public static String imageName;
     /** Http response return by the executed http request */
     protected CloseableHttpResponse response;
     /** Http response, read using StringBuffer */
