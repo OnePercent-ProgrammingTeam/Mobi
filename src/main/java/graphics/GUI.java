@@ -23,6 +23,7 @@ import javafx.scene.control.ScrollPane;
 
 import gr.aueb.dmst.onepercent.programming.MenuThreadGUI;
 
+
 /** Class: GUI is the core class that runs the Graphics of
  * the application. It uses the Intro and MainPage classes.
  * @see Intro
@@ -38,6 +39,13 @@ public class GUI extends Application {
     static Scene analyticsScene;
     static Scene helpScene;
     static final ListPane LIST = new ListPane();
+
+    /** 
+    * Default Constructor
+    */
+    public GUI() {
+        
+    }
 
     /** Method: start(Stage) is the method that runs the application.
      * @param stage is the stage of the application.
@@ -467,7 +475,13 @@ public class GUI extends Application {
         return fxmlLoader.load();
     }
     
-    
+
+//IS THE Run Main necessary?
+    /**
+     * The main method, triggering the execution of the GUI application.
+     *
+     * @param args The command line arguments (unused in this context).
+     */
     public static void main(String[] args) {
         //System.out.println(javafx.scene.text.Font.getFamilies());
         launch(args);

@@ -100,6 +100,12 @@ public class Intro {
         }
     }
 
+//teh same method with the above?
+     
+    /** Method: format(Text[], StackPane) formats the text in a modern and good-looking manner.
+     * @param textNodes: the array of textNodes to be formatted.
+     * @param introLayout: the StackPane (layout) in which the textNodes will be placed.
+     */
     public void format(Text[] textNodes, StackPane introLayout) {
         VBox vbox = new VBox();
         if (textNodes.length > 0) {
@@ -194,6 +200,9 @@ public class Intro {
         return signButton; 
     }
 
+    /** Method: openLoginWindow() opens the log in window
+     *  that is displayed in the intro page of the GUI. 
+     */
     private void openLoginWindow() {
         Stage loginStage = new Stage();
         loginStage.initModality(Modality.APPLICATION_MODAL);
@@ -210,6 +219,9 @@ public class Intro {
         loginStage.showAndWait();
     }
 
+    /** Method: openSignupWindow() opens the sign up window
+     *  that is displayed in the intro page of the GUI. 
+     */
     private void openSignupWindow() {
         Stage signupStage = new Stage();
         signupStage.initModality(Modality.APPLICATION_MODAL);
@@ -234,6 +246,12 @@ public class Intro {
         signupStage.showAndWait();
     }
 
+    /** Method: createButtons() creates the log and sign buttons
+     *  that is displayed in the intro page of the GUI in the form of HBox.
+     * @param introLayout the StackPane (layout) in which the buttons will be placed
+     * @param signButton The button for the sign up
+     * @param logButton The button for the log in
+     */
     public void createButtons(StackPane introLayout, Button signButton, Button logButton) {
         HBox hbox = new HBox(30);
         hbox.getChildren().addAll(logButton, signButton);
@@ -257,6 +275,12 @@ public class Intro {
 
     DataUsers userTable = new DataUsers();
 
+    /** Method: getUserWindows() creates the GridPane 
+     *  that is displayed after the press of the buttons log in or sign up
+     * @param string The name of the button
+     * @param flag The flag shows if the start button is visible or not
+     * @return grid The GridPane of the windows
+     */
     public GridPane getUserWindows(String string, boolean flag) {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -316,6 +340,10 @@ public class Intro {
         return grid;
     }
 
+    /** Method: windowClose() closes the window after the press of 
+     * the buttons log in or sign up inside the window
+     * @param log The specific button that i want
+     */
     private void windowClose(Button log) {
         Scene scenelog = log.getScene();
         Stage stagelog = (Stage) scenelog.getWindow();

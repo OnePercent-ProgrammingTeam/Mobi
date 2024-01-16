@@ -65,8 +65,6 @@ public class DataUsers {
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
-     * @throws UserExistsException If the user tries to Sign up but the account already exists 
-     * @throws UserNotFoundException If the user tries to Log in but the account does not exist 
      */
     public void insertUsers(String username, String password) {
         try {
