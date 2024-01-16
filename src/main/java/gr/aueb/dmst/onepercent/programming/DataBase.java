@@ -17,7 +17,7 @@ import com.google.common.annotations.VisibleForTesting;
  */
 public class DataBase {
 
-    static final String url = "jdbc:h2:./data";
+    static final String url = "jdbc:h2:./metricsbase";
 
     /**
      * Gets the URL used for connecting to the H2 database.
