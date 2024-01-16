@@ -3,6 +3,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -16,7 +17,9 @@ import gr.aueb.dmst.onepercent.programming.MonitorHttpGUI;
 public class ImagePage {
     
     GridPane grid;
-    GridPane gridInfo;
+    GridPane gridSearch;
+    GridPane gridPull;
+    HBox hbox;
 
     /**
      * Method: getListGrid() creates and sets up a GridPane with columns for image names and IDs.
@@ -96,6 +99,16 @@ public class ImagePage {
         ListPane listPane = new ListPane();
         Text title = listPane.getText("List Of Images");
         VBox vbox = new VBox();
+
+        Text searchText = listPane.getText("Search");
+        Text pullText = listPane.getText("Pull");
+
+        HBox hboxTitles = titles(searchText, pullText);
+
+        ScrollPane searchScrollPane = getSearchArea();
+        ScrollPane pullScrollPane = getPullArea();
+
+        HBox hboxScroll = searchAndpull(searchScrollPane, pullScrollPane);
     
         vbox.getChildren().add(title);
         vbox.setSpacing(20);
@@ -105,6 +118,68 @@ public class ImagePage {
         
         return vbox;
     
+    }
+
+    public ScrollPane getSearchArea() {
+
+        gridSearch = new GridPane();
+        gridSearch.setHgap(70);
+        //grid.setVgap(10);
+        gridSearch.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
+
+        MonitorHttpGUI monitorHttpGUI = new MonitorHttpGUI();
+
+        Label label = new Label();
+        label.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+        GridPane.setConstraints(label, 0, 0);
+        gridSearch.getChildren().add(label);
+
+
+        gridSearch.setStyle("-fx-background-color: #FFFFFF;");
+        ScrollPane searchScrollPane = new ScrollPane(gridSearch);
+        searchScrollPane.setPadding(new javafx.geometry.Insets(50, 550, 0, 0));
+        
+        searchScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        searchScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        searchScrollPane.setMinHeight(200);
+        searchScrollPane.setMaxWidth(400);
+        return searchScrollPane;
+    }
+
+    public ScrollPane getPullArea() {
+        gridPull = new GridPane();
+        gridPull.setHgap(70);
+        gridPull.setAlignment(javafx.geometry.Pos.BOTTOM_RIGHT);
+
+        Label pull = new Label();
+        pull.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+        GridPane.setConstraints(pull, 0, 0);
+        gridPull.getChildren().add(pull);
+
+        gridPull.setStyle("-fx-background-color: #FFFFFF;");
+        ScrollPane pullScrollPane = new ScrollPane(gridSearch);
+        pullScrollPane.setPadding(new javafx.geometry.Insets(50, 950, 0, 650));
+        
+        pullScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        pullScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        pullScrollPane.setMinHeight(200);
+        pullScrollPane.setMaxWidth(400);
+        return pullScrollPane;
+
+    }
+
+    public HBox searchAndpull(ScrollPane scroll1, ScrollPane scroll2) {
+        hbox = new HBox(200);
+
+        hbox.getChildren().addAll(scroll1, scroll2);
+        return hbox;
+    }
+
+    public HBox titles(Text text1, Text text2) {
+        hbox = new HBox(600);
+
+        hbox.getChildren().addAll(text1, text2);
+        return hbox;
     }
 
     /**
