@@ -71,30 +71,27 @@ public class DataUsers {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(urlgeneral);
 
-            if (!getUserExistance(username, password, true)) {
-                // Use a prepared statement to insert data into the "Users" table
-                String query = "INSERT INTO Users (NAME, PASSWORD) VALUES (?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    // Set the parameters using the user-provided values
-                    preparedStatement.setString(1, username);
-                    preparedStatement.setString(2, password);
+            // Use a prepared statement to insert data into the "Users" table
+            String query = "INSERT INTO Users (NAME, PASSWORD) VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            // Set the parameters using the user-provided values
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
 
-                    // Execute the query
-                    preparedStatement.execute();
-                }
-            }
+            // Execute the query
+            preparedStatement.execute();
+
+            preparedStatement.close();
             connection.close();
-
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        } catch (UserExistsException e) {
-            System.err.println(e.getMessage());
-        } catch (UserNotFoundException e) {
-            System.err.println(e.getMessage());
         }
+
     }
 
-    /**
+
+
+   /**
      * Method that checks the existance of the user in the table "Users"
      *
      * @param username The name of the user that is provided through the Sign up.
@@ -105,17 +102,18 @@ public class DataUsers {
      * @throws UserNotFoundException If the user tries to Log in but the account does not exist 
      * @return If the user has already sign up or it is the first time
      */
-    public boolean getUserExistance(String username, String password,
-                                     boolean isForSignUp) 
-                                     throws UserExistsException, UserNotFoundException {
+    public boolean getUserExistance(String username, String password) {
         boolean flag = false;
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(urlgeneral); 
             Statement statement = connection.createStatement(); 
             
+
+    
             query = "SELECT count(*) AS COUNT_USERS FROM Users WHERE NAME = '" +
-                     username + "' AND PASSWORD = '" + password + "'";
+                     username + "' AND PASSWORD = '" + password + "'" +
+                    " HAVING count(*) = 1 ;";
 
             
             ResultSet result = statement.executeQuery(query);
@@ -123,25 +121,23 @@ public class DataUsers {
             while (result.next()) {
                 int count = result.getInt("COUNT_USERS");
                 System.out.println("number " + count);
+                flag = true;
+                /* 
                 if (count == 1) {
+                    System.out.println("exists " + flag);
                     flag = true;
                 }
+                */
             }
-            /* 
             statement.close(); 
             connection.close(); 
-           */
         } catch (ClassNotFoundException | SQLException e) { 
             e.printStackTrace();
         } 
-        if (flag && isForSignUp) {
-            throw new UserExistsException(username);
-        } else if (!flag && !isForSignUp) {
-            throw new UserNotFoundException(username);
-        }
         return flag;
     }
 
+    
     /**
      * Method that shows all the users in the database in the table "Users". 
      * This method is mainly for checking that the users are inserted in the database.
