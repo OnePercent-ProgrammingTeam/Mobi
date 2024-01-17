@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+
 import java.util.ArrayList;
 
 
@@ -124,34 +126,36 @@ public class ImagePage {
     }
 
 
+    static ScrollPane searchScrollPane;
     /**
      * Creates the field in which the output of the serach will appear
      * @return ScrollPane that will appear in the screen
      */
     public ScrollPane getSearchArea() {
 
-        gridSearch = new GridPane();
-        gridSearch.setHgap(70);
-        //grid.setVgap(10);
-        gridSearch.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
+        Text text1 = new Text("Image: 5 \n");
+        Text text2 = new Text("everything is fine");
+        TextFlow textsearch = new TextFlow(text1, text2);
+        VBox vbox = new VBox(textsearch);
 
-        MonitorHttpGUI monitorHttpGUI = new MonitorHttpGUI();
-
-        Label label = new Label();
-        label.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
-        GridPane.setConstraints(label, 0, 0);
-        gridSearch.getChildren().add(label);
-
-
-        gridSearch.setStyle("-fx-background-color: #FFFFFF;");
-        ScrollPane searchScrollPane = new ScrollPane(gridSearch);
-        searchScrollPane.setPadding(new javafx.geometry.Insets(50, 550, 0, 0));
+        searchScrollPane = new ScrollPane(vbox);
+        //searchScrollPane.setPadding(new javafx.geometry.Insets(50, 550, 0, 0));
         
+
         searchScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         searchScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         searchScrollPane.setMinHeight(200);
-        searchScrollPane.setMaxWidth(400);
+        searchScrollPane.setMinWidth(500);
         return searchScrollPane;
+        
+    }
+
+    public static void setContentSearch(StringBuilder stringBuilder) {
+        Text textnew = new Text(stringBuilder.toString());
+        TextFlow textflownew = new TextFlow(textnew);
+
+        VBox vboxnew = new VBox(textflownew);
+        searchScrollPane.setContent(vboxnew);
     }
 
 
