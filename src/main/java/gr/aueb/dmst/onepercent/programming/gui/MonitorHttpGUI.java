@@ -22,7 +22,6 @@ public class MonitorHttpGUI extends MonitorHttp {
     private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
         "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
 
-    private StringBuilder searchResult;
 
     /** Method: inspectContainerGUI() retrieves information about a container that might be 
      * or might not be locally installed. 
@@ -124,11 +123,7 @@ public class MonitorHttpGUI extends MonitorHttp {
             }
             
             reader.close();
-
-            if (message.equals("/images/json")) {
-                System.out.println("Inside executeHttpRequest() method");
-            }
-                               
+           
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to " + 
@@ -142,7 +137,8 @@ public class MonitorHttpGUI extends MonitorHttp {
     /**
      * to do
      */
-    private void initializeSearchResult() {
+    public StringBuilder getSearchResult(String string) {
+        StringBuilder searchResult = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
@@ -156,19 +152,16 @@ public class MonitorHttpGUI extends MonitorHttp {
                         + el.get("star_count") + "\n");
                 }
             }
+            
         } catch (Exception e) {
             System.out.println("Oops, something went wrong...");
         }
+        return searchResult;
     }
 
 
-    /**
-     * to do
-     * @return to do
-     */
-    public StringBuilder getSearchResult() {
-        return this.searchResult;
-    }
+
+    
 
     /**
      * Method: getFormattedImageIdsList()
