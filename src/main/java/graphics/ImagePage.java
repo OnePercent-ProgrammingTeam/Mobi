@@ -118,6 +118,9 @@ public class ImagePage {
         vbox.getChildren().add(title);
         vbox.setSpacing(20);
         vbox.getChildren().add(listScrollPane);
+        vbox.getChildren().add(hboxTitles);
+        vbox.setSpacing(10);
+        vbox.getChildren().add(hboxScroll);
         vbox.setAlignment(Pos.TOP_LEFT);
         vbox.setPadding(new javafx.geometry.Insets(0, 50, 300, 50));
         
@@ -150,6 +153,10 @@ public class ImagePage {
         
     }
 
+    /**
+     * to do 
+     * @param stringBuilder to do
+     */
     public static void setContentSearch(StringBuilder stringBuilder) {
         Text textnew = new Text(stringBuilder.toString());
         TextFlow textflownew = new TextFlow(textnew);
