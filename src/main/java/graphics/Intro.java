@@ -200,6 +200,9 @@ public class Intro {
         return signButton; 
     }
 
+    Label labelsign;
+    Label labellog;
+
     /** Method: openLoginWindow() opens the log in window
      *  that is displayed in the intro page of the GUI. 
      */
@@ -210,11 +213,19 @@ public class Intro {
 
         VBox loginLayout = new VBox(20);
         GridPane grid = getUserWindows("Log in", true);
+        grid.setAlignment(Pos.CENTER);
+
+        StackPane stacklog = new StackPane();
+        labellog = new Label("");
+        labellog.setStyle("-fx-text-fill: red;");
+        stacklog.getChildren().add(labellog);
+
+
         loginLayout.getChildren()
-            .add(grid); // Add your log-in form components here
+            .addAll(grid, stacklog); // Add your sign-up form components here
         loginLayout.setAlignment(Pos.CENTER);
 
-        Scene loginScene = new Scene(loginLayout, 300, 300);
+        Scene loginScene = new Scene(loginLayout, 500, 300);
         loginStage.setScene(loginScene);
         loginStage.showAndWait();
     }
@@ -229,10 +240,11 @@ public class Intro {
 
         VBox signupLayout = new VBox(20);
         GridPane grid = getUserWindows("Sign up", false);
-
+        grid.setAlignment(Pos.CENTER);
 
         StackPane stacksign = new StackPane();
-        Label labelsign = new Label("dehweiujojeojewjod");
+        labelsign = new Label("");
+        labelsign.setStyle("-fx-text-fill: red;");
         stacksign.getChildren().add(labelsign);
 
 
@@ -241,7 +253,7 @@ public class Intro {
         signupLayout.setAlignment(Pos.CENTER);
 
 
-        Scene signupScene = new Scene(signupLayout, 300, 300);
+        Scene signupScene = new Scene(signupLayout, 500, 300);
         signupStage.setScene(signupScene);
         signupStage.showAndWait();
     }
@@ -274,6 +286,7 @@ public class Intro {
     }
 
     DataUsers userTable = new DataUsers();
+    boolean key;
 
     /** Method: getUserWindows() creates the GridPane 
      *  that is displayed after the press of the buttons log in or sign up
@@ -309,30 +322,43 @@ public class Intro {
         if (flag) {
             log.setOnAction(event -> {
                 System.out.println("log in name " + input.getText() + " pass " + input2.getText());
-                boolean key = false;
-                try {
-                    key = userTable.getUserExistance(
-                                                input.getText(), input.getText(), false);
-                    userTable.getAllUsers();
-                } catch (UserExistsException e) {
-                    System.out.println(e.getMessage());
-                } catch (UserNotFoundException e) {
-                    System.out.println(e.getMessage());
-                }
-                if (key) {
-                    windowClose(log);
-                    startButton.setDisable(flag);
-                }
-                
 
+                key = userTable.getUserExistance(input.getText(), input2.getText());
+
+                try {
+                    if (key) {
+                        windowClose(log);
+                        startButton.setDisable(false);
+                    } else {
+                        throw new UserNotFoundException(input.getText());
+                    }
+                } catch (UserNotFoundException e) {
+                    labellog.setText(e.getMessage());
+                } finally {
+                    userTable.getAllUsers();
+                }   
+                
             });
         } else {
             log.setOnAction(event -> {
-                System.out.println("sign name " + input.getText() + "pass " + input2.getText());
-                windowClose(log);
-                startButton.setDisable(flag);
-                userTable.insertUsers(input.getText(), input2.getText()); 
-                userTable.getAllUsers();
+                System.out.println("sign name " + input.getText() + " pass " + input2.getText());
+
+                key = userTable.getUserExistance(input.getText(), input2.getText());
+
+                try {
+                    if (!key) {
+                        System.out.println("inside the if in !key");
+                        windowClose(log);
+                        startButton.setDisable(false);
+                        userTable.insertUsers(input.getText(), input2.getText());
+                    } else {
+                        throw new UserExistsException(input.getText());
+                    }   
+                } catch (UserExistsException e) {
+                    labelsign.setText(e.getMessage());
+                } finally {
+                    userTable.getAllUsers();
+                }   
             });
         }
        
