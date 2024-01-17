@@ -1,15 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
-   <children>
-      <VBox prefHeight="400.0" prefWidth="222.0">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
+   <left>
+      <VBox alignment="TOP_CENTER" maxWidth="250.0" minWidth="250.0" style="-fx-background-color: #2a2a72;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="containersButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="227.0" text="Containers" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Menu">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Button fx:id="containersButton" mnemonicParsing="false" onAction="#loadContainers" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Containers" textFill="WHITE">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button fx:id="imagesButton" layoutX="10.0" layoutY="92.0" mnemonicParsing="false" onAction="#loadImages" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Images" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button layoutX="10.0" layoutY="132.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Analytics" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button layoutX="45.0" layoutY="172.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Docker Hub" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button layoutX="10.0" layoutY="172.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Help" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Button>
          </children>
       </VBox>
-   </children>
-</AnchorPane>
+   </left>
+   <top>
+      <AnchorPane maxHeight="50.0" minHeight="50.0" style="-fx-background-color: #3a3a9d; -fx-border-color: #1a1a47; -fx-border-width: 0px  0px 1px 0px;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="50.0" spacing="8.0">
+               <children>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../../Downloads/417356575_363864299598430_3061113981649886474_n.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Mobi">
+                     <font>
+                        <Font name="Century Gothic" size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
+   <right>
+      <AnchorPane fx:id="contentArea" maxHeight="550.0" maxWidth="750.0" minHeight="550.0" minWidth="750.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

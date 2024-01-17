@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane maxHeight="550.0" maxWidth="750.0" minHeight="550.0" minWidth="750.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+  <content>
+    <AnchorPane maxHeight="550.0" maxWidth="750.0" minHeight="550.0" minWidth="750.0">
+         <children>
+            <Text layoutX="347.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Containers" AnchorPane.topAnchor="267.0" />
+         </children></AnchorPane>
+  </content>
+</ScrollPane>
