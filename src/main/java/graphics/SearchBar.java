@@ -2,6 +2,8 @@ package graphics;
 
 import java.util.ArrayList;
 
+import gr.aueb.dmst.onepercent.programming.core.DataBase;
+import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 //import gr.aueb.dmst.onepercent.programming.DataBase;
 import javafx.application.Platform;
@@ -30,7 +32,7 @@ public class SearchBar {
 
     MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
 
-    private StringBuilder result;
+    DataBase database = new DataBase();
 
     /**
      * Creates and returns a VBox containing the search bar and auto-complete suggestions list.
@@ -40,12 +42,13 @@ public class SearchBar {
      * @return A VBox containing the search bar and auto-complete list.
      */
     public VBox createBar() {
-        //DataBase database = new DataBase();
+        ArrayList<String> names = database.getImageForSearch();
 
-        //ArrayList<String> names = database.getImageForSearch();
+        /* 
         ArrayList<String> names = new ArrayList<>();
         names.add("Apple");
         names.add("watermelon");
+        */
         ObservableList<String> suggestions = FXCollections.observableArrayList(names);
 
 
@@ -178,6 +181,14 @@ public class SearchBar {
 
             searchField.positionCaret(selectedSuggestion.length());
         }
+        System.out.println(searchField.getText());
+        //functionality
+        MonitorHttpGUI.imageName = searchField.getText();
+        MenuThreadGUI menuThreadGUI = new MenuThreadGUI();
+        menuThreadGUI.handleUserInputGUI(3);
+
+        StringBuilder stringBuilder = monitorHttpGui.getSearchResult(searchField.getText());
+        ImagePage.setContentSearch(stringBuilder);
     }
 
     private void navigateListView(int direction) {
