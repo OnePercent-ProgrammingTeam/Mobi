@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import exceptions.UserExistsException;
-import exceptions.UserNotFoundException;
 
 /**
  * Class: DataUser is responsible for interacting with the embedded form of H2 database.
@@ -96,10 +94,6 @@ public class DataUsers {
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
-     * @param isForSignUp The isForSignUp shows if the method is being called 
-     * for the functionality Sign Up or for the functionality Log In 
-     * @throws UserExistsException If the user tries to Sign up but the account already exists 
-     * @throws UserNotFoundException If the user tries to Log in but the account does not exist 
      * @return If the user has already sign up or it is the first time
      */
     public boolean getUserExistance(String username, String password) {
