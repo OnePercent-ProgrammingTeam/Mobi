@@ -136,6 +136,8 @@ public class MonitorHttpGUI extends MonitorHttp {
 
     /**
      * to do
+     * @param string to do
+     * @return to do
      */
     public StringBuilder getSearchResult(String string) {
         StringBuilder searchResult = new StringBuilder();
