@@ -1,9 +1,14 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
+import java.io.IOException;
+
 import exceptions.UserNotFoundException;
 import graphics.DataUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -39,11 +44,17 @@ public class LoginPageController {
         try {
             if (key) {
                 System.out.println("User exists");
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                Scene mainPageScene = new Scene(root, 1000, 600);
+
+                MainGUI.window.setScene(mainPageScene);
             } else {
                 throw new UserNotFoundException(usernameField.getText());
             }
         } catch (UserNotFoundException e) {
             failedAuthText.setText(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error loading the fxml file");
         }
     }
 
