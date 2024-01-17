@@ -25,7 +25,9 @@
 -windowtitle
 'OnePercent\'s Maven Project 1.0-SNAPSHOT API'
 exceptions
-gr.aueb.dmst.onepercent.programming
+gr.aueb.dmst.onepercent.programming.cli
+gr.aueb.dmst.onepercent.programming.core
+gr.aueb.dmst.onepercent.programming.gui
 graphics
 C:\Users\koron\.m2\repository\com\github\docker-java\docker-java\3.3.4\docker-java-3.3.4.jar = 1699471354577
 C:\Users\koron\.m2\repository\com\github\docker-java\docker-java-core\3.3.4\docker-java-core-3.3.4.jar = 1699471354577
@@ -99,27 +101,28 @@ C:\Users\koron\.m2\repository\org\openjfx\javafx-base\17.0.1\javafx-base-17.0.1.
 C:\Users\koron\.m2\repository\org\openjfx\javafx-base\17.0.1\javafx-base-17.0.1-win.jar = 1704128551779
 C:\Users\koron\.m2\repository\org\openjfx\javafx-fxml\17.0.1\javafx-fxml-17.0.1.jar = 1704128551435
 C:\Users\koron\.m2\repository\org\openjfx\javafx-fxml\17.0.1\javafx-fxml-17.0.1-win.jar = 1704128551478
-C:\Users\koron\Documents\Projects\Repository\OnePercent\src\main\java = 1705410979647
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\generated-sources\annotations = 1705425404543
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\allclasses-index.html = 1705425465047
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\allpackages-index.html = 1705425465054
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\constant-values.html = 1705425464539
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\copy.svg = 1705425465205
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\element-list = 1705425464442
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\help-doc.html = 1705425465191
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\index-all.html = 1705425465161
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\index.html = 1705425464984
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\link.svg = 1705425465209
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\member-search-index.js = 1705425465066
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\module-search-index.js = 1705425465057
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\overview-summary.html = 1705425465178
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\overview-tree.html = 1705425464975
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\package-search-index.js = 1705425465060
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\script.js = 1705425465201
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\search-page.js = 1705425465218
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\search.html = 1705425465172
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\search.js = 1705425465213
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\serialized-form.html = 1705425464575
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\stylesheet.css = 1705425465197
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\tag-search-index.js = 1705425465069
-C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\type-search-index.js = 1705425465062
+C:\Users\koron\Documents\Projects\Repository\OnePercent\src\main\java = 1705449581172
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\generated-sources\annotations = 1705451659196
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\allclasses-index.html = 1705451928531
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\allpackages-index.html = 1705451928536
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\constant-values.html = 1705451928102
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\copy.svg = 1705451928649
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\element-list = 1705451927953
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\help-doc.html = 1705451928627
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\index-all.html = 1705451928601
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\index.html = 1705451928483
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\javadoc.bat = 1705451716062
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\link.svg = 1705451928652
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\member-search-index.js = 1705451928550
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\module-search-index.js = 1705451928539
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\overview-summary.html = 1705451928613
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\overview-tree.html = 1705451928475
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\package-search-index.js = 1705451928541
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\script.js = 1705451928640
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\search-page.js = 1705451928664
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\search.html = 1705451928608
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\search.js = 1705451928660
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\serialized-form.html = 1705451928128
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\stylesheet.css = 1705451928636
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\tag-search-index.js = 1705451928552
+C:\Users\koron\Documents\Projects\Repository\OnePercent\target\apidocs\type-search-index.js = 1705451928544

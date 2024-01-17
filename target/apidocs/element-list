@@ -1,3 +1,5 @@
 exceptions
-gr.aueb.dmst.onepercent.programming
+gr.aueb.dmst.onepercent.programming.cli
+gr.aueb.dmst.onepercent.programming.core
+gr.aueb.dmst.onepercent.programming.gui
 graphics

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="9.3">
-<file name="C:\Users\koron\Documents\Projects\Repository\OnePercent\src\main\java\gr\aueb\dmst\onepercent\programming\MonitorHttpGUI.java">
+<file name="C:\Users\koron\Documents\Projects\Repository\OnePercent\src\main\java\gr\aueb\dmst\onepercent\programming\gui\MonitorHttpGUI.java">
+</file>
+<file name="C:\Users\koron\Documents\Projects\Repository\OnePercent\src\main\java\graphics\DataUsers.java">
+</file>
+<file name="C:\Users\koron\Documents\Projects\Repository\OnePercent\src\main\java\graphics\ImagePage.java">
 </file>
 </checkstyle>

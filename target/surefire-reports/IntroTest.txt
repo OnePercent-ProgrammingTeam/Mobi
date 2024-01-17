@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: IntroTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.663 s - in IntroTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.717 s - in IntroTest
