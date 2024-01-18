@@ -137,7 +137,7 @@ public class MonitorHttpCLI extends MonitorHttp {
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(this.response.getEntity().getContent()));
             String inputLine;
-            MonitorHttp.response1 = new StringBuffer();
+            MonitorHttp.response1 = new StringBuilder();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {

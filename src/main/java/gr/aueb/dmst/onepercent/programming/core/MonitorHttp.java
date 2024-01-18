@@ -97,7 +97,7 @@ public abstract class MonitorHttp extends SuperHttp {
      * @return cpu usage
      */
     
-    public double getFormattedStats(StringBuffer response1Buffer) throws JsonProcessingException {
+    public double getFormattedStats(StringBuilder response1Buffer) throws JsonProcessingException {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1Buffer.toString());

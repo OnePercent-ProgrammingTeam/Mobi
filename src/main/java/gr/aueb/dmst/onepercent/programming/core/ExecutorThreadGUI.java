@@ -41,7 +41,7 @@ public class ExecutorThreadGUI extends SuperThread {
                 containerManagerHttp.stopContainer();
                 break;
             case 4:
-                // TO DO: containerManagerHttp.pullImageGUI();
+                containerManagerHttp.pullImage();
                 break;
         }
     }

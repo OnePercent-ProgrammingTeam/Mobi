@@ -162,7 +162,7 @@ public class Graph extends JFrame {
     public void onRunGraph(BufferedReader reader, Graph ex, Timer timer) throws IOException {
         String inputLine = reader.readLine(); // Read a new line from the response
         if (inputLine != null) {
-            double usage = monitorHttpCLI.getFormattedStats(new StringBuffer(inputLine));
+            double usage = monitorHttpCLI.getFormattedStats(new StringBuilder(inputLine));
             updateStats(usage);
 
             if (flag == false) {

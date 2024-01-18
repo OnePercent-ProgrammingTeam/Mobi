@@ -42,7 +42,7 @@ public class SuperHttp implements HttpInterface {
     /** Http response return by the executed http request */
     protected CloseableHttpResponse response;
     /** Http response, read using StringBuffer */
-    public static StringBuffer response1; // used in junit test
+    public static StringBuilder response1; // used in junit test
 
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
@@ -58,6 +58,10 @@ public class SuperHttp implements HttpInterface {
      */
     public CloseableHttpResponse getHttpResponse() {
         return response;
+    }
+
+    public StringBuilder getResponse1() {
+        return response1;
     }
 
     /**

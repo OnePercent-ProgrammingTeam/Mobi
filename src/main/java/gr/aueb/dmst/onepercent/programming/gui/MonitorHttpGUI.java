@@ -79,6 +79,8 @@ public class MonitorHttpGUI extends MonitorHttp {
                                  message + 
                                  "?term=" + 
                                  imageName + "&limit=3");
+        System.out.println(MonitorHttp.DOCKER_HOST + message + "?term=" + 
+            imageName + "&limit=10");
         executeHttpRequest(message);
     }
 
@@ -112,7 +114,7 @@ public class MonitorHttpGUI extends MonitorHttp {
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
-            MonitorHttp.response1 = new StringBuffer();
+            MonitorHttp.response1 = new StringBuilder();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {
@@ -147,11 +149,9 @@ public class MonitorHttpGUI extends MonitorHttp {
                 
             if (jsonNode.isArray()) {
                 for (JsonNode el : jsonNode) {
-                    searchResult.append("Image name: " + el.get("name") 
-                        + "\nDescription: " 
-                        + el.get("description") 
-                        + "\nStar count: " 
-                        + el.get("star_count") + "\n");
+                    searchResult.append(el.get("name") + "\n" +
+                        el.get("description") + "\n" + 
+                        el.get("star_count") + "\n");
                 }
             }
             
