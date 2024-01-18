@@ -41,6 +41,11 @@ public class MainPageController {
         loadPage("SearchPage.fxml");
     }
 
+    @FXML
+    void loadHelp(ActionEvent event) {
+        loadPage("HelpPage.fxml");
+    }
+
     private void loadPage(String pageName) {
         try {
             // Load the FXML file for the selected page
