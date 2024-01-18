@@ -106,7 +106,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.1</version>
         </dependency>
-
     </dependencies>
 
 

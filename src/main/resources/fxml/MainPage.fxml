@@ -63,7 +63,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </padding>
             </Button>
-            <Button layoutX="45.0" layoutY="172.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Docker Hub" textFill="WHITE">
+            <Button fx:id="searchButton" layoutX="45.0" layoutY="172.0" mnemonicParsing="false" onAction="#loadSearch" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Docker Hub" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

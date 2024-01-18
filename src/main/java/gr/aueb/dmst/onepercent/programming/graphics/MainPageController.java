@@ -19,8 +19,10 @@ public class MainPageController {
     private Button imagesButton;
 
     @FXML
+    private Button searchButton;
+
+    @FXML
     private void initialize() {
-        System.out.println("here");
         loadPage("ContainersPage.fxml");
     }
 
@@ -32,6 +34,11 @@ public class MainPageController {
     @FXML
     void loadImages(ActionEvent event) {
         loadPage("ImagesPage.fxml");
+    }
+
+    @FXML
+    void loadSearch(ActionEvent event) {
+        loadPage("SearchPage.fxml");
     }
 
     private void loadPage(String pageName) {
