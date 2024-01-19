@@ -1,5 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
+import exceptions.EmptyFieldError;
 import exceptions.PullImageException;
 
 import javafx.fxml.FXML;
@@ -78,7 +79,10 @@ public class SearchController {
     @FXML
     public void initialize() {
         selectSearch();
+        preparePreviousSearches();
+    }
 
+    private void preparePreviousSearches() {
         ArrayList<String> arr = database.getImageForSearch();
         suggestions = new ArrayList<Button>();
 
@@ -102,30 +106,43 @@ public class SearchController {
      */
     @FXML
     void handleKeyPressed(KeyEvent event) {
-        if (event.getCode().toString().equals("ENTER")) {
-            if (isForSeach && isReadyForSearch()) {
-                clearResults();
-                executeSearch();
-                updatePrevSearches();
-            } else if (!isForSeach) {
-                clearResults();
-                //exception handling, formatting the appearance of the result
-                try {
-                    executePull();
-                } catch (PullImageException e) {
-                    Text statusCodeText = new Text("Status Code");
-                    statusCodeText.setStyle("-fx-font-size: 18px;");
-                    
-                    Text resultCode = new Text(String.valueOf(e.getStatusCode()));
-                    resultCode.setStyle(e.getStatusCodeStyle());
-                    
-                    Text resultText = new Text(e.getMessage());
-                    resultText.setStyle(e.getStyle());
-                    
-                    resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
-                }
-                
+        try {
+            if (event.getCode().toString().equals("ENTER") && isReadyForSearch()) {
+                handleEnterFunctionality();
             }
+        } catch (EmptyFieldError e) {
+            clearResults();
+            Text exceptionText = new Text(e.getDefaultMessage());
+            exceptionText.setStyle("-fx-fill: " + e.getColorCode() + "; -fx-font-size: 16px;");
+            resultSet.getChildren().add(exceptionText);
+        }
+    }
+
+    private void handleEnterFunctionality() {
+        if (isForSeach) {
+            clearResults();
+            executeSearch();
+            updatePrevSearches();
+        } 
+        
+        if (!isForSeach) {
+            clearResults();
+            //exception handling, formatting the appearance of the result
+            try {
+                executePull();
+            } catch (PullImageException e) {
+                Text statusCodeText = new Text("Status Code");
+                statusCodeText.setStyle("-fx-font-size: 18px;");
+                
+                Text resultCode = new Text(String.valueOf(e.getStatusCode()));
+                resultCode.setStyle(e.getStatusCodeStyle());
+                
+                Text resultText = new Text(e.getMessage());
+                resultText.setStyle(e.getStyle());
+                
+                resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
+            }
+            
         }
     }
 
@@ -323,10 +340,10 @@ public class SearchController {
         suggestions.get(0).setText(autoCompleteTextField.getText());
     }
 
-    private boolean isReadyForSearch() {
+    private boolean isReadyForSearch() throws EmptyFieldError {
         if (autoCompleteTextField.getText().equals("") ||
             autoCompleteTextField.getText().equals(" ")) {
-            return false;
+            throw new EmptyFieldError();
         }
         return true;
     }

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class MainPageController {
@@ -34,7 +35,23 @@ public class MainPageController {
     private void initialize() {
         loadPage("ContainersPage.fxml");
         selectedButton = containersButton;
-        setMenuButtonSelected(containersButton);
+        selectedButton.setStyle(selectedButton.getStyle() + "-fx-background-color: #7d7dcf;" +
+            "-fx-border-width: 0px 0px 0px 0px;");
+    }
+
+    @FXML
+    void menuOnHoverEnter(MouseEvent event) {
+        Button sourceButton = (Button) event.getSource();
+        sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #7d7dcf; " +
+            "-fx-border-width: 0px 0px 0px 4px; -fx-border-color: #ffffff;");
+    }
+
+    @FXML
+    void menuOnHoverExit(MouseEvent event) {
+        Button sourceButton = (Button) event.getSource();
+        sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #2a2a72; " +
+            "-fx-border-width: 0px 0px 0px 0px; -fx-border-color: transparent;");
+        setMenuButtonSelected(selectedButton);
     }
 
     @FXML
@@ -64,7 +81,8 @@ public class MainPageController {
     private void setMenuButtonSelected(Button button) {
         selectedButton.setStyle(selectedButton.getStyle() + "-fx-background-color: transparent;");
         selectedButton = button;
-        button.setStyle(button.getStyle() + "-fx-background-color: #3a3a9d;");
+        button.setStyle(button.getStyle() + "-fx-background-color: #7d7dcf;" +
+            "-fx-border-width: 0px 0px 0px 0px;");
     }
 
     private void loadPage(String pageName) {

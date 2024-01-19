@@ -17,7 +17,7 @@
    <left>
       <VBox alignment="TOP_CENTER" maxWidth="250.0" minWidth="250.0" style="-fx-background-color: #2a2a72;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="containersButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadContainers" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: #3a3a9d; -fx-text-alignment: left;" text="Containers" textFill="WHITE">
+            <Button fx:id="containersButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadContainers" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Containers" textFill="WHITE">
                <VBox.margin>
                   <Insets top="40.0" />
                </VBox.margin>
@@ -34,7 +34,7 @@
                   <Font name="Malgun Gothic" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="imagesButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="92.0" mnemonicParsing="false" onAction="#loadImages" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Images" textFill="WHITE">
+            <Button fx:id="imagesButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="92.0" mnemonicParsing="false" onAction="#loadImages" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Images" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -51,7 +51,7 @@
                   <Font name="Malgun Gothic" size="18.0" />
                </font>
             </Button>
-            <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="132.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Analytics" textFill="WHITE">
+            <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Analytics" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -65,7 +65,7 @@
                   <Font name="Malgun Gothic" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="searchButton" alignment="BASELINE_LEFT" layoutX="45.0" layoutY="172.0" mnemonicParsing="false" onAction="#loadSearch" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Docker Hub" textFill="WHITE">
+            <Button fx:id="searchButton" alignment="BASELINE_LEFT" layoutX="45.0" layoutY="172.0" mnemonicParsing="false" onAction="#loadSearch" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Docker Hub" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -79,7 +79,7 @@
                   <Font name="Malgun Gothic" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="helpButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="172.0" mnemonicParsing="false" onAction="#loadHelp" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Help" textFill="WHITE">
+            <Button fx:id="helpButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="172.0" mnemonicParsing="false" onAction="#loadHelp" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Help" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
