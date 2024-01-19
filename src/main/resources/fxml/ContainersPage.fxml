@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane maxHeight="550.0" maxWidth="750.0" minHeight="550.0" minWidth="750.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.ContainersPageController">
+<ScrollPane maxHeight="550.0" maxWidth="750.0" minHeight="550.0" minWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.ContainersPageController">
   <content>
     <AnchorPane>
          <children>
@@ -53,6 +53,15 @@
                         <TableColumn fx:id="timeCreatedCol" prefWidth="75.0" sortable="false" style="-fx-background-color: #eee;">
                            <graphic>
                               <Label prefWidth="800.0" style="-fx-background-color: #2a2a72;" text="Time Created" textFill="WHITE">
+                                 <font>
+                                    <Font name="Malgun Gothic" size="20.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </TableColumn>
+                        <TableColumn fx:id="timeCreatedCol1" prefWidth="75.0" sortable="false" style="-fx-background-color: #eee;">
+                           <graphic>
+                              <Label fx:id="actionCol" prefWidth="800.0" style="-fx-background-color: #2a2a72;" text="Action" textFill="WHITE">
                                  <font>
                                     <Font name="Malgun Gothic" size="20.0" />
                                  </font>

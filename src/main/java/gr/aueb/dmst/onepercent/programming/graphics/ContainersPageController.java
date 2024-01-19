@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,9 @@ public class ContainersPageController {
     @FXML
     private TableColumn<DataModel, String> timeCreatedCol;
 
+    @FXML
+    private TableColumn<DataModel, Button> actionCol;
+
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
     @FXML
@@ -37,6 +41,8 @@ public class ContainersPageController {
         containerIdCol.setCellValueFactory(new PropertyValueFactory<>("containerId"));
         containerStatusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
         timeCreatedCol.setCellValueFactory(new PropertyValueFactory<>("timeCreated"));
+        actionCol.setCellValueFactory(new PropertyValueFactory<>("action"));
+        
         MonitorAPI monitor = new MonitorAPI();
         MonitorAPI.createDockerClient();
         monitor.initializeContainerModels(true);
@@ -52,7 +58,8 @@ public class ContainersPageController {
                     containerNameList.get(i),
                     containerIdList.get(i),
                     statusList.get(i),
-                    timeCreatedList.get(i)
+                    timeCreatedList.get(i),
+                    new Button("Stop")
             ));
         }
 
@@ -66,7 +73,8 @@ public class ContainersPageController {
             "-fx-font-size: 15px; -fx-background-color: #eee");
         timeCreatedCol.setStyle("-fx-text-fill: #111111; -fx-font-family: Malgun Gothic;" +
             "-fx-font-size: 15px; -fx-background-color: #eee");
-        
+        actionCol.setStyle("-fx-text-fill: #111111; -fx-font-family: Malgun Gothic;" +
+            "-fx-font-size: 15px; -fx-background-color: #eee");
     }
 
     public static class DataModel {
@@ -74,13 +82,15 @@ public class ContainersPageController {
         private final String containerId;
         private final String status;
         private final String timeCreated;
+        private final Button action;
 
         public DataModel(String containerName, 
-            String containerId, String status, String timeCreated) {
+            String containerId, String status, String timeCreated, Button action) {
             this.containerName = containerName;
             this.containerId = containerId;
             this.status = status;
             this.timeCreated = timeCreated;
+            this.action = action;
         }
 
         public String getContainerName() {
@@ -97,6 +107,10 @@ public class ContainersPageController {
 
         public String getTimeCreated() {
             return timeCreated;
+        }
+
+        public Button getAction() {
+            return action;
         }
     }
 }

@@ -1,5 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
+import exceptions.PullImageException;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -22,6 +24,24 @@ import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 
+
+/**
+ * FXML Controller class.
+ * Class that controls the Docker Hub page of the GUI. It is used to search for images
+ * in the registry and pull them. This class provides a connection with Docker Hub
+ * and the database. 
+ * Regarding to Docker Hub connectivity, users can search and pull images that are uploaded
+ * in Docker Hub. They are prompt to  press the search or the pull button. 
+ * If they press the search button, they can specify the number of results they want to see. Then, 
+ * they are prompt to enter the name of the image they want to search for. 
+ * If they press the pull button, they are prompt to enter the name of the image they want to pull.
+ * By exception handling, the user is informed about the status of the pull request (success,
+ * failure due to internal server error, failure due to image not found)
+ * Regarding to the database connectivity, the previous searches of the user are saved in the 
+ * database and displayed in the GUI. User can select one of them so as to search for it again.
+ * Last 5 searches are displayed in the GUI.
+ * @see exceptions.PullImageException
+ */
 public class SearchController {
 
     @FXML
@@ -52,6 +72,9 @@ public class SearchController {
     ArrayList<Button> suggestions;
     boolean isForSeach = true;
 
+    /**
+     * Initializes the controller class.
+     */
     @FXML
     public void initialize() {
         selectSearch();
@@ -73,6 +96,10 @@ public class SearchController {
         prevSearchesBox.getChildren().addAll(suggestions);
     }
 
+    /**
+     * Handles the key pressed event.
+     * @param event the event.
+     */
     @FXML
     void handleKeyPressed(KeyEvent event) {
         if (event.getCode().toString().equals("ENTER")) {
@@ -82,11 +109,29 @@ public class SearchController {
                 updatePrevSearches();
             } else if (!isForSeach) {
                 clearResults();
-                executePull();
+                //exception handling, formatting the appearance of the result
+                try {
+                    executePull();
+                } catch (PullImageException e) {
+                    Text statusCodeText = new Text("Status Code");
+                    statusCodeText.setStyle("-fx-font-size: 18px;");
+                    
+                    Text resultCode = new Text(String.valueOf(e.getStatusCode()));
+                    resultCode.setStyle(e.getStatusCodeStyle());
+                    
+                    Text resultText = new Text(e.getMessage());
+                    resultText.setStyle(e.getStyle());
+                    
+                    resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
+                }
+                
             }
         }
     }
 
+    /**
+     * Selects the search button.
+     */
     @FXML
     void selectSearch() {
         searchButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #2a2a72;");
@@ -96,6 +141,9 @@ public class SearchController {
         searchParameters.setVisible(true);
     }
 
+    /**
+     * Selects the pull button.
+     */
     @FXML
     void selectPull() {
         pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #2a2a72;");
@@ -105,6 +153,10 @@ public class SearchController {
         searchParameters.setVisible(false);
     }
 
+    /**
+     * Sets the default style of the buttons.
+     * @return the default style of the buttons.
+     */
     private String selectButtonsDefaultStyle() {
         return "-fx-background-color: #ffffff; -fx-border-color: #ffffff;" +
             "-fx-border-radius: 8; -fx-text-fill: #2a2a72;" +
@@ -113,6 +165,9 @@ public class SearchController {
 
     MenuThreadGUI menuThreadGUI = new MenuThreadGUI();
 
+    /**
+     * Executes the search for the image.
+     */
     private void executeSearch() {
         //functionality
         MonitorHttpGUI.imageName = autoCompleteTextField.getText();
@@ -169,43 +224,52 @@ public class SearchController {
         }
     }
 
-    private void executePull() {
+    /**
+     * Executes the pull for the image.
+     * @throws PullImageException if the image is not found or there is an internal server error.
+     */
+    private void executePull() throws PullImageException {
         //functionality
         ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
         ManagerHttpGUI.imageName = autoCompleteTextField.getText();
         menuThreadGUI.handleUserInputGUI(4);
         
-        Text statusCodeText = new Text("Status Code");
-        statusCodeText.setStyle("-fx-font-size: 18px;");
-        Text resultCode = new Text(managerHttpGUI.getResponse1().toString());
-        Text resultText = new Text();
-        switch (Integer.parseInt(managerHttpGUI.getResponse1().toString())) {
+        final String ERROR_CODE_STYLE = "-fx-font-size: 50px; -fx-fill: #ff0000;font-weight: bold;";
+        final String TEXT_STYLE = "-fx-font-size: 24px;";
+
+        int statusCode = Integer.parseInt(managerHttpGUI.getResponse1().toString());
+        String message;
+        switch (statusCode) {
             case 200:
-                resultCode.setStyle("-fx-font-size: 50px; " + 
-                    "-fx-fill: #3dc985; font-weight: bold;");
-                resultText.setText("Success! Image pulled successfully!");
+                Text statusCodeText = new Text("Status Code");
+                statusCodeText.setStyle("-fx-font-size: 18px;");
+            
+                Text resultCode = new Text(managerHttpGUI.getResponse1().toString());
+                resultCode.setStyle("-fx-font-size: 50px; -fx-fill: #3dc985; font-weight: bold;");
+
+                Text resultText = new Text("Success! Image pulled successfully!");
+                resultText.setStyle(TEXT_STYLE);
+               
+                resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
                 break;
             case 404:
-                resultCode.setStyle("-fx-font-size: 50px; " + 
-                    "-fx-fill: #ff0000; font-weight: bold;");
-                resultText.setText("Error! Image not found!");
-                break;
+                message = "Error! Image not found!";
+                throw new PullImageException(message, TEXT_STYLE, statusCode, ERROR_CODE_STYLE);
             case 500:
-                resultCode.setStyle("-fx-font-size: 50px; " + 
-                    "-fx-fill: #ff0000; font-weight: bold;");
-                resultText.setText("Error! Internal server error!");
-                break;
+                message = "Error! Internal server error!";
+                throw new PullImageException(message, TEXT_STYLE, statusCode, ERROR_CODE_STYLE);
             default:
-                resultCode.setStyle("-fx-font-size: 50px; " + 
-                    "-fx-fill: #ff0000; font-weight: bold;");
-                resultText.setText("Oops... Something went wrong!");
-                break;
+                message = "Oops... Something went wrong!";
+                throw new PullImageException(message, TEXT_STYLE, statusCode, ERROR_CODE_STYLE);
         }
-        resultText.setStyle("-fx-font-size: 24px;");
-
-        resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
+        
     }
 
+    /**
+     * Updates the previous searches of the user. It provides suggestions,
+     * based on the previous searches of the user. This is done by saving the
+     * previous searches in the database.
+     */
     private void updatePrevSearches() {
         boolean alreadyExists = false;
         for (Button b : suggestions) {
@@ -232,6 +296,11 @@ public class SearchController {
         }
     }
 
+    /**
+     * Creates a button.
+     * @param text the text of the button.
+     * @return the button.
+     */
     private Button createButton(String text) {
         Button b = new Button(text);
         b.setStyle("-fx-background-color: #6495ed; " + 
@@ -242,6 +311,11 @@ public class SearchController {
         return b;
     }
 
+    /**
+     * Switches the suggestions based on the index of the last suggestion so
+     * as to display the new ones and do not blend with the previous ones.
+     * @param lastIndex the index of the last suggestion.
+     */
     private void switchSuggestions(int lastIndex) {
         for (int i = lastIndex; i >= 1; i--) {
             suggestions.get(i).setText(suggestions.get(i - 1).getText());
@@ -257,6 +331,9 @@ public class SearchController {
         return true;
     }
 
+    /**
+     * Clears the results so as to display the new ones and do not blend with the previous ones.
+     */
     private void clearResults() {
         resultSet.getChildren().clear();
     }
