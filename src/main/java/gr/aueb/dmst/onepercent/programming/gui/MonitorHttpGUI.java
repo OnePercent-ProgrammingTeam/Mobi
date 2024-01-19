@@ -23,6 +23,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
 
 
+    public static int searchResultCount = 3;
     /** Method: inspectContainerGUI() retrieves information about a container that might be 
      * or might not be locally installed. 
      * This method does not show messages to command line. 
@@ -78,7 +79,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  message + 
                                  "?term=" + 
-                                 imageName + "&limit=3");
+                                 imageName + "&limit=" + searchResultCount);
         System.out.println(MonitorHttp.DOCKER_HOST + message + "?term=" + 
             imageName + "&limit=10");
         executeHttpRequest(message);

@@ -42,6 +42,12 @@ public class SearchController {
     @FXML
     private VBox resultSet;
 
+    @FXML
+    private TextField resultCount;
+
+    @FXML
+    private HBox searchParameters;
+
     DataBase database = new DataBase();
     ArrayList<Button> suggestions;
     boolean isForSeach = true;
@@ -86,6 +92,8 @@ public class SearchController {
         searchButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #2a2a72;");
         pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #ffffff;");
         isForSeach = true;
+        prevSearchesBox.setVisible(true);
+        searchParameters.setVisible(true);
     }
 
     @FXML
@@ -93,6 +101,8 @@ public class SearchController {
         pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #2a2a72;");
         searchButton.setStyle(selectButtonsDefaultStyle());
         isForSeach = false;
+        prevSearchesBox.setVisible(false);
+        searchParameters.setVisible(false);
     }
 
     private String selectButtonsDefaultStyle() {
@@ -106,6 +116,7 @@ public class SearchController {
     private void executeSearch() {
         //functionality
         MonitorHttpGUI.imageName = autoCompleteTextField.getText();
+        MonitorHttpGUI.searchResultCount = Integer.parseInt(resultCount.getText());
         menuThreadGUI.handleUserInputGUI(3);
 
         MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
@@ -163,9 +174,36 @@ public class SearchController {
         ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
         ManagerHttpGUI.imageName = autoCompleteTextField.getText();
         menuThreadGUI.handleUserInputGUI(4);
-        System.out.println(managerHttpGUI.getResponse1().toString());
-        Text text = new Text(managerHttpGUI.getResponse1().toString());
-        vboxContainer.getChildren().add(text);
+        
+        Text statusCodeText = new Text("Status Code");
+        statusCodeText.setStyle("-fx-font-size: 18px;");
+        Text resultCode = new Text(managerHttpGUI.getResponse1().toString());
+        Text resultText = new Text();
+        switch (Integer.parseInt(managerHttpGUI.getResponse1().toString())) {
+            case 200:
+                resultCode.setStyle("-fx-font-size: 50px; " + 
+                    "-fx-fill: #3dc985; font-weight: bold;");
+                resultText.setText("Success! Image pulled successfully!");
+                break;
+            case 404:
+                resultCode.setStyle("-fx-font-size: 50px; " + 
+                    "-fx-fill: #ff0000; font-weight: bold;");
+                resultText.setText("Error! Image not found!");
+                break;
+            case 500:
+                resultCode.setStyle("-fx-font-size: 50px; " + 
+                    "-fx-fill: #ff0000; font-weight: bold;");
+                resultText.setText("Error! Internal server error!");
+                break;
+            default:
+                resultCode.setStyle("-fx-font-size: 50px; " + 
+                    "-fx-fill: #ff0000; font-weight: bold;");
+                resultText.setText("Oops... Something went wrong!");
+                break;
+        }
+        resultText.setStyle("-fx-font-size: 24px;");
+
+        resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
     }
 
     private void updatePrevSearches() {

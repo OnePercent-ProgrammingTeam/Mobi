@@ -56,9 +56,13 @@ public abstract class ManagerHttp extends SuperHttp {
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(entity.getContent()));
             String inputLine;
-            ManagerHttpGUI.response1 = new StringBuilder();   
-            while ((inputLine = reader.readLine()) != null) {
-                response1.append(inputLine);
+            ManagerHttpGUI.response1 = new StringBuilder(); 
+            if (message.equals("pull")) {
+                ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
+            }  else {
+                while ((inputLine = reader.readLine()) != null) {
+                    response1.append(inputLine);
+                }
             }
             
             reader.close();
