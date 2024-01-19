@@ -2,6 +2,7 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 
 import java.io.IOException;
 
+import exceptions.UserExistsException;
 import exceptions.UserNotFoundException;
 import graphics.DataUsers;
 import javafx.event.ActionEvent;
@@ -34,12 +35,14 @@ public class LoginPageController {
     @FXML
     private Button exit;
 
+    DataUsers userTable = new DataUsers();
+
     @FXML
     void login(ActionEvent event) {
-        DataUsers userTable = new DataUsers();
 
         //key has the answer to the question "does the user exist?" (true or false)
         boolean key = userTable.getUserExistance(usernameField.getText(), passwordField.getText());
+        failedAuthText.setText(null);
 
         try {
             if (key) {
@@ -60,6 +63,29 @@ public class LoginPageController {
 
     @FXML
     void signup(ActionEvent event) {
+        //key has the answer to the question "does the user exist?" (true or false)
+        boolean key = userTable.getUserExistance(usernameField.getText(), passwordField.getText());
+        failedAuthText.setText(null);
+
+        try {
+            if (!key) {
+                System.out.println("User does not exist");
+
+                
+                userTable.insertUsers(usernameField.getText(), passwordField.getText());
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                Scene mainPageScene = new Scene(root, 1000, 600);
+
+                MainGUI.window.setScene(mainPageScene);
+            } else {
+                throw new UserExistsException(usernameField.getText());
+            }   
+        } catch (UserExistsException e) {
+            failedAuthText.setText(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error loading the fxml file");
+        } 
+        userTable.getAllUsers();
 
     }
 
