@@ -54,6 +54,9 @@ public class MonitorThreadCLI extends SuperThread {
                 containerMonitor.initializeContainerModels(true);
                 containerMonitor.getContainerList();
                 break;
+            case 11:
+                containerMonitorHttp.inspectSwarm();
+                break;
         }
         
     }

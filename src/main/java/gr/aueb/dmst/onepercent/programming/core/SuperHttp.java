@@ -1,6 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -32,6 +33,7 @@ public class SuperHttp implements HttpInterface {
     /** Container id of the container that is going to be started, stopped or inspected */
     public static String containerId; // used in junit test
 
+    protected static HttpDelete deleteRequest;
     /**
      * Http Get request (Get is "to request to get something e.g info about
      * containers")

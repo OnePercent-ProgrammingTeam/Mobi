@@ -56,6 +56,9 @@ public class MenuThreadCLI extends MenuThread {
             System.out.println("6) Get information about a specific container");
             System.out.println("7) Store real-time data in .csv file for a running container");
             System.out.println("8) Print a list with the locally installed containers");
+            System.out.println("9) Remove container");
+            System.out.println("10) Remove image");
+            System.out.println("11) Inspect Swarm");
             System.out.println("-------------------------------------------------------------");
         } while (handleUserInput());
     }
@@ -102,6 +105,8 @@ public class MenuThreadCLI extends MenuThread {
             case 1:
             case 2:
             case 4:
+            case 9:
+            case 10:
                 executorThreadCLI.setUserInput(answer);
                 thread = new Thread(executorThreadCLI);
                 //set name to the thread so as to be easier to recognize it. 
@@ -122,6 +127,7 @@ public class MenuThreadCLI extends MenuThread {
             case 6:
             case 7:
             case 8:
+            case 11:
                 monitorThreadCLI.setUserInput(answer);
                 thread = new Thread(monitorThreadCLI);
                 thread.setName("Monitor");

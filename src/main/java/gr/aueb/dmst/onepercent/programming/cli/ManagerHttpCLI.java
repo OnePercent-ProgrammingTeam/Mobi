@@ -3,11 +3,13 @@ package gr.aueb.dmst.onepercent.programming.cli;
 import com.google.common.annotations.VisibleForTesting;
 
 import exceptions.PullImageException;
+import exceptions.RemoveDockerObjectException;
 import exceptions.StartContainerException;
 import exceptions.StopContainerException;
 
 import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
 
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 
@@ -52,6 +54,17 @@ public class ManagerHttpCLI extends ManagerHttp {
         executeHttpRequest(message);
     }
     
+    @Override
+    public void removeContainer() {
+        String message = "remove";
+        containerId = Main.handleInput("Please type the container ID to remove the container: ");
+        deleteRequest = new HttpDelete(DOCKER_HOST + 
+                                      "/containers/" + 
+                                      containerId + "?force=true");
+        
+        executeHttpRequest(message);
+    }
+
     /** Method: pullImage() pulls an image with http request, the image name is given by the user,
      *  practically is like starting a container with an image that does not exist locally.
      */
@@ -64,6 +77,16 @@ public class ManagerHttpCLI extends ManagerHttp {
         executeHttpRequest(message);
     }
 
+    @Override 
+    public void removeImage() {
+        String message = "removeImg";
+        String imageName;
+        imageName = Main.handleInput("Please type the name of the image you would like to remove:");
+        deleteRequest = new HttpDelete(DOCKER_HOST + "/images/" + imageName);
+        executeHttpRequest(message);
+    }
+
+
     /** Method: executeHttpRequest(String) executes the http request 
      * @param message the message that is given by the user.
      * throws Exception if an error occurs while executing the http request.
@@ -71,7 +94,17 @@ public class ManagerHttpCLI extends ManagerHttp {
     @Override
     public void executeHttpRequest(String message) {
         try {
-            this.response = HTTP_CLIENT.execute(postRequest); // Start the container
+            switch (message) {
+                case "start":
+                case "stop":
+                case "pull":
+                    this.response = HTTP_CLIENT.execute(postRequest); // Start the container
+                    break;
+                case "remove":
+                case "removeImg":
+                    this.response = HTTP_CLIENT.execute(deleteRequest); // Start the container
+                    break;
+            }
             entity = this.response.getEntity();     
             handleOutput(message);     
         } catch (Exception e) {
@@ -84,8 +117,8 @@ public class ManagerHttpCLI extends ManagerHttp {
                                 object + 
                                 e.getMessage()); // Print the error message
         } finally {
-            // Release the resources of the request
-            EntityUtils.consumeQuietly(postRequest.getEntity()); 
+            if (!(message.equals("remove") || message.equals("removeImg")))
+                EntityUtils.consumeQuietly(postRequest.getEntity()); 
         }
     }
 
@@ -107,9 +140,10 @@ public class ManagerHttpCLI extends ManagerHttp {
                 output = e.getMessage();
             } catch (PullImageException e) {
                 output = e.getMessage();
+            } catch (RemoveDockerObjectException e) {
+                output = e.getMessage();
             }
-        
-        }
+        } 
         System.out.println(output);
         return output;
 
@@ -126,12 +160,22 @@ public class ManagerHttpCLI extends ManagerHttp {
      * @return The generated output message 
      * based on the HTTP response status code and the input message.
      * @see #provideMessage(String)
+     * @throws StartContainerException if the container is already started, not found, 
+     * or server error.
+     * @throws StopContainerException if the container is already stopped, not found,
+     * or server error.
+     * @throws PullImageException if the image is not found or server error.
+     * @throws RemoveContainerException if the container is not found, bad parameter,
+     * conflict, or server error.
      */
     @VisibleForTesting
     public String getProvideMessage(String message) {
         return provideMessage(message);
     }
-    private String provideMessage(String message) {
+    private String provideMessage(String message) throws StartContainerException, 
+                                                        StopContainerException, 
+                                                        PullImageException,
+                                                        RemoveDockerObjectException {
         String output = "";
         if (message.equals("start")) {
             switch (this.response.getStatusLine().getStatusCode()) {
@@ -168,6 +212,21 @@ public class ManagerHttpCLI extends ManagerHttp {
                     throw new PullImageException("Image not found.");
                 case 500:
                     throw new PullImageException("Server error!");
+            }
+        } else if (message.equals("remove") || message.equals("removeImg")) {
+            switch (this.response.getStatusLine().getStatusCode()) {
+                case 204:
+                    output = ANSI_GREEN + "Successfull removal." + ANSI_RESET;
+                    break;
+                case 400:
+                    throw new RemoveDockerObjectException("Bad parameter");
+                case 404:
+                    throw new RemoveDockerObjectException("No such object found. Try again");
+                case 409:
+                    throw new RemoveDockerObjectException("A conflict has been detected.");
+                case 500:
+                    System.out.println("Server error!");
+                    break;
             }
         }
         return output;

@@ -42,6 +42,10 @@ public abstract class ManagerHttp extends SuperHttp {
      * to download a Docker image from a registry.
      */
     public abstract void pullImage();
+
+    public abstract void removeContainer();
+
+    public abstract void removeImage();
     
     /** Method: executeHttpRequest(String) executes the http request 
      * @param message the message that is given by the user.

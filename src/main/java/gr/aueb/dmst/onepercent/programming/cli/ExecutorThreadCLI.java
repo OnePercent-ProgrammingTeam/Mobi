@@ -43,6 +43,12 @@ public class ExecutorThreadCLI extends SuperThread {
             case 4:
                 containerManagerHttp.pullImage();
                 break;
+            case 9: 
+                containerManagerHttp.removeContainer();
+                break;
+            case 10:
+                containerManagerHttp.removeImage();
+                break;
         }
     }
 }
