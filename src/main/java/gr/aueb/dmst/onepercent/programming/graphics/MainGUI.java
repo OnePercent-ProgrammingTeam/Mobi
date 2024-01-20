@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 public class MainGUI extends Application {
     static Stage window;
 
-    MenuThreadGUI menuThreadGUI;
+    static MenuThreadGUI menuThreadGUI;
 
     public static void main(String[] args) {
         launch(args);

@@ -38,8 +38,8 @@ public class MonitorAPI extends SuperAPI {
      * It retrieves a list of containers, considering the 'showAll' parameter
      * and creates corresponding ContainerModel instances.
      *
-     * @param showAll Indicates whether to include stopped containers (true) 
-     * or only running ones (false).
+     * @param showAll Indicates whether to include both stopped and running containers (true) 
+     * or only running ones (false)
      */
     public void initializeContainerModels(boolean showAll) {
         List<Container> containers;
@@ -100,6 +100,17 @@ public class MonitorAPI extends SuperAPI {
      *  ContainerModel.java. */
     public void getContainerStatus() {
         containerModels.forEach(c -> System.out.println(c.getStatus()));
+    }
+
+
+    
+    public boolean getContainerStatus(String id) {
+        for (ContainerModel c : containerModels) {
+            if (c.getId().equals(id)) {
+                return c.getStatus().split(" ")[0].equals("Up");
+            } 
+        }
+        return false;
     }
 
    /**
