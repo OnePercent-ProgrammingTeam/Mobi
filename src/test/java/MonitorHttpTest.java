@@ -27,7 +27,7 @@ public class MonitorHttpTest {
         String s1 = " \"system_cpu_usage\": 200, \"online_cpus\": 4 }, ";
         String s2 = "\"precpu_stats\": { \"cpu_usage\": { \"total_usage\": 50 }, ";
         String s3 = "\"system_cpu_usage\": 100 } } }\"";
-        StringBuffer responseBuffer = new StringBuffer(s + s1 + s2 + s3);
+        StringBuilder responseBuffer = new StringBuilder(s + s1 + s2 + s3);
 
         try {
             // Test the getFormattedStats method and assert the result

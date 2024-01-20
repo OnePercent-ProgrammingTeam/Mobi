@@ -1,6 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -32,6 +33,7 @@ public class SuperHttp implements HttpInterface {
     /** Container id of the container that is going to be started, stopped or inspected */
     public static String containerId; // used in junit test
 
+    protected static HttpDelete deleteRequest;
     /**
      * Http Get request (Get is "to request to get something e.g info about
      * containers")
@@ -42,7 +44,7 @@ public class SuperHttp implements HttpInterface {
     /** Http response return by the executed http request */
     protected CloseableHttpResponse response;
     /** Http response, read using StringBuffer */
-    public static StringBuffer response1; // used in junit test
+    public static StringBuilder response1; // used in junit test
 
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
@@ -58,6 +60,10 @@ public class SuperHttp implements HttpInterface {
      */
     public CloseableHttpResponse getHttpResponse() {
         return response;
+    }
+
+    public StringBuilder getResponse1() {
+        return response1;
     }
 
     /**

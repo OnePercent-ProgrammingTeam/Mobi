@@ -2,6 +2,9 @@ package gr.aueb.dmst.onepercent.programming.core;
 
 
 import org.apache.http.util.EntityUtils;
+
+import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
+
 import org.apache.http.HttpEntity;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +42,10 @@ public abstract class ManagerHttp extends SuperHttp {
      * to download a Docker image from a registry.
      */
     public abstract void pullImage();
+
+    public abstract void removeContainer();
+
+    public abstract void removeImage();
     
     /** Method: executeHttpRequest(String) executes the http request 
      * @param message the message that is given by the user.
@@ -49,7 +56,20 @@ public abstract class ManagerHttp extends SuperHttp {
     public void executeHttpRequest(String message) {
         try {
             this.response = HTTP_CLIENT.execute(postRequest); // Start the container
-            entity = response.getEntity();            
+            entity = response.getEntity();   
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(entity.getContent()));
+            String inputLine;
+            ManagerHttpGUI.response1 = new StringBuilder(); 
+            if (message.equals("pull")) {
+                ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
+            }  else {
+                while ((inputLine = reader.readLine()) != null) {
+                    response1.append(inputLine);
+                }
+            }
+            
+            reader.close();
         } catch (Exception e) {
             e.printStackTrace(); // Print the stack trace of the error
             String object = null;

@@ -35,6 +35,61 @@ public class MonitorHttpCLI extends MonitorHttp {
         executeHttpRequest(message);
     }
 
+    /** Method: searchImages() searches for an image by it's name. The result is limited to 3. */
+    @Override
+    public void searchImage() {
+        String message = "/images/search"; // get the container statistics in json format
+        imageName = Main.handleInput("Please type the name of the image you want to search for: ");
+        imName = imageName;
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                 message + 
+                                 "?term=" + 
+                                 imageName + "&limit=3");
+        executeHttpRequest(message);
+    }
+
+    public void inspectSwarm() {
+        String message = "swarm";
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
+        executeHttpRequest(message);
+        System.out.println(formatSwarmInfo());
+    }
+
+    private StringBuilder formatSwarmInfo() {
+        StringBuilder swarmInfo = new StringBuilder();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString());
+            
+            swarmInfo.append("\nSwarm Name: " + jsonNode.get("Spec").get("Name").asText() + "\n");
+            swarmInfo.append("Swarm ID: " + jsonNode.get("ID").asText() + "\n");
+            swarmInfo.append("Version: " + jsonNode.get("Version").get("Index").asText() + "\n");
+            swarmInfo.append("Created at: " + jsonNode
+                                              .get("CreatedAt")
+                                              .asText()
+                                              .replace("T", " ")
+                                              .substring(0, 19) + "\n");
+            swarmInfo.append("Updated at: " + jsonNode
+                                                .get("UpdatedAt")
+                                                .asText()
+                                                .replace("T", " ")
+                                                .substring(0, 19) + "\n");
+            swarmInfo.append("Subnetwork size: " + jsonNode
+                                                    .get("SubnetSize")
+                                                    .asText() + "\n");
+            if (!(jsonNode.get("JoinTokens").get("Worker").isNull())) {
+                swarmInfo.append("There is at least one worker in the swarm\n");
+            } 
+            if (!(jsonNode.get("JoinTokens").get("Manager").isNull())) {
+                swarmInfo.append("There is at least one manager in the swarm\n");
+            }
+            return swarmInfo;
+        } catch (Exception e) {
+            System.out.println("Some information is missing...");
+        }
+        return swarmInfo.append(" ");
+    }
+
     /** Method: getContainerStats(String) gets statistics about a running container 
      *  (especially CPU usage). 
      *  @param calledby the name of the class that called this method.
@@ -58,18 +113,7 @@ public class MonitorHttpCLI extends MonitorHttp {
         return getHttpResponse();
     }
 
-    /** Method: searchImages() searches for an image by it's name. The result is limited to 3. */
-    @Override
-    public void searchImage() {
-        String message = "/images/search"; // get the container statistics in json format
-        imageName = Main.handleInput("Please type the name of the image you want to search for: ");
-        imName = imageName;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 message + 
-                                 "?term=" + 
-                                 imageName + "&limit=3");
-        executeHttpRequest(message);
-    }
+    
 
     /**
      * Method: printFormattedInfo() reads the JSON response for container info 
@@ -132,12 +176,10 @@ public class MonitorHttpCLI extends MonitorHttp {
     public void executeHttpRequest(String message) {
         try { 
             this.response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
-            //int statusCode = response.getStatusLine().getStatusCode();
-            //System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(this.response.getEntity().getContent()));
             String inputLine;
-            MonitorHttp.response1 = new StringBuffer();
+            MonitorHttp.response1 = new StringBuilder();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {

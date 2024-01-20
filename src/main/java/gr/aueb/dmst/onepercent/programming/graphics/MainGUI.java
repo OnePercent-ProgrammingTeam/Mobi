@@ -25,7 +25,10 @@ public class MainGUI extends Application {
         window.setTitle("One Percent");
         window.setScene(new Scene(root, 1000, 600));
         window.setResizable(false); //does not allow the user to resize the window
-        window.initStyle(StageStyle.DECORATED.UNDECORATED);
+        window.initStyle(StageStyle.UNDECORATED);
+        
+        
+
         window.show();
     }
 

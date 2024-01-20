@@ -1,7 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.gui;
 
 import org.apache.http.client.methods.HttpPost;
-
 import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
 
 /**
@@ -42,5 +41,18 @@ public class ManagerHttpGUI extends ManagerHttp {
     }
 
     @Override
-    public void pullImage() { }
+    public void pullImage() { 
+        String message = "pull";
+        postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
+        executeHttpRequest(message);
+    }
+
+    //TO DO: implement removeContainer() & removeImage() 
+    //method for the GUI version of the application
+    //Check out the CLI version of the application for reference
+    @Override 
+    public void removeContainer() { }
+
+    @Override
+    public void removeImage() { }
 }
