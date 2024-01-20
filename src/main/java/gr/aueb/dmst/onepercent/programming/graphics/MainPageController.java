@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -27,9 +26,11 @@ public class MainPageController {
     private Button helpButton;
 
     @FXML
-    private ScrollPane scrollArea;
+    private AnchorPane topBar;
 
     private Button selectedButton;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     @FXML
     private void initialize() {
@@ -37,6 +38,16 @@ public class MainPageController {
         selectedButton = containersButton;
         selectedButton.setStyle(selectedButton.getStyle() + "-fx-background-color: #7d7dcf;" +
             "-fx-border-width: 0px 0px 0px 0px;");
+
+        topBar.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        topBar.setOnMouseDragged(event -> {
+            MainGUI.window.setX(event.getScreenX() - xOffset);
+            MainGUI.window.setY(event.getScreenY() - yOffset);
+        });
     }
 
     @FXML
@@ -76,6 +87,11 @@ public class MainPageController {
     void loadHelp(ActionEvent event) {
         loadPage("HelpPage.fxml");
         setMenuButtonSelected(helpButton);
+    }
+
+    @FXML
+    void exit(ActionEvent event) {
+        System.exit(0);
     }
 
     private void setMenuButtonSelected(Button button) {
