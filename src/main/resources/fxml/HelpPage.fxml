@@ -10,7 +10,6 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxWidth="750.0" minWidth="750.0" prefWidth="735.0" spacing="10.0">
@@ -185,7 +184,7 @@
             </TextFlow>
             <ImageView fitHeight="320.0" fitWidth="730.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../../../Downloads/Web%20capture_18-1-2024_22579_www.docker.com.jpeg" />
+                  <Image url="@../images/helpPage/downloadDocker.png" />
                </image>
                <VBox.margin>
                   <Insets bottom="40.0" />
@@ -212,7 +211,7 @@
             </Text>
             <ImageView fitHeight="370.0" fitWidth="730.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../../Εικόνες/Στιγμιότυπα%20οθόνης/Screenshot%20(622).png" />
+                  <Image url="@../images/helpPage/systemRequirements1.png" />
                </image>
                <viewport>
                   <Rectangle2D />
@@ -252,7 +251,7 @@
             </Text>
             <ImageView fitHeight="370.0" fitWidth="730.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../../Εικόνες/Στιγμιότυπα%20οθόνης/Screenshot%20(623).png" />
+                  <Image url="@../images/helpPage/systemRequirements2.png" />
                </image>
                <viewport>
                   <Rectangle2D />
@@ -277,7 +276,7 @@
             </TextFlow>
             <ImageView fitHeight="370.0" fitWidth="730.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../../Εικόνες/Στιγμιότυπα%20οθόνης/Screenshot%20(624).png" />
+                  <Image url="@../images/helpPage/systemRequirements3.png" />
                </image>
                <viewport>
                   <Rectangle2D />

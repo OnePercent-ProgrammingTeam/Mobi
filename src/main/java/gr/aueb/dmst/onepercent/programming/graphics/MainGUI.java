@@ -19,7 +19,7 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         createMenuThread();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
         window = primaryStage;
         window.setTitle("One Percent");

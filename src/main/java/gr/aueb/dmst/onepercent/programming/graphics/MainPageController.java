@@ -53,14 +53,14 @@ public class MainPageController {
     @FXML
     void menuOnHoverEnter(MouseEvent event) {
         Button sourceButton = (Button) event.getSource();
-        sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #7d7dcf; " +
+        sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #bb86fc; " +
             "-fx-border-width: 0px 0px 0px 4px; -fx-border-color: #ffffff;");
     }
 
     @FXML
     void menuOnHoverExit(MouseEvent event) {
         Button sourceButton = (Button) event.getSource();
-        sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #2a2a72; " +
+        sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #6200ee; " +
             "-fx-border-width: 0px 0px 0px 0px; -fx-border-color: transparent;");
         setMenuButtonSelected(selectedButton);
     }

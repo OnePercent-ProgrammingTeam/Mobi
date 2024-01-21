@@ -15,7 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
    <left>
-      <VBox alignment="TOP_CENTER" maxWidth="250.0" minWidth="250.0" style="-fx-background-color: #2a2a72;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxWidth="250.0" minWidth="250.0" style="-fx-background-color: #6200ee;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="containersButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadContainers" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-alignment: left;" text="Containers" textFill="WHITE">
                <VBox.margin>
@@ -97,13 +97,13 @@
       </VBox>
    </left>
    <top>
-      <AnchorPane fx:id="topBar" maxHeight="50.0" minHeight="50.0" style="-fx-background-color: #111172;">
+      <AnchorPane fx:id="topBar" maxHeight="50.0" minHeight="50.0" style="-fx-background-color: #6200ee;">
          <children>
             <HBox alignment="CENTER_LEFT" fillHeight="false" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" spacing="8.0">
                <children>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../../../../../Downloads/417356575_363864299598430_3061113981649886474_n.png" />
+                        <Image url="@../images/intro/anchorSmallLogo.png" />
                      </image>
                   </ImageView>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Mobi">
@@ -118,9 +118,9 @@
             </HBox>
             <Button mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #fff; -fx-background-radius: 15;" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
                <graphic>
-                  <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/intro/icons8-x-50.png" />
+                        <Image url="@../images/intro/powerOff.png" />
                      </image>
                   </ImageView>
                </graphic>

@@ -5,6 +5,8 @@ import java.io.IOException;
 import exceptions.UserExistsException;
 import exceptions.UserNotFoundException;
 import graphics.DataUsers;
+import io.github.palexdev.materialfx.controls.MFXButton;
+//import io.github.palexdev.mfxcomponents.controls.buttons.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,19 +17,20 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+
 public class LoginPageController {
 
     @FXML
     private Text failedAuthText;
 
     @FXML
-    private Button loginButton;
+    private MFXButton loginButton;
 
     @FXML
     private PasswordField passwordField;
 
     @FXML
-    private Button signupButton;
+    private MFXButton signupButton;
 
     @FXML
     private TextField usernameField;

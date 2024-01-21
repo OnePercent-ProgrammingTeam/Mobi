@@ -52,10 +52,10 @@ public class ContainersPageController {
         timeCreatedCol.setCellValueFactory(new PropertyValueFactory<>("timeCreated"));
 
         
-        String startpath = "src\\main\\resources\\images\\startButton.png";
+        String startpath = "src\\main\\resources\\images\\containersPage\\startButton.png";
         Path startimagePath = Paths.get(startpath);
 
-        String stoppath = "src\\main\\resources\\images\\stopButton.png";
+        String stoppath = "src\\main\\resources\\images\\containersPage\\stopButton.png";
         Path stopimagePath = Paths.get(stoppath);
         
         
