@@ -7,3 +7,5 @@
 # Explicitly declare files that should always have CRLF line endings.
 # *.txt text eol=crlf
 
+# Exclude PNG files from line ending conversion
+*.png -text
