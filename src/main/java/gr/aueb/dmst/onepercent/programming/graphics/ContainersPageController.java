@@ -2,22 +2,19 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
+import org.controlsfx.control.ToggleSwitch;
+
 import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
 
 
@@ -39,26 +36,19 @@ public class ContainersPageController {
     private TableColumn<DataModel, String> timeCreatedCol;
 
     @FXML
-    private TableColumn<DataModel, Button> actionCol;
+    private TableColumn<DataModel, ToggleSwitch> actionCol;
 
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+
+
         // Link columns to corresponding properties in DataModel
         containerNameCol.setCellValueFactory(new PropertyValueFactory<>("containerName"));
         containerIdCol.setCellValueFactory(new PropertyValueFactory<>("containerId"));
         containerStatusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-        timeCreatedCol.setCellValueFactory(new PropertyValueFactory<>("timeCreated"));
-
-        
-        String startpath = "src\\main\\resources\\images\\containersPage\\startButton.png";
-        Path startimagePath = Paths.get(startpath);
-
-        String stoppath = "src\\main\\resources\\images\\containersPage\\stopButton.png";
-        Path stopimagePath = Paths.get(stoppath);
-        
-        
+        timeCreatedCol.setCellValueFactory(new PropertyValueFactory<>("timeCreated"));    
 
         MonitorAPI monitor = new MonitorAPI();
         MonitorAPI.createDockerClient();
@@ -75,7 +65,7 @@ public class ContainersPageController {
                     containerIdList.get(i),
                     statusList.get(i),
                     timeCreatedList.get(i),
-                    new Button("Stop")
+                    new ToggleSwitch()
             ));
         }
 
@@ -93,40 +83,11 @@ public class ContainersPageController {
             "-fx-font-size: 15px; -fx-background-color: #eee");
  
         //check
-        actionCol.setCellFactory(column -> new TableCell<DataModel, Button>() {
-            private final Button stopButton = new Button();
-            {
-                stopButton.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        DataModel dataModel = getTableView().getItems().get(getIndex());
-                        
-                        ManagerHttp.containerId = dataModel.getContainerId();
+        actionCol.setCellFactory(column -> new TableCell<DataModel, ToggleSwitch>() {
+            private final ToggleSwitch toggle = new ToggleSwitch();
 
-                        //monitor.initializeContainerModels(true);
-                        if (!monitor.getContainerStatus(dataModel.getContainerId())) {
-
-                            stopButton.setStyle(stopButton.getStyle() 
-                                                + "-fx-background-image: url('" 
-                                                + stopimagePath.toUri().toString() + "'); ");
-
-                            MainGUI.menuThreadGUI.handleUserInputGUI(1);
-                        } else {
-
-                            stopButton.setStyle(stopButton.getStyle() 
-                                                + "-fx-background-image: url('" 
-                                                + startimagePath.toUri().toString() + "'); ");
-
-
-                            MainGUI.menuThreadGUI.handleUserInputGUI(2);
-                        }
-                    }
-                });
-                
-            }
-    
             @Override
-            protected void updateItem(Button item, boolean empty) {
+            protected void updateItem(ToggleSwitch item, boolean empty) {
                 super.updateItem(item, empty);
 
                 if (empty || getTableView().getItems().size() <= getIndex()) {
@@ -136,30 +97,36 @@ public class ContainersPageController {
 
                     // Set button text based on container status
                     if (monitor.getContainerStatus(dataModel.getContainerId())) {
-                        //stopButton.setText("Stop");
-                        stopButton.setPrefSize(25, 25);
-                        stopButton.setStyle("-fx-background-image: url('" 
-                                            + stopimagePath.toUri().toString() + "'); " 
-                                            + "-fx-background-size: cover; " 
-                                            + "-fx-background-repeat: no-repeat; "
-                                            + "-fx-background-position: center; "
-                                            + "-fx-padding: 0;"
-                                            + "-fx-background-color: transparent;");
+                        toggle.setSelected(true);
+                        
                     } else {
-                        //stopButton.setText("Start");
-                        stopButton.setPrefSize(25, 25);
-                        stopButton.setStyle("-fx-background-image: url('" 
-                                            + startimagePath.toUri().toString() + "'); " 
-                                            + "-fx-background-size: cover; " 
-                                            + "-fx-background-repeat: no-repeat; "
-                                            + "-fx-background-position: center; "
-                                            + "-fx-padding: 0;"
-                                            + "-fx-background-color: transparent;");
+                        toggle.setSelected(false);
                     }
-
-                    setGraphic(stopButton);
+                    setGraphic(toggle);
                 }
             }
+
+            {
+                toggle.setOnMouseClicked(event -> {
+                    
+                    DataModel dataModel = getTableView().getItems().get(getIndex());
+                    
+                    ManagerHttpGUI.containerId = dataModel.getContainerId();
+
+                    //monitor.initializeContainerModels(true);
+                    if (toggle.isSelected()) {
+                        MainGUI.menuThreadGUI.handleUserInputGUI(1);
+                        dataModel.setStatus("Running");
+                        getTableView().refresh();
+                        System.out.println("toggle on");
+                    } else {
+                        MainGUI.menuThreadGUI.handleUserInputGUI(2);
+                        System.out.println("toggle off");
+                    }
+                }); 
+            }
+    
+  
         });
         
         
@@ -168,12 +135,12 @@ public class ContainersPageController {
     public static class DataModel {
         private final String containerName;
         private final String containerId;
-        private final String status;
+        private String status;
         private final String timeCreated;
-        private final Button action;
+        private final ToggleSwitch action;
 
         public DataModel(String containerName, 
-            String containerId, String status, String timeCreated, Button action) {
+            String containerId, String status, String timeCreated, ToggleSwitch action) {
             this.containerName = containerName;
             this.containerId = containerId;
             this.status = status;
@@ -189,6 +156,10 @@ public class ContainersPageController {
             return containerId;
         }
 
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
         public String getStatus() {
             return status;
         }
@@ -197,7 +168,7 @@ public class ContainersPageController {
             return timeCreated;
         }
 
-        public Button getAction() {
+        public ToggleSwitch getAction() {
             return action;
         }
         

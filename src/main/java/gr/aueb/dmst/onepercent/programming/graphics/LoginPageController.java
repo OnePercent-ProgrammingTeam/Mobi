@@ -38,6 +38,8 @@ public class LoginPageController {
     @FXML
     private Button exit;
 
+    MainPageController mainPageController = new MainPageController();
+
     DataUsers userTable = new DataUsers();
 
     @FXML
@@ -50,9 +52,9 @@ public class LoginPageController {
         try {
             if (key) {
                 System.out.println("User exists");
+                mainPageController.setUsernameString(usernameField.getText());
                 Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
                 Scene mainPageScene = new Scene(root, 1000, 600);
-
                 MainGUI.window.setScene(mainPageScene);
             } else {
                 throw new UserNotFoundException(usernameField.getText());

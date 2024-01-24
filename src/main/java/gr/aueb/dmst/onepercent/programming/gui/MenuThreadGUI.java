@@ -46,10 +46,10 @@ public class MenuThreadGUI extends MenuThread {
                 waitThread();
 
                 /*start concurrently the database Thread*/
-                dataThread.setUserInput(answer);
+                /*dataThread.setUserInput(answer);
                 thread = new Thread(dataThread);
                 thread.setName("DataBase"); 
-                thread.start();
+                thread.start();*/
                 
                 break;
             case 3:

@@ -1,6 +1,11 @@
 package gr.aueb.dmst.onepercent.programming.gui;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
+
 import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
 
 /**
@@ -55,4 +60,40 @@ public class ManagerHttpGUI extends ManagerHttp {
 
     @Override
     public void removeImage() { }
+
+    @Override
+    public void executeHttpRequest(String message) {
+        try {
+            this.response = HTTP_CLIENT.execute(postRequest); // Start the container
+            if (message.equals("start") || message.equals("stop")) {
+                return;
+            }
+            entity = response.getEntity();   
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(entity.getContent()));
+            String inputLine;
+            ManagerHttpGUI.response1 = new StringBuilder(); 
+            if (message.equals("pull")) {
+                ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
+            }  else {
+                while ((inputLine = reader.readLine()) != null) {
+                    response1.append(inputLine);
+                }
+            }
+            
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace(); // Print the stack trace of the error
+            String object = null;
+            object = (message.equals("start") || message.equals("stop")) ?  "container" :  "image";
+            System.err.println("Failed to " + 
+                                message + 
+                                " the" + 
+                                object + 
+                                e.getMessage()); // Print the error message
+        } finally {
+            // Release the resources of the request
+            EntityUtils.consumeQuietly(postRequest.getEntity()); 
+        }
+    }
 }
