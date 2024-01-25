@@ -74,7 +74,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="imagesButton1" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="186.0" mnemonicParsing="false" onAction="#loadImages" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text=" Analytics" textFill="WHITE">
+            <Button fx:id="analyticsButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="186.0" mnemonicParsing="false" onAction="#loadAnalytics" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text=" Analytics" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
