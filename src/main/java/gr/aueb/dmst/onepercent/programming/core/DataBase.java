@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class DataBase {
 
-    static final String url = "jdbc:h2:./metricsbase";
+    private String url = "jdbc:h2:./databases/metricsbase";
 
     /**
      * Gets the URL used for connecting to the H2 database.
@@ -44,16 +44,20 @@ public class DataBase {
     String query;
     MonitorHttp contanerMonitorHttp = new MonitorHttpCLI();
 
+    public void setURL(String username, String password) {
+        url = url + "/" + username + password.substring(0, 1); 
+    }
+
 
     /**
      * Method: createDatabase() creates tables in the H2 database.
      * Creation of 4 tables: 
-     * 1) Metrics (ID, Date)
+     * 1) Metrics (ID, Date, Command)
      * 2) Container(ID,C_ID, C_NAME, Status, Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)
      * 3) Image (ID,NAME)
      * 4) Measure (ID,C_ID, Cpu_usage)
      */
-    public void createDatabase() {
+    public void createDatabaseMetrics() {
         try {
             Class.forName("org.h2.Driver"); //Register JDBC driver 
             Connection connection = DriverManager.getConnection(url); //Open a connection
@@ -64,7 +68,8 @@ public class DataBase {
             //Query that creates the "Metrics" table
             query = "CREATE TABLE IF NOT EXISTS Metrics ("
                 + "ID INT AUTO_INCREMENT PRIMARY KEY,"
-                + "Date DATETIME"
+                + "Date DATETIME,"
+                + "Command INT"
                 + ");";
 
             //execute the query 
@@ -145,9 +150,10 @@ public class DataBase {
      * Insert data into "Metrics"
      *
      * @param datetime The datetime to be inserted.
+     * @param command 
      * @return The ID of the last inserted record.
      */
-    public int insertMetricsToDatabase(String datetime) {
+    public int insertMetricsToDatabase(String datetime, int command) {
         int last_id = 0;
 
         try {
@@ -156,7 +162,8 @@ public class DataBase {
             Statement statement = connection.createStatement();
             
              
-            query = "INSERT INTO Metrics (Date) VALUES ('" + datetime + "');";
+            query = "INSERT INTO Metrics (Date, Command)" 
+                     + "VALUES ('" + datetime + "','" + command + "');";
             statement.execute(query); 
 
             query = "SELECT MAX(ID) AS LAST_ID FROM Metrics";
@@ -277,10 +284,11 @@ public class DataBase {
             while (result.next()) {
                 int id = result.getInt("ID");
                 String datetime = result.getString("Date");
-
+                int command = result.getInt("Command");
                 
                 System.out.println("ID of metrics: " + id);
                 System.out.println("Date of metrics: " + datetime);
+                System.out.println("Command: " + command);
                 System.out.println();
             }
 

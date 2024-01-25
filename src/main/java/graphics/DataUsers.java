@@ -14,7 +14,7 @@ import java.sql.Statement;
  * As a result it helps in creating tables, inserting data, and querying information.
  */
 public class DataUsers {
-    static final String urlgeneral = "jdbc:h2:./user";
+    static final String urlgeneral = "jdbc:h2:./databases/user";
 
     String query;
 
@@ -96,7 +96,7 @@ public class DataUsers {
      * @param password The password of the user that is provided through the Sign up.
      * @return If the user has already sign up or it is the first time
      */
-    public boolean getUserExistance(String username, String password) {
+    public boolean getUserExistanceInDatabase(String username, String password) {
         boolean flag = false;
         try {
             Class.forName("org.h2.Driver"); 
@@ -148,9 +148,9 @@ public class DataUsers {
 
             while (result.next()) {
                 String name = result.getString("NAME");
-                String password = result.getString("PASSWORD");
-                System.out.println("User name " + name);
-                System.out.println("Pass " + password);
+                //String password = result.getString("PASSWORD");
+                System.out.println("User name: " + name);
+                //System.out.println("Pass " + password);
             }
             
             statement.close(); 
@@ -159,6 +159,14 @@ public class DataUsers {
         } catch (ClassNotFoundException | SQLException e) { 
             e.printStackTrace();
         } 
+    }
+
+    public void handleDataUsers(String username, String password) {
+        createUser();
+        if (!getUserExistanceInDatabase(username, password)) {
+            insertUsers(username, password);
+        }
+        //getAllUsers();
     }
 }
 

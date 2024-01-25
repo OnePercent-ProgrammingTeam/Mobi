@@ -15,7 +15,7 @@ public class DataBaseThread extends SuperThread {
 
         if (this.userInput == 1 || this.userInput == 2 || this.userInput == 6) {
             datetime = database.getDateTime();
-            last_id = database.insertMetricsToDatabase(datetime);
+            last_id = database.insertMetricsToDatabase(datetime, this.userInput);
             database.insertContainerToDatabase(last_id);
           //  database.getAllMetrics(); //NOT helpful
           //  database.getAllContainer(); //NOT helpful
@@ -23,7 +23,7 @@ public class DataBaseThread extends SuperThread {
 
         } else if (this.userInput == 3) {
             datetime = database.getDateTime();
-            last_id = database.insertMetricsToDatabase(datetime);
+            last_id = database.insertMetricsToDatabase(datetime, this.userInput);
             database.insertImageToDatabase(last_id);
             database.getAllMetrics(); //helpful
             database.getAllImage(); //helpful

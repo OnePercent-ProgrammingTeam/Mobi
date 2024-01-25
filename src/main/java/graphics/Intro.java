@@ -323,7 +323,7 @@ public class Intro {
             log.setOnAction(event -> {
                 System.out.println("log in name " + input.getText() + " pass " + input2.getText());
 
-                key = userTable.getUserExistance(input.getText(), input2.getText());
+                key = userTable.getUserExistanceInDatabase(input.getText(), input2.getText());
 
                 try {
                     if (key) {
@@ -343,7 +343,7 @@ public class Intro {
             log.setOnAction(event -> {
                 System.out.println("sign name " + input.getText() + " pass " + input2.getText());
 
-                key = userTable.getUserExistance(input.getText(), input2.getText());
+                key = userTable.getUserExistanceInDatabase(input.getText(), input2.getText());
 
                 try {
                     if (!key) {

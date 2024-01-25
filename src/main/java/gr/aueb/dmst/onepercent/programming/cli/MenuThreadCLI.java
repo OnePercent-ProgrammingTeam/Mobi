@@ -1,11 +1,13 @@
 package gr.aueb.dmst.onepercent.programming.cli;
 
 import exceptions.InvalidInputException;
-
+import gr.aueb.dmst.onepercent.programming.core.DataBase;
 import gr.aueb.dmst.onepercent.programming.core.Graph;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
 import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
+import gr.aueb.dmst.onepercent.programming.core.UserAuthentication;
+import graphics.DataUsers;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -24,16 +26,32 @@ import java.util.Scanner;
  */
 public class MenuThreadCLI extends MenuThread {
     
-    
     ExecutorThreadCLI executorThreadCLI = ExecutorThreadCLI.getInstance();
     MonitorThreadCLI monitorThreadCLI = MonitorThreadCLI.getInstance();
+    UserAuthentication userAuth = new UserAuthentication();
+    DataUsers users = new DataUsers();
+    DataBase metrics = new DataBase();
 
     @Override
     public void run() {
-        //database.createDatabase();
-        printMenu();
+        logIn();   
     }
 
+    private void logIn() {
+        //while the user does not exists try to log in
+        userAuth.checkAuth();
+        while (!userAuth.getUserExistanceInDocker()) {
+            userAuth.checkAuth();
+        }
+        //if exists then handle him in the database
+        users.handleDataUsers(userAuth.getUsername(), userAuth.getPassword());
+        metrics.setURL(userAuth.getUsername(), userAuth.getPassword());
+        metrics.createDatabaseMetrics();
+        printMenu(); 
+    }
+
+
+    
     /** Method: printMenu() prints the main menu of the program indicating
      *  the available options to the user.
     */

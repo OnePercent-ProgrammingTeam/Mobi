@@ -28,6 +28,10 @@ public class MainPageController {
     private Button searchButton;
 
     @FXML
+    private Button analyticsButton;
+
+
+    @FXML
     private Button helpButton;
 
     @FXML
@@ -107,6 +111,13 @@ public class MainPageController {
     void loadSearch(ActionEvent event) {
         loadPage("SearchPage.fxml");
         setMenuButtonSelected(searchButton);
+    }
+
+    //TODO
+    @FXML
+    void loadAnalytics(ActionEvent event) {
+        loadPage("AnalyticsPage.fxml");
+        setMenuButtonSelected(analyticsButton);
     }
 
     @FXML

@@ -46,7 +46,8 @@ public class LoginPageController {
     void login(ActionEvent event) {
 
         //key has the answer to the question "does the user exist?" (true or false)
-        boolean key = userTable.getUserExistance(usernameField.getText(), passwordField.getText());
+        boolean key = userTable.getUserExistanceInDatabase(usernameField.getText(),
+                     passwordField.getText());
         failedAuthText.setText(null);
 
         try {
@@ -69,7 +70,8 @@ public class LoginPageController {
     @FXML
     void signup(ActionEvent event) {
         //key has the answer to the question "does the user exist?" (true or false)
-        boolean key = userTable.getUserExistance(usernameField.getText(), passwordField.getText());
+        boolean key = userTable.getUserExistanceInDatabase(usernameField.getText(),
+                     passwordField.getText());
         failedAuthText.setText(null);
 
         try {

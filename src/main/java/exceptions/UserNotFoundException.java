@@ -13,6 +13,6 @@ public class UserNotFoundException extends Exception {
     * @param username The name of the user
     */
     public UserNotFoundException(String username) {
-        super("User with the name '" + username + "'' and the specific password does not exists");
+        super("The user with the name '" + username + "' and the specific password does not exist");
     }
 }
