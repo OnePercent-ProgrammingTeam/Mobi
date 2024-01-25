@@ -1,5 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
+import graphics.DataUsers;
+
 /** Class: MenuThread is a thread that prints the menu and handles the user's input. */
 public class MenuThread extends Thread {
    
@@ -7,14 +9,10 @@ public class MenuThread extends Thread {
      * The thread that runs the menu.
      */
     protected Thread thread;
-    /**
-     * The thread that runs the database.
-     */
-    protected DataBaseThread dataThread = new DataBaseThread();
-    /*
-     * The database.
-     */
-    DataBase database = new DataBase();
+   
+    protected DataUsers users = new DataUsers();
+    protected DataBase metrics = DataBase.getInstance();
+
 
     @Override
     public void run() { }

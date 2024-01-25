@@ -15,8 +15,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 
-
-
 /**
  * Class: DataBase is responsible for interacting with the embedded form of H2 database.
  * It has methods for storing data about mentrics, containers, images and measures.
@@ -37,17 +35,32 @@ public class DataBase {
     public String getUrl() {
         return url;
     }
-    /* static String user = "username";
-     * static String password = "password";
-     */
+    
     
     String query;
     MonitorHttp contanerMonitorHttp = new MonitorHttpCLI();
 
-    public void setURL(String username, String password) {
-        url = url + "/" + username + password.substring(0, 1); 
+    public void setURL(String username) {
+        url = url + "/" + username; 
     }
 
+
+    //Singleton
+    private static DataBase database;
+
+    private DataBase() { }
+
+    /**
+     * Gets the instance of MonitorThreadCLI using the singleton pattern.
+     *
+     * @return The MonitorThreadCLI instance.
+     */
+    public static DataBase getInstance() {
+        if (database == null) {
+            database = new DataBase();
+        }
+        return database;
+    }
 
     /**
      * Method: createDatabase() creates tables in the H2 database.
@@ -480,13 +493,6 @@ public class DataBase {
             e.printStackTrace();
         } 
         return names;
-    }
-
-    /**
-     * Constructor: Constructs a new DataBase instance.
-     */
-    public DataBase() {
-        // Default constructor
     }
 
 }

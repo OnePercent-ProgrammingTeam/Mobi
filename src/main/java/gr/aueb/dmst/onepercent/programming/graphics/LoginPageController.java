@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import exceptions.UserExistsException;
 import exceptions.UserNotFoundException;
+import gr.aueb.dmst.onepercent.programming.core.DataBase;
 import graphics.DataUsers;
 import io.github.palexdev.materialfx.controls.MFXButton;
 //import io.github.palexdev.mfxcomponents.controls.buttons.MFXButton;
@@ -40,13 +41,43 @@ public class LoginPageController {
 
     MainPageController mainPageController = new MainPageController();
 
-    DataUsers userTable = new DataUsers();
+    DataUsers users = new DataUsers();
+    DataBase metrics = new DataBase();
 
     @FXML
     void login(ActionEvent event) {
+        //new check 
 
+        failedAuthText.setText(null);
+        UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI();
+        userAuthGUI.setCredentials(usernameField.getText(), passwordField.getText());
+        userAuthGUI.checkAuth();
+        
+        try {
+            if (userAuthGUI.getUserExistanceInDocker()) {
+                System.out.println("User exists");
+
+                mainPageController.setUsernameString(usernameField.getText());
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                Scene mainPageScene = new Scene(root, 1300, 700);
+
+                MainGUI.window.setScene(mainPageScene);
+                users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword());
+                metrics.setURL(userAuthGUI.getUsername());
+                metrics.createDatabaseMetrics();
+            } else {
+                throw new UserNotFoundException(usernameField.getText());
+            }
+        } catch (UserNotFoundException e) {
+            failedAuthText.setText(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error loading the fxml file");
+        }
+        
+
+        /* 
         //key has the answer to the question "does the user exist?" (true or false)
-        boolean key = userTable.getUserExistanceInDatabase(usernameField.getText(),
+        boolean key = users.getUserExistanceInDatabase(usernameField.getText(),
                      passwordField.getText());
         failedAuthText.setText(null);
 
@@ -65,12 +96,13 @@ public class LoginPageController {
         } catch (IOException e) {
             System.out.println("Error loading the fxml file");
         }
+        */
     }
 
     @FXML
     void signup(ActionEvent event) {
         //key has the answer to the question "does the user exist?" (true or false)
-        boolean key = userTable.getUserExistanceInDatabase(usernameField.getText(),
+        boolean key = users.getUserExistanceInDatabase(usernameField.getText(),
                      passwordField.getText());
         failedAuthText.setText(null);
 
@@ -79,7 +111,7 @@ public class LoginPageController {
                 System.out.println("User does not exist");
 
                 
-                userTable.insertUsers(usernameField.getText(), passwordField.getText());
+                users.insertUsers(usernameField.getText(), passwordField.getText());
                 Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
                 Scene mainPageScene = new Scene(root, 1000, 600);
 
@@ -92,8 +124,7 @@ public class LoginPageController {
         } catch (IOException e) {
             System.out.println("Error loading the fxml file");
         } 
-        userTable.getAllUsers();
-
+        users.getAllUsers();
     }
 
     @FXML

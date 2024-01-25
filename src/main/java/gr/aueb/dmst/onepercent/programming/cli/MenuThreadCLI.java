@@ -1,13 +1,10 @@
 package gr.aueb.dmst.onepercent.programming.cli;
 
 import exceptions.InvalidInputException;
-import gr.aueb.dmst.onepercent.programming.core.DataBase;
 import gr.aueb.dmst.onepercent.programming.core.Graph;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
 import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
-import gr.aueb.dmst.onepercent.programming.core.UserAuthentication;
-import graphics.DataUsers;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -28,9 +25,7 @@ public class MenuThreadCLI extends MenuThread {
     
     ExecutorThreadCLI executorThreadCLI = ExecutorThreadCLI.getInstance();
     MonitorThreadCLI monitorThreadCLI = MonitorThreadCLI.getInstance();
-    UserAuthentication userAuth = new UserAuthentication();
-    DataUsers users = new DataUsers();
-    DataBase metrics = new DataBase();
+    UserAuthenticationCLI userAuthCLI = new UserAuthenticationCLI();
 
     @Override
     public void run() {
@@ -39,13 +34,13 @@ public class MenuThreadCLI extends MenuThread {
 
     private void logIn() {
         //while the user does not exists try to log in
-        userAuth.checkAuth();
-        while (!userAuth.getUserExistanceInDocker()) {
-            userAuth.checkAuth();
+        userAuthCLI.checkAuth();
+        while (!userAuthCLI.getUserExistanceInDocker()) {
+            userAuthCLI.checkAuth();
         }
         //if exists then handle him in the database
-        users.handleDataUsers(userAuth.getUsername(), userAuth.getPassword());
-        metrics.setURL(userAuth.getUsername(), userAuth.getPassword());
+        users.handleDataUsers(userAuthCLI.getUsername(), userAuthCLI.getPassword());
+        metrics.setURL(userAuthCLI.getUsername());
         metrics.createDatabaseMetrics();
         printMenu(); 
     }
@@ -77,6 +72,7 @@ public class MenuThreadCLI extends MenuThread {
             System.out.println("9) Remove container");
             System.out.println("10) Remove image");
             System.out.println("11) Inspect Swarm");
+            System.out.println("12) See your History");
             System.out.println("-------------------------------------------------------------");
         } while (handleUserInput());
     }
@@ -131,14 +127,6 @@ public class MenuThreadCLI extends MenuThread {
                 thread.setName("Executor"); 
                 thread.start();
 
-                waitThread();
-
-                /*start concurrently the database Thread
-                dataThread.setUserInput(answer);
-                thread = new Thread(dataThread);
-                thread.setName("DataBase"); 
-                thread.start();*/
-                
                 break;
             case 3:
             case 5:
@@ -149,19 +137,7 @@ public class MenuThreadCLI extends MenuThread {
                 monitorThreadCLI.setUserInput(answer);
                 thread = new Thread(monitorThreadCLI);
                 thread.setName("Monitor");
-                thread.start();
-
-                waitThread();
-
-                /*if (answer == 3) {
-                    
-                    //start concurrently the database Thread
-                    dataThread.setUserInput(answer);
-                    thread = new Thread(dataThread);
-                    thread.setName("DataBase"); 
-                    thread.start();
-                }*/
-                
+                thread.start();                
 
                 break;
             default:

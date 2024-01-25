@@ -13,6 +13,7 @@ public class UserNotFoundException extends Exception {
     * @param username The name of the user
     */
     public UserNotFoundException(String username) {
-        super("The user with the name '" + username + "' and the specific password does not exist");
+        super("The user with the name '" + username 
+                + "' and the specific password is not a DockerHub user. Try again!");
     }
 }
