@@ -151,7 +151,7 @@ public class SearchController {
      */
     @FXML
     void selectSearch() {
-        searchButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #2a2a72;");
+        searchButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #6200ee;");
         pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #ffffff;");
         isForSeach = true;
         prevSearchesBox.setVisible(true);
@@ -163,7 +163,7 @@ public class SearchController {
      */
     @FXML
     void selectPull() {
-        pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #2a2a72;");
+        pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #6200ee;");
         searchButton.setStyle(selectButtonsDefaultStyle());
         isForSeach = false;
         prevSearchesBox.setVisible(false);
@@ -176,7 +176,7 @@ public class SearchController {
      */
     private String selectButtonsDefaultStyle() {
         return "-fx-background-color: #ffffff; -fx-border-color: #ffffff;" +
-            "-fx-border-radius: 8; -fx-text-fill: #2a2a72;" +
+            "-fx-border-radius: 8; -fx-text-fill: #6200ee;" +
             "-fx-border-width: 2px; -fx-background-radius: 8;";
     }
 
@@ -205,7 +205,7 @@ public class SearchController {
             String starCount = imageInfo[i];
             i++;
             HBox imageBox = new HBox();
-            imageBox.setStyle("-fx-background-color: #ffffff; -fx-border-color: #2a2a72;" +
+            imageBox.setStyle("-fx-background-color: #ffffff; -fx-border-color: #6200ee;" +
                 "-fx-border-radius: 8;" +
                 "-fx-border-width: 2px; -fx-background-radius: 8;");
             imageBox.setPadding(new Insets(10, 10, 10, 10));
@@ -320,7 +320,7 @@ public class SearchController {
      */
     private Button createButton(String text) {
         Button b = new Button(text);
-        b.setStyle("-fx-background-color: #6495ed; " + 
+        b.setStyle("-fx-background-color: #bb66fc; " + 
             "-fx-border-radius: 8; -fx-text-fill: #ffffff;"); 
         b.setOnAction(e -> {
             autoCompleteTextField.setText(b.getText());

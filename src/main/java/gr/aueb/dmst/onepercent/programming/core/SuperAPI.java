@@ -13,7 +13,7 @@ import com.google.common.annotations.VisibleForTesting;
 public class SuperAPI {
     
     /** Field: dc is a static variable, used in many classes, representing the docker client */
-    protected static DockerClient dc;
+    public static DockerClient dc;
 
     /**
      * Gets the Docker client instance.

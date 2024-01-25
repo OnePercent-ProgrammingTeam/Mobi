@@ -19,8 +19,8 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#selectSearch" style="-fx-background-color: #fff; -fx-border-width: 2px; -fx-border-color: #2a2a72; -fx-border-radius: 8; -fx-background-radius: 8;" text="Search" textFill="#2a2a72" />
-                  <Button fx:id="pullButton" layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#selectPull" style="-fx-background-color: #fff; -fx-border-width: 2px; -fx-border-radius: 8; -fx-background-radius: 8;" text="Pull" textFill="#2a2a72" />
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#selectSearch" style="-fx-background-color: #fff; -fx-border-width: 2px; -fx-border-color: #6200ee; -fx-border-radius: 8; -fx-background-radius: 8;" text="Search" textFill="#6200ee" />
+                  <Button fx:id="pullButton" layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#selectPull" style="-fx-background-color: #fff; -fx-border-width: 2px; -fx-border-radius: 8; -fx-background-radius: 8;" text="Pull" textFill="#6200ee" />
                </children>
             </HBox>
             <Label text="Search/Pull Image from Docker Hub">
@@ -34,13 +34,13 @@
             <HBox fx:id="searchParameters" alignment="CENTER_LEFT" spacing="15.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result Count" />
-                  <TextField fx:id="resultCount" maxHeight="50.0" prefWidth="50.0" style="-fx-background-color: #fff; -fx-background-radius: 4; -fx-border-color: #000; -fx-border-radius: 4; -fx-border-width: 0px 0px 2px 0px;" text="3" />
+                  <TextField fx:id="resultCount" maxHeight="50.0" prefWidth="50.0" style="-fx-background-color: #fff; -fx-background-radius: 4; -fx-border-color: #6200ee; -fx-border-radius: 4; -fx-border-width: 0px 0px 2px 0px;" text="3" />
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
-            <TextField fx:id="autoCompleteTextField" onKeyPressed="#handleKeyPressed" prefHeight="25.0" prefWidth="433.0" style="-fx-background-color: #fff; -fx-background-radius: 4; -fx-border-color: #000; -fx-border-radius: 4; -fx-border-width: 0px 0px 2px 0px;">
+            <TextField fx:id="autoCompleteTextField" onKeyPressed="#handleKeyPressed" prefHeight="25.0" prefWidth="433.0" style="-fx-background-color: #fff; -fx-background-radius: 4; -fx-border-color: #6200ee; -fx-border-radius: 4; -fx-border-width: 0px 0px 2px 0px;">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

@@ -63,10 +63,6 @@
     -fx-border-color: #eee;
 }
 
-
-
-
-
 .table-view {
     -fx-background-color: #ffffff !important;
     -fx-border-radius: 20 !important;
@@ -131,3 +127,6 @@
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color: transparent !important;
 }
+
+.default-color0.chart-pie { -fx-pie-color: #6200ee; }
+.default-color1.chart-pie { -fx-pie-color: #bb66fc; }

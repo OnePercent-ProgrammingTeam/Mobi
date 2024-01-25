@@ -30,7 +30,7 @@ public class MainGUI extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
         window = primaryStage;
         window.setTitle("One Percent");
-        window.setScene(new Scene(root, 1000, 600));
+        window.setScene(new Scene(root, 1300, 700));
         window.setResizable(false); //does not allow the user to resize the window
         window.initStyle(StageStyle.UNDECORATED);
         

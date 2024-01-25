@@ -1,38 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="460.0" maxWidth="640.0" minHeight="460.0" minWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.ContainersPageController">
+<AnchorPane maxWidth="-Infinity" minHeight="-Infinity" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.ContainersPageController">
    <children>
-      <VBox minHeight="550.0" minWidth="750.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+      <HBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1000.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Containers">
-               <font>
-                  <Font name="Malgun Gothic Bold" size="30.0" />
-               </font>
-            </Text>
-            <TableView fx:id="containerTable" maxHeight="350.0" maxWidth="500.0" minHeight="350.0" minWidth="500.0" stylesheets="@../styles.css">
-              <columns>
-                <TableColumn fx:id="containerNameCol" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="140.0" text="Name" />
-                  <TableColumn fx:id="containerIdCol" minWidth="110.0" prefWidth="110.0" text="Identity" />
-                  <TableColumn fx:id="containerStatusCol" minWidth="110.0" prefWidth="110.0" text="Status" />
-                  <TableColumn fx:id="timeCreatedCol" minWidth="110.0" prefWidth="110.0" text="Born" />
-                  <TableColumn fx:id="actionCol" minWidth="110.0" prefWidth="110.0" text="Activate" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="750.0" spacing="30.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Containers">
+                     <font>
+                        <Font name="Malgun Gothic Bold" size="30.0" />
+                     </font>
+                  </Text>
+                  <TableView fx:id="containerTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@../styles.css">
+                    <columns>
+                      <TableColumn fx:id="containerNameCol" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="140.0" text="Name" />
+                        <TableColumn fx:id="containerIdCol" minWidth="110.0" prefWidth="110.0" text="Identity" />
+                        <TableColumn fx:id="containerStatusCol" minWidth="110.0" prefWidth="110.0" text="Status" />
+                        <TableColumn fx:id="timeCreatedCol" minWidth="110.0" prefWidth="110.0" text="Born" />
+                        <TableColumn fx:id="actionCol" minWidth="110.0" prefWidth="110.0" text="Activate" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-background-color: #fff; -fx-background-radius: 20;">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status">
+                           <font>
+                              <Font name="Malgun Gothic Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <PieChart fx:id="pieChart" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="170.0" styleClass="default-color0" stylesheets="@../styles.css" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="7.0">
+                           <children>
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/containersPage/darkPurple.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fx:id="runningText" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Running: " />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="25.0" layoutY="228.0" prefHeight="100.0" prefWidth="200.0" spacing="7.0">
+                           <children>
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/containersPage/lightPurple.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fx:id="exitedText" layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Exited: " />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="10.0" right="30.0" top="90.0" />
+               </padding>
+            </VBox>
          </children>
-         <padding>
-            <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
-         </padding>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>

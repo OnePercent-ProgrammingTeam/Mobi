@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
    <left>
       <VBox alignment="TOP_CENTER" maxWidth="250.0" minWidth="250.0" spacing="7.0" style="-fx-background-color: #6200ee; -fx-background-radius: 30;" BorderPane.alignment="CENTER">
          <children>
@@ -140,9 +140,9 @@
    <center>
       <VBox alignment="TOP_CENTER" minHeight="200.0" minWidth="730.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <HBox fx:id="topBar" alignment="CENTER_RIGHT" maxHeight="70.0" maxWidth="650.0" minHeight="70.0" minWidth="650.0" spacing="5.0" style="-fx-background-color: #fff; -fx-background-radius: 20;">
+            <HBox fx:id="topBar" alignment="CENTER_RIGHT" maxHeight="70.0" minHeight="70.0" spacing="5.0" style="-fx-background-color: #fff; -fx-background-radius: 20;">
                <VBox.margin>
-                  <Insets />
+                  <Insets left="20.0" right="5.0" />
                </VBox.margin>
                <children>
                   <ImageView fx:id="sun" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -176,10 +176,13 @@
                   <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                </padding>
             </HBox>
-            <ScrollPane fx:id="scrollArea" cacheShape="false" centerShape="false" focusTraversable="false" hbarPolicy="NEVER" maxHeight="470.0" maxWidth="650.0" minHeight="470.0" minWidth="650.0" pannable="true" scaleShape="false" stylesheets="@../styles.css">
+            <ScrollPane fx:id="scrollArea" cacheShape="false" centerShape="false" focusTraversable="false" hbarPolicy="NEVER" pannable="true" scaleShape="false" stylesheets="@../styles.css">
               <content>
                 <AnchorPane fx:id="contentArea" />
               </content>
+               <VBox.margin>
+                  <Insets left="20.0" right="5.0" />
+               </VBox.margin>
             </ScrollPane>
          </children>
       </VBox>
