@@ -1,0 +1,96 @@
+2024-01-25 23:34:51.938454+02:00 jdbc[3]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.core.DataBase.insertMetricsToDatabase(DataBase.java:161)
+	at gr.aueb.dmst.onepercent.programming.core.DataBaseThread.run(DataBaseThread.java:34)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 11 more
+2024-01-25 23:34:51.959856+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "METRICS" not found (this database is empty); SQL statement:
+INSERT INTO Metrics (Date, Command)VALUES ('2024-01-25 23:34:51','3'); [42104-222]
+2024-01-25 23:34:51.978698+02:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+INSERT INTO Image (ID, NAME) VALUES ('0','okay'); [42104-222]
+2024-01-25 23:34:51.993494+02:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "METRICS" not found (this database is empty); SQL statement:
+SELECT * FROM Metrics [42104-222]
+2024-01-25 23:34:52.008440+02:00 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+SELECT * FROM Image [42104-222]
+2024-01-25 23:34:52.023972+02:00 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+SELECT DISTINCT NAME FROM (SELECT NAME, ID FROM Image ORDER BY ID DESC LIMIT 5) [42104-222]
+2024-01-25 23:37:57.939176+02:00 jdbc[3]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.core.DataBase.insertMetricsToDatabase(DataBase.java:161)
+	at gr.aueb.dmst.onepercent.programming.core.DataBaseThread.run(DataBaseThread.java:34)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 11 more
+2024-01-25 23:37:57.947190+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "METRICS" not found (this database is empty); SQL statement:
+INSERT INTO Metrics (Date, Command)VALUES ('2024-01-25 23:37:57','3'); [42104-222]
+2024-01-25 23:37:57.957118+02:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+INSERT INTO Image (ID, NAME) VALUES ('0','hap'); [42104-222]
+2024-01-25 23:37:57.974252+02:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "METRICS" not found (this database is empty); SQL statement:
+SELECT * FROM Metrics [42104-222]
+2024-01-25 23:37:57.990339+02:00 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+SELECT * FROM Image [42104-222]
+2024-01-25 23:37:58.012432+02:00 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+SELECT DISTINCT NAME FROM (SELECT NAME, ID FROM Image ORDER BY ID DESC LIMIT 5) [42104-222]
+2024-01-25 23:41:24.998715+02:00 jdbc[3]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.core.DataBase.insertMetricsToDatabase(DataBase.java:161)
+	at gr.aueb.dmst.onepercent.programming.core.DataBaseThread.run(DataBaseThread.java:34)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 11 more
+2024-01-25 23:41:25.027291+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "METRICS" not found (this database is empty); SQL statement:
+INSERT INTO Metrics (Date, Command)VALUES ('2024-01-25 23:41:24','3'); [42104-222]
+2024-01-25 23:41:25.041219+02:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+INSERT INTO Image (ID, NAME) VALUES ('0','hap'); [42104-222]
+2024-01-25 23:41:25.056601+02:00 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "METRICS" not found (this database is empty); SQL statement:
+SELECT * FROM Metrics [42104-222]
+2024-01-25 23:41:25.068702+02:00 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+SELECT * FROM Image [42104-222]
+2024-01-25 23:41:25.087261+02:00 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "IMAGE" not found (this database is empty); SQL statement:
+SELECT DISTINCT NAME FROM (SELECT NAME, ID FROM Image ORDER BY ID DESC LIMIT 5) [42104-222]
