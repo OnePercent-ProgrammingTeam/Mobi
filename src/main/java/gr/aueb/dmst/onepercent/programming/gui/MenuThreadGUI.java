@@ -23,7 +23,7 @@ public class MenuThreadGUI extends MenuThread {
         DataUsers user = new DataUsers();
         user.createUser();
         DataBase contain = new DataBase();
-        contain.createDatabaseMetrics();
+        //contain.createDatabaseMetrics();
     }
 
     /**
