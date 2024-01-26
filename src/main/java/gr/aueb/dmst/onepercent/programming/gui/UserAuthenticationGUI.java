@@ -1,4 +1,4 @@
-package gr.aueb.dmst.onepercent.programming.graphics;
+package gr.aueb.dmst.onepercent.programming.gui;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;

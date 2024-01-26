@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import exceptions.UserExistsException;
 import exceptions.UserNotFoundException;
-import gr.aueb.dmst.onepercent.programming.core.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.DataBase;
+import gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI;
 import graphics.DataUsers;
 import io.github.palexdev.materialfx.controls.MFXButton;
 //import io.github.palexdev.mfxcomponents.controls.buttons.MFXButton;
@@ -42,7 +43,7 @@ public class LoginPageController {
     MainPageController mainPageController = new MainPageController();
 
     DataUsers users = new DataUsers();
-    DataBase metrics = new DataBase();
+    DataBase metrics = DataBase.getInstance();
 
     @FXML
     void login(ActionEvent event) {

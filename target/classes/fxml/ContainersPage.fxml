@@ -25,11 +25,11 @@
                   </Text>
                   <TableView fx:id="containerTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@../styles.css">
                     <columns>
-                      <TableColumn fx:id="containerNameCol" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="140.0" text="Name" />
-                        <TableColumn fx:id="containerIdCol" minWidth="110.0" prefWidth="110.0" text="Identity" />
-                        <TableColumn fx:id="containerStatusCol" minWidth="110.0" prefWidth="110.0" text="Status" />
-                        <TableColumn fx:id="timeCreatedCol" minWidth="110.0" prefWidth="110.0" text="Born" />
-                        <TableColumn fx:id="actionCol" minWidth="110.0" prefWidth="110.0" text="Activate" />
+                      <TableColumn fx:id="containerNameCol" maxWidth="1.7976931348623157E308" minWidth="140.0" prefWidth="140.0" sortable="false" text="Name" />
+                        <TableColumn fx:id="containerIdCol" minWidth="110.0" prefWidth="110.0" sortable="false" text="Identity" />
+                        <TableColumn fx:id="containerStatusCol" minWidth="110.0" prefWidth="110.0" sortable="false" text="Status" />
+                        <TableColumn fx:id="timeCreatedCol" minWidth="110.0" prefWidth="110.0" sortable="false" text="Born" />
+                        <TableColumn fx:id="actionCol" minWidth="110.0" prefWidth="110.0" sortable="false" text="Activate" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

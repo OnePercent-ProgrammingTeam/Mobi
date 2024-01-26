@@ -1,9 +1,4 @@
-package gr.aueb.dmst.onepercent.programming.core;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.annotations.VisibleForTesting;
-
-import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
+package gr.aueb.dmst.onepercent.programming.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,15 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.annotations.VisibleForTesting;
 
-/**
- * Class: DataBase is responsible for interacting with the embedded form of H2 database.
- * It has methods for storing data about mentrics, containers, images and measures.
- * As a result it helps in creating tables, inserting data, and querying information.
- */
+import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
+import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
+
 public class DataBase {
-
-    private String url = "jdbc:h2:./databases/metricsbase";
+    protected String url = "jdbc:h2:./databases/metricsbase";
 
     /**
      * Gets the URL used for connecting to the H2 database.
@@ -36,25 +30,18 @@ public class DataBase {
         return url;
     }
     
-    
-    String query;
-    MonitorHttp contanerMonitorHttp = new MonitorHttpCLI();
+    protected String query;
 
     public void setURL(String username) {
         url = url + "/" + username; 
     }
 
 
-    //Singleton
+    //Sigleton
     private static DataBase database;
 
     private DataBase() { }
 
-    /**
-     * Gets the instance of MonitorThreadCLI using the singleton pattern.
-     *
-     * @return The MonitorThreadCLI instance.
-     */
     public static DataBase getInstance() {
         if (database == null) {
             database = new DataBase();
@@ -144,7 +131,7 @@ public class DataBase {
         }
     }
 
-
+    MonitorHttp monitorHttp = new MonitorHttpCLI();
     /**
      * Method returns as a String the local date time
      * @return The datetime
@@ -208,7 +195,7 @@ public class DataBase {
             Statement statement = connection.createStatement();
 
             
-            String[] info = contanerMonitorHttp.getTableforContainer();
+            String[] info = monitorHttp.getTableforContainer();
 
             query = "INSERT INTO Container (ID, C_ID, C_NAME, Status,"
                 + "Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)"
@@ -239,7 +226,7 @@ public class DataBase {
             Connection connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
 
-            String name = MonitorHttp.imName;
+            String name = monitorHttp.getImageName();
 
             query = "INSERT INTO Image (ID, NAME) VALUES ('" + last_id + "','" + name + "');";
             statement.execute(query); 
@@ -264,7 +251,7 @@ public class DataBase {
             Connection connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
 
-            String container = MonitorHttp.conId;
+            String container = monitorHttp.getContainerId();
 
             query = "INSERT INTO Measure (ID, C_ID, Cpu_usage) VALUES ('" 
                     + last_id + "','" + container + "','" + cpu + "');";
@@ -275,12 +262,6 @@ public class DataBase {
         }
 
     }
-
-
-
-
-
-
 
     /**
      * Method for showing all metrics
@@ -494,5 +475,6 @@ public class DataBase {
         } 
         return names;
     }
+
 
 }

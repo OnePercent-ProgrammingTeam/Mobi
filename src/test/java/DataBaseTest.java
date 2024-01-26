@@ -10,23 +10,25 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
-import gr.aueb.dmst.onepercent.programming.core.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.DataBase;
 
 public class DataBaseTest {
-    DataBase obj = new DataBase();
+    DataBase dataBase = DataBase.getInstance();
     @Test
     public void getDateTimeTest() {
-        String result = obj.getDateTime();
+        String result = dataBase.getDateTime();
         assertNotNull(result);
         String current = LocalDate.now() + " " + LocalTime.now().toString().substring(0, 8);
         assertEquals(result, current);
     }
+
+
     @Test 
     public void getImageForSearchTest() {
-        ArrayList <String> arr = obj.getImageForSearch();
+        ArrayList <String> arr = dataBase.getImageForSearch();
         try {
             Class.forName("org.h2.Driver"); 
-            Connection connection = DriverManager.getConnection(obj.getUrl()); 
+            Connection connection = DriverManager.getConnection(dataBase.getUrl()); 
             Statement statement = connection.createStatement(); 
                 
             String query = "SELECT DISTINCT NAME "

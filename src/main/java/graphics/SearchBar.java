@@ -2,10 +2,9 @@ package graphics;
 
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.core.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
-//import gr.aueb.dmst.onepercent.programming.DataBase;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +31,7 @@ public class SearchBar {
 
     MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
 
-    DataBase database = new DataBase();
+    DataBase dataBase = DataBase.getInstance();
 
     /**
      * Creates and returns a VBox containing the search bar and auto-complete suggestions list.
@@ -42,7 +41,7 @@ public class SearchBar {
      * @return A VBox containing the search bar and auto-complete list.
      */
     public VBox createBar() {
-        ArrayList<String> names = database.getImageForSearch();
+        ArrayList<String> names = dataBase.getImageForSearch();
 
         /* 
         ArrayList<String> names = new ArrayList<>();

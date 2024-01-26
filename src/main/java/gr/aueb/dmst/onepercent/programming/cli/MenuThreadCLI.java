@@ -40,8 +40,8 @@ public class MenuThreadCLI extends MenuThread {
         }
         //if exists then handle him in the database
         users.handleDataUsers(userAuthCLI.getUsername(), userAuthCLI.getPassword());
-        metrics.setURL(userAuthCLI.getUsername());
-        metrics.createDatabaseMetrics();
+        dataBase.setURL(userAuthCLI.getUsername());
+        dataBase.createDatabaseMetrics();
         printMenu(); 
     }
 

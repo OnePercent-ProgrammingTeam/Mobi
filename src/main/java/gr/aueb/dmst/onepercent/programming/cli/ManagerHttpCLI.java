@@ -4,8 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 
 import exceptions.PullImageException;
 import exceptions.RemoveDockerObjectException;
-import exceptions.StartContainerException;
-import exceptions.StopContainerException;
+import exceptions.ActionContainerException;
 
 import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
 
@@ -134,9 +133,7 @@ public class ManagerHttpCLI extends ManagerHttp {
         } else {
             try {
                 output = provideMessage(message);
-            } catch (StartContainerException e) {
-                output = e.getMessage();
-            } catch (StopContainerException e) {
+            } catch (ActionContainerException e) {
                 output = e.getMessage();
             } catch (PullImageException e) {
                 output = e.getMessage();
@@ -160,7 +157,7 @@ public class ManagerHttpCLI extends ManagerHttp {
      * @return The generated output message 
      * based on the HTTP response status code and the input message.
      * @see #provideMessage(String)
-     * @throws StartContainerException if the container is already started, not found, 
+     * @throws ActionContainerException if the container is already started, not found, 
      * or server error.
      * @throws StopContainerException if the container is already stopped, not found,
      * or server error.
@@ -172,40 +169,29 @@ public class ManagerHttpCLI extends ManagerHttp {
     public String getProvideMessage(String message) {
         return provideMessage(message);
     }
-    private String provideMessage(String message) throws StartContainerException, 
-                                                        StopContainerException, 
+    private String provideMessage(String message) throws ActionContainerException,
                                                         PullImageException,
                                                         RemoveDockerObjectException {
         String output = "";
-        if (message.equals("start")) {
+        if (message.equals("start") || message.equals("stop")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 204:
+                    conId = containerId; //only if it successful insert it into database
                     output = ANSI_GREEN + "Container " + message  + " was successfull." +
                         ANSI_RESET;
                     break;
                 case 304:
-                    throw new StartContainerException("Container already started.");
+                    message = (message.equals("start")) ? "start" : "stopp";
+                    throw new ActionContainerException("Container already " + message + "ed.");
                 case 404:
-                    throw new StartContainerException("There is no such container. Try again");
+                    throw new ActionContainerException("There is no such container. Try again");
                 case 500:
-                    throw new StartContainerException("Server error!");
-            }
-        } else if (message.equals("stop")) {
-            switch (this.response.getStatusLine().getStatusCode()) {
-                case 204:
-                    output = ANSI_GREEN + "Container " + message  + " was successfull." + 
-                        ANSI_RESET;
-                    break;
-                case 304:
-                    throw new StopContainerException("Container already stopped.");
-                case 404:
-                    throw new StopContainerException("There is no such container. Try again");
-                case 500:
-                    throw new StopContainerException("Server error!");
+                    throw new ActionContainerException("Server error!");
             }
         } else if (message.equals("pull")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 200:
+                    imName = imageName;
                     output = ANSI_GREEN + "Image " + message + " was successfull." + ANSI_RESET;
                     break;
                 case 404:
@@ -216,6 +202,11 @@ public class ManagerHttpCLI extends ManagerHttp {
         } else if (message.equals("remove") || message.equals("removeImg")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 204:
+                    if (message.equals("remove")) {
+                        conId = containerId;
+                    } else {
+                        imName = imageName;
+                    }
                     output = ANSI_GREEN + "Successfull removal." + ANSI_RESET;
                     break;
                 case 400:

@@ -20,16 +20,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  *  @see SuperHttp
  */
 public abstract class MonitorHttp extends SuperHttp {
-    
-    /**The static field "conId" is used to keep the id of the container the user wants to find,  
-     * in order to be visible in the database. 
-     */
-    public static String conId;
-
-    /**The static field "imName" is used to keep the name of the image the user wants to find,  
-     * in order to be visible in the database. 
-     */
-    public static String imName;
 
     /**
      * Abstract method to inspect details of a container.

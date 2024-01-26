@@ -49,6 +49,27 @@ public class SuperHttp implements HttpInterface {
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
 
+
+
+    /**The static field "conId" is used to keep the id of the container the user wants to find,  
+     * in order to be visible in the database. 
+     */
+    protected String conId;
+    public String getContainerId() {
+        return conId;
+    }
+
+    /**The static field "imName" is used to keep the name of the image the user wants to find,  
+     * in order to be visible in the database. 
+     */
+    protected String imName;
+    public String getImageName() {
+        return imName;
+    }
+
+
+
+    
     /** Execute the http request
      * @param message the message that indicates the action that is going to be executed
      */

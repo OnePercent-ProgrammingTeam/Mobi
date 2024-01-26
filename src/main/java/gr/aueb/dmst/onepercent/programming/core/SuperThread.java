@@ -1,5 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
+import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
+
 /**
  * Class: SuperThread is a superclass that contains a static variable, used in other classes,
  * representing the user input collected by the MenuThread.
@@ -10,7 +12,7 @@ package gr.aueb.dmst.onepercent.programming.core;
  * @see gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI
  * @see gr.aueb.dmst.onepercent.programming.cli.ExecutorThreadCLI
  * @see gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI
- * @see gr.aueb.dmst.onepercent.programming.core.DataBaseThread
+ * @see gr.aueb.dmst.onepercent.programming.data.DataBaseThread
  */
 public abstract class SuperThread implements Runnable {
     /**
@@ -18,6 +20,10 @@ public abstract class SuperThread implements Runnable {
      * It represents the user input collected by the MenuThread.
      */
     protected int userInput;
+
+
+    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
+    protected Thread dataThread = new Thread(dataBaseThread);
 
     /**
      * Method: setUserInput sets the user input.

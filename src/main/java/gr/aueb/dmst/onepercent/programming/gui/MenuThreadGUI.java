@@ -1,6 +1,5 @@
 package gr.aueb.dmst.onepercent.programming.gui;
 
-import gr.aueb.dmst.onepercent.programming.core.DataBase;
 import gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 import graphics.DataUsers;
@@ -22,8 +21,7 @@ public class MenuThreadGUI extends MenuThread {
     public void run() {
         DataUsers user = new DataUsers();
         user.createUser();
-        DataBase contain = new DataBase();
-        //contain.createDatabaseMetrics();
+        dataBase.createDatabaseMetrics();
     }
 
     /**
@@ -64,11 +62,12 @@ public class MenuThreadGUI extends MenuThread {
 
                 waitThread();
                     
-                /*start concurrently the database Thread*/
+                /*start concurrently the database Thread
                 dataThread.setUserInput(answer);
                 thread = new Thread(dataThread);
                 thread.setName("DataBase"); 
                 thread.start();
+                */
                 break;
             default:
                 System.out.println("Non Valid Input.");

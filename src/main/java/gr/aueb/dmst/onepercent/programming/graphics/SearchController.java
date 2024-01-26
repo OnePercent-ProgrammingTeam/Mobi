@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import gr.aueb.dmst.onepercent.programming.core.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
@@ -69,7 +69,7 @@ public class SearchController {
     @FXML
     private HBox searchParameters;
 
-    DataBase database = new DataBase();
+    DataBase dataBase = DataBase.getInstance();
     ArrayList<Button> suggestions;
     boolean isForSeach = true;
 
@@ -83,7 +83,7 @@ public class SearchController {
     }
 
     private void preparePreviousSearches() {
-        ArrayList<String> arr = database.getImageForSearch();
+        ArrayList<String> arr = dataBase.getImageForSearch();
         suggestions = new ArrayList<Button>();
 
         if (arr.size() == 0) {

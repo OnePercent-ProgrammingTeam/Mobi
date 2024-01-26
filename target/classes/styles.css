@@ -67,7 +67,7 @@
     -fx-background-color: #ffffff !important;
     -fx-border-radius: 20 !important;
     -fx-background-radius: 20 !important;
-    -fx-padding: 0;
+    -fx-padding: 0 0 16px 0;
     -fx-background-insets: 0;
     /*
     -fx-border-color: #ddd;
@@ -121,7 +121,7 @@
 }
 
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
-    -fx-background-color:  linear-gradient(to bottom, #1dbbdd44, #93f9b944);
+    -fx-background-color:  linear-gradient(to bottom, #6200ee, #bb66fc);
 }
 
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
@@ -130,3 +130,39 @@
 
 .default-color0.chart-pie { -fx-pie-color: #6200ee; }
 .default-color1.chart-pie { -fx-pie-color: #bb66fc; }
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+
+}
+
+.chart-series-line {
+    -fx-stroke: #bb66fc; /* Green color */
+}
+
+/* Customize the line width */
+.chart-series-line:series0 {
+    -fx-stroke-width: 2;
+}
+
+/* Customize the legend text color */
+.chart-legend-item:series0 {
+    -fx-text-fill: #bb66fc; /* Match the line color */
+}
+
+/* Customize the point (data marker) color */
+.chart-line-symbol {
+    -fx-background-color: #6200ee !important;
+}
+
+#memoryChart .axis-label {
+    -fx-text-fill: #fff;
+    -fx-font-size: 15px;
+}
+
+#memoryChart .axis {
+    -fx-stroke: #fff;
+    -fx-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-tick-label-fill: #fff;
+}

@@ -3,7 +3,7 @@ package exceptions;
 /** Exception that occurs when user tries to start an already
  * started container.
  */
-public class StartContainerException extends RuntimeException {
+public class ActionContainerException extends RuntimeException {
    
     //ANSI color codes for text color.
     /**
@@ -20,7 +20,7 @@ public class StartContainerException extends RuntimeException {
     /**
      * Default constructor.
      */
-    public StartContainerException() {
+    public ActionContainerException() {
 
     }
 
@@ -28,7 +28,7 @@ public class StartContainerException extends RuntimeException {
      * Constructor with message.
      * @param message the message to be displayed.
      */
-    public StartContainerException(String message) {
+    public ActionContainerException(String message) {
         super(ANSI_RED + message + ANSI_RESET);
     }
 

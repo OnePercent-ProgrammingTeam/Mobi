@@ -50,6 +50,9 @@ public class ExecutorThreadCLI extends SuperThread {
                 containerManagerHttp.removeImage();
                 break;
         }
+        dataBaseThread.setAnswer(this.userInput);
+        dataThread.start();
     }
+
 }
 
