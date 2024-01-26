@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.AnalyticsPageController">
    <children>
       <HBox layoutX="14.0" layoutY="51.0" maxWidth="-Infinity" minWidth="-Infinity" spacing="30.0">
@@ -20,7 +19,7 @@
                <children>
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="570.0" style="-fx-background-color: #fff; -fx-background-radius: 20;">
                      <children>
-                        <LineChart fx:id="lineChart" alternativeRowFillVisible="false" horizontalGridLinesVisible="false" legendVisible="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="284.0" prefWidth="500.0" style="-fx-background-color: #fff;" stylesheets="@../styles.css" verticalGridLinesVisible="false">
+                        <LineChart fx:id="cpuChart" alternativeRowFillVisible="false" horizontalGridLinesVisible="false" legendVisible="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="284.0" prefWidth="500.0" style="-fx-background-color: #fff;" stylesheets="@../styles.css" verticalGridLinesVisible="false">
                           <xAxis>
                             <CategoryAxis label="Time" side="BOTTOM" />
                           </xAxis>

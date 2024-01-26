@@ -58,7 +58,7 @@ public class Graph extends JFrame {
         return graph;
     }
 
-
+    public static boolean isForMemory;
     
     /** Field XYSeries represents a sequence of zero or more data items in the form (x, y). */
     private XYSeries usageSeries;
@@ -162,7 +162,9 @@ public class Graph extends JFrame {
     public void onRunGraph(BufferedReader reader, Graph ex, Timer timer) throws IOException {
         String inputLine = reader.readLine(); // Read a new line from the response
         if (inputLine != null) {
-            double usage = monitorHttpCLI.getFormattedStats(new StringBuilder(inputLine));
+            double cpu_usage = monitorHttpCLI.getCPUusage(new StringBuilder(inputLine));
+            double memory_usage = monitorHttpCLI.getMemoryUsage(new StringBuilder(inputLine));
+            double usage = isForMemory ? memory_usage : cpu_usage;
             updateStats(usage);
 
             if (flag == false) {

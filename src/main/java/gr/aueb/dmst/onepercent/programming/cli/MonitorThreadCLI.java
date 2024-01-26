@@ -5,6 +5,7 @@ import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
 import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
 import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
+import java.util.Scanner;
 /**
  * MonitorThreadCLI is a thread class specifically designed 
  * for command-line interface (CLI) interactions
@@ -38,6 +39,10 @@ public class MonitorThreadCLI extends SuperThread {
                 containerMonitorHttp.searchImage();
                 break;
             case 5:
+                System.out.println("Type \"C\" for CPU usage or \"M\" for Memory usage diagram.");
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine();
+                Graph.isForMemory = input.equalsIgnoreCase("M");
                 Graph.executeDiagram();
                 break;
             case 6:

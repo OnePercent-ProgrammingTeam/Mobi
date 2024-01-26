@@ -2,6 +2,9 @@ package gr.aueb.dmst.onepercent.programming.core;
 
 import org.apache.http.HttpEntity;
 
+import gr.aueb.dmst.onepercent.programming.data.DataBase;
+import graphics.DataUsers;
+
 public abstract class UserAuthentication extends SuperHttp {
 
     /**
@@ -17,6 +20,8 @@ public abstract class UserAuthentication extends SuperHttp {
         return userExists;
     }
 
+    protected DataUsers users = new DataUsers();
+    protected DataBase dataBase = DataBase.getInstance();
 
     /**
      * username

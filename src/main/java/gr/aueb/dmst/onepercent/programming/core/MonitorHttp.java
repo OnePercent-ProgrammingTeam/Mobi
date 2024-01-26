@@ -87,7 +87,7 @@ public abstract class MonitorHttp extends SuperHttp {
      * @return cpu usage
      */
     
-    public double getFormattedStats(StringBuilder response1Buffer) throws JsonProcessingException {
+    public double getCPUusage(StringBuilder response1Buffer) throws JsonProcessingException {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
@@ -107,6 +107,35 @@ public abstract class MonitorHttp extends SuperHttp {
             }
             double cpuUsage = (cpu_delta / system_delta) * number_cpus * 100.0;
             return cpuUsage;
+
+        } catch (NullPointerException e) {
+            System.out.println("------------------------------------------");
+        }
+        return 0.0;
+    }
+
+    /*
+     * Formats the json response for memory stats to a user-friendly message.
+     */
+    public double getMemoryUsage(StringBuilder response1Buffer) throws JsonProcessingException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
+            double  used_memory = jsonNode.at("/memory_stats/usage").asDouble()
+                            - jsonNode.at("/memory_stats/stats/cache").asDouble();
+            
+            double available_memory = jsonNode.at("/memory_stats/limit").asDouble();
+                                
+            if (available_memory == 0) {
+                //TO DO: Make customised exception
+                System.out.println("\n\nSomething went wrong.\n"
+                                 + "The formula to calculate Memory usage is:\n"
+                                 + "(used_memory / available_memory) * 100.0\n"
+                                 + "and available_memory is 0.\n" 
+                                 + "Make sure that the container is running");
+            }
+            double memory_usage = (used_memory / available_memory) * 100.0;
+            return memory_usage;
 
         } catch (NullPointerException e) {
             System.out.println("------------------------------------------");

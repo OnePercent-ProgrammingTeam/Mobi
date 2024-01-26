@@ -75,7 +75,7 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </HBox>
-                  <TextField fx:id="usernameField" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #6200ee; -fx-border-width: 0px 0px 2px 0px;">
+                  <TextField fx:id="usernameField" promptText="Username or email address" style="-fx-background-color: transparent; -fx-border-color: #6200ee; -fx-border-width: 0px 0px 2px 0px;">
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>

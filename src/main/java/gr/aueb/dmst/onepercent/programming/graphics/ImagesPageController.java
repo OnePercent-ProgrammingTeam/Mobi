@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 
 public class ImagesPageController {
     
@@ -20,6 +21,9 @@ public class ImagesPageController {
 
     @FXML
     private TableColumn<DataModel, String> imagesIdCol;
+
+    @FXML
+    private TableColumn<DataModel, Button> removeCol;
 
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
@@ -45,7 +49,8 @@ public class ImagesPageController {
             
             data.add(new DataModel(
                     imagesNamesList.get(i),
-                    imagesIdsList.get(i)));
+                    imagesIdsList.get(i),
+                    new Button()));
         }
 
         // Set the items for the TableView
@@ -55,23 +60,36 @@ public class ImagesPageController {
         
         imagesIdCol.setStyle("-fx-text-fill: #111111; -fx-font-family: Malgun Gothic;" +
             "-fx-font-size: 15px; -fx-background-color: #eee; -fx-min-width: 200px;");    
+
+
+        imagesNameCol.setCellValueFactory(new PropertyValueFactory<>("imageName"));
+        imagesIdCol.setCellValueFactory(new PropertyValueFactory<>("imageId"));
+        
+        // Set up the removeCol column with a custom cell factory
+        
     }
 
     public static class DataModel {
         private final String imageName;
         private final String imageId;
+        private final Button removeButton;
         
-        public DataModel(String imageName, String imageId) {
+        public DataModel(String imageName, String imageId, Button removeButton) {
             this.imageName = imageName;
             this.imageId = imageId;
+            this.removeButton = removeButton;
         }
-
+    
         public String getImageName() {
             return imageName;
         }
 
         public String getImageId() {
             return imageId;
+        }
+
+        public Button getRemoveButton() {
+            return removeButton;
         }
     }
 }

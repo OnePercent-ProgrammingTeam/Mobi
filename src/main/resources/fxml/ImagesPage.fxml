@@ -21,7 +21,7 @@
               <columns>
                 <TableColumn fx:id="imagesNameCol" editable="false" sortable="false" style="-fx-background-color: #eee;" text="Name" />
                   <TableColumn fx:id="imagesIdCol" sortable="false" style="-fx-background-color: #eee;" text="Identity" />
-                  <TableColumn fx:id="imagesIdCol1" sortable="false" style="-fx-background-color: #eee;" text="Remove" />
+                  <TableColumn fx:id="removeCol" sortable="false" style="-fx-background-color: #eee;" text="Remove" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

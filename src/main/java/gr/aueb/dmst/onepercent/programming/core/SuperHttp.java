@@ -49,7 +49,7 @@ public class SuperHttp implements HttpInterface {
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
 
-
+    protected static double lastMemoryUsage;
 
     /**The static field "conId" is used to keep the id of the container the user wants to find,  
      * in order to be visible in the database. 

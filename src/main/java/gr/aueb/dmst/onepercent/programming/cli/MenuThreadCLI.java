@@ -25,27 +25,19 @@ public class MenuThreadCLI extends MenuThread {
     
     ExecutorThreadCLI executorThreadCLI = ExecutorThreadCLI.getInstance();
     MonitorThreadCLI monitorThreadCLI = MonitorThreadCLI.getInstance();
-    UserAuthenticationCLI userAuthCLI = new UserAuthenticationCLI();
+    UserAuthenticationCLI userAuth   = new UserAuthenticationCLI();
 
     @Override
     public void run() {
-        logIn();   
+        printWelcomeMessage();
+        userAuth.logIn();   
+        printMenu();
     }
-
-    private void logIn() {
-        //while the user does not exists try to log in
-        userAuthCLI.checkAuth();
-        while (!userAuthCLI.getUserExistanceInDocker()) {
-            userAuthCLI.checkAuth();
-        }
-        //if exists then handle him in the database
-        users.handleDataUsers(userAuthCLI.getUsername(), userAuthCLI.getPassword());
-        dataBase.setURL(userAuthCLI.getUsername());
-        dataBase.createDatabaseMetrics();
-        printMenu(); 
+    
+    private void printWelcomeMessage() {
+        System.out.println("\n\nWelcome to Mobi,\nYour Docker Captain - CLI Version\n\n");
+        System.out.println("Docker Hub login, please proceed.");
     }
-
-
     
     /** Method: printMenu() prints the main menu of the program indicating
      *  the available options to the user.
@@ -65,7 +57,7 @@ public class MenuThreadCLI extends MenuThread {
             System.out.println("2) Stop container");
             System.out.println("3) Search image");
             System.out.println("4) Pull image");
-            System.out.println("5) Plot CPU Usage diagram for a running container");
+            System.out.println("5) Plot resource usage diagram for a running container");
             System.out.println("6) Get information about a specific container");
             System.out.println("7) Store real-time data in .csv file for a running container");
             System.out.println("8) Print a list with the locally installed containers");

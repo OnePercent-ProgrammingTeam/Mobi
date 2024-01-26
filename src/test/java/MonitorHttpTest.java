@@ -31,7 +31,7 @@ public class MonitorHttpTest {
 
         try {
             // Test the getFormattedStats method and assert the result
-            double result = containerMonitor.getFormattedStats(responseBuffer);
+            double result = containerMonitor.getCPUusage(responseBuffer);
             assertEquals(200.0, result);
         } catch (JsonProcessingException e) {
             fail("Exception not expected", e);

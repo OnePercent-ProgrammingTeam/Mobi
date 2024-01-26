@@ -65,15 +65,15 @@ public class MonitorHttpCLI extends MonitorHttp {
             swarmInfo.append("Swarm ID: " + jsonNode.get("ID").asText() + "\n");
             swarmInfo.append("Version: " + jsonNode.get("Version").get("Index").asText() + "\n");
             swarmInfo.append("Created at: " + jsonNode
-                                              .get("CreatedAt")
-                                              .asText()
-                                              .replace("T", " ")
-                                              .substring(0, 19) + "\n");
+                                                    .get("CreatedAt")
+                                                    .asText()
+                                                    .replace("T", " ")
+                                                    .substring(0, 19) + "\n");
             swarmInfo.append("Updated at: " + jsonNode
-                                                .get("UpdatedAt")
-                                                .asText()
-                                                .replace("T", " ")
-                                                .substring(0, 19) + "\n");
+                                                    .get("UpdatedAt")
+                                                    .asText()
+                                                    .replace("T", " ")
+                                                    .substring(0, 19) + "\n");
             swarmInfo.append("Subnetwork size: " + jsonNode
                                                     .get("SubnetSize")
                                                     .asText() + "\n");
@@ -183,7 +183,9 @@ public class MonitorHttpCLI extends MonitorHttp {
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {
-                    lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
+                    lastCPUUsage = getCPUusage(response1); //print real time CPU Usage
+                    //print real time Memory Usage
+                    lastMemoryUsage = getMemoryUsage(response1); 
                     this.response.close();
                     break;
                 }

@@ -19,11 +19,24 @@ public class UserAuthenticationCLI extends UserAuthentication {
      */
     public static final String ANSI_GREEN = "\u001B[32m";
 
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
+
+    public void logIn() {
+        //while the user does not exists try to log in
+        checkAuth(); 
+        while (!getUserExistanceInDocker()) {
+            checkAuth();
+        }
+        //if exists then handle him in the database
+        users.handleDataUsers(getUsername(), getPassword());
+        dataBase.setURL(getUsername());
+        dataBase.createDatabaseMetrics(); 
+    }
+
     @Override
     public void checkAuth() {
         String message = "check";
-        System.out.println("Docker Hub login, please proceed");
-        System.out.println("-------------------------------------------------------------");
         username = Main.handleInput("Username: ");
 
         // Use Console to read password without echoing characters
@@ -39,7 +52,7 @@ public class UserAuthenticationCLI extends UserAuthentication {
         }
 
         
-        System.out.println("-------------------------------------------------------------");
+        
         postRequest = new HttpPost("https://hub.docker.com/v2/users/login");
 
         String jsonBody = "{\"username\": \"" + username 

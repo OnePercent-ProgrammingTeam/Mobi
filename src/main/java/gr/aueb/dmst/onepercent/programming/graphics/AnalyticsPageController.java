@@ -30,7 +30,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class AnalyticsPageController {
     @FXML
-    private LineChart<String, Double> lineChart;
+    private LineChart<String, Double> cpuChart;
+
+    @FXML
+    private LineChart<String, Double> memoryChart;
 
     @FXML
     private TableView<DataModel> runningContainersTable;
@@ -44,22 +47,28 @@ public class AnalyticsPageController {
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
     // Other injected components go here
-    XYChart.Series<String, Double> series; 
+    XYChart.Series<String, Double> cpuSeries; 
+    XYChart.Series<String, Double> memorySeries; 
 
     CloseableHttpResponse response;
 
     MonitorHttpGUI monitorHttpGUI = new MonitorHttpGUI();
 
+
     @FXML
     public void initialize() {
         // Set up the line chart
-        series = new XYChart.Series<>();
-        series.setName("CPU USAGE");
+        cpuSeries = new XYChart.Series<>();
+        cpuSeries.setName("CPU USAGE");
+
+        memorySeries = new XYChart.Series<>();
+        memorySeries.setName("MEMORY USAGE");
         // Axis<Double> yAxis = (Axis<Double>) lineChart.getYAxis();
         // yAxis.setAutoRanging(false); // Disable auto-ranging
         // yAxis.boundsInLocalProperty().(0.0);     // Set lower bound
         // yAxis.setUpperBound(10.0);    // Set upper bound
-        lineChart.getData().add(series);
+        cpuChart.getData().add(cpuSeries);
+        memoryChart.getData().add(memorySeries);
 
         //lineChart.setCreateSymbols(false);
         /*  Set the line color using CSS style
@@ -115,6 +124,7 @@ public class AnalyticsPageController {
                         DataModel dataModel = getTableView().getItems().get(getIndex());
                         
                         ManagerHttpGUI.containerId = dataModel.getContainerId();
+                       
                         //monitor.initializeContainerModels(true);
                         if (selectButton.getText().equals("Select")) {
                             selectButton.setText("Selected");
@@ -123,7 +133,7 @@ public class AnalyticsPageController {
                                 "-fx-background-radius: 25; -fx-text-fill: #ddd;");
                             System.out.println(dataModel.getContainerId());
                             MonitorHttp.containerId = 
-                                "11b7ed24d1b9317d3c38bd4a4b26962fe2b71d2fb023f5d0af2dc66db26fed08";
+                                dataModel.getContainerId();
                             response = monitorHttpGUI.getContainerStats("Graph");
                             startUpdatingChart();
                         } else {
@@ -195,30 +205,34 @@ public class AnalyticsPageController {
 
         Platform.runLater(() -> {
             //XYChart.Series<String, Number> series = lineChart.getData().get(0);
-            series.getData().add(new XYChart.Data<>(formattedTime, statsPlot()));
+            double[] stats = statsPlot();
+            cpuSeries.getData().add(new XYChart.Data<>(formattedTime, stats[0]));
+            memorySeries.getData().add(new XYChart.Data<>(formattedTime, stats[1]));
             //Math.random() * 100
 
             // Remove old data points to keep the chart from getting too long
-            if (series.getData().size() > 10) {
-                series.getData().remove(0);
+            if (cpuSeries.getData().size() > 10) {
+                cpuSeries.getData().remove(0);
+            }
+            if (memorySeries.getData().size() > 10) {
+                memorySeries.getData().remove(0);
             }
         });
-
-
     }
 
 
 
-    public double statsPlot() {
+    public double[] statsPlot() {
         // Simulate real-time data update every second
         BufferedReader reader;
-        double usage = 0;
+        double cpu_usage = 0;
+        double memory_usage = 0;
         try {
             reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String inputLine = reader.readLine(); // Read a new line from the response
             if (inputLine != null) {
-                usage = monitorHttpGUI.getFormattedStats(new StringBuilder(inputLine));
-                
+                cpu_usage = monitorHttpGUI.getCPUusage(new StringBuilder(inputLine));
+                memory_usage = monitorHttpGUI.getMemoryUsage(new StringBuilder(inputLine));
             } else {
                 // No more lines to read, close the reader and cancel the timer
                 //This is executed only if there are not more responses 
@@ -228,7 +242,8 @@ public class AnalyticsPageController {
         } catch (UnsupportedOperationException | IOException e) {
             e.printStackTrace();
         }
-        return usage;
+        double[] stats = {cpu_usage, memory_usage};
+        return stats;
     }
 
 }

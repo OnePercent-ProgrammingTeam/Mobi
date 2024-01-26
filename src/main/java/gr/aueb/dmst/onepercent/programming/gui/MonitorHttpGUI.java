@@ -119,7 +119,7 @@ public class MonitorHttpGUI extends MonitorHttp {
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {
-                    lastCPUUsage = getFormattedStats(response1); //print real time CPU Usage
+                    lastCPUUsage = getCPUusage(response1); //print real time CPU Usage
                     response.close();
                     break;
                 }
