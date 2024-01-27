@@ -113,15 +113,9 @@ public class DataUsers {
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
-                int count = result.getInt("COUNT_USERS");
-                System.out.println("number " + count);
+                //int count = result.getInt("COUNT_USERS");
+                //exists if it tries to see the table
                 flag = true;
-                /* 
-                if (count == 1) {
-                    System.out.println("exists " + flag);
-                    flag = true;
-                }
-                */
             }
             statement.close(); 
             connection.close(); 
@@ -161,12 +155,16 @@ public class DataUsers {
         } 
     }
 
+    /**
+     * ok
+     * @param username ok
+     * @param password ok
+     */
     public void handleDataUsers(String username, String password) {
         createUser();
         if (!getUserExistanceInDatabase(username, password)) {
             insertUsers(username, password);
         }
-        //getAllUsers();
     }
 }
 

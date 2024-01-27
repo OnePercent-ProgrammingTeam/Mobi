@@ -22,7 +22,9 @@ public class MonitorHttpGUI extends MonitorHttp {
     private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
         "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
 
-
+    /**
+     * ok
+     */
     public static int searchResultCount = 3;
     /** Method: inspectContainerGUI() retrieves information about a container that might be 
      * or might not be locally installed. 
@@ -75,7 +77,7 @@ public class MonitorHttpGUI extends MonitorHttp {
      * This method does not show messages to command line. */
     public void searchImage() {
         String message = "/images/search"; // get the container statistics in json format
-        imName = imageName;
+        dataBaseThread.setImageName(imageName);
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  message + 
                                  "?term=" + 

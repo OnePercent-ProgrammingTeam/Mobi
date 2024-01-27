@@ -40,6 +40,7 @@ public class ManagerHttpCLI extends ManagerHttp {
     public void startContainer() {
         String message = "start";
         containerId = Main.handleInput("Please type the container ID to start the container: ");
+        conId = containerId;
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpRequest(message);
     }
@@ -49,6 +50,7 @@ public class ManagerHttpCLI extends ManagerHttp {
     public void stopContainer() {
         String message = "stop";
         containerId = Main.handleInput("Please type the container ID to stop the container: ");
+        conId = containerId;
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
         executeHttpRequest(message);
     }
@@ -57,6 +59,7 @@ public class ManagerHttpCLI extends ManagerHttp {
     public void removeContainer() {
         String message = "remove";
         containerId = Main.handleInput("Please type the container ID to remove the container: ");
+        conId = containerId;
         deleteRequest = new HttpDelete(DOCKER_HOST + 
                                       "/containers/" + 
                                       containerId + "?force=true");
@@ -70,8 +73,8 @@ public class ManagerHttpCLI extends ManagerHttp {
     @Override
     public void pullImage() {
         String message = "pull";
-        String imageName;
         imageName = Main.handleInput("Please type the name of the image you would like to pull:");
+        dataBaseThread.setImageName(imageName);
         postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
         executeHttpRequest(message);
     }
@@ -79,8 +82,8 @@ public class ManagerHttpCLI extends ManagerHttp {
     @Override 
     public void removeImage() {
         String message = "removeImg";
-        String imageName;
         imageName = Main.handleInput("Please type the name of the image you would like to remove:");
+        dataBaseThread.setImageName(imageName);
         deleteRequest = new HttpDelete(DOCKER_HOST + "/images/" + imageName);
         executeHttpRequest(message);
     }
@@ -146,6 +149,18 @@ public class ManagerHttpCLI extends ManagerHttp {
 
     }
 
+    
+
+    /**
+     * ok
+     * @param message ok 
+     * @return ok
+     */
+    @VisibleForTesting
+    public String getProvideMessage(String message) {
+        return provideMessage(message);
+    }
+
     /**
      * Retrieves the message provided by {@code provideMessage(String)} method.
      *
@@ -157,18 +172,12 @@ public class ManagerHttpCLI extends ManagerHttp {
      * @return The generated output message 
      * based on the HTTP response status code and the input message.
      * @see #provideMessage(String)
-     * @throws ActionContainerException if the container is already started, not found, 
-     * or server error.
-     * @throws StopContainerException if the container is already stopped, not found,
+     * @throws ActionContainerException if the container is already started or stopped, not found, 
      * or server error.
      * @throws PullImageException if the image is not found or server error.
      * @throws RemoveContainerException if the container is not found, bad parameter,
      * conflict, or server error.
      */
-    @VisibleForTesting
-    public String getProvideMessage(String message) {
-        return provideMessage(message);
-    }
     private String provideMessage(String message) throws ActionContainerException,
                                                         PullImageException,
                                                         RemoveDockerObjectException {
@@ -176,46 +185,51 @@ public class ManagerHttpCLI extends ManagerHttp {
         if (message.equals("start") || message.equals("stop")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 204:
-                    conId = containerId; //only if it successful insert it into database
+                    dataBaseThread.setState("success");
                     output = ANSI_GREEN + "Container " + message  + " was successfull." +
                         ANSI_RESET;
                     break;
                 case 304:
+                    dataBaseThread.setState("failure");
                     message = (message.equals("start")) ? "start" : "stopp";
                     throw new ActionContainerException("Container already " + message + "ed.");
                 case 404:
+                    dataBaseThread.setState("failure");
                     throw new ActionContainerException("There is no such container. Try again");
                 case 500:
+                    dataBaseThread.setState("failure");
                     throw new ActionContainerException("Server error!");
             }
         } else if (message.equals("pull")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 200:
-                    imName = imageName;
+                    dataBaseThread.setState("success");
                     output = ANSI_GREEN + "Image " + message + " was successfull." + ANSI_RESET;
                     break;
                 case 404:
+                    dataBaseThread.setState("failure");
                     throw new PullImageException("Image not found.");
                 case 500:
+                    dataBaseThread.setState("failure");
                     throw new PullImageException("Server error!");
             }
         } else if (message.equals("remove") || message.equals("removeImg")) {
             switch (this.response.getStatusLine().getStatusCode()) {
                 case 204:
-                    if (message.equals("remove")) {
-                        conId = containerId;
-                    } else {
-                        imName = imageName;
-                    }
+                    dataBaseThread.setState("success");
                     output = ANSI_GREEN + "Successfull removal." + ANSI_RESET;
                     break;
                 case 400:
+                    dataBaseThread.setState("failure");
                     throw new RemoveDockerObjectException("Bad parameter");
                 case 404:
+                    dataBaseThread.setState("failure");
                     throw new RemoveDockerObjectException("No such object found. Try again");
                 case 409:
+                    dataBaseThread.setState("failure");
                     throw new RemoveDockerObjectException("A conflict has been detected.");
                 case 500:
+                    dataBaseThread.setState("failure");
                     System.out.println("Server error!");
                     break;
             }

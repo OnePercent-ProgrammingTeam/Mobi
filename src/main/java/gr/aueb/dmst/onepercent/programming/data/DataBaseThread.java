@@ -7,21 +7,15 @@ package gr.aueb.dmst.onepercent.programming.data;
  */
 public class DataBaseThread extends Thread {
 
-    private int answer;
-
-    /* 
-    public DataBaseThread() { }
-    public DataBaseThread(int answer) {
-        this.answer = answer;
-    }
-    */
-
-
     //Sigleton
     private static DataBaseThread dataBaseThread;
 
     private DataBaseThread() { }
 
+    /**
+     * ok
+     * @return ok
+     */
     public static DataBaseThread getInstance() {
         if (dataBaseThread == null) {
             dataBaseThread = new DataBaseThread();
@@ -30,8 +24,41 @@ public class DataBaseThread extends Thread {
     }
 
 
-    public void setAnswer(int answer) {
-        this.answer = answer;
+
+    private String imName;
+    /**
+     * ok
+     * @param imName ok
+     */
+    public void setImageName(String imName) {
+        this.imName = imName;
+    }
+
+    private int command;
+    /**
+     * ok
+     * @param command ok
+     */
+    public void setCommand(int command) {
+        this.command = command;
+    }
+
+    private String state;
+    /**
+     * ok
+     * @param state ok
+     */
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private String means;
+    /**
+     * ok
+     * @param means ok
+     */
+    public void setMeans(String means) {
+        this.means = means;
     }
 
 
@@ -39,23 +66,23 @@ public class DataBaseThread extends Thread {
     @Override
     public void run() {
         DataBase dataBase = DataBase.getInstance();
+        
 
         String datetime = dataBase.getDateTime();
-        int last_id = dataBase.insertMetricsToDatabase(datetime, answer);
-        //System.out.println("inside run datathreaad with: " + answer);
 
-        if (answer == 1 || answer == 2 || answer == 6) {
+        int last_id = dataBase.insertMetricsToDatabase(datetime, command, state, means);
+
+        if (command == 1 || command == 2 || command == 5 || command == 6 || command == 9) {
             dataBase.insertContainerToDatabase(last_id);
-            //retrieveData.getAllMetrics(); //NOT helpful
-            //retrieveData.getAllContainer(); //NOT helpful
+            dataBase.getAllMetrics(); //NOT helpful
+            //dataBase.getAllContainer(); //NOT helpful
 
 
-        } else if (answer == 3) {
-            System.out.println("inside image database ");
-            dataBase.insertImageToDatabase(last_id);
-            dataBase.getAllMetrics(); //helpful
-            dataBase.getAllImage(); //helpful
-            dataBase.getImageForSearch();
+        } else if (command == 3 || command == 4 || command == 10) {
+            dataBase.insertImageToDatabase(last_id, imName);
+            //dataBase.getAllMetrics(); //helpful
+            //dataBase.getAllImage(); //helpful
+            //dataBase.getImageForSearch();
 
         } 
     }

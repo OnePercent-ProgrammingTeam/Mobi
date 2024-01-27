@@ -11,7 +11,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
 
+/**
+ * ok
+ */
+
 public class ImagesPageController {
+    /** ok */
+    public ImagesPageController() { }
     
     @FXML
     private TableView<DataModel> imagesTable;
@@ -27,6 +33,9 @@ public class ImagesPageController {
 
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
+    /**
+     * ok
+     */
     @FXML
     public void initialize() {
         // Link columns to corresponding properties in DataModel
@@ -69,25 +78,46 @@ public class ImagesPageController {
         
     }
 
+    /**
+     * ok
+     */
     public static class DataModel {
         private final String imageName;
         private final String imageId;
         private final Button removeButton;
         
+        /**
+         * ok
+         * @param imageName ok
+         * @param imageId ok
+         * @param removeButton ok
+         */
         public DataModel(String imageName, String imageId, Button removeButton) {
             this.imageName = imageName;
             this.imageId = imageId;
             this.removeButton = removeButton;
         }
     
+        /**
+         * ok
+         * @return ok
+         */
         public String getImageName() {
             return imageName;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public String getImageId() {
             return imageId;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public Button getRemoveButton() {
             return removeButton;
         }

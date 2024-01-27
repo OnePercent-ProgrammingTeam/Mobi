@@ -13,11 +13,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
+/**
+ * ok
+ */
+
 public class MainPageController {
+    /** ok */
+    public MainPageController() { }
 
     @FXML
     private Button containersButton;
 
+    /**
+     * ok
+     */
     @FXML
     public AnchorPane contentArea;
 
@@ -51,6 +60,10 @@ public class MainPageController {
     private double yOffset = 0;
     private static String usernameString; 
 
+    /**
+     * ok
+     * @param usernameString ok
+     */
     public void setUsernameString(String usernameString) {
         this.usernameString = usernameString;
         

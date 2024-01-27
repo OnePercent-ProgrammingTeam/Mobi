@@ -40,10 +40,8 @@ public class MonitorThreadGUI extends SuperThread {
             case 6:
                 containerMonitorHttp.inspectContainer();
                 break;
-            case 7:
-                //TO DO: make the functionality work for GUI 
+            case 11:
                 break;
         }
     }
-
 }

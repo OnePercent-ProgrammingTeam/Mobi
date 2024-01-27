@@ -2,7 +2,6 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 
 import java.io.IOException;
 
-import exceptions.UserExistsException;
 import exceptions.UserNotFoundException;
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI;
@@ -19,8 +18,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-
+/**
+ * ok
+ */
 public class LoginPageController {
+    /** ok */
+    public LoginPageController() { }
 
     @FXML
     private Text failedAuthText;
@@ -45,6 +48,7 @@ public class LoginPageController {
     DataUsers users = new DataUsers();
     DataBase metrics = DataBase.getInstance();
 
+
     @FXML
     void login(ActionEvent event) {
         //new check 
@@ -56,8 +60,6 @@ public class LoginPageController {
         
         try {
             if (userAuthGUI.getUserExistanceInDocker()) {
-                System.out.println("User exists");
-
                 mainPageController.setUsernameString(usernameField.getText());
                 Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
                 Scene mainPageScene = new Scene(root, 1300, 700);
@@ -75,31 +77,8 @@ public class LoginPageController {
             System.out.println("Error loading the fxml file");
         }
         
-
-        /* 
-        //key has the answer to the question "does the user exist?" (true or false)
-        boolean key = users.getUserExistanceInDatabase(usernameField.getText(),
-                     passwordField.getText());
-        failedAuthText.setText(null);
-
-        try {
-            if (key) {
-                System.out.println("User exists");
-                mainPageController.setUsernameString(usernameField.getText());
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                Scene mainPageScene = new Scene(root, 1000, 600);
-                MainGUI.window.setScene(mainPageScene);
-            } else {
-                throw new UserNotFoundException(usernameField.getText());
-            }
-        } catch (UserNotFoundException e) {
-            failedAuthText.setText(e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Error loading the fxml file");
-        }
-        */
     }
-
+    /* 
     @FXML
     void signup(ActionEvent event) {
         //key has the answer to the question "does the user exist?" (true or false)
@@ -127,6 +106,7 @@ public class LoginPageController {
         } 
         users.getAllUsers();
     }
+    */
 
     @FXML
     void closeApp(ActionEvent event) {

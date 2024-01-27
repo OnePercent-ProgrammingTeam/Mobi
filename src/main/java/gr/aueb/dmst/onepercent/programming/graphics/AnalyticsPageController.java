@@ -28,7 +28,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * ok
+ */
+
 public class AnalyticsPageController {
+    /**
+     * ok
+     */
+    public AnalyticsPageController() { }
+
     @FXML
     private LineChart<String, Double> cpuChart;
 
@@ -54,7 +63,9 @@ public class AnalyticsPageController {
 
     MonitorHttpGUI monitorHttpGUI = new MonitorHttpGUI();
 
-
+    /**
+     * ok
+     */
     @FXML
     public void initialize() {
         // Set up the line chart
@@ -154,25 +165,48 @@ public class AnalyticsPageController {
         runningContainersTable.setItems(data);
     }
 
+    /**
+     * ok
+     */
+
     public static class DataModel {
         private final String containerName;
         private final String containerId;
         private final Button selection;
         
+
+        /**
+         * constructor
+         * @param containerName ok
+         * @param containerId ok 
+         * @param selection ok
+         */
         public DataModel(String containerName, String containerId, Button selection) {
             this.containerName = containerName;
             this.containerId = containerId;
             this.selection = selection;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public String getContainerName() {
             return containerName;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public String getContainerId() {
             return containerId;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public Button getSelection() {
             return selection;
         }
@@ -221,7 +255,10 @@ public class AnalyticsPageController {
     }
 
 
-
+    /**
+     * ok
+     * @return ok
+     */
     public double[] statsPlot() {
         // Simulate real-time data update every second
         BufferedReader reader;

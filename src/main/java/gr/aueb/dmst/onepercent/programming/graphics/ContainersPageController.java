@@ -22,11 +22,17 @@ import org.controlsfx.control.ToggleSwitch;
 
 
 import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
 
-
+/**
+ * ok
+ */
 public class ContainersPageController {
+
+    /**ok */
+    public ContainersPageController() { }
 
     @FXML
     private TableView<DataModel> containerTable;
@@ -57,7 +63,9 @@ public class ContainersPageController {
 
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
-
+    /**
+     * ok
+     */
     @FXML
     public void initialize() {
        
@@ -131,6 +139,8 @@ public class ContainersPageController {
                         DataModel dataModel = getTableView().getItems().get(getIndex());
                         
                         ManagerHttpGUI.containerId = dataModel.getContainerId();
+                        SuperHttp superHttp = new SuperHttp();
+                        superHttp.setContainerId(ManagerHttpGUI.containerId);
                         //monitor.initializeContainerModels(true);
                         if (toggle.isSelected()) {
                             MainGUI.menuThreadGUI.handleUserInputGUI(1);
@@ -188,7 +198,9 @@ public class ContainersPageController {
         exitedText.setText("Exited: " + (all - running));
     }
 
-
+    /**
+     * ok
+     */
     public static class DataModel {
         private final String containerName;
         private final String containerId;
@@ -197,6 +209,14 @@ public class ContainersPageController {
         private final String timeCreated;
         private final ToggleSwitch action;
 
+        /**
+         * con
+         * @param containerName ok
+         * @param containerId ok
+         * @param status ok
+         * @param timeCreated ok
+         * @param action ok
+         */
         public DataModel(String containerName, 
             String containerId, String status, String timeCreated,
             ToggleSwitch action) {
@@ -207,26 +227,50 @@ public class ContainersPageController {
             this.action = action;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public String getContainerName() {
             return containerName;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public String getContainerId() {
             return containerId;
         }
 
+        /**
+         * ok
+         * @param status ok
+         */
         public void setStatus(String status) {
             this.status.set(status);
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public StringProperty getStatus() {
             return status;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public String getTimeCreated() {
             return timeCreated;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public ToggleSwitch getAction() {
             return action;
         }

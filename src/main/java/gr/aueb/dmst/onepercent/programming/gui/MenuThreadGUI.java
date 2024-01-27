@@ -2,7 +2,6 @@ package gr.aueb.dmst.onepercent.programming.gui;
 
 import gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
-import graphics.DataUsers;
 
 /**
  * MenuThreadGUI class represents the graphical user interface (GUI) implementation 
@@ -19,9 +18,7 @@ public class MenuThreadGUI extends MenuThread {
 
     @Override
     public void run() {
-        DataUsers user = new DataUsers();
-        user.createUser();
-        dataBase.createDatabaseMetrics();
+        dataBaseThread.setMeans("GUI");
     }
 
     /**
@@ -35,6 +32,8 @@ public class MenuThreadGUI extends MenuThread {
             case 1:
             case 2:
             case 4:
+            case 9:
+            case 10:
                 executorThreadGUI.setUserInput(answer);
                 thread = new Thread(executorThreadGUI);
                 //set name to the thread so as to be easier to recognize it. 
@@ -42,19 +41,12 @@ public class MenuThreadGUI extends MenuThread {
                 thread.start();
 
                 waitThread();
-
-                /*start concurrently the database Thread*/
-                /*dataThread.setUserInput(answer);
-                thread = new Thread(dataThread);
-                thread.setName("DataBase"); 
-                thread.start();*/
                 
                 break;
             case 3:
             case 5:
             case 6:
-            case 7:
-            case 8:
+            case 11:
                 monitorThreadGUI.setUserInput(answer);
                 thread = new Thread(monitorThreadGUI);
                 thread.setName("Monitor");
@@ -62,23 +54,10 @@ public class MenuThreadGUI extends MenuThread {
 
                 waitThread();
                     
-                /*start concurrently the database Thread
-                dataThread.setUserInput(answer);
-                thread = new Thread(dataThread);
-                thread.setName("DataBase"); 
-                thread.start();
-                */
                 break;
             default:
                 System.out.println("Non Valid Input.");
         }
-       // if (answer == 5) {
-       //     while (Graph.end == false) {
-       //         waitThread();
-       //     }
-       // } else {
-       //     waitThread();
-       // }   
     }
 
     /**

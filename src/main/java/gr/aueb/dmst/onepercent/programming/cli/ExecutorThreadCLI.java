@@ -50,7 +50,10 @@ public class ExecutorThreadCLI extends SuperThread {
                 containerManagerHttp.removeImage();
                 break;
         }
-        dataBaseThread.setAnswer(this.userInput);
+        System.out.println("container id :" + ManagerHttpCLI.containerId);
+        System.out.println("Image name : " + ManagerHttpCLI.imageName);
+        dataBaseThread.setCommand(this.userInput);
+        Thread dataThread = new Thread(dataBaseThread);
         dataThread.start();
     }
 

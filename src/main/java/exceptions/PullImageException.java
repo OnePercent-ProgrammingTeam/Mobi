@@ -25,9 +25,13 @@ public class PullImageException extends RuntimeException {
     */
     public static final String ANSI_RED = "\u001B[31m";
 
+    /**ok */
     private String message;
+    /**ok */
     private String style;
+    /**ok */
     private int statusCode;
+    /**ok */
     private String statusCodeStyle;
 
 
@@ -55,11 +59,11 @@ public class PullImageException extends RuntimeException {
      * @param statusCodeStyle the style of the status code.
      */
     public PullImageException(String message, String style,
-         int statusCode, String statusCodeStyel) {
+         int statusCode, String statusCodeStyle) {
         this.message = message;
         this.style = style;
         this.statusCode = statusCode;
-        this.statusCodeStyle = statusCodeStyel;
+        this.statusCodeStyle = statusCodeStyle;
     }
 
     /**

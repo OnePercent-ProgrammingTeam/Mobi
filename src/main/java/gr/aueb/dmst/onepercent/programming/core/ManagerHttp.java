@@ -43,8 +43,14 @@ public abstract class ManagerHttp extends SuperHttp {
      */
     public abstract void pullImage();
 
+    /**
+     * ok
+     */
     public abstract void removeContainer();
 
+    /**
+     * ok
+     */
     public abstract void removeImage();
     
     /** Method: executeHttpRequest(String) executes the http request 

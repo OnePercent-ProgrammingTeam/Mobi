@@ -6,9 +6,19 @@ import org.apache.http.entity.StringEntity;
 
 import gr.aueb.dmst.onepercent.programming.core.UserAuthentication;
 
+/**
+ * ok
+ */
+
 public class UserAuthenticationGUI extends UserAuthentication {
+    /**ok */
+    public UserAuthenticationGUI() { }
 
-
+    /**
+     * ok
+     * @param username ok
+     * @param password ok
+     */
     public void setCredentials(String username, String password) {
         this.username = username;
         this.password = password;

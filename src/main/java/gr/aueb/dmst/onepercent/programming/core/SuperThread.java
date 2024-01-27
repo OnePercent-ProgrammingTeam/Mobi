@@ -21,9 +21,11 @@ public abstract class SuperThread implements Runnable {
      */
     protected int userInput;
 
-
+    /**
+     * ok
+     */
     protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
-    protected Thread dataThread = new Thread(dataBaseThread);
+    //protected Thread dataThread = new Thread(dataBaseThread);
 
     /**
      * Method: setUserInput sets the user input.

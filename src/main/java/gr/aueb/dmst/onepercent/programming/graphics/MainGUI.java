@@ -10,11 +10,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * ok
+ */
 public class MainGUI extends Application {
+    /** ok */
+    public MainGUI() { }
     static Stage window;
 
     static MenuThreadGUI menuThreadGUI;
 
+    /**
+     * ok
+     * @param args ok
+     */
     public static void main(String[] args) {
         launch(args);
     }

@@ -1,7 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.cli;
 
 import exceptions.InvalidInputException;
-import gr.aueb.dmst.onepercent.programming.core.Graph;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
 import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
@@ -25,12 +24,12 @@ public class MenuThreadCLI extends MenuThread {
     
     ExecutorThreadCLI executorThreadCLI = ExecutorThreadCLI.getInstance();
     MonitorThreadCLI monitorThreadCLI = MonitorThreadCLI.getInstance();
-    UserAuthenticationCLI userAuth   = new UserAuthenticationCLI();
+    UserAuthenticationCLI userAuthCLI = new UserAuthenticationCLI();
 
     @Override
     public void run() {
         printWelcomeMessage();
-        userAuth.logIn();   
+        userAuthCLI.logIn();   
         printMenu();
     }
     
@@ -107,6 +106,7 @@ public class MenuThreadCLI extends MenuThread {
      * 
      */
     private void executeUserChoice(int answer) throws InvalidInputException {
+        dataBaseThread.setMeans("CLI");
         switch (answer) {
             case 1:
             case 2:
@@ -118,6 +118,7 @@ public class MenuThreadCLI extends MenuThread {
                 //set name to the thread so as to be easier to recognize it. 
                 thread.setName("Executor"); 
                 thread.start();
+                waitThread();
 
                 break;
             case 3:
@@ -130,20 +131,16 @@ public class MenuThreadCLI extends MenuThread {
                 thread = new Thread(monitorThreadCLI);
                 thread.setName("Monitor");
                 thread.start();                
+                waitThread();
 
+                break;
+            case 12: 
+                dataBase.getHistoryList();
                 break;
             default:
                 throw new InvalidInputException("Please, enter a valid number.");
         }
-        if (answer == 5) {
-            while (Graph.end == false) {
-                waitThread();
-            }
-        } else {
-            waitThread();
-        }
-
-
+        
     }
         
     /**

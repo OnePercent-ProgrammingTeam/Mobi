@@ -103,7 +103,11 @@ public class MonitorAPI extends SuperAPI {
     }
 
 
-    
+    /**
+     * ok
+     * @param id ok
+     * @return ok
+     */
     public boolean getContainerStatus(String id) {
         for (ContainerModel c : containerModels) {
             if (c.getId().equals(id)) {

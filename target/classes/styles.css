@@ -166,3 +166,7 @@
     -fx-font-size: 14px;
     -fx-tick-label-fill: #fff;
 }
+
+#memoryChart .chart-line-symbol {
+    -fx-background-color: #fff !important;
+}

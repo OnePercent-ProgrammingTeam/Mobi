@@ -5,7 +5,12 @@ import org.apache.http.HttpEntity;
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import graphics.DataUsers;
 
+/**
+ * ok
+ */
 public abstract class UserAuthentication extends SuperHttp {
+    /**ok */
+    public UserAuthentication() { }
 
     /**
      * userExists
@@ -20,7 +25,14 @@ public abstract class UserAuthentication extends SuperHttp {
         return userExists;
     }
 
+    /**
+     * ok
+     */
     protected DataUsers users = new DataUsers();
+
+    /**
+     * ok
+     */
     protected DataBase dataBase = DataBase.getInstance();
 
     /**
@@ -28,6 +40,10 @@ public abstract class UserAuthentication extends SuperHttp {
      */
     protected String username;
 
+    /**
+     * ok
+     * @return ok
+     */
     public String getUsername() {
         return username;
     }
@@ -37,6 +53,10 @@ public abstract class UserAuthentication extends SuperHttp {
      */
     protected String password;
 
+    /**
+     * ok
+     * @return ok
+     */
     public String getPassword() {
         return password;
     }
@@ -46,6 +66,9 @@ public abstract class UserAuthentication extends SuperHttp {
      */
     protected static HttpEntity entity;
 
+    /**
+     * ok
+     */
     public abstract void checkAuth();
 
     /** Method: executeHttpRequest(String) executes the http request 
@@ -65,6 +88,10 @@ public abstract class UserAuthentication extends SuperHttp {
         } 
     }
 
+    /**
+     * ok
+     * @param message ok
+     */
     public abstract void handleOutput(String message);
     
 }

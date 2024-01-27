@@ -57,6 +57,10 @@ public abstract class MonitorHttp extends SuperHttp {
 
             //int statusCode = response.getStatusLine().getStatusCode();
             //System.out.println("Status Code : " + statusCode);
+            //if it gets stats then store it in the database
+            if (response.getStatusLine().getStatusCode() == 200) {
+                conId = containerId;
+            }
 
             return response;
         } catch (Exception e) {
@@ -114,8 +118,11 @@ public abstract class MonitorHttp extends SuperHttp {
         return 0.0;
     }
 
-    /*
-     * Formats the json response for memory stats to a user-friendly message.
+    /**
+     * ok
+     * @param response1Buffer ok
+     * @return ok
+     * @throws JsonProcessingException ok
      */
     public double getMemoryUsage(StringBuilder response1Buffer) throws JsonProcessingException {
         try {

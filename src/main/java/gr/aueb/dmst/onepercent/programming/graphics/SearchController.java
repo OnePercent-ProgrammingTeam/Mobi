@@ -44,6 +44,8 @@ import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
  * @see exceptions.PullImageException
  */
 public class SearchController {
+    /** ok */
+    public SearchController() { }
 
     @FXML
     private TextField autoCompleteTextField;

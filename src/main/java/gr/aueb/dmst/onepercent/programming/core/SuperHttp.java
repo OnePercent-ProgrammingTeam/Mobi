@@ -8,6 +8,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import com.github.dockerjava.api.DockerClient;
 
+import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
+
 /**
  * Class: SuperHttp is a superclass that contains static variables, used in other
  * classes, representing the docker client and the http requests.
@@ -33,6 +35,7 @@ public class SuperHttp implements HttpInterface {
     /** Container id of the container that is going to be started, stopped or inspected */
     public static String containerId; // used in junit test
 
+    /**ok */
     protected static HttpDelete deleteRequest;
     /**
      * Http Get request (Get is "to request to get something e.g info about
@@ -49,25 +52,36 @@ public class SuperHttp implements HttpInterface {
     /** Last CPU Usage is the last metric for a running container */
     protected static double lastCPUUsage;
 
+    /**ok */
     protected static double lastMemoryUsage;
 
+
+
+    //for database
     /**The static field "conId" is used to keep the id of the container the user wants to find,  
      * in order to be visible in the database. 
      */
     protected String conId;
+    /**
+     * ok
+     * @return ok
+     */
     public String getContainerId() {
         return conId;
     }
 
-    /**The static field "imName" is used to keep the name of the image the user wants to find,  
-     * in order to be visible in the database. 
+    /**
+     * ok
+     * @param conId ok
      */
-    protected String imName;
-    public String getImageName() {
-        return imName;
+    public void setContainerId(String conId) {
+        this.conId = conId;
     }
 
-
+    /**
+     * ok
+     */
+    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
 
     
     /** Execute the http request
@@ -83,6 +97,10 @@ public class SuperHttp implements HttpInterface {
         return response;
     }
 
+    /**
+     * ok
+     * @return ok
+     */
     public StringBuilder getResponse1() {
         return response1;
     }

@@ -8,7 +8,13 @@ import org.apache.http.entity.StringEntity;
 
 import gr.aueb.dmst.onepercent.programming.core.UserAuthentication;
 
+/**
+ * ok
+ */
+
 public class UserAuthenticationCLI extends UserAuthentication {
+    /**ok */
+    public UserAuthenticationCLI() { }
     /**
      * ANSI color code for resetting text color.
      */
@@ -19,9 +25,15 @@ public class UserAuthenticationCLI extends UserAuthentication {
      */
     public static final String ANSI_GREEN = "\u001B[32m";
 
+    /**
+     * ok
+     */
     public static final String ANSI_YELLOW = "\u001B[33m";
 
 
+    /**
+     * ok
+     */
     public void logIn() {
         //while the user does not exists try to log in
         checkAuth(); 
@@ -67,7 +79,6 @@ public class UserAuthenticationCLI extends UserAuthentication {
     /** Method handleOutput(String) prints the appropriate message, based on the status 
      *  code of the http response and the request that has been done.
      * @param message the message that indicates the action that is going to be executed. 
-     * @return the correct message
      */
     @Override
     public void handleOutput(String message) {

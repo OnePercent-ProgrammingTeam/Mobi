@@ -15,7 +15,12 @@ import com.google.common.annotations.VisibleForTesting;
 import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
 import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
 
+
+/**
+ * ok
+ */
 public class DataBase {
+    /** ok */
     protected String url = "jdbc:h2:./databases/metricsbase";
 
     /**
@@ -29,9 +34,13 @@ public class DataBase {
     public String getUrl() {
         return url;
     }
-    
+     /** ok */
     protected String query;
 
+    /**
+     * ok
+     * @param username ok
+     */
     public void setURL(String username) {
         url = url + "/" + username; 
     }
@@ -40,8 +49,13 @@ public class DataBase {
     //Sigleton
     private static DataBase database;
 
+     
     private DataBase() { }
 
+    /**
+     * ok
+     * @return ok
+     */
     public static DataBase getInstance() {
         if (database == null) {
             database = new DataBase();
@@ -52,10 +66,9 @@ public class DataBase {
     /**
      * Method: createDatabase() creates tables in the H2 database.
      * Creation of 4 tables: 
-     * 1) Metrics (ID, Date, Command)
+     * 1) Metrics (ID, Date, Command, State, Means)
      * 2) Container(ID,C_ID, C_NAME, Status, Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)
      * 3) Image (ID,NAME)
-     * 4) Measure (ID,C_ID, Cpu_usage)
      */
     public void createDatabaseMetrics() {
         try {
@@ -69,7 +82,9 @@ public class DataBase {
             query = "CREATE TABLE IF NOT EXISTS Metrics ("
                 + "ID INT AUTO_INCREMENT PRIMARY KEY,"
                 + "Date DATETIME,"
-                + "Command INT"
+                + "Command INT,"
+                + "State VARCHAR(10),"
+                + "Means VARCHAR(10)"
                 + ");";
 
             //execute the query 
@@ -108,22 +123,6 @@ public class DataBase {
             //execute the query 
             statement.execute(query);
 
-            
-
-            //Query that creates the "Measure" table
-            query = "CREATE TABLE IF NOT EXISTS Measure ("
-                + "ID INT,"
-                + "C_ID VARCHAR(100),"
-                + "Cpu_usage DECIMAL(12,10),"
-                + "CONSTRAINT c3 PRIMARY KEY (ID,C_ID),"
-                + "FOREIGN KEY (ID) REFERENCES Metrics(ID)"
-                + ");";
-            
-            //execute the query 
-            statement.execute(query);
-
-
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -148,12 +147,13 @@ public class DataBase {
 
     /**
      * Insert data into "Metrics"
-     *
      * @param datetime The datetime to be inserted.
-     * @param command 
+     * @param command ok
+     * @param state ok
+     * @param means ok
      * @return The ID of the last inserted record.
      */
-    public int insertMetricsToDatabase(String datetime, int command) {
+    public int insertMetricsToDatabase(String datetime, int command, String state, String means) {
         int last_id = 0;
 
         try {
@@ -162,8 +162,12 @@ public class DataBase {
             Statement statement = connection.createStatement();
             
              
-            query = "INSERT INTO Metrics (Date, Command)" 
-                     + "VALUES ('" + datetime + "','" + command + "');";
+            query = "INSERT INTO Metrics (Date, Command, State, Means)" 
+                     + "VALUES ('" + datetime + "','" + command 
+                     + "','" + state + "','" + means + "');";
+
+
+
             statement.execute(query); 
 
             query = "SELECT MAX(ID) AS LAST_ID FROM Metrics";
@@ -217,16 +221,14 @@ public class DataBase {
 
     /**
      * Insert data into "Image"
-     *
      * @param last_id The last inserted ID in the "Metrics" table.
+     * @param name ok
      */
-    public void insertImageToDatabase(int last_id) {
+    public void insertImageToDatabase(int last_id, String name) {
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-
-            String name = monitorHttp.getImageName();
 
             query = "INSERT INTO Image (ID, NAME) VALUES ('" + last_id + "','" + name + "');";
             statement.execute(query); 
@@ -239,29 +241,6 @@ public class DataBase {
         }
     }
     
-    /**
-     * Insert data into "Measure"
-     *
-     * @param last_id The last inserted ID in the "Metrics" table.
-     * @param cpu     The CPU usage to be inserted.
-     */
-    public void insertMeasureToDatabase(int last_id, double cpu) {
-        try {
-            Class.forName("org.h2.Driver");
-            Connection connection = DriverManager.getConnection(url);
-            Statement statement = connection.createStatement();
-
-            String container = monitorHttp.getContainerId();
-
-            query = "INSERT INTO Measure (ID, C_ID, Cpu_usage) VALUES ('" 
-                    + last_id + "','" + container + "','" + cpu + "');";
-            statement.execute(query); 
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * Method for showing all metrics
@@ -279,10 +258,15 @@ public class DataBase {
                 int id = result.getInt("ID");
                 String datetime = result.getString("Date");
                 int command = result.getInt("Command");
+                String state = result.getString("State");
+                String means = result.getString("Means");
                 
+                System.out.println();
                 System.out.println("ID of metrics: " + id);
                 System.out.println("Date of metrics: " + datetime);
                 System.out.println("Command: " + command);
+                System.out.println("State: " + state);
+                System.out.println("Means : " + means);
                 System.out.println();
             }
 
@@ -372,40 +356,6 @@ public class DataBase {
 
 
     /**
-     * Method for checking for "Measure"
-     *
-     * @param last_id The last inserted ID in the "Metrics" table.
-     */
-    public void getSomeMeasure(int last_id) {
-        try {
-            Class.forName("org.h2.Driver"); 
-            Connection connection = DriverManager.getConnection(url); 
-            Statement statement = connection.createStatement(); 
-              
-            query = "SELECT * FROM Measure WHERE ID = " + String.valueOf(last_id);
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                int id = result.getInt("ID");
-                String container = result.getString("C_ID");
-                double cpu = result.getDouble("Cpu_usage");
-
-                
-                System.out.println("ID of metrics: " + id);
-                System.out.println("ID of container: " + container);
-                System.out.println("Cpu of container: " + cpu);
-                System.out.println();
-            }
-
-            statement.close(); 
-            connection.close(); 
-           
-        } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
-        } 
-    }
-
-    /**
      * Method for checking for some "Metrics"
      *
      * @param last_id The last inserted ID in the "Metrics" table.
@@ -476,5 +426,134 @@ public class DataBase {
         return names;
     }
 
+
+
+
+
+
+    
+    private ArrayList<String> date = new ArrayList<>();
+    private ArrayList<Integer> com = new ArrayList<>();
+    private ArrayList<String> state = new ArrayList<>();
+    private ArrayList<String> means = new ArrayList<>();
+    private ArrayList<String> name = new ArrayList<>();
+    private ArrayList<String> object = new ArrayList<>();
+
+    /**
+     * ok
+     */
+    public void getHistory() {
+        try {
+            Class.forName("org.h2.Driver"); 
+            Connection connection = DriverManager.getConnection(url); 
+            Statement statement = connection.createStatement(); 
+              
+            query = "SELECT Metrics.Date, Metrics.Command, Metrics.State, Metrics.Means, "
+                    + "COALESCE(Image.NAME, Container.C_NAME) AS Name "
+                    + "FROM Metrics "
+                    + "LEFT JOIN Image ON Metrics.ID = Image.ID "
+                    + "LEFT JOIN Container ON Metrics.ID = Container.ID "
+                    + "ORDER BY Metrics.Date DESC;";
+
+                        
+                    
+            ResultSet result = statement.executeQuery(query);
+    
+            while (result.next()) {
+                String d = result.getString("Date");
+                int c = result.getInt("Command");
+                String s = result.getString("State");
+                String m = result.getString("Means");
+                String n = result.getString("Name");
+
+
+                date.add(d);
+                com.add(c);
+                state.add(s);
+                means.add(m);
+                name.add(n);
+            }
+
+            statement.close(); 
+            connection.close(); 
+           
+        } catch (ClassNotFoundException | SQLException e) { 
+            e.printStackTrace();
+        } 
+    }
+
+
+    private ArrayList<String> convertCommandtoString(ArrayList<Integer> com) {
+        ArrayList<String> commands = new ArrayList<>();
+        for (int i = 0; i < com.size(); i++) {
+            switch (com.get(i)) {
+                case 1: 
+                    commands.add("start");
+                    object.add("Container");
+                    break;
+                case 2: 
+                    commands.add("stop");
+                    object.add("Container");
+                    break;
+                case 5: 
+                    commands.add("get plot");
+                    object.add("Container");
+                    break;
+                case 6: 
+                    commands.add("get info");
+                    object.add("Container");
+                    break;
+                case 9: 
+                    commands.add("remove");
+                    object.add("Container");
+                    break;
+                case 3: 
+                    commands.add("search");
+                    object.add("Image");
+                    break;
+                case 4: 
+                    commands.add("pull");
+                    object.add("Image");
+                    break;
+                case 10: 
+                    commands.add("remove");
+                    object.add("Image");
+                    break;
+                default:
+                    break;
+            }
+        }
+        return commands;
+    }
+
+
+
+    /**
+     * ok
+     */
+    public void getHistoryList() {
+        System.out.printf("%-30s%-20s%-20s%-70s%-20s%-10s%n", 
+                          "Date", 
+                          "Action", 
+                          "Object", 
+                          "Name",
+                          "State", 
+                          "Means");
+        System.out.println(" ");
+
+        getHistory();
+
+        ArrayList<String> command = convertCommandtoString(com);
+        for (int i = 0; i < date.size(); i++) {
+            System.out.printf("%-30s%-20s%-20s%-70s%-20s%-10s%n",
+                                date.get(i), 
+                                command.get(i),
+                                object.get(i),
+                                name.get(i),
+                                state.get(i),
+                                means.get(i));
+            System.out.println();
+        }
+    } 
 
 }

@@ -28,6 +28,7 @@ public class MonitorHttpCLI extends MonitorHttp {
         String message = "json"; // get the container information in json format
         MonitorHttp.containerId = Main.handleInput(
             "Please type the container ID to get info about the container: ");
+        conId = containerId;
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  "/containers/" + 
                                  MonitorHttp.containerId + 
@@ -40,7 +41,7 @@ public class MonitorHttpCLI extends MonitorHttp {
     public void searchImage() {
         String message = "/images/search"; // get the container statistics in json format
         imageName = Main.handleInput("Please type the name of the image you want to search for: ");
-        imName = imageName;
+        dataBaseThread.setImageName(imageName);
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  message + 
                                  "?term=" + 
@@ -48,12 +49,16 @@ public class MonitorHttpCLI extends MonitorHttp {
         executeHttpRequest(message);
     }
 
+    /**
+     * ok
+     */
     public void inspectSwarm() {
         String message = "swarm";
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
         executeHttpRequest(message);
         System.out.println(formatSwarmInfo());
     }
+
 
     private StringBuilder formatSwarmInfo() {
         StringBuilder swarmInfo = new StringBuilder();
@@ -184,6 +189,7 @@ public class MonitorHttpCLI extends MonitorHttp {
                 response1.append(inputLine);
                 if (message.equals("stats")) {
                     lastCPUUsage = getCPUusage(response1); //print real time CPU Usage
+                    //dataBaseThread.setState("success");
                     //print real time Memory Usage
                     lastMemoryUsage = getMemoryUsage(response1); 
                     this.response.close();
@@ -194,10 +200,14 @@ public class MonitorHttpCLI extends MonitorHttp {
             reader.close();
             
             if (message.equals("json")) {
+                //check other situations with the state
+                dataBaseThread.setState("success");
                 printFormattedInfo();
                 
             }
             if (message.equals("/images/search")) {
+                //check other situations with the state
+                dataBaseThread.setState("success");
                 printFormattedJsonForImage();
             } 
 

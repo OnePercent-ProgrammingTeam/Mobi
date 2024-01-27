@@ -1,6 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
 import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
+import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 
 import java.awt.Color;
@@ -58,17 +59,14 @@ public class Graph extends JFrame {
         return graph;
     }
 
+    /**
+     * ok
+     */
     public static boolean isForMemory;
     
     /** Field XYSeries represents a sequence of zero or more data items in the form (x, y). */
     private XYSeries usageSeries;
 
-    private static boolean flag;
-
-    /**
-     * Field: end represents whether the graph should end or continue updating.
-     */
-    public static boolean end;
 
     /** Field: monitorHttp is a MonitorHttp object. */
     static MonitorHttpCLI monitorHttpCLI = new MonitorHttpCLI();
@@ -166,25 +164,7 @@ public class Graph extends JFrame {
             double memory_usage = monitorHttpCLI.getMemoryUsage(new StringBuilder(inputLine));
             double usage = isForMemory ? memory_usage : cpu_usage;
             updateStats(usage);
-
-            if (flag == false) {
-              /*  LocalDate date = LocalDate.now(); 
-                LocalTime time = LocalTime.now();
-                DataBase database = new DataBase();
-
-                //Date and Time in one
-                String datetime = date.toString() + " " + time.toString().substring(0, 8);
-                int last_id = database.insertMetricsToDatabase(datetime);
-                database.insertMeasureToDatabase(last_id, usage);
-                database.getSomeMetrics(last_id); //helpful
-                database.getSomeMeasure(last_id); //helpful*/
-            } else {
-                //reader.close();
-                timer.cancel();
-                end = true;
-            }
-            
-            
+        
         } else {
             // No more lines to read, close the reader and cancel the timer
             //This is executed only if there are not more responses 
@@ -193,6 +173,7 @@ public class Graph extends JFrame {
         }
         
     }
+
 
     
     /** Method: executeDiagram() executes the diagram. */
@@ -203,13 +184,15 @@ public class Graph extends JFrame {
         // Set the close operation, so that the application exits when the window is closed
         cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
         CloseableHttpResponse res = monitorHttpCLI.getContainerStats("Graph");
-        flag = false;  
-        end = false;
+
+        //need check for other options
+        DataBaseThread dataBaseThread = DataBaseThread.getInstance();
+        dataBaseThread.setState("success");
+
         cv.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeWindow(cv);
-                flag = true; 
             }
         });
 
@@ -237,13 +220,10 @@ public class Graph extends JFrame {
         // Set the close operation, so that the application exits when the window is closed
         cv.setDefaultCloseOperation(Graph.DO_NOTHING_ON_CLOSE); 
         CloseableHttpResponse res = monitorHttpGUI.getContainerStats("GOT TO DELETE!!!");
-        flag = false;  
-        end = false;
         cv.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeWindow(cv);
-                flag = true; 
             }
         });
 
