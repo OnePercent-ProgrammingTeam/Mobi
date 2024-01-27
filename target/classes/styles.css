@@ -170,3 +170,11 @@
 #memoryChart .chart-line-symbol {
     -fx-background-color: #fff !important;
 }
+
+#popupWindow {
+    -fx-background-color: #ddd;
+}
+
+.root {
+    -fx-background-color: transparent; 
+}

@@ -61,6 +61,7 @@ public class MonitorThreadCLI extends SuperThread {
                 break;
             case 11:
                 containerMonitorHttp.inspectSwarm();
+                System.out.println(containerMonitorHttp.formatSwarmInfo());
                 break;
         }
         dataBaseThread.setCommand(this.userInput);

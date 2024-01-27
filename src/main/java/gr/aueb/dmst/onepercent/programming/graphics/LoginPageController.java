@@ -43,7 +43,7 @@ public class LoginPageController {
     @FXML
     private Button exit;
 
-    MainPageController mainPageController = new MainPageController();
+    static MainPageController MAIN_PAGE_CONTROLLER;
 
     DataUsers users = new DataUsers();
     DataBase metrics = DataBase.getInstance();
@@ -60,8 +60,12 @@ public class LoginPageController {
         
         try {
             if (userAuthGUI.getUserExistanceInDocker()) {
-                mainPageController.setUsernameString(usernameField.getText());
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+                
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainPage.fxml")); 
+                Parent root = loader.load();
+                
+                MAIN_PAGE_CONTROLLER = loader.getController();
+                MAIN_PAGE_CONTROLLER.setUsernameString(usernameField.getText());
                 Scene mainPageScene = new Scene(root, 1300, 700);
 
                 MainGUI.window.setScene(mainPageScene);
@@ -78,10 +82,10 @@ public class LoginPageController {
         }
         
     }
-    /* 
+    
     @FXML
     void signup(ActionEvent event) {
-        //key has the answer to the question "does the user exist?" (true or false)
+        /* //key has the answer to the question "does the user exist?" (true or false)
         boolean key = users.getUserExistanceInDatabase(usernameField.getText(),
                      passwordField.getText());
         failedAuthText.setText(null);
@@ -104,9 +108,9 @@ public class LoginPageController {
         } catch (IOException e) {
             System.out.println("Error loading the fxml file");
         } 
-        users.getAllUsers();
+        users.getAllUsers();*/
     }
-    */
+    
 
     @FXML
     void closeApp(ActionEvent event) {

@@ -49,18 +49,8 @@ public class MonitorHttpCLI extends MonitorHttp {
         executeHttpRequest(message);
     }
 
-    /**
-     * ok
-     */
-    public void inspectSwarm() {
-        String message = "swarm";
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
-        executeHttpRequest(message);
-        System.out.println(formatSwarmInfo());
-    }
 
-
-    private StringBuilder formatSwarmInfo() {
+    public StringBuilder formatSwarmInfo() {
         StringBuilder swarmInfo = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();

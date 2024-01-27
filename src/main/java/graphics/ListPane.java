@@ -282,8 +282,7 @@ public class ListPane {
      */
     public void updateGridPane() {
         MonitorHttpGUI monitorHttp = new MonitorHttpGUI();
-        containerInfos = monitorHttp.getContainerInfoForGUI();
-
+        
         
         for (int i = 0; i < containerInfos.length; i++) {
             Label containerInfo = new Label(containerInfos[i]);

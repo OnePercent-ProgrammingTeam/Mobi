@@ -14,6 +14,12 @@ public class MonitorThreadGUI extends SuperThread {
 
     private MonitorThreadGUI() { }
 
+    MonitorHttpGUI containerMonitorHttp = new MonitorHttpGUI();
+
+    public MonitorHttpGUI getContainerMonitorHttp() {
+        return containerMonitorHttp;
+    }
+
     /**
      * Gets the instance of MonitorThreadGUI using the singleton pattern.
      *
@@ -28,7 +34,6 @@ public class MonitorThreadGUI extends SuperThread {
     
     @Override
     public void run() { 
-        var containerMonitorHttp = new MonitorHttpGUI();
         switch (this.userInput) {
             case 3:
                 containerMonitorHttp.searchImage();

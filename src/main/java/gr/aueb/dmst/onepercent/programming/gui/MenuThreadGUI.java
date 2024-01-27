@@ -1,5 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.gui;
 
+
 import gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 
@@ -16,9 +17,30 @@ public class MenuThreadGUI extends MenuThread {
     ExecutorThreadGUI executorThreadGUI = ExecutorThreadGUI.getInstance();
     MonitorThreadGUI monitorThreadGUI = MonitorThreadGUI.getInstance();
 
+    private static final Object lock = new Object();
+    
     @Override
     public void run() {
+        System.out.println("Menu thread running...");
         dataBaseThread.setMeans("GUI");
+        Thread monThread = new Thread(() -> {
+            while (true) {
+                // Operations thread logic
+                synchronized (lock) {
+                    try {
+                        // Wait for user input
+                        lock.wait();
+                        System.out.println("inside the operations thread");
+                        monitorThreadGUI.run();
+                        lock.notify();
+                        System.out.println("inside the operations thread after notify");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        monThread.start();
     }
 
     /**
@@ -48,12 +70,28 @@ public class MenuThreadGUI extends MenuThread {
             case 6:
             case 11:
                 monitorThreadGUI.setUserInput(answer);
-                thread = new Thread(monitorThreadGUI);
-                thread.setName("Monitor");
-                thread.start();
 
-                waitThread();
+                while (true) {
                     
+
+                    synchronized (lock) {
+                        
+                        
+
+                        // Notify the operations thread that user input is available
+                        lock.notify();
+
+                        // Pause the menu thread until the operations thread finishes
+                        try {
+                            System.out.println("Menu thread paused...");
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                }
+                System.out.println("Menu thread running...");
                 break;
             default:
                 System.out.println("Non Valid Input.");

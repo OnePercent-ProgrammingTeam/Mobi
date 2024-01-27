@@ -532,7 +532,7 @@ public class DataBase {
      * ok
      */
     public void getHistoryList() {
-        System.out.printf("%-30s%-20s%-20s%-70s%-20s%-10s%n", 
+        System.out.printf("%-30s%-20s%-20s%-50s%-20s%-10s%n", 
                           "Date", 
                           "Action", 
                           "Object", 

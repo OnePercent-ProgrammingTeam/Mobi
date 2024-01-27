@@ -1,32 +1,24 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
-import org.controlsfx.control.ToggleSwitch;
+import java.io.IOException;
 
+import org.controlsfx.control.ToggleSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-/**
- * ok
- */
-
 public class MainPageController {
-    /** ok */
-    public MainPageController() { }
 
     @FXML
     private Button containersButton;
 
-    /**
-     * ok
-     */
     @FXML
     public AnchorPane contentArea;
 
@@ -60,13 +52,12 @@ public class MainPageController {
     private double yOffset = 0;
     private static String usernameString; 
 
-    /**
-     * ok
-     * @param usernameString ok
-     */
     public void setUsernameString(String usernameString) {
         this.usernameString = usernameString;
-        
+    }
+
+    public void setContentArea(AnchorPane contentArea) {
+        this.contentArea = contentArea;
     }
 
     @FXML
@@ -86,26 +77,22 @@ public class MainPageController {
             MainGUI.window.setY(event.getScreenY() - yOffset);
         });
 
+
     }
 
     /*@FXML 
     void changeToDarkMode() {
         System.out.println("hello");
     }*/
-
     @FXML
-    void menuOnHoverEnter(MouseEvent event) {
-        // Button sourceButton = (Button) event.getSource();
-        // sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #bb86fc; " +
-        //     "-fx-border-width: 0px 0px 0px 4px; -fx-border-color: #ffffff;");
-    }
-
-    @FXML
-    void menuOnHoverExit(MouseEvent event) {
-        // Button sourceButton = (Button) event.getSource();
-        // sourceButton.setStyle(sourceButton.getStyle() + "-fx-background-color: #6200ee; " +
-        //     "-fx-border-width: 0px 0px 0px 0px; -fx-border-color: transparent;");
-        // setMenuButtonSelected(selectedButton);
+    void logOut() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
+            Scene mainPageScene = new Scene(root, 1300, 700);
+            MainGUI.window.setScene(mainPageScene);
+        } catch (IOException e) {
+            System.out.println("Error loading the fxml file");
+        }
     }
 
     @FXML
@@ -150,7 +137,7 @@ public class MainPageController {
         button.getStyleClass().add("selected");
     }
 
-    private void loadPage(String pageName) {
+    void loadPage(String pageName) {
         try {
             // Load the FXML file for the selected page
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + pageName));

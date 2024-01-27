@@ -31,7 +31,7 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         createMenuThread();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
         String style = "src\\main\\resources\\styles.css";
         Path stylepath = Paths.get(style);
         root.getStylesheets().add(getClass().
@@ -39,7 +39,9 @@ public class MainGUI extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
         window = primaryStage;
         window.setTitle("One Percent");
-        window.setScene(new Scene(root, 1300, 700));
+        Scene scene = new Scene(root, 1300, 700);
+        scene.setFill(null);
+        window.setScene(scene);
         window.setResizable(false); //does not allow the user to resize the window
         window.initStyle(StageStyle.UNDECORATED);
         

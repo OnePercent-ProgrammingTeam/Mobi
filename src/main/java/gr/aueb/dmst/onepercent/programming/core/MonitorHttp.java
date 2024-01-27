@@ -44,6 +44,14 @@ public abstract class MonitorHttp extends SuperHttp {
      */
     public abstract void searchImage();
     
+    /**
+     * inspects docker swarm
+     */
+    public void inspectSwarm() {
+        String message = "swarm";
+        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
+        executeHttpRequest(message);
+    }
 
     /** Method: getHttpResponse(String) executes the http request for getting 
      *  stats about a running container.
@@ -168,6 +176,7 @@ public abstract class MonitorHttp extends SuperHttp {
     public String[] getTableforContainer() throws JsonProcessingException {
         String[] info = new String[8];
         try {
+            System.out.println("Inside getTableforContainer() method");
             getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                     "/containers/" + 
                                     MonitorHttp.containerId + 

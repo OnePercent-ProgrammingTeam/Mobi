@@ -4,12 +4,15 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.ToggleSwitch?>
@@ -35,7 +38,7 @@
                   <Insets top="40.0" />
                </VBox.margin>
             </HBox>
-            <Button fx:id="containersButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadContainers" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text="  Containers" textFill="WHITE">
+            <Button fx:id="containersButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadContainers" styleClass="menu-button" stylesheets="@../styles.css" text="  Containers" textFill="WHITE">
                <VBox.margin>
                   <Insets top="40.0" />
                </VBox.margin>
@@ -56,7 +59,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="imagesButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="136.0" mnemonicParsing="false" onAction="#loadImages" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text="  Images" textFill="WHITE">
+            <Button fx:id="imagesButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="136.0" mnemonicParsing="false" onAction="#loadImages" styleClass="menu-button" stylesheets="@../styles.css" text="  Images" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -74,7 +77,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="analyticsButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="186.0" mnemonicParsing="false" onAction="#loadAnalytics" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text=" Analytics" textFill="WHITE">
+            <Button fx:id="analyticsButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="186.0" mnemonicParsing="false" onAction="#loadAnalytics" styleClass="menu-button" stylesheets="@../styles.css" text=" Analytics" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -92,7 +95,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="searchButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="236.0" mnemonicParsing="false" onAction="#loadSearch" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text="  Docker Hub" textFill="WHITE">
+            <Button fx:id="searchButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="236.0" mnemonicParsing="false" onAction="#loadSearch" styleClass="menu-button" stylesheets="@../styles.css" text="  Docker Hub" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -110,7 +113,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="helpButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="286.0" mnemonicParsing="false" onAction="#loadHelp" onMouseEntered="#menuOnHoverEnter" onMouseExited="#menuOnHoverExit" styleClass="menu-button" stylesheets="@../styles.css" text="  Help" textFill="WHITE">
+            <Button fx:id="helpButton" alignment="BASELINE_LEFT" layoutX="35.0" layoutY="286.0" mnemonicParsing="false" onAction="#loadHelp" styleClass="menu-button" stylesheets="@../styles.css" text="  Help" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -128,9 +131,28 @@
                   </ImageView>
                </graphic>
             </Button>
+            <VBox alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#logOut" styleClass="menu-button" stylesheets="@../styles.css" text="  Log Out" textFill="WHITE">
+                     <font>
+                        <Font name="Malgun Gothic" size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/menuIcons/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
          </children>
          <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            <Insets bottom="25.0" left="20.0" right="20.0" top="10.0" />
          </padding>
       </VBox>
    </left>
@@ -138,53 +160,79 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <center>
-      <VBox alignment="TOP_CENTER" minHeight="200.0" minWidth="730.0" prefHeight="200.0" prefWidth="100.0" spacing="30.0" BorderPane.alignment="CENTER_LEFT">
+      <VBox alignment="TOP_CENTER" minHeight="200.0" minWidth="730.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <HBox fx:id="topBar" alignment="CENTER_RIGHT" maxHeight="70.0" minHeight="70.0" spacing="5.0" style="-fx-background-color: #fff; -fx-background-radius: 20;">
-               <VBox.margin>
-                  <Insets left="20.0" right="5.0" />
-               </VBox.margin>
+            <StackPane alignment="TOP_CENTER">
                <children>
-                  <ImageView fx:id="sun" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/mainPage/sun.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </ImageView>
-                  <ToggleSwitch fx:id="toggleButton" styleClass="toggle-switch" stylesheets="@../styles.css">
-                     <HBox.margin>
-                        <Insets right="40.0" />
-                     </HBox.margin>
-                  </ToggleSwitch>
-                  <Text fx:id="username" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                  </Text>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/mainPage/userPhoto.png" />
-                     </image>
-                  </ImageView>
+                  <ScrollPane fx:id="scrollArea" cacheShape="false" centerShape="false" focusTraversable="false" hbarPolicy="NEVER" pannable="true" scaleShape="false" style="-fx-background-color: transparent;" stylesheets="@../styles.css">
+                    <content>
+                      <AnchorPane fx:id="contentArea" style="-fx-background-color: transparent;" />
+                    </content>
+                     <StackPane.margin>
+                        <Insets top="75.0" />
+                     </StackPane.margin>
+                  </ScrollPane>
+                  <HBox fx:id="topBar" alignment="CENTER_RIGHT" maxHeight="70.0" minHeight="70.0" spacing="5.0" style="-fx-background-color: #fff; -fx-background-radius: 20;" stylesheets="@../styles.css">
+                     <children>
+                        <ImageView fx:id="sun" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/mainPage/sun.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ImageView>
+                        <ToggleSwitch fx:id="toggleButton" styleClass="toggle-switch" stylesheets="@../styles.css">
+                           <HBox.margin>
+                              <Insets right="40.0" />
+                           </HBox.margin>
+                        </ToggleSwitch>
+                        <Text fx:id="username" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </Text>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/mainPage/userPhoto.png" />
+                           </image>
+                        </ImageView>
+                        <Button mnemonicParsing="false" onAction="#exit" style="-fx-background-color: transparent;">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/intro/powerOff.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets left="40.0" />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                     </padding>
+                     <effect>
+                        <DropShadow height="25.31" offsetY="5.0" radius="5.8275" spread="0.13" width="0.0">
+                           <color>
+                              <Color opacity="0.15000000596046448" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-               </padding>
-            </HBox>
-            <ScrollPane fx:id="scrollArea" cacheShape="false" centerShape="false" focusTraversable="false" hbarPolicy="NEVER" pannable="true" scaleShape="false" stylesheets="@../styles.css">
-              <content>
-                <AnchorPane fx:id="contentArea" />
-              </content>
-               <VBox.margin>
-                  <Insets left="20.0" right="5.0" />
-               </VBox.margin>
-            </ScrollPane>
+            </StackPane>
          </children>
+         <padding>
+            <Insets left="20.0" right="10.0" />
+         </padding>
       </VBox>
    </center>
 </BorderPane>

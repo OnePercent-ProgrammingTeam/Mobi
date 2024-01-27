@@ -19,8 +19,7 @@ import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
  */
 public class MonitorHttpGUI extends MonitorHttp {
 
-    private static String[] containerInfoForGUI = {"Not Found", "Not Found", "Not Found",
-        "Not Found", "Not Found", "Not Found", "Not Found", "Not Found"};
+    String[] containerInfo = new String[4];
 
     /**
      * ok
@@ -33,34 +32,66 @@ public class MonitorHttpGUI extends MonitorHttp {
     @Override
     public void inspectContainer() {
         try {
-            containerInfoForGUI = new String[8];
-            containerInfoForGUI = getTableforContainer();
+            String[] res = this.getTableforContainer();
+            containerInfo[0] = res[6];
+            containerInfo[1] = res[7];
+            containerInfo[2] = res[4];
+            containerInfo[3] = res[5];
         } catch (Exception e) {
             System.out.print("ERROR FROM inspectContainerGUI() method ");
-            for (int i = 0; i < containerInfoForGUI.length; i++) {
-                containerInfoForGUI[i] = "Not Found";
-            }
         }
     }
 
-    /**
-     * Method: getContainerInfoForGUI()
-     * Retrieves the container information formatted for the graphical user interface.
-     *
-     * @return An array containing container information for the GUI, including:
-     *         - Container ID
-     *         - Container Name
-     *         - Container Status
-     *         - Image ID
-     *         - Network ID
-     *         - Gateway
-     *         - IP Address
-     *         - Mac Address
-     */
-    public String[] getContainerInfoForGUI() {
-        return containerInfoForGUI;
+    public String[] getContainerInfo() {
+        return containerInfo;
     }
 
+    @Override
+    public String[] getTableforContainer() throws JsonProcessingException {
+        String[] info = new String[8];
+        try {
+            System.out.println("Inside getTableforContainer() method");
+            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                    "/containers/" + 
+                                    MonitorHttp.containerId + 
+                                    "/json");
+            executeHttpRequest("prepare storage");
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString());
+
+            info[0] = jsonNode.get("Id").asText();
+            info[1] = jsonNode.get("Name").asText().substring(1);
+            info[2] = jsonNode.get("State").get("Status").asText();
+            info[3] = jsonNode.get("Image").asText();
+            info[4] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("NetworkID")
+                            .asText();
+            info[5] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("Gateway")
+                            .asText();
+            info[6] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("IPAddress")
+                            .asText();
+            info[7] = jsonNode.get("NetworkSettings")
+                            .get("Networks")
+                            .get("bridge")
+                            .get("MacAddress")
+                            .asText();
+
+        } catch (NullPointerException e) {
+            System.out.println("Exception due to null value");
+        }
+        return info;
+
+    }
+   
     @Override
     public CloseableHttpResponse getContainerStats(String GOT_TO_DELETE) {
         String message = "stats"; // get the container statistics in json format
@@ -108,16 +139,18 @@ public class MonitorHttpGUI extends MonitorHttp {
      * @param message the final part of the url that is used to get the info.
      * may throw Exception if an error occurs while executing the http request.
      */
-    @Override
     public void executeHttpRequest(String message) {
-        try {
-            CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
+        try (CloseableHttpResponse response = HTTP_CLIENT.execute(getRequest)) {
+            
+            System.out.println(getRequest);
+            //CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
+            
             //int statusCode = response.getStatusLine().getStatusCode();
             //System.out.println("Status Code : " + statusCode);
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
-            MonitorHttp.response1 = new StringBuilder();
+            response1 = new StringBuilder();
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {
@@ -128,6 +161,7 @@ public class MonitorHttpGUI extends MonitorHttp {
             }
             
             reader.close();
+            response.close();
            
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,6 +255,32 @@ public class MonitorHttpGUI extends MonitorHttp {
             System.out.println("-------------------------------------");
             return null;
         }
+    }
+
+    public String[] getSwarmInfo() {
+        String[] swarmInfo = new String[6];
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response1.toString());
+            
+            swarmInfo[0] = jsonNode.get("Spec").get("Name").asText();
+            swarmInfo[1] = jsonNode.get("ID").asText();
+            swarmInfo[2] = jsonNode.get("Version").get("Index").asText();
+            swarmInfo[3] = jsonNode.get("CreatedAt")
+                                    .asText()
+                                    .replace("T", "\n")
+                                    .substring(0, 19);
+            swarmInfo[4] =  jsonNode
+                            .get("UpdatedAt")
+                            .asText()
+                            .replace("T", "\n")
+                            .substring(0, 19);
+            swarmInfo[5] =  jsonNode.get("SubnetSize").asText();
+            return swarmInfo;
+        } catch (Exception e) {
+            System.out.println("Some information is missing...");
+        }
+        return null;
     }
 
     /**

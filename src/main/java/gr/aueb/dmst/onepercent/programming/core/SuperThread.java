@@ -14,7 +14,7 @@ import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
  * @see gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI
  * @see gr.aueb.dmst.onepercent.programming.data.DataBaseThread
  */
-public abstract class SuperThread implements Runnable {
+public abstract class SuperThread extends Thread {
     /**
      * Field: userInput is the input of the user that is used in threads to define his options.
      * It represents the user input collected by the MenuThread.
