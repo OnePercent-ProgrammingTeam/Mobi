@@ -52,6 +52,11 @@ public class MainPageController {
     private double yOffset = 0;
     private static String usernameString; 
 
+    private static int image;
+    public void setImage(int image) {
+        this.image = image;
+    }
+
     public void setUsernameString(String usernameString) {
         this.usernameString = usernameString;
     }

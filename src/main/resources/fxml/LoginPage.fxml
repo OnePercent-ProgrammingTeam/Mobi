@@ -14,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="700.0" maxWidth="1300.0" minHeight="700.0" minWidth="1300.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.LoginPageController">
+<BorderPane maxHeight="700.0" maxWidth="1300.0" minHeight="700.0" minWidth="1300.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.LoginPageController">
    <left>
-      <AnchorPane maxHeight="600.0" maxWidth="500.0" minHeight="600.0" minWidth="500.0" style="-fx-background-color: #6200ee; -fx-background-radius: 130;" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="650.0" style="-fx-background-color: #6200ee; -fx-background-radius: 130;" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane maxHeight="600.0" maxWidth="150.0" minHeight="600.0" minWidth="150.0" style="-fx-background-color: #6200ee;" />
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="200.0" style="-fx-background-color: #6200ee;" />
             <VBox alignment="CENTER" layoutX="100.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="200.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
@@ -30,7 +30,7 @@
                         </ImageView>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Mobi">
                            <font>
-                              <Font name="Segoe UI Symbol" size="50.0" />
+                              <Font name="Malgun Gothic" size="60.0" />
                            </font>
                         </Text>
                      </children>
@@ -40,7 +40,7 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                      <font>
-                        <Font name="Malgun Gothic" size="20.0" />
+                        <Font name="Malgun Gothic" size="30.0" />
                      </font>
                   </Text>
                </children>
@@ -51,6 +51,15 @@
    <center>
       <AnchorPane maxHeight="600.0" maxWidth="500.0" minHeight="600.0" minWidth="500.0" style="-fx-background-color: #eee;" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="exit" layoutX="424.0" layoutY="18.0" mnemonicParsing="false" onAction="#closeApp" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="-25.0" AnchorPane.topAnchor="-10.0">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/intro/powerOff.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <VBox alignment="TOP_CENTER" layoutX="100.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="170.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="User Login">
@@ -67,7 +76,7 @@
                         </ImageView>
                         <Text fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0" text="Docker Hub login, please proceed.">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="18.0" />
                            </font>
                         </Text>
                      </children>
@@ -79,11 +88,17 @@
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </TextField>
                   <PasswordField fx:id="passwordField" promptText="Password" style="-fx-background-color: transparent; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #6200ee;">
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets top="25.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </PasswordField>
                   <Text fx:id="failedAuthText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0">
                      <VBox.margin>
@@ -95,12 +110,7 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                      <children>
-                        <MFXButton fx:id="loginButton" maxWidth="100.0" minHeight="40.0" minWidth="100.0" onAction="#login" rippleColor="#eeeeee" style="-fx-background-color: #6200ee; -fx-background-radius: 25;" text="Log In" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </MFXButton>
-                        <MFXButton fx:id="signupButton" computeRadiusMultiplier="false" layoutX="160.0" layoutY="5.0" maxWidth="100.0" minHeight="40.0" minWidth="100.0" onAction="#signup" rippleColor="#eeeeee" rippleRadius="5.0" rippleRadiusMultiplier="0.5" style="-fx-background-color: #6200ee; -fx-background-radius: 25;" text="Sign Up" textFill="WHITE">
+                        <MFXButton fx:id="loginButton" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#login" prefHeight="40.0" prefWidth="130.0" rippleColor="#eeeeee" style="-fx-background-color: #6200ee; -fx-background-radius: 25;" text="Log In" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -109,15 +119,6 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="exit" layoutX="424.0" layoutY="18.0" mnemonicParsing="false" onAction="#closeApp" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-               <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/intro/powerOff.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
          </children>
       </AnchorPane>
    </center>

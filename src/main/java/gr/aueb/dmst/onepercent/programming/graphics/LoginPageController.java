@@ -70,6 +70,8 @@ public class LoginPageController {
 
                 MainGUI.window.setScene(mainPageScene);
                 users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword());
+                int image = users.getUser(userAuthGUI.getUsername(), userAuthGUI.getPassword());
+                MAIN_PAGE_CONTROLLER.setImage(image);
                 metrics.setURL(userAuthGUI.getUsername());
                 metrics.createDatabaseMetrics();
             } else {

@@ -478,3 +478,142 @@ Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection wa
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 77 more
+2024-01-27 21:33:01.339633+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistory(DataBase.java:448)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistoryList(DataBase.java:544)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.executeUserChoice(MenuThreadCLI.java:138)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.handleUserInput(MenuThreadCLI.java:82)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.printMenu(MenuThreadCLI.java:68)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.run(MenuThreadCLI.java:33)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 15 more
+2024-01-28 16:11:17.435557+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.insertMetricsToDatabase(DataBase.java:161)
+	at gr.aueb.dmst.onepercent.programming.data.DataBaseThread.run(DataBaseThread.java:73)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 11 more
+2024-01-28 16:12:12.769694+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistory(DataBase.java:448)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistoryList(DataBase.java:544)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.executeUserChoice(MenuThreadCLI.java:138)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.handleUserInput(MenuThreadCLI.java:82)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.printMenu(MenuThreadCLI.java:68)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.run(MenuThreadCLI.java:33)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 15 more
+2024-01-28 16:14:34.624350+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistory(DataBase.java:448)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistoryList(DataBase.java:544)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.executeUserChoice(MenuThreadCLI.java:138)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.handleUserInput(MenuThreadCLI.java:82)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.printMenu(MenuThreadCLI.java:68)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.run(MenuThreadCLI.java:33)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 15 more
+2024-01-28 16:37:55.835238+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistory(DataBase.java:448)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistoryList(DataBase.java:535)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.executeUserChoice(MenuThreadCLI.java:138)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.handleUserInput(MenuThreadCLI.java:82)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.printMenu(MenuThreadCLI.java:68)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.run(MenuThreadCLI.java:33)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 15 more
+2024-01-28 16:45:23.881697+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistory(DataBase.java:448)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.getHistoryList(DataBase.java:535)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.executeUserChoice(MenuThreadCLI.java:138)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.handleUserInput(MenuThreadCLI.java:82)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.printMenu(MenuThreadCLI.java:68)
+	at gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI.run(MenuThreadCLI.java:33)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 15 more
+2024-01-28 16:47:01.506190+02:00 jdbc[4]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
+	at gr.aueb.dmst.onepercent.programming.data.DataBase.insertMetricsToDatabase(DataBase.java:161)
+	at gr.aueb.dmst.onepercent.programming.data.DataBaseThread.run(DataBaseThread.java:73)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-222]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 11 more

@@ -72,7 +72,7 @@ public class DataUsers {
             Connection connection = DriverManager.getConnection(urlgeneral);
 
             Random random = new Random();
-            int number = random.nextInt(6) + 1; //from 1 to 6
+            int number = random.nextInt(17) + 1; //from 1 to 17
 
             // Use a prepared statement to insert data into the "Users" table
             String query = "INSERT INTO Users (NAME, PASSWORD, IMAGE) VALUES (?, ?, ?)";
@@ -134,7 +134,8 @@ public class DataUsers {
      * Method that shows all the users in the database in the table "Users". 
      * This method is mainly for checking that the users are inserted in the database.
      */
-    public void getUser(String username, String password) {
+    public int getUser(String username, String password) {
+        int image = 0;
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(urlgeneral); 
@@ -148,7 +149,7 @@ public class DataUsers {
             while (result.next()) {
                 String name = result.getString("NAME");
                 System.out.println("User name: " + name);
-                int image = result.getInt("IMAGE");
+                image = result.getInt("IMAGE");
                 System.out.println("Image: " + image);
             }
             
@@ -158,6 +159,7 @@ public class DataUsers {
         } catch (ClassNotFoundException | SQLException e) { 
             e.printStackTrace();
         } 
+        return image;
     }
 
     /**
