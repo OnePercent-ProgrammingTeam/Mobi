@@ -179,3 +179,10 @@
     -fx-background-color: transparent; 
 }
 
+.checkbox .box {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 4;
+    -fx-border-width: 2px;
+}
+

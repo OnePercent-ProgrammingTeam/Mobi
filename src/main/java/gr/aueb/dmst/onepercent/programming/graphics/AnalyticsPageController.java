@@ -35,7 +35,15 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import javafx.scene.text.Text;
 
+
+/**
+ * ok
+ */
+
 public class AnalyticsPageController {
+
+    /** ok */
+    public AnalyticsPageController() { }
     @FXML
     private Text gatewayText;
 
@@ -99,6 +107,10 @@ public class AnalyticsPageController {
     Button selectedButton;
     boolean hasSelected = false;
 
+
+    /**
+     * ok
+     */
     @FXML
     public void initialize() {
         // Set up the line chart
@@ -201,30 +213,56 @@ public class AnalyticsPageController {
         runningContainersTable.setItems(data);
     }
 
+
+    /**
+     * ok
+     */
     public static class DataModel {
         private final String containerName;
         private final String containerId;
         private final Button selection;
         
+
+        /**
+         * ok
+         * @param containerName
+         * @param containerId
+         * @param selection
+         */
         public DataModel(String containerName, String containerId, Button selection) {
             this.containerName = containerName;
             this.containerId = containerId;
             this.selection = selection;
         }
 
+        /**
+         * ok
+         * @return
+         */
         public String getContainerName() {
             return containerName;
         }
 
+        /**
+         * ok
+         * @return
+         */
         public String getContainerId() {
             return containerId;
         }
 
+        /**
+         * ok
+         * @return
+         */
         public Button getSelection() {
             return selection;
         }
     }
 
+    /**
+     * ok
+     */
     public class HttpRequestTask extends Task<String> {     
         @Override    
         protected String call() throws Exception {         

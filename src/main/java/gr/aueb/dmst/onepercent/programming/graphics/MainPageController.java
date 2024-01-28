@@ -19,8 +19,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
+/**
+ * ok
+ */
+
 public class MainPageController {
 
+    /** ok */
+    public MainPageController() { }
     @FXML
     private Button containersButton;
 
@@ -61,21 +67,36 @@ public class MainPageController {
     private static String usernameString; 
 
     
-    
-
+    /** ok */
     private static int imageIndex;
+    /**
+     * ok
+     * @param imageIndex
+     */
     public void setImageIndex(int imageIndex) {
         this.imageIndex = imageIndex;
     }
 
+    /**
+     * ok
+     * @param usernameString
+     */
     public void setUsernameString(String usernameString) {
         this.usernameString = usernameString;
     }
 
+
+    /**
+     * ok
+     * @param contentArea
+     */
     public void setContentArea(AnchorPane contentArea) {
         this.contentArea = contentArea;
     }
     
+    /**
+     * ok
+     */
     @FXML
     private void initialize() {
         
