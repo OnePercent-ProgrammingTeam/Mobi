@@ -280,7 +280,7 @@
                         <Font size="15.0" />
                      </font>
                   </Text>
-                  <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#loadHelpPage" prefWidth="91.0" style="-fx-background-color: transparent; -fx-text-fill: #6200ee;" text="Help Page.">
+                  <Button mnemonicParsing="false" onAction="#loadHelpPage" style="-fx-background-color: transparent; -fx-text-fill: #6200ee;" text="Help Page.">
                      <font>
                         <Font size="15.0" />
                      </font>

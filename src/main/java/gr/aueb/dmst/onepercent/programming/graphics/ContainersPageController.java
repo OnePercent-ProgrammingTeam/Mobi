@@ -16,6 +16,9 @@ import javafx.scene.chart.PieChart;
 
 import javafx.scene.control.TableCell;
 
+import javafx.scene.control.Button;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.controlsfx.control.ToggleSwitch;
@@ -51,6 +54,9 @@ public class ContainersPageController {
 
     @FXML
     private TableColumn<DataModel, ToggleSwitch> actionCol;
+
+    @FXML
+    private TableColumn<DataModel, Button> removeCol;
 
     @FXML
     private PieChart pieChart;
@@ -92,7 +98,7 @@ public class ContainersPageController {
                     containerIdList.get(i),
                     (statusList.get(i).contains("Exited")) ? "Exited" : "Running", //custom status
                     timeCreatedList.get(i),
-                    new ToggleSwitch()
+                    new ToggleSwitch(), new Button()
             ));
         }
 
@@ -106,6 +112,7 @@ public class ContainersPageController {
         containerStatusCol.setCellValueFactory(cellData -> cellData.getValue().getStatus());
         timeCreatedCol.setStyle(columnStyle);
         actionCol.setStyle(columnStyle);
+        removeCol.setStyle(columnStyle);
         
         //check
         actionCol.setCellFactory(column -> new TableCell<DataModel, ToggleSwitch>() {
@@ -160,6 +167,52 @@ public class ContainersPageController {
     
   
         });
+        removeCol.setCellFactory(column -> new TableCell<DataModel, Button>() {
+            private final Button removeButton = new Button();
+
+            @Override
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || getTableView().getItems().size() <= getIndex()) {
+                    setGraphic(null);
+                } else {     
+                    String path = "src/main/resources/images/containersPage/remove-icon.png";
+                    Path pathToFile = Paths.get(path);
+                   
+                    removeButton.setStyle("-fx-background-color: transparent; " +
+                        "-fx-background-image: url('" + pathToFile.toUri().toString() + "'); " +
+                        "-fx-background-repeat: no-repeat; " +
+                        "-fx-background-position: center center;" +
+                        "-fx-background-size: 20px 20px;");
+                    setAlignment(javafx.geometry.Pos.CENTER);
+                    setGraphic(removeButton);
+                }
+            }
+
+            {
+                removeButton.setOnMouseClicked(event -> {
+                    
+                    Platform.runLater(() -> { //speed up the process
+                        
+                        DataModel dataModel = getTableView().getItems().get(getIndex());
+                       
+                        ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
+                        ManagerHttpGUI.containerId = dataModel.getContainerId();
+                        SuperHttp superHttp = new SuperHttp();
+                        superHttp.containerId = ManagerHttpGUI.containerId;
+                        managerHttpGUI.removeContainer();
+                        data.remove(dataModel);
+                        int removedIndex = getTableRow().getIndex();
+                        containerTable.getItems().remove(removedIndex);
+
+                  
+                    });
+                }); 
+            }
+    
+  
+        });
         
     }
 
@@ -208,6 +261,7 @@ public class ContainersPageController {
         //SimpleStringProperty is used to observe changes in the property's value.
         private final String timeCreated;
         private final ToggleSwitch action;
+        private final Button remove;
 
         /**
          * con
@@ -216,15 +270,17 @@ public class ContainersPageController {
          * @param status ok
          * @param timeCreated ok
          * @param action ok
+         * @param remove ok
          */
         public DataModel(String containerName, 
             String containerId, String status, String timeCreated,
-            ToggleSwitch action) {
+            ToggleSwitch action, Button remove) {
             this.containerName = containerName;
             this.containerId = containerId;
             this.status = new SimpleStringProperty(status); 
             this.timeCreated = timeCreated;
             this.action = action;
+            this.remove = remove;
         }
 
         /**
@@ -273,6 +329,10 @@ public class ContainersPageController {
          */
         public ToggleSwitch getAction() {
             return action;
+        }
+
+        public Button getRemoveButton() {
+            return remove;
         }
     }
 }
