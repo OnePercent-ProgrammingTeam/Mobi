@@ -143,7 +143,7 @@ public class AnalyticsPageController {
                         "-fx-font-family: Malgun Gothic; -fx-font-size: 13px; " +
                         "-fx-background-radius: 25; -fx-text-fill: #6200ee;");
 
-                    
+                    setAlignment(javafx.geometry.Pos.CENTER);
                     setGraphic(selectButton);
                 }
             }
@@ -181,6 +181,7 @@ public class AnalyticsPageController {
                             
                             
                         } else {
+                            hasSelected = false;
                             selectButton.setText("Select");
                             selectButton.setStyle("-fx-background-color: transparent;" +
                                 "-fx-font-family: Malgun Gothic; -fx-font-size: 13px; " +

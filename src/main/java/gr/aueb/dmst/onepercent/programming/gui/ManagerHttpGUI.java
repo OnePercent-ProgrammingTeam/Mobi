@@ -3,8 +3,10 @@ package gr.aueb.dmst.onepercent.programming.gui;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
+
 
 import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
 
@@ -52,21 +54,40 @@ public class ManagerHttpGUI extends ManagerHttp {
         executeHttpRequest(message);
     }
 
-    //TO DO: implement removeContainer() & removeImage() 
-    //method for the GUI version of the application
-    //Check out the CLI version of the application for reference
-    @Override 
-    public void removeContainer() { }
-
     @Override
-    public void removeImage() { }
+    public void removeContainer() {
+        String message = "remove";
+        //TO DO: sundesh me database
+        conId = containerId;
+        deleteRequest = new HttpDelete(DOCKER_HOST + 
+                                      "/containers/" + 
+                                      containerId + "?force=true");
+        executeHttpRequest(message);
+    }
+    
+    
+
+    @Override 
+    public void removeImage() {
+        String message = "removeImg";
+        dataBaseThread.setImageName(imageName);
+        deleteRequest = new HttpDelete(DOCKER_HOST + "/images/" + this.imageName);
+        executeHttpRequest(message);
+    }
 
     @Override
     public void executeHttpRequest(String message) {
         try {
-            this.response = HTTP_CLIENT.execute(postRequest); // Start the container
-            if (message.equals("start") || message.equals("stop")) {
-                return;
+            switch (message) {
+                case "start":
+                case "stop":
+                case "pull":
+                    this.response = HTTP_CLIENT.execute(postRequest); // Start the container
+                    break;
+                case "remove":
+                case "removeImg":
+                    this.response = HTTP_CLIENT.execute(deleteRequest); // Start the container
+                    return;
             }
             entity = response.getEntity();   
             BufferedReader reader = new BufferedReader(
@@ -79,21 +100,13 @@ public class ManagerHttpGUI extends ManagerHttp {
                 while ((inputLine = reader.readLine()) != null) {
                     response1.append(inputLine);
                 }
-            }
-            
+            }  
             reader.close();
         } catch (Exception e) {
             e.printStackTrace(); // Print the stack trace of the error
-            String object = null;
-            object = (message.equals("start") || message.equals("stop")) ?  "container" :  "image";
-            System.err.println("Failed to " + 
-                                message + 
-                                " the" + 
-                                object + 
-                                e.getMessage()); // Print the error message
         } finally {
-            // Release the resources of the request
-            EntityUtils.consumeQuietly(postRequest.getEntity()); 
+            if (!(message.equals("remove") || message.equals("removeImg")))
+                EntityUtils.consumeQuietly(postRequest.getEntity()); 
         }
     }
 }
