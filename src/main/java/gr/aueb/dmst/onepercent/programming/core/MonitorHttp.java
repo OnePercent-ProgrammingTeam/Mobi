@@ -218,7 +218,7 @@ public abstract class MonitorHttp extends SuperHttp {
 
     }
 
-    //TO DO: It's Kiritsai's, might be deleted
+    //TO DO: It's Kiritsai's, might be deleted, also used in csv
     /** Method: prepareStorageData() returns a String array with the prepared 
      *  data that will be saved in a csv file. 
      *  @return str a String array with the data that will be saved in a csv file.

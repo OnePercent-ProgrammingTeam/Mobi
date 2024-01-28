@@ -335,7 +335,7 @@ public class Intro {
                 } catch (UserNotFoundException e) {
                     labellog.setText(e.getMessage());
                 } finally {
-                    userTable.getAllUsers();
+                    //userTable.getAllUsers();
                 }   
                 
             });
@@ -357,7 +357,7 @@ public class Intro {
                 } catch (UserExistsException e) {
                     labelsign.setText(e.getMessage());
                 } finally {
-                    userTable.getAllUsers();
+                    //userTable.getAllUsers();
                 }   
             });
         }

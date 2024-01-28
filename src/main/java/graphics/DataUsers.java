@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 
 
 /**
@@ -41,6 +42,7 @@ public class DataUsers {
             query = "CREATE TABLE IF NOT EXISTS Users ("
                 + "NAME VARCHAR(50),"
                 + "PASSWORD VARCHAR(50),"
+                + "IMAGE INT,"
                 + "CONSTRAINT c PRIMARY KEY(NAME,PASSWORD) "
                 + ");";
 
@@ -69,12 +71,16 @@ public class DataUsers {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(urlgeneral);
 
+            Random random = new Random();
+            int number = random.nextInt(6) + 1; //from 1 to 6
+
             // Use a prepared statement to insert data into the "Users" table
-            String query = "INSERT INTO Users (NAME, PASSWORD) VALUES (?, ?)";
+            String query = "INSERT INTO Users (NAME, PASSWORD, IMAGE) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             // Set the parameters using the user-provided values
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
+            preparedStatement.setInt(3, number);
 
             // Execute the query
             preparedStatement.execute();
@@ -113,8 +119,6 @@ public class DataUsers {
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
-                //int count = result.getInt("COUNT_USERS");
-                //exists if it tries to see the table
                 flag = true;
             }
             statement.close(); 
@@ -130,21 +134,22 @@ public class DataUsers {
      * Method that shows all the users in the database in the table "Users". 
      * This method is mainly for checking that the users are inserted in the database.
      */
-    public void getAllUsers() {
+    public void getUser(String username, String password) {
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(urlgeneral); 
             Statement statement = connection.createStatement(); 
             
               
-            query = "SELECT *  FROM Users";
+            query = "SELECT NAME, IMAGE FROM Users WHERE NAME = '" +
+                    username + "' AND PASSWORD = '" + password + "';";
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
                 String name = result.getString("NAME");
-                //String password = result.getString("PASSWORD");
                 System.out.println("User name: " + name);
-                //System.out.println("Pass " + password);
+                int image = result.getInt("IMAGE");
+                System.out.println("Image: " + image);
             }
             
             statement.close(); 

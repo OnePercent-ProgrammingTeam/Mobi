@@ -532,27 +532,29 @@ public class DataBase {
      * ok
      */
     public void getHistoryList() {
-        System.out.printf("%-30s%-20s%-20s%-50s%-20s%-10s%n", 
-                          "Date", 
-                          "Action", 
-                          "Object", 
-                          "Name",
-                          "State", 
-                          "Means");
-        System.out.println(" ");
-
         getHistory();
+        if (date.isEmpty()) {
+            System.out.println("Your history is empty");
+        } else {
+            System.out.printf("%-30s%-20s%-20s%-50s%-20s%-10s%n", 
+                            "Date", 
+                            "Action", 
+                            "Object", 
+                            "Name",
+                            "State", 
+                            "Means");
+            System.out.println(" ");
 
-        ArrayList<String> command = convertCommandtoString(com);
-        for (int i = 0; i < date.size(); i++) {
-            System.out.printf("%-30s%-20s%-20s%-70s%-20s%-10s%n",
-                                date.get(i), 
-                                command.get(i),
-                                object.get(i),
-                                name.get(i),
-                                state.get(i),
-                                means.get(i));
-            System.out.println();
+            ArrayList<String> command = convertCommandtoString(com);
+            for (int i = 0; i < date.size(); i++) {
+                System.out.printf("%-30s%-20s%-20s%-50s%-20s%-10s%n",
+                                    date.get(i), 
+                                    command.get(i),
+                                    object.get(i),
+                                    name.get(i),
+                                    state.get(i),
+                                    means.get(i));
+            }
         }
     } 
 

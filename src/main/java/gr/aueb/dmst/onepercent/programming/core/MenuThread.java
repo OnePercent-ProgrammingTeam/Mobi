@@ -32,7 +32,7 @@ public class MenuThread extends Thread {
      */
     public void waitThread() {
         try {
-            this.join();
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
