@@ -45,16 +45,17 @@ public class LoginPageController {
 
     static MainPageController MAIN_PAGE_CONTROLLER;
 
-    DataUsers users = new DataUsers();
-    DataBase metrics = DataBase.getInstance();
+  
 
 
     @FXML
     void login(ActionEvent event) {
-        //new check 
-
-        failedAuthText.setText(null);
+    
+        DataUsers users = new DataUsers();
+        DataBase metrics = DataBase.getInstance();
         UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI();
+        
+        failedAuthText.setText(null);
         userAuthGUI.setCredentials(usernameField.getText(), passwordField.getText());
         userAuthGUI.checkAuth();
         
@@ -70,8 +71,9 @@ public class LoginPageController {
 
                 MainGUI.window.setScene(mainPageScene);
                 users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword());
-                int image = users.getUser(userAuthGUI.getUsername(), userAuthGUI.getPassword());
-                MAIN_PAGE_CONTROLLER.setImage(image);
+                int index = users.getUser(userAuthGUI.getUsername(), userAuthGUI.getPassword());
+                
+                MAIN_PAGE_CONTROLLER.setImageIndex(index);
                 metrics.setURL(userAuthGUI.getUsername());
                 metrics.createDatabaseMetrics();
             } else {
@@ -85,34 +87,7 @@ public class LoginPageController {
         
     }
     
-    @FXML
-    void signup(ActionEvent event) {
-        /* //key has the answer to the question "does the user exist?" (true or false)
-        boolean key = users.getUserExistanceInDatabase(usernameField.getText(),
-                     passwordField.getText());
-        failedAuthText.setText(null);
 
-        try {
-            if (!key) {
-                System.out.println("User does not exist");
-
-                
-                users.insertUsers(usernameField.getText(), passwordField.getText());
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
-                Scene mainPageScene = new Scene(root, 1000, 600);
-
-                MainGUI.window.setScene(mainPageScene);
-            } else {
-                throw new UserExistsException(usernameField.getText());
-            }   
-        } catch (UserExistsException e) {
-            failedAuthText.setText(e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Error loading the fxml file");
-        } 
-        users.getAllUsers();*/
-    }
-    
 
     @FXML
     void closeApp(ActionEvent event) {

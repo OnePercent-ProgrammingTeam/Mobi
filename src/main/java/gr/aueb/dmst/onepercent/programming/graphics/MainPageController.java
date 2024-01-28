@@ -1,8 +1,13 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.controlsfx.control.ToggleSwitch;
+
+import javafx.scene.image.Image;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,14 +52,20 @@ public class MainPageController {
     @FXML
     private ToggleSwitch toggleButton;
 
+    @FXML
+    private ImageView userIcon;
+
     private Button selectedButton;
     private double xOffset = 0;
     private double yOffset = 0;
     private static String usernameString; 
 
-    private static int image;
-    public void setImage(int image) {
-        this.image = image;
+    
+    
+
+    private static int imageIndex;
+    public void setImageIndex(int imageIndex) {
+        this.imageIndex = imageIndex;
     }
 
     public void setUsernameString(String usernameString) {
@@ -64,13 +75,22 @@ public class MainPageController {
     public void setContentArea(AnchorPane contentArea) {
         this.contentArea = contentArea;
     }
-
+    
     @FXML
     private void initialize() {
-        username.setText(usernameString);
+        
+        Platform.runLater(() -> {
+            String path = "src/main/resources/images/userIcons/user" + imageIndex + ".png";
+            Path pathToFile = Paths.get(path);
+            Image image = new Image(pathToFile.toUri().toString());
+            userIcon.setImage(image);    
+            username.setText(usernameString);
+        });
+        
         loadPage("ContainersPage.fxml");
         selectedButton = containersButton;
         selectedButton.getStyleClass().add("selected");
+        
 
         topBar.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
@@ -85,10 +105,15 @@ public class MainPageController {
 
     }
 
-    /*@FXML 
+    @FXML 
     void changeToDarkMode() {
-        System.out.println("hello");
-    }*/
+        
+        contentArea.getStylesheets()
+                   .add(getClass()
+                   .getResource("../../../../../../../resources/dark-theme.css")
+                   .toExternalForm());
+    }
+
     @FXML
     void logOut() {
         try {

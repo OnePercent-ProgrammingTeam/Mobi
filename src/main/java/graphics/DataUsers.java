@@ -147,10 +147,7 @@ public class DataUsers {
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
-                String name = result.getString("NAME");
-                System.out.println("User name: " + name);
                 image = result.getInt("IMAGE");
-                System.out.println("Image: " + image);
             }
             
             statement.close(); 
