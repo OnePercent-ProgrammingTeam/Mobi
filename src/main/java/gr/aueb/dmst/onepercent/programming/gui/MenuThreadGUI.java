@@ -16,31 +16,10 @@ public class MenuThreadGUI extends MenuThread {
  
     ExecutorThreadGUI executorThreadGUI = ExecutorThreadGUI.getInstance();
     MonitorThreadGUI monitorThreadGUI = MonitorThreadGUI.getInstance();
-
-    private static final Object lock = new Object();
     
     @Override
     public void run() {
-        System.out.println("Menu thread running...");
         dataBaseThread.setMeans("GUI");
-        Thread monThread = new Thread(() -> {
-            while (true) {
-                // Operations thread logic
-                synchronized (lock) {
-                    try {
-                        // Wait for user input
-                        lock.wait();
-                        System.out.println("inside the operations thread");
-                        monitorThreadGUI.run();
-                        lock.notify();
-                        System.out.println("inside the operations thread after notify");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        monThread.start();
     }
 
     /**
@@ -69,29 +48,15 @@ public class MenuThreadGUI extends MenuThread {
             case 5:
             case 6:
             case 11:
+            case 12:
                 monitorThreadGUI.setUserInput(answer);
+                thread = new Thread(monitorThreadGUI);
+                //set name to the thread so as to be easier to recognize it. 
+                thread.setName("Monitor"); 
+                thread.start();
 
-                while (true) {
-                    
-
-                    synchronized (lock) {
-                        
-                        
-
-                        // Notify the operations thread that user input is available
-                        lock.notify();
-
-                        // Pause the menu thread until the operations thread finishes
-                        try {
-                            System.out.println("Menu thread paused...");
-                            lock.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    }
-                }
-                System.out.println("Menu thread running...");
+                waitThread();
+                
                 break;
             default:
                 System.out.println("Non Valid Input.");

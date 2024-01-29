@@ -47,6 +47,9 @@ public class MonitorThreadGUI extends SuperThread {
                 break;
             case 11:
                 break;
+            case 12: 
+                containerMonitorHttp.inspectImage();
+                break;
         }
     }
 }

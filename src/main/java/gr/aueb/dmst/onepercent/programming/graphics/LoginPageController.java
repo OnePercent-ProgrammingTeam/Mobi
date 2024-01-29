@@ -68,6 +68,7 @@ public class LoginPageController {
                 MAIN_PAGE_CONTROLLER = loader.getController();
                 MAIN_PAGE_CONTROLLER.setUsernameString(usernameField.getText());
                 Scene mainPageScene = new Scene(root, 1300, 700);
+                mainPageScene.setFill(null);
 
                 MainGUI.window.setScene(mainPageScene);
                 users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword());

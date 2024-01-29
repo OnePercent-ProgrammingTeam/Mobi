@@ -2,9 +2,12 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 
 import exceptions.EmptyFieldError;
 import exceptions.PullImageException;
-
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -12,18 +15,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
+import javafx.scene.control.Label;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI;
+import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
 
 
 /**
@@ -57,12 +66,6 @@ public class SearchController {
     private VBox vboxContainer;
 
     @FXML
-    private Button searchButton;
-
-    @FXML
-    private Button pullButton;
-
-    @FXML
     private VBox resultSet;
 
     @FXML
@@ -71,17 +74,33 @@ public class SearchController {
     @FXML
     private HBox searchParameters;
 
+    @FXML
+    private Label countErrorText;
+
     DataBase dataBase = DataBase.getInstance();
     ArrayList<Button> suggestions;
-    boolean isForSeach = true;
-
+   
     /**
      * Initializes the controller class.
      */
     @FXML
     public void initialize() {
-        selectSearch();
         preparePreviousSearches();
+        spinner = new MFXProgressSpinner();
+        spinner.setRadius(30);
+        spinner.color1Property().setValue(new Color(0.5, 0, 0.95, 1));
+        spinner.color2Property().setValue(new Color(0.5, 0, 0.95, 1));
+        spinner.color3Property().setValue(new Color(0.5, 0, 0.95, 1));
+        spinner.color4Property().setValue(new Color(0.5, 0, 0.95, 1));
+        String path = "src\\main\\resources\\images\\searchPage\\searchDefault.png";
+        Path imagePath = Paths.get(path);
+        Image image = new Image(imagePath.toUri().toString());
+        
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(190);
+        imageView.setPreserveRatio(true);
+        resultSet.getChildren().add(imageView);
+
     }
 
     private void preparePreviousSearches() {
@@ -110,6 +129,7 @@ public class SearchController {
     void handleKeyPressed(KeyEvent event) {
         try {
             if (event.getCode().toString().equals("ENTER") && isReadyForSearch()) {
+                //loadSpinner.setVisible(true);
                 handleEnterFunctionality();
             }
         } catch (EmptyFieldError e) {
@@ -120,66 +140,31 @@ public class SearchController {
         }
     }
 
+    @FXML
+    void searchByButton(ActionEvent event) {
+        handleEnterFunctionality();
+    }
+
+    MFXProgressSpinner spinner;
+
     private void handleEnterFunctionality() {
-        if (isForSeach) {
-            clearResults();
-            executeSearch();
-            updatePrevSearches();
-        } 
-        
-        if (!isForSeach) {
-            clearResults();
-            //exception handling, formatting the appearance of the result
-            try {
-                executePull();
-            } catch (PullImageException e) {
-                Text statusCodeText = new Text("Status Code");
-                statusCodeText.setStyle("-fx-font-size: 18px;");
-                
-                Text resultCode = new Text(String.valueOf(e.getStatusCode()));
-                resultCode.setStyle(e.getStatusCodeStyle());
-                
-                Text resultText = new Text(e.getMessage());
-                resultText.setStyle(e.getStyle());
-                
-                resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
-            }
-            
+       
+        countErrorText.setVisible(false);
+        if (resultCount.getText().equals("") ||
+            Integer.parseInt(resultCount.getText()) > 100) {
+            countErrorText.setVisible(true);
+            return;
         }
-    }
-
-    /**
-     * Selects the search button.
-     */
-    @FXML
-    void selectSearch() {
-        searchButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #6200ee;");
-        pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #ffffff;");
-        isForSeach = true;
-        prevSearchesBox.setVisible(true);
-        searchParameters.setVisible(true);
-    }
-
-    /**
-     * Selects the pull button.
-     */
-    @FXML
-    void selectPull() {
-        pullButton.setStyle(selectButtonsDefaultStyle() + "-fx-border-color: #6200ee;");
-        searchButton.setStyle(selectButtonsDefaultStyle());
-        isForSeach = false;
-        prevSearchesBox.setVisible(false);
-        searchParameters.setVisible(false);
-    }
-
-    /**
-     * Sets the default style of the buttons.
-     * @return the default style of the buttons.
-     */
-    private String selectButtonsDefaultStyle() {
-        return "-fx-background-color: #ffffff; -fx-border-color: #ffffff;" +
-            "-fx-border-radius: 8; -fx-text-fill: #6200ee;" +
-            "-fx-border-width: 2px; -fx-background-radius: 8;";
+        clearResults();
+        spinner.setVisible(true);
+        resultSet.getChildren().add(spinner);
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> {
+            executeSearch(e);
+            updatePrevSearches();
+        });
+        pause.play();
+        
     }
 
     MenuThreadGUI menuThreadGUI = new MenuThreadGUI();
@@ -187,48 +172,107 @@ public class SearchController {
     /**
      * Executes the search for the image.
      */
-    private void executeSearch() {
+    
+    MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
+
+    private void executeSearch(ActionEvent e) {
         //functionality
         MonitorHttpGUI.imageName = autoCompleteTextField.getText();
         MonitorHttpGUI.searchResultCount = Integer.parseInt(resultCount.getText());
+        System.out.println("Before execution");
         menuThreadGUI.handleUserInputGUI(3);
-
-        MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
-        StringBuilder stringBuilder = monitorHttpGui.
-            getSearchResult(autoCompleteTextField.getText());
+        System.out.println("After execution");
         
+        StringBuilder stringBuilder = MonitorThreadGUI.getInstance().getContainerMonitorHttp().
+            getSearchResult(autoCompleteTextField.getText());
+        System.out.println("string builder: " + stringBuilder);
+
+        Platform.runLater(() -> {
+            resultSet.getChildren().remove(spinner);
+        });
+
+        System.out.println(monitorHttpGui.getResponse1().toString());
+        int statusCode = (monitorHttpGui.getHttpResponse() != null) ?
+            monitorHttpGui.getHttpResponse().getStatusLine().getStatusCode() : 404;
+        System.out.println("status code outside switch: " + statusCode);
+        PopupController popupController = new PopupController();
+        switch (statusCode) {
+            case 200:
+                System.out.println("status code: " + statusCode);
+                break;  
+            case 500:
+                System.out.println("status code: " + statusCode);
+                showSearchError();
+                popupController.showPopup(e);
+                popupController.setErrorMessage("An Internal Server Error has occured!");
+                return;  
+            default:
+                showSearchError();
+                popupController = new PopupController();
+                popupController
+                .setErrorMessage("Seems like the image you are looking for does not exist!");
+                popupController.showPopup(e);
+                return;
+        }    
+        
+         
         String[] imageInfo = stringBuilder.toString().
             replace("\"", "").split("\n");
+        
         for (int i = 0; i < imageInfo.length; ) {
+
             String title = imageInfo[i];
             i++;
             String description = imageInfo[i];
             i++;
             String starCount = imageInfo[i];
             i++;
+
+            String imIconPathString = "src\\main\\resources\\images\\dockerHubPage\\imageIcon.png";
+            Path imIconPath = Paths.get(imIconPathString);
+            Image imageIconImg = new Image(imIconPath.toUri().toString());
+
+            ImageView imageIcon = new ImageView(imageIconImg);
+            imageIcon.setFitHeight(50);
+            imageIcon.setFitWidth(50);
+
             HBox imageBox = new HBox();
-            imageBox.setStyle("-fx-background-color: #ffffff; -fx-border-color: #6200ee;" +
-                "-fx-border-radius: 8;" +
-                "-fx-border-width: 2px; -fx-background-radius: 8;");
-            imageBox.setPadding(new Insets(10, 10, 10, 10));
-            HBox.setMargin(imageBox, new Insets(20, 0, 0, 0));
-            imageBox.setMaxHeight(70);
-            imageBox.setSpacing(5);
+            imageBox.setStyle("-fx-background-color: #ffffff; " +
+                "-fx-border-radius: 20; " +
+                "-fx-background-radius: 20;");
+            imageBox.setAlignment(Pos.CENTER_LEFT);
+            imageBox.setPadding(new Insets(20, 20, 20, 20));
+            imageBox.setMinWidth(910);
+            imageBox.setMinHeight(100);
+            imageBox.setMaxWidth(910);
+            imageBox.setMaxHeight(100);
+            imageBox.setSpacing(20);
 
             VBox titleDescBox = new VBox();
-            titleDescBox.setMinWidth(600);
+            titleDescBox.setMinWidth(550);
+            titleDescBox.setMaxWidth(550);
             titleDescBox.setSpacing(10);
 
             Text titleText = new Text(title);
             Text descText = new Text(description);
             titleText.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
-            descText.setStyle("-fx-font-size: 15px; -fx-text-fill: #111111");
+            descText.setStyle("-fx-font-size: 12px; -fx-fill: #555");
 
             TextFlow descTextFlow = new TextFlow(descText);
-            descTextFlow.setMaxWidth(580);
+            descTextFlow.setMaxWidth(550);
             titleDescBox.getChildren().addAll(titleText, descTextFlow);
+
+            Button pullButton = new Button("Pull");
+            pullButton.setStyle("-fx-text-fill: #6200ee; " +
+                "-fx-background-color: transparent; fx-font-size: 15px;");
+            pullButton.setMinWidth(100);
+            pullButton.setMaxWidth(100);
+
+            pullButton.setOnAction((ActionEvent event) -> {
+                executePull(pullButton, title, event);
+            });
             
-            String path = "src\\main\\resources\\images\\star.png";
+            String path = "src\\main\\resources\\images\\dockerHubPage\\star.png";
             Path imagePath = Paths.get(path);
             Image image = new Image(imagePath.toUri().toString());
             
@@ -237,49 +281,60 @@ public class SearchController {
             starIcon.setFitWidth(15);
 
             Text starCountText = new Text(starCount);
-            imageBox.getChildren().addAll(titleDescBox, starIcon, starCountText);
+            starCountText.setStyle("-fx-text-fill: #555;");
+            HBox.setMargin(starCountText, new Insets(0, 0, 0, -18));
+            imageBox.getChildren().
+                addAll(imageIcon, titleDescBox, pullButton, starIcon, starCountText);
             
             resultSet.getChildren().add(imageBox);
         }
     }
-
+    ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
     /**
      * Executes the pull for the image.
      * @throws PullImageException if the image is not found or there is an internal server error.
      */
-    private void executePull() throws PullImageException {
+    private void executePull(Button pullButton, String imName, ActionEvent e) {
         //functionality
-        ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
-        ManagerHttpGUI.imageName = autoCompleteTextField.getText();
+        
+        ManagerHttpGUI.imageName = imName;
         menuThreadGUI.handleUserInputGUI(4);
         
-        final String ERROR_CODE_STYLE = "-fx-font-size: 50px; -fx-fill: #ff0000;font-weight: bold;";
-        final String TEXT_STYLE = "-fx-font-size: 24px;";
-
+        //final String ERROR_CODE_STYLE = "-fx-font-size: 50px; -fx-fill: #ff0000;font-weight: bold;
+        //final String TEXT_STYLE = "-fx-font-size: 24px;";
         int statusCode = Integer.parseInt(managerHttpGUI.getResponse1().toString());
-        String message;
+        
+        //String message;
+        PopupController popupController = new PopupController();
         switch (statusCode) {
             case 200:
-                Text statusCodeText = new Text("Status Code");
-                statusCodeText.setStyle("-fx-font-size: 18px;");
+                //Text statusCodeText = new Text("Status Code");
+                //statusCodeText.setStyle("-fx-font-size: 18px;");
             
-                Text resultCode = new Text(managerHttpGUI.getResponse1().toString());
-                resultCode.setStyle("-fx-font-size: 50px; -fx-fill: #3dc985; font-weight: bold;");
+                //Text resultCode = new Text(managerHttpGUI.getResponse1().toString());
+                //resultCode.setStyle("-fx-font-size: 50px; -fx-fill: #3dc985; font-weight: bold;");
 
-                Text resultText = new Text("Success! Image pulled successfully!");
-                resultText.setStyle(TEXT_STYLE);
-               
-                resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
+                //Text resultText = new Text("Success! Image pulled successfully!");
+                //resultText.setStyle(TEXT_STYLE);
+                //resultSet.getChildren().remove(spinner);
+                pullButton.setText("Pulled");
+                pullButton.setStyle("-fx-text-fill: #555; " +
+                    "-fx-background-color: transparent; fx-font-size: 15px;");
+                pullButton.setDisable(true);
+                /*Platform.runLater(() -> {
+                    resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
+                    System.out.println("result added");
+                });*/
+                
                 break;
-            case 404:
-                message = "Error! Image not found!";
-                throw new PullImageException(message, TEXT_STYLE, statusCode, ERROR_CODE_STYLE);
             case 500:
-                message = "Error! Internal server error!";
-                throw new PullImageException(message, TEXT_STYLE, statusCode, ERROR_CODE_STYLE);
+                popupController.showPopup(e);
+                popupController.setErrorMessage("An Internal Server Error has occured!");
+                break;
             default:
-                message = "Oops... Something went wrong!";
-                throw new PullImageException(message, TEXT_STYLE, statusCode, ERROR_CODE_STYLE);
+                popupController = new PopupController();
+                popupController.setErrorMessage("We are sorry! Something unexpected has occured!");
+                popupController.showPopup(e);
         }
         
     }
@@ -355,5 +410,17 @@ public class SearchController {
      */
     private void clearResults() {
         resultSet.getChildren().clear();
+    }
+
+    private void showSearchError() {
+        clearResults();
+        String path = "src\\main\\resources\\images\\searchPage\\searchError.png";
+        Path imagePath = Paths.get(path);
+        Image image = new Image(imagePath.toUri().toString());
+        
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(250);
+        imageView.setPreserveRatio(true);
+        resultSet.getChildren().add(imageView);
     }
 }

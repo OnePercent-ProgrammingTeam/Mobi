@@ -118,6 +118,13 @@ public class MonitorHttpGUI extends MonitorHttp {
         executeHttpRequest(message);
     }
 
+    public void inspectImage() {
+        String message = "/images/";
+        getRequest = new HttpGet(DOCKER_HOST + message + imageName + "/json");
+        executeHttpRequest(message);
+        System.out.println("\n" + DOCKER_HOST + message + "?name=" + imageName);
+    }
+
     /**
      * Method: getImagesListGUI()
      * Sends an HTTP request to retrieve a list of images with additional information.
@@ -133,28 +140,36 @@ public class MonitorHttpGUI extends MonitorHttp {
                                 "?boolean=false&shared-size=true");
     }
 
-
+    protected static final Object res1Lock = new Object();
+    protected static final Object cpuLock = new Object();
     /** Method: executeHttpRequest(String) executes the http request for 
      *  getting info about a container.
      * @param message the final part of the url that is used to get the info.
      * may throw Exception if an error occurs while executing the http request.
      */
     public void executeHttpRequest(String message) {
-        try (CloseableHttpResponse response = HTTP_CLIENT.execute(getRequest)) {
-            
+        
+        try {
+            response = HTTP_CLIENT.execute(getRequest);
+
             System.out.println(getRequest);
-            //CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
-            
-            //int statusCode = response.getStatusLine().getStatusCode();
-            //System.out.println("Status Code : " + statusCode);
+           
+
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
             String inputLine;
-            response1 = new StringBuilder();
+            
+            synchronized (res1Lock) {
+                response1 = new StringBuilder();
+            } 
+            
             while ((inputLine = reader.readLine()) != null) {
                 response1.append(inputLine);
                 if (message.equals("stats")) {
-                    lastCPUUsage = getCPUusage(response1); //print real time CPU Usage
+                    synchronized (cpuLock) {
+                        lastCPUUsage = getCPUusage(response1); //print real time CPU Usage
+                    }
+                    
                     response.close();
                     break;
                 }
@@ -169,7 +184,7 @@ public class MonitorHttpGUI extends MonitorHttp {
                                 message + 
                                 " the container: " + 
                                 e.getMessage()); // Print the error message
-        } 
+        }
     }
 
 
@@ -183,7 +198,6 @@ public class MonitorHttpGUI extends MonitorHttp {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
-                
             if (jsonNode.isArray()) {
                 for (JsonNode el : jsonNode) {
                     searchResult.append(el.get("name") + "\n" +
@@ -191,9 +205,14 @@ public class MonitorHttpGUI extends MonitorHttp {
                         el.get("star_count") + "\n");
                 }
             }
+            System.out.println("after if in getsearch");
             
+        } catch (NumberFormatException e) {
+            System.out.println(e.getClass());
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getClass());
         } catch (Exception e) {
-            System.out.println("Oops, something went wrong...");
+            System.out.println(e.getClass());
         }
         return searchResult;
     }

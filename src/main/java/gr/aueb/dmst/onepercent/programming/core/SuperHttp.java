@@ -8,6 +8,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import com.github.dockerjava.api.DockerClient;
 
+
 import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
 
 /**
@@ -47,10 +48,13 @@ public class SuperHttp implements HttpInterface {
     /** Http response return by the executed http request */
     protected CloseableHttpResponse response;
     /** Http response, read using StringBuffer */
-    public static StringBuilder response1; // used in junit test
+    public static  StringBuilder response1; // used in junit test
 
     /** Last CPU Usage is the last metric for a running container */
-    protected static double lastCPUUsage;
+    protected static  double lastCPUUsage;
+
+   
+    
 
     /**ok */
     protected static double lastMemoryUsage;

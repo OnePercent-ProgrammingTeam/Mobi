@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,6 +22,9 @@ public class PopupController {
     @FXML
     private BorderPane popupWindow;
 
+    @FXML
+    private Text popupErrorText;
+    
     private double xOffset = 0;
     private double yOffset = 0;
     @FXML
@@ -75,4 +79,7 @@ public class PopupController {
         }
     }
 
+    public void setErrorMessage(String message) {
+        popupErrorText.setText(message);
+    }
 }

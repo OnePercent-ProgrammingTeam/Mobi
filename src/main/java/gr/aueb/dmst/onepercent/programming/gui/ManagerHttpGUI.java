@@ -51,7 +51,10 @@ public class ManagerHttpGUI extends ManagerHttp {
     public void pullImage() { 
         String message = "pull";
         postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
+        
+        System.out.println(DOCKER_HOST + "/images/create?fromImage=" + imageName);
         executeHttpRequest(message);
+        System.out.println("EVERYTHING IS OKAY");
     }
 
     @Override
@@ -81,26 +84,33 @@ public class ManagerHttpGUI extends ManagerHttp {
             switch (message) {
                 case "start":
                 case "stop":
+                    break;
                 case "pull":
                     this.response = HTTP_CLIENT.execute(postRequest); // Start the container
-                    break;
+                    ManagerHttpGUI.response1 = new StringBuilder(); 
+                    ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
+                    System.out.println("response: " + response);
+                    System.out.println("stattus code" + response.getStatusLine().getStatusCode());
+                    return;
                 case "remove":
                 case "removeImg":
                     this.response = HTTP_CLIENT.execute(deleteRequest); // Start the container
                     return;
             }
-            entity = response.getEntity();   
+            entity = response.getEntity();
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(entity.getContent()));
             String inputLine;
             ManagerHttpGUI.response1 = new StringBuilder(); 
             if (message.equals("pull")) {
-                ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
+                
+                System.out.println("response1: " + response1);
             }  else {
                 while ((inputLine = reader.readLine()) != null) {
                     response1.append(inputLine);
                 }
             }  
+            System.out.println("reader " + reader);
             reader.close();
         } catch (Exception e) {
             e.printStackTrace(); // Print the stack trace of the error
