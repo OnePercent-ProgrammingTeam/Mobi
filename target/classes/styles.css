@@ -192,10 +192,20 @@
     -fx-background-color: transparent; 
 }
 
-.checkbox .box {
+.check-box .box {
     -fx-background-color: transparent;
-    -fx-background-radius: 10;
-    -fx-border-radius: 4;
+    -fx-border-color: #6200ee;
+    -fx-border-radius: 6px;
     -fx-border-width: 2px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #6200ee;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
 }
 

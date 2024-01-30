@@ -43,6 +43,7 @@ public class DataUsers {
                 + "NAME VARCHAR(50),"
                 + "PASSWORD VARCHAR(50),"
                 + "IMAGE INT,"
+                + "REMEMBER BOOLEAN,"
                 + "CONSTRAINT c PRIMARY KEY(NAME,PASSWORD) "
                 + ");";
 
@@ -66,7 +67,7 @@ public class DataUsers {
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
      */
-    public void insertUsers(String username, String password) {
+    public void insertUsers(String username, String password, Boolean remember) {
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(urlgeneral);
@@ -75,12 +76,14 @@ public class DataUsers {
             int number = random.nextInt(17) + 1; //from 1 to 17
 
             // Use a prepared statement to insert data into the "Users" table
-            String query = "INSERT INTO Users (NAME, PASSWORD, IMAGE) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Users (NAME, PASSWORD, IMAGE, REMEMBER)"
+                           + "VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             // Set the parameters using the user-provided values
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setInt(3, number);
+            preparedStatement.setBoolean(4, remember);
 
             // Execute the query
             preparedStatement.execute();
@@ -130,9 +133,7 @@ public class DataUsers {
     }
 
     
-    /**
-     * Method that shows all the users in the database in the table "Users". 
-     * This method is mainly for checking that the users are inserted in the database.
+    /** ok
      */
     public int getUser(String username, String password) {
         int image = 0;
@@ -142,7 +143,7 @@ public class DataUsers {
             Statement statement = connection.createStatement(); 
             
               
-            query = "SELECT NAME, IMAGE FROM Users WHERE NAME = '" +
+            query = "SELECT IMAGE FROM Users WHERE NAME = '" +
                     username + "' AND PASSWORD = '" + password + "';";
             ResultSet result = statement.executeQuery(query);
 
@@ -159,15 +160,67 @@ public class DataUsers {
         return image;
     }
 
+
+    public String remember(String username) {
+        String password = null;
+        try {
+            Class.forName("org.h2.Driver"); 
+            Connection connection = DriverManager.getConnection(urlgeneral); 
+            Statement statement = connection.createStatement(); 
+            
+              
+            query = "SELECT PASSWORD FROM Users WHERE NAME = '" +
+                    username + "' AND REMEMBER = true;";
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                password = result.getString("PASSWORD");
+            }
+
+            statement.close(); 
+            connection.close(); 
+           
+        } catch (ClassNotFoundException | SQLException e) { 
+            e.printStackTrace();
+        } 
+        return password;
+    }
+
+    
+    public void setRemember(String username, Boolean rememberNew) {
+        try {
+            Class.forName("org.h2.Driver");
+            Connection connection = DriverManager.getConnection(urlgeneral);
+
+            // Use a prepared statement to update data into the "Users" table
+            String query = "UPDATE Users SET REMEMBER = ? WHERE NAME = '" +
+                            username + "'AND REMEMBER != " + rememberNew + ";";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            // Set the parameters using the user-provided values
+            preparedStatement.setBoolean(1, rememberNew);
+
+
+            // Execute the query
+            preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * ok
      * @param username ok
      * @param password ok
      */
-    public void handleDataUsers(String username, String password) {
-        createUser();
+    public void handleDataUsers(String username, String password, Boolean rememberNew) {
         if (!getUserExistanceInDatabase(username, password)) {
-            insertUsers(username, password);
+            insertUsers(username, password, rememberNew);
+        } else {
+            //compareRemember(username, remember);
+            setRemember(username, rememberNew);
         }
     }
 }

@@ -38,11 +38,14 @@ public class DataBase {
     protected String query;
 
     /**
-     * ok
+     * Set the name of the database of metrics to be created for safety reasons
      * @param username ok
      */
     public void setURL(String username) {
-        url = url + "/" + username; 
+        url = url + "/" 
+            + username.charAt(0) 
+            + username.charAt(username.length() / 2) 
+            + username.charAt(username.length() - 1); 
     }
 
 

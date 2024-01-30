@@ -40,12 +40,14 @@ public class UserAuthenticationCLI extends UserAuthentication {
         while (!getUserExistanceInDocker()) {
             checkAuth();
         }
+        users.createUser();
         //if exists then handle him in the database
-        users.handleDataUsers(getUsername(), getPassword());
+        //when runninf form the cli i do not want to have the remember for the first time
+        users.handleDataUsers(getUsername(), getPassword(), false);
         dataBase.setURL(getUsername());
         dataBase.createDatabaseMetrics(); 
     }
-
+    
     @Override
     public void checkAuth() {
         String message = "check";

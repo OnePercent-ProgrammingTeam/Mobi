@@ -350,7 +350,7 @@ public class Intro {
                         System.out.println("inside the if in !key");
                         windowClose(log);
                         startButton.setDisable(false);
-                        userTable.insertUsers(input.getText(), input2.getText());
+                        //userTable.insertUsers(input.getText(), input2.getText());
                     } else {
                         throw new UserExistsException(input.getText());
                     }   

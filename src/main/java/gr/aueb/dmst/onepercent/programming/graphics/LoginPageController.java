@@ -7,13 +7,14 @@ import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI;
 import graphics.DataUsers;
 import io.github.palexdev.materialfx.controls.MFXButton;
-//import io.github.palexdev.mfxcomponents.controls.buttons.MFXButton;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -43,7 +44,36 @@ public class LoginPageController {
     @FXML
     private Button exit;
 
+
+
+    @FXML
+    private CheckBox rememberBox;
+
+
     static MainPageController MAIN_PAGE_CONTROLLER;
+
+    DataUsers users = new DataUsers();
+
+
+    @FXML 
+    void initialize() {
+        users.createUser();
+    }
+
+
+    @FXML
+    void passwordAction() {
+        if (users.remember(usernameField.getText()) == null) {
+            rememberBox.setSelected(false);
+        } else {
+            if (passwordField.getText().length() == 0) {
+                System.out.println("Password known");
+                rememberBox.setSelected(true);
+                passwordField.setText(users.remember(usernameField.getText()));
+            } 
+        }
+    }
+
 
   
 
@@ -51,7 +81,7 @@ public class LoginPageController {
     @FXML
     void login(ActionEvent event) {
     
-        DataUsers users = new DataUsers();
+        
         DataBase metrics = DataBase.getInstance();
         UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI();
         
@@ -68,10 +98,12 @@ public class LoginPageController {
                 MAIN_PAGE_CONTROLLER = loader.getController();
                 MAIN_PAGE_CONTROLLER.setUsernameString(usernameField.getText());
                 Scene mainPageScene = new Scene(root, 1300, 700);
-                mainPageScene.setFill(null);
 
                 MainGUI.window.setScene(mainPageScene);
-                users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword());
+
+
+                Boolean check = rememberBox.isSelected();
+                users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword(), check);
                 int index = users.getUser(userAuthGUI.getUsername(), userAuthGUI.getPassword());
                 
                 MAIN_PAGE_CONTROLLER.setImageIndex(index);

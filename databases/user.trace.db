@@ -1,4 +1,4 @@
-2024-01-27 03:08:16.831253+02:00 jdbc[3]: null
+2024-01-31 00:41:02.686543+02:00 jdbc[3]: null
 org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-222]
 	at org.h2.message.DbException.get(DbException.java:223)
 	at org.h2.message.DbException.get(DbException.java:199)
@@ -8,9 +8,9 @@ org.h2.message.DbException: The connection was not closed by the application and
 	at org.h2.Driver.connect(Driver.java:59)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:253)
-	at graphics.DataUsers.createUser(DataUsers.java:36)
-	at graphics.DataUsers.handleDataUsers(DataUsers.java:159)
-	at gr.aueb.dmst.onepercent.programming.graphics.LoginPageController.login(LoginPageController.java:66)
+	at graphics.DataUsers.getUserExistanceInDatabase(DataUsers.java:112)
+	at graphics.DataUsers.handleDataUsers(DataUsers.java:219)
+	at gr.aueb.dmst.onepercent.programming.graphics.LoginPageController.login(LoginPageController.java:106)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
