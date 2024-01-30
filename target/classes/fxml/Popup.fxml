@@ -11,7 +11,6 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-
 <BorderPane fx:id="popupWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="500.0" style="-fx-background-radius: 20; -fx-background-insets: 0; -fx-border-radius: 0;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.PopupController">
    <center>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="460.0" spacing="10.0" BorderPane.alignment="CENTER">
@@ -33,7 +32,7 @@
                   <Font name="Malgun Gothic Bold" size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="40.0" />
+                  <Insets left="40.0" top="-10.0" />
                </VBox.margin>
             </Text>
             <HBox alignment="TOP_CENTER" spacing="10.0">
@@ -45,7 +44,7 @@
                   </ImageView>
                   <TextFlow maxWidth="-Infinity" minWidth="-Infinity" prefWidth="390.0">
                      <children>
-                        <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="You cannot select two running containers simoultaneously. Please, unselect the selected container.">
+                        <Text fx:id="popupErrorText" fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="You cannot select two running containers simoultaneously. Please, unselect the selected container.">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -54,7 +53,7 @@
                   </TextFlow>
                </children>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets top="15.0" />
                </VBox.margin>
             </HBox>
          </children>
