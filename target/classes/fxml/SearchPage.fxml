@@ -4,62 +4,82 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxWidth="750.0" minWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.SearchController">
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="970.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.SearchController">
    <children>
       <VBox fx:id="vboxContainer" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <children>
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#selectSearch" style="-fx-background-color: #fff; -fx-border-width: 2px; -fx-border-color: #6200ee; -fx-border-radius: 8; -fx-background-radius: 8;" text="Search" textFill="#6200ee" />
-                  <Button fx:id="pullButton" layoutX="10.0" layoutY="21.0" mnemonicParsing="false" onAction="#selectPull" style="-fx-background-color: #fff; -fx-border-width: 2px; -fx-border-radius: 8; -fx-background-radius: 8;" text="Pull" textFill="#6200ee" />
-               </children>
-            </HBox>
-            <Label text="Search/Pull Image from Docker Hub">
+            <Label text="Docker Hub">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="Malgun Gothic Bold" size="25.0" />
                </font>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
+            <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Efficiently search and pull Docker images to enhance your containerized applications with ease.">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Text>
+            <StackPane alignment="CENTER_RIGHT">
+               <children>
+                  <TextField fx:id="autoCompleteTextField" maxHeight="-Infinity" minHeight="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="40.0" promptText="Image" style="-fx-background-color: #fff; -fx-background-radius: 10; -fx-border-radius: 10;" />
+                  <Button mnemonicParsing="false" onAction="#searchByButton" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/searchPage/search-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </StackPane>
             <HBox fx:id="searchParameters" alignment="CENTER_LEFT" spacing="15.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result Count" />
-                  <TextField fx:id="resultCount" maxHeight="50.0" prefWidth="50.0" style="-fx-background-color: #fff; -fx-background-radius: 4; -fx-border-color: #6200ee; -fx-border-radius: 4; -fx-border-width: 0px 0px 2px 0px;" text="3" />
+                  <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Define findings:" />
+                  <TextField fx:id="resultCount" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="45.0" style="-fx-background-color: #fff; -fx-background-radius: 10; -fx-border-radius: 10;" text="3" />
+                  <Label fx:id="countErrorText" text="Please, enter a valid number up to 100!" textFill="RED" visible="false">
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
-            <TextField fx:id="autoCompleteTextField" onKeyPressed="#handleKeyPressed" prefHeight="25.0" prefWidth="433.0" style="-fx-background-color: #fff; -fx-background-radius: 4; -fx-border-color: #6200ee; -fx-border-radius: 4; -fx-border-width: 0px 0px 2px 0px;">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </TextField>
             <HBox fx:id="prevSearchesBox" alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="15.0">
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets bottom="20.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <Label text="Previous Searches:" />
+                  <Label text="Previous Searches:" textFill="#555555" />
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
             </HBox>
-            <VBox fx:id="resultSet" alignment="TOP_CENTER" maxWidth="690.0" minWidth="690.0" spacing="20.0">
+            <VBox fx:id="resultSet" alignment="TOP_CENTER" maxWidth="880.0" minWidth="880.0" spacing="20.0">
                <padding>
                   <Insets bottom="40.0" />
-               </padding></VBox>
+               </padding>
+            </VBox>
          </children>
          <padding>
             <Insets left="30.0" right="30.0" top="20.0" />

@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" style="-fx-background-color: #eee; -fx-background-radius: 20; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.aueb.dmst.onepercent.programming.graphics.MainPageController">
    <left>
       <VBox alignment="TOP_CENTER" maxWidth="250.0" minWidth="250.0" spacing="7.0" style="-fx-background-color: #6200ee; -fx-background-radius: 30;" BorderPane.alignment="CENTER">
          <children>
@@ -160,13 +160,13 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <center>
-      <VBox alignment="TOP_CENTER" minHeight="200.0" minWidth="730.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_LEFT">
+      <VBox alignment="TOP_CENTER" minHeight="200.0" minWidth="730.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #eee;" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <StackPane alignment="TOP_CENTER">
+            <StackPane alignment="TOP_CENTER" style="-fx-background-color: #eee;">
                <children>
-                  <ScrollPane fx:id="scrollArea" cacheShape="false" centerShape="false" focusTraversable="false" hbarPolicy="NEVER" pannable="true" scaleShape="false" style="-fx-background-color: transparent;" stylesheets="@../styles.css">
+                  <ScrollPane fx:id="scrollArea" cacheShape="false" centerShape="false" focusTraversable="false" hbarPolicy="NEVER" maxWidth="-Infinity" minWidth="-Infinity" pannable="true" scaleShape="false" style="-fx-background-color: #eee;" stylesheets="@../styles.css">
                     <content>
-                      <AnchorPane fx:id="contentArea" style="-fx-background-color: transparent;" />
+                      <AnchorPane fx:id="contentArea" style="-fx-background-color: #eee;" />
                     </content>
                      <StackPane.margin>
                         <Insets top="75.0" />
