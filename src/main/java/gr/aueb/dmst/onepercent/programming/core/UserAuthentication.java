@@ -76,7 +76,7 @@ public abstract class UserAuthentication extends SuperHttp {
      * throws Exception if an error occurs while executing the http request.
      */
     @Override
-    public void executeHttpRequest(String message) {
+    public void executeRequest(String message) {
         try {
             if (message.equals("check")) {
                 this.response = HTTP_CLIENT.execute(postRequest); // Check the user

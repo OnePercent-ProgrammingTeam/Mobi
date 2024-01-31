@@ -50,7 +50,7 @@ public abstract class MonitorHttp extends SuperHttp {
     public void inspectSwarm() {
         String message = "swarm";
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
     /** Method: getHttpResponse(String) executes the http request for getting 
@@ -181,7 +181,7 @@ public abstract class MonitorHttp extends SuperHttp {
                                     "/containers/" + 
                                     MonitorHttp.containerId + 
                                     "/json");
-            executeHttpRequest("prepare storage");
+            executeRequest("prepare storage");
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
@@ -230,7 +230,7 @@ public abstract class MonitorHttp extends SuperHttp {
                                     "/containers/" + 
                                     MonitorHttp.containerId + 
                                     "/json");
-            executeHttpRequest("prepare storage");
+            executeRequest("prepare storage");
             String[] str = new String[6];
 
             ObjectMapper mapper = new ObjectMapper();
@@ -250,7 +250,7 @@ public abstract class MonitorHttp extends SuperHttp {
                                               "/containers/" + 
                                               MonitorHttp.containerId + 
                                               "/stats");
-            executeHttpRequest("stats");
+            executeRequest("stats");
             
             str[4] = String.valueOf(lastCPUUsage); //CPU Usage
             LocalDate date = LocalDate.now(); 

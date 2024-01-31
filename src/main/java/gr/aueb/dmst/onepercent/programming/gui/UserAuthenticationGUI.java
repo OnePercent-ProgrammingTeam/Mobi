@@ -33,7 +33,7 @@ public class UserAuthenticationGUI extends UserAuthentication {
         String jsonBody = "{\"username\": \"" + username 
                         + "\", \"password\": \"" + password + "\"}";
         postRequest.setEntity(new StringEntity(jsonBody, ContentType.APPLICATION_JSON));
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
 

@@ -91,7 +91,7 @@ public class SuperHttp implements HttpInterface {
     /** Execute the http request
      * @param message the message that indicates the action that is going to be executed
      */
-    public void executeHttpRequest(String message) {
+    public void executeRequest(String message) {
     };
     /** Get the response of the http request
      *  @return the response that indicates the action that is going to be executed

@@ -10,5 +10,5 @@ public interface HttpInterface {
      *
      * @param message the message to be included in the HTTP request
      */
-    void executeHttpRequest(String message);
+    void executeRequest(String message);
 }

@@ -33,20 +33,21 @@ public class MonitorThreadCLI extends SuperThread {
     
     @Override
     public void run() { 
-        var containerMonitorHttp = new MonitorHttpCLI();
+        var monitor = new MonitorHttpCLI();
+        Scanner scanner = new Scanner(System.in);
+        String input; //user input 
         switch (this.userInput) {
             case 3:
-                containerMonitorHttp.searchImage();
+                monitor.searchImage();
                 break;
             case 5:
-                System.out.println("Type \"C\" for CPU usage or \"M\" for Memory usage diagram.");
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine();
+                System.out.print("Type \"C\" for CPU usage or \"M\" for Memory usage diagram: ");
+                input = scanner.nextLine();
                 Graph.isForMemory = input.equalsIgnoreCase("M");
                 Graph.executeDiagram();
                 break;
             case 6:
-                containerMonitorHttp.inspectContainer();
+                monitor.inspectContainer();
                 break;
             case 7:
                 CSV csv = new CSV();
@@ -60,9 +61,28 @@ public class MonitorThreadCLI extends SuperThread {
                 containerMonitor.getContainerList();
                 break;
             case 11:
-                containerMonitorHttp.inspectSwarm();
-                System.out.println(containerMonitorHttp.formatSwarmInfo());
+                monitor.inspectSwarm();
+                System.out.println(monitor.formatSwarmInfo());
                 break;
+            case 13:
+                monitor.listImages();
+                //monitor.printImagesList();
+                monitor.estimateImages();
+                int images = scanner.nextInt();
+                monitor.printImagesList(images);
+                break;
+            case 14: 
+                System.out.print("Type \"D\" for Docker version or \"S\" for System overview: ");
+                input = scanner.nextLine();
+                while (!input.equalsIgnoreCase("D") && !input.equalsIgnoreCase("S")) {
+                    System.out.println("Invalid input. Please try again.");
+                    input = scanner.nextLine();
+                }
+                if (input.equalsIgnoreCase("D")) {
+                    monitor.dockerVersion();
+                } else {
+                    monitor.systemInfo();
+                }
         }
         dataBaseThread.setCommand(this.userInput);
         Thread dataThread = new Thread(dataBaseThread);

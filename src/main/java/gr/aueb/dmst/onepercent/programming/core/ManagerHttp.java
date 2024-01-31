@@ -59,7 +59,7 @@ public abstract class ManagerHttp extends SuperHttp {
      * throws Exception if an error occurs while executing the http request.
      */
     @Override
-    public void executeHttpRequest(String message) {
+    public void executeRequest(String message) {
         try {
             this.response = HTTP_CLIENT.execute(postRequest); // Start the container
             entity = response.getEntity();   

@@ -42,7 +42,7 @@ public class ManagerHttpCLI extends ManagerHttp {
         containerId = Main.handleInput("Please type the container ID to start the container: ");
         conId = containerId;
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
     /** Method: stopContainer() stops container with http request. */
@@ -52,7 +52,7 @@ public class ManagerHttpCLI extends ManagerHttp {
         containerId = Main.handleInput("Please type the container ID to stop the container: ");
         conId = containerId;
         postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
-        executeHttpRequest(message);
+        executeRequest(message);
     }
     
     @Override
@@ -64,7 +64,7 @@ public class ManagerHttpCLI extends ManagerHttp {
                                       "/containers/" + 
                                       containerId + "?force=true");
         
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
     /** Method: pullImage() pulls an image with http request, the image name is given by the user,
@@ -76,7 +76,7 @@ public class ManagerHttpCLI extends ManagerHttp {
         imageName = Main.handleInput("Please type the name of the image you would like to pull:");
         dataBaseThread.setImageName(imageName);
         postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
     @Override 
@@ -85,7 +85,7 @@ public class ManagerHttpCLI extends ManagerHttp {
         imageName = Main.handleInput("Please type the name of the image you would like to remove:");
         dataBaseThread.setImageName(imageName);
         deleteRequest = new HttpDelete(DOCKER_HOST + "/images/" + imageName);
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
 
@@ -94,7 +94,7 @@ public class ManagerHttpCLI extends ManagerHttp {
      * throws Exception if an error occurs while executing the http request.
      */
     @Override
-    public void executeHttpRequest(String message) {
+    public void executeRequest(String message) {
         try {
             switch (message) {
                 case "start":
