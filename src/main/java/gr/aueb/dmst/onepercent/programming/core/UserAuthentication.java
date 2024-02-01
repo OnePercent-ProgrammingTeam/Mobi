@@ -3,7 +3,7 @@ package gr.aueb.dmst.onepercent.programming.core;
 import org.apache.http.HttpEntity;
 
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
-import graphics.DataUsers;
+import gr.aueb.dmst.onepercent.programming.data.DataUsers;
 
 /**
  * ok

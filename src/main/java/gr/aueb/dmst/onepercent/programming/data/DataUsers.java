@@ -1,4 +1,4 @@
-package graphics;
+package gr.aueb.dmst.onepercent.programming.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

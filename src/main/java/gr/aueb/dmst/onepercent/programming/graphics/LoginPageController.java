@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import exceptions.UserNotFoundException;
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.DataUsers;
 import gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI;
-import graphics.DataUsers;
 import io.github.palexdev.materialfx.controls.MFXButton;
 
 import javafx.event.ActionEvent;
@@ -67,7 +67,6 @@ public class LoginPageController {
             rememberBox.setSelected(false);
         } else {
             if (passwordField.getText().length() == 0) {
-                System.out.println("Password known");
                 rememberBox.setSelected(true);
                 passwordField.setText(users.remember(usernameField.getText()));
             } 
