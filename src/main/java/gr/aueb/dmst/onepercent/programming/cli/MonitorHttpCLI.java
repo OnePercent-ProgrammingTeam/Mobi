@@ -282,10 +282,13 @@ public class MonitorHttpCLI extends MonitorHttp {
      * Estimates the number of images that will be displayed, based on the user's input.
      */
     public void estimateImages() {
-        System.out.println("You have ... images installed in your system.");
+        //TO DO: check if the input is a number, if the 
+        //input is beyond the number of images installed in the system
+        //and print the number of locally installed images 
+        //System.out.println("You have ... images installed in your system.");
         System.out.print("Define the number of images you want to be displayed: ");
     }
-
+    
 
     /**
      * Prints the list of images that will be displayed, based on the user's input.
@@ -388,7 +391,10 @@ public class MonitorHttpCLI extends MonitorHttp {
             System.out.println("Go Version: ".concat(jn.get("GoVersion").asText()));
             System.out.println("OS/Arch: ".concat(jn.get("Os").asText()).concat("/")
                                                             .concat(jn.get("Arch").asText()));
-            System.out.println("Experimental: ".concat(jn.get("Experimental").asText()));
+            System.out.println("Kernel Version: ".concat(jn.get("KernelVersion").asText()));
+            System.out.println("Build Time: ".concat(jn.get("BuildTime")
+                                             .asText().replace("T", " ")
+                                            .substring(0, 19)));
         } catch (Exception e) {
             System.out.println("Some information is missing...");
         }

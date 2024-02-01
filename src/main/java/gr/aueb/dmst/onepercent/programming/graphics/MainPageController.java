@@ -61,6 +61,9 @@ public class MainPageController {
     @FXML
     private ImageView userIcon;
 
+    @FXML
+    private Button systemButton;
+
     private Button selectedButton;
     private double xOffset = 0;
     private double yOffset = 0;
@@ -169,6 +172,12 @@ public class MainPageController {
     void loadAnalytics(ActionEvent event) {
         loadPage("AnalyticsPage.fxml");
         setMenuButtonSelected(analyticsButton);
+    }
+
+    @FXML
+    void loadSystem(ActionEvent event) {
+        loadPage("SystemPage.fxml");
+        setMenuButtonSelected(systemButton);
     }
 
     @FXML

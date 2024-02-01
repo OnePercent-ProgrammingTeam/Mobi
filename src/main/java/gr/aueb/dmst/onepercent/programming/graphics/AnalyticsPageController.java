@@ -337,8 +337,6 @@ public class AnalyticsPageController {
         });
     }
 
-
-
     public double[] statsPlot() {
         // Simulate real-time data update every second
         BufferedReader reader;

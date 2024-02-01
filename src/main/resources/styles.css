@@ -209,3 +209,7 @@
     -fx-background-color: white;
 }
 
+.title-box {
+    -fx-background-radius: 20 20 0 0;
+    -fx-background-color: #ffffff;
+}

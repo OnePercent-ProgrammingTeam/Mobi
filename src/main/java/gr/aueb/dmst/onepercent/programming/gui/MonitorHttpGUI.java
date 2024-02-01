@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 
@@ -46,6 +47,26 @@ public class MonitorHttpGUI extends MonitorHttp {
         return containerInfo;
     }
 
+    /**
+     * Retrieves information about the Docker System by
+     * sending an HTTP GET request to the Docker daemon.
+     */
+    public void systemInfo() {
+        String path = "/info";
+        getRequest = new HttpGet(DOCKER_HOST.concat(path));
+        executeRequest(path);
+    }
+
+    /**
+     * Retrieves information about the Docker Version by
+     * sending an HTTP GET request to the Docker daemon.
+     */
+    public void dockerVersion() {
+        String path = "/version";
+        getRequest = new HttpGet(DOCKER_HOST.concat(path));
+        executeRequest(path);
+    }
+
     @Override
     public String[] getTableforContainer() throws JsonProcessingException {
         String[] info = new String[8];
@@ -55,7 +76,7 @@ public class MonitorHttpGUI extends MonitorHttp {
                                     "/containers/" + 
                                     MonitorHttp.containerId + 
                                     "/json");
-            executeHttpRequest("prepare storage");
+            executeRequest("prepare storage");
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response1.toString());
@@ -115,13 +136,13 @@ public class MonitorHttpGUI extends MonitorHttp {
                                  imageName + "&limit=" + searchResultCount);
         System.out.println(MonitorHttp.DOCKER_HOST + message + "?term=" + 
             imageName + "&limit=10");
-        executeHttpRequest(message);
+        executeRequest(message);
     }
 
     public void inspectImage() {
         String message = "/images/";
         getRequest = new HttpGet(DOCKER_HOST + message + imageName + "/json");
-        executeHttpRequest(message);
+        executeRequest(message);
         System.out.println("\n" + DOCKER_HOST + message + "?name=" + imageName);
     }
 
@@ -135,19 +156,20 @@ public class MonitorHttpGUI extends MonitorHttp {
         String message = "/images/json";
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + 
                                 "?boolean=false&shared-size=true");
-        executeHttpRequest(message);
+        executeRequest(message);
         System.out.println(MonitorHttp.DOCKER_HOST + message + 
                                 "?boolean=false&shared-size=true");
     }
 
     protected static final Object res1Lock = new Object();
     protected static final Object cpuLock = new Object();
-    /** Method: executeHttpRequest(String) executes the http request for 
+    /** Method: executeRequest(String) executes the http request for 
      *  getting info about a container.
      * @param message the final part of the url that is used to get the info.
      * may throw Exception if an error occurs while executing the http request.
      */
-    public void executeHttpRequest(String message) {
+    @Override
+    public void executeRequest(String message) {
         
         try {
             response = HTTP_CLIENT.execute(getRequest);
@@ -217,10 +239,6 @@ public class MonitorHttpGUI extends MonitorHttp {
         return searchResult;
     }
 
-
-
-    
-
     /**
      * Method: getFormattedImageIdsList()
      * Parses the JSON response to extract formatted image IDs.
@@ -275,7 +293,8 @@ public class MonitorHttpGUI extends MonitorHttp {
             return null;
         }
     }
-
+    String RESET = "\u001B[0m";
+    String RED = "\u001B[31m";
     public String[] getSwarmInfo() {
         String[] swarmInfo = new String[6];
         try {
@@ -297,9 +316,71 @@ public class MonitorHttpGUI extends MonitorHttp {
             swarmInfo[5] =  jsonNode.get("SubnetSize").asText();
             return swarmInfo;
         } catch (Exception e) {
-            System.out.println("Some information is missing...");
+            System.out.println(RED + "Some information is missing..." + RESET);
         }
         return null;
+    }
+
+    public StringBuilder getSystemInfo() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jn = mapper.readTree(response1.toString());
+            sb.append(jn.get("ID").asText().concat("\n"));
+            sb.append(jn.get("OperatingSystem").asText().concat("\n"));
+            sb.append(jn.get("OSType").asText().concat("\n"));
+            sb.append(jn.get("OSVersion").asText().concat("\n"));
+            sb.append(jn.get("MemTotal").asText().concat("\n"));
+            sb.append(jn.get("NCPU").asText().concat("\n"));
+            sb.append(jn.get("Containers").asText().concat("\n"));
+            sb.append(jn.get("Images").asText().concat("\n"));
+            sb.append(jn.get("ContainersRunning").asText().concat("\n"));
+            sb.append(jn.get("ContainersPaused").asText().concat("\n"));
+            sb.append(jn.get("ContainersStopped").asText().concat("\n"));
+            sb.append(jn.get("Swarm").get("NodeID").asText().concat("\n"));
+            sb.append(jn.get("Swarm").get("NodeAddr").asText().concat("\n"));
+            sb.append(jn.get("Swarm").get("LocalNodeState").asText().concat("\n"));
+            return sb;
+        } catch (JsonProcessingException e) {
+            System.out.println("Some information is missing...");
+        } catch (NullPointerException e) {
+            System.out.println("Something was null");
+        }
+        return sb.append(" ");
+    }
+
+    /*
+     * Prints the Docker Version information. It is called by the method dockerVersion().
+     */
+    public StringBuilder getDockerVersion() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jn = mapper.readTree(response1.toString());
+            sb.append(jn.get("Version").asText().concat("\n"));
+            sb.append(jn.get("ApiVersion").asText().concat("\n"));
+            sb.append(jn.get("MinAPIVersion").asText().concat("\n"));
+            sb.append(jn.get("GitCommit").asText().concat("\n"));
+            sb.append(jn.get("GoVersion").asText().concat("\n"));
+            sb.append(jn.get("Os")
+                          .asText()
+                          .concat("/")
+                          .concat(
+                                jn.get("Arch").asText()
+                          ).concat("\n")
+                      );
+            sb.append(jn.get("KernelVersion").asText().concat("\n"));
+            sb.append(jn.get("BuildTime")
+                          .asText()
+                          .replace("T", " ")
+                          .substring(0, 19)
+                          .concat("\n")
+                      );
+            return sb;
+        } catch (Exception e) {
+            System.out.println("Some information is missing...");
+        }
+        return sb.append(" ");
     }
 
     /**
