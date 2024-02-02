@@ -383,6 +383,28 @@ public class MonitorHttpGUI extends MonitorHttp {
         return sb.append(" ");
     }
 
+    public StringBuilder getWarnings() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jn = mapper.readTree(response1.toString());
+            
+            if (!(jn.get("Warnings").isEmpty()) && jn.get("Warnings").isArray()) {
+                for (JsonNode node : jn.get("Warnings")) {
+                    sb.append(node.asText().concat("\n"));
+                }
+            } else {
+                sb.append("No warnings found");
+            }
+            return sb;
+        } catch (JsonProcessingException e) {
+            System.out.println("Some information is missing...");
+        } catch (NullPointerException e) {
+            System.out.println("Something was null");
+        }
+        return sb.append(" ");
+    }
+
     /**
      * Default Constructor
      */

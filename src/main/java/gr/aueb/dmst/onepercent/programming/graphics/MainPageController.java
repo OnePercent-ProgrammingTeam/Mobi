@@ -186,6 +186,11 @@ public class MainPageController {
         setMenuButtonSelected(helpButton);
     }
 
+    @FXML 
+    void loadMisc(ActionEvent event) {
+        loadPage("MiscPage.fxml");
+    }
+
     @FXML
     void exit(ActionEvent event) {
         System.exit(0);
