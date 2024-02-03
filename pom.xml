@@ -14,6 +14,12 @@
     <name>OnePercent's Maven Project</name>
     <description>This Maven Project is made for the Programming II course</description>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.4</version>
+        <relativePath/> 
+    </parent>
 
     <!-- Project properties -->
     <properties>
@@ -21,9 +27,13 @@
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
-
     <!-- Project dependencies -->
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.github.docker-java/docker-java -->
         <dependency>
             <groupId>com.github.docker-java</groupId>
@@ -133,6 +143,14 @@
             <version>11.2.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>3.2.2</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
  </dependencies>
     
 
@@ -197,7 +215,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>gr.aueb.dmst.onepercent.programming.graphics.RunMain</mainClass>
+                                    <mainClass>gr.aueb.dmst.onepercent.programming.graphics.MainGUI</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
