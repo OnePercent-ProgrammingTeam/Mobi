@@ -225,9 +225,9 @@ public class AnalyticsPageController {
 
         /**
          * ok
-         * @param containerName
-         * @param containerId
-         * @param selection
+         * @param containerName ok
+         * @param containerId ok
+         * @param selection ok
          */
         public DataModel(String containerName, String containerId, Button selection) {
             this.containerName = containerName;
@@ -237,7 +237,7 @@ public class AnalyticsPageController {
 
         /**
          * ok
-         * @return
+         * @return ok
          */
         public String getContainerName() {
             return containerName;
@@ -245,7 +245,7 @@ public class AnalyticsPageController {
 
         /**
          * ok
-         * @return
+         * @return ok
          */
         public String getContainerId() {
             return containerId;
@@ -253,7 +253,7 @@ public class AnalyticsPageController {
 
         /**
          * ok
-         * @return
+         * @return ok
          */
         public Button getSelection() {
             return selection;
@@ -264,6 +264,14 @@ public class AnalyticsPageController {
      * ok
      */
     public class HttpRequestTask extends Task<String> {     
+
+
+        /** ok */
+        HttpRequestTask() {
+            
+        }
+
+
         @Override    
         protected String call() throws Exception {         
             // Perform your HTTP GET request here        
@@ -337,6 +345,11 @@ public class AnalyticsPageController {
         });
     }
 
+
+    /**
+     * ok
+     * @return ok
+     */
     public double[] statsPlot() {
         // Simulate real-time data update every second
         BufferedReader reader;

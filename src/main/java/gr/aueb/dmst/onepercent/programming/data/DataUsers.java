@@ -66,6 +66,7 @@ public class DataUsers {
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
+     * @param remember ok
      */
     public void insertUsers(String username, String password, Boolean remember) {
         try {
@@ -133,7 +134,11 @@ public class DataUsers {
     }
 
     
-    /** ok
+    /**
+     * ok
+     * @param username ok
+     * @param password ok
+     * @return ok
      */
     public int getUser(String username, String password) {
         int image = 0;
@@ -160,7 +165,11 @@ public class DataUsers {
         return image;
     }
 
-
+    /**
+     * ok
+     * @param username ok
+     * @return ok
+     */
     public String remember(String username) {
         String password = null;
         try {
@@ -186,7 +195,11 @@ public class DataUsers {
         return password;
     }
 
-    
+    /**
+     * ok
+     * @param username ok
+     * @param rememberNew ok
+     */
     public void setRemember(String username, Boolean rememberNew) {
         try {
             Class.forName("org.h2.Driver");
@@ -214,6 +227,7 @@ public class DataUsers {
      * ok
      * @param username ok
      * @param password ok
+     * @param rememberNew ok
      */
     public void handleDataUsers(String username, String password, Boolean rememberNew) {
         if (!getUserExistanceInDatabase(username, password)) {

@@ -4,7 +4,10 @@ import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
+/** ok */
 public class SystemPageController {
+    /** ok */
+    SystemPageController() { }
 
     @FXML
     private Text api_version;
@@ -72,6 +75,9 @@ public class SystemPageController {
     @FXML
     private Text version;
 
+    /**
+     * ok
+     */
     @FXML
     public void initialize() {
         setupSystem();

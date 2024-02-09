@@ -43,6 +43,10 @@ public class MonitorHttpGUI extends MonitorHttp {
         }
     }
 
+    /**
+     * ok
+     * @return ok
+     */
     public String[] getContainerInfo() {
         return containerInfo;
     }
@@ -139,6 +143,10 @@ public class MonitorHttpGUI extends MonitorHttp {
         executeRequest(message);
     }
 
+
+    /**
+     * ok
+     */
     public void inspectImage() {
         String message = "/images/";
         getRequest = new HttpGet(DOCKER_HOST + message + imageName + "/json");
@@ -161,7 +169,13 @@ public class MonitorHttpGUI extends MonitorHttp {
                                 "?boolean=false&shared-size=true");
     }
 
+
+    /** ok */
     protected static final Object res1Lock = new Object();
+
+    /**
+     * ok
+     */
     protected static final Object cpuLock = new Object();
     /** Method: executeRequest(String) executes the http request for 
      *  getting info about a container.
@@ -295,6 +309,12 @@ public class MonitorHttpGUI extends MonitorHttp {
     }
     String RESET = "\u001B[0m";
     String RED = "\u001B[31m";
+
+
+    /**
+     * ok
+     * @return ok
+     */
     public String[] getSwarmInfo() {
         String[] swarmInfo = new String[6];
         try {
@@ -321,6 +341,11 @@ public class MonitorHttpGUI extends MonitorHttp {
         return null;
     }
 
+
+    /**
+     * ok
+     * @return ok
+     */
     public StringBuilder getSystemInfo() {
         StringBuilder sb = new StringBuilder();
         try {
@@ -349,8 +374,10 @@ public class MonitorHttpGUI extends MonitorHttp {
         return sb.append(" ");
     }
 
-    /*
+
+    /**
      * Prints the Docker Version information. It is called by the method dockerVersion().
+     * @return ok
      */
     public StringBuilder getDockerVersion() {
         StringBuilder sb = new StringBuilder();
@@ -383,6 +410,11 @@ public class MonitorHttpGUI extends MonitorHttp {
         return sb.append(" ");
     }
 
+
+    /**
+     * ok
+     * @return ok
+     */
     public StringBuilder getWarnings() {
         StringBuilder sb = new StringBuilder();
         try {

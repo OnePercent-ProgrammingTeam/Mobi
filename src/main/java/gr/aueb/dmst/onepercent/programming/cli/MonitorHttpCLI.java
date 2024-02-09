@@ -68,7 +68,7 @@ public class MonitorHttpCLI extends MonitorHttp {
         printSearchResults();
     }
 
-    /*
+    /**
      * Lists the images that are installed in the system by
      * sending an HTTP GET request to the Docker daemon.
      */
@@ -101,6 +101,11 @@ public class MonitorHttpCLI extends MonitorHttp {
         printDockerVersion();
     }
 
+
+    /**
+     * ok
+     * @return ok
+     */
     public StringBuilder formatSwarmInfo() {
         StringBuilder swarmInfo = new StringBuilder();
         try {
@@ -288,12 +293,13 @@ public class MonitorHttpCLI extends MonitorHttp {
         //System.out.println("You have ... images installed in your system.");
         System.out.print("Define the number of images you want to be displayed: ");
     }
+
+    //* @throws JsonProcessingException if there is an error processing the JSON response.
     
 
     /**
      * Prints the list of images that will be displayed, based on the user's input.
      * @param images the number of images that will be displayed.
-     * @throws JsonProcessingException if there is an error processing the JSON response.
      * @throws NullPointerException if there is a null value in the JSON response.
      */
     public void printImagesList(int images) {
@@ -324,7 +330,6 @@ public class MonitorHttpCLI extends MonitorHttp {
         } catch (JsonProcessingException e) {
             System.out.println(RED + "Some information is missing..." + RESET);
         } catch (NullPointerException e) {
-           
             System.out.println(RED + "Something when wrong." + RESET);
         }
     }
@@ -376,7 +381,7 @@ public class MonitorHttpCLI extends MonitorHttp {
         }
     }
 
-    /*
+    /**
      * Prints the Docker Version information. It is called by the method dockerVersion().
      */
     public void printDockerVersion() {

@@ -13,7 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/** ok */
+
 public class NotificationsPageController {
+    /**ok */
+    NotificationsPageController() { }
 
     @FXML
     private VBox notifContentArea;

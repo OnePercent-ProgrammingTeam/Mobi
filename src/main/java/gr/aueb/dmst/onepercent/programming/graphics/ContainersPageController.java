@@ -331,6 +331,10 @@ public class ContainersPageController {
             return action;
         }
 
+        /**
+         * ok
+         * @return ok
+         */
         public Button getRemoveButton() {
             return remove;
         }

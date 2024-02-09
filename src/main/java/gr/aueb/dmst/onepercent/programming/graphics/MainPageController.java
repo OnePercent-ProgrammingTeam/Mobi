@@ -30,6 +30,10 @@ public class MainPageController {
     @FXML
     private Button containersButton;
 
+
+    /**
+     * ok
+     */
     @FXML
     public AnchorPane contentArea;
 
@@ -74,7 +78,7 @@ public class MainPageController {
     private static int imageIndex;
     /**
      * ok
-     * @param imageIndex
+     * @param imageIndex ok
      */
     public void setImageIndex(int imageIndex) {
         this.imageIndex = imageIndex;
@@ -82,7 +86,7 @@ public class MainPageController {
 
     /**
      * ok
-     * @param usernameString
+     * @param usernameString ok
      */
     public void setUsernameString(String usernameString) {
         this.usernameString = usernameString;
@@ -91,7 +95,7 @@ public class MainPageController {
 
     /**
      * ok
-     * @param contentArea
+     * @param contentArea ok
      */
     public void setContentArea(AnchorPane contentArea) {
         this.contentArea = contentArea;

@@ -17,7 +17,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+/** ok */
 public class PopupController {
+    /** ok */
+    PopupController() { }
 
     @FXML
     private BorderPane popupWindow;
@@ -49,6 +52,11 @@ public class PopupController {
         stage.close();
     }
 
+
+    /**
+     * ok
+     * @param event ok
+     */
     public void showPopup(ActionEvent event) {
         Stage errorStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         double x = errorStage.getX();
@@ -79,6 +87,10 @@ public class PopupController {
         }
     }
 
+    /**
+     * ok
+     * @param message ok
+     */
     public void setErrorMessage(String message) {
         popupErrorText.setText(message);
     }

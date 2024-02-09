@@ -16,6 +16,11 @@ public class MonitorThreadGUI extends SuperThread {
 
     MonitorHttpGUI containerMonitorHttp = new MonitorHttpGUI();
 
+
+    /**
+     * ok
+     * @return ok
+     */
     public MonitorHttpGUI getContainerMonitorHttp() {
         return containerMonitorHttp;
     }

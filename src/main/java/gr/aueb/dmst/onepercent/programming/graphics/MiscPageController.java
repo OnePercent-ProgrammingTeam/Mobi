@@ -7,7 +7,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+/**
+ * ok
+ */
 public class MiscPageController {
+
+    /** ok */
+    MiscPageController() {
+        
+    }
 
     @FXML
     private Button historyButton;
