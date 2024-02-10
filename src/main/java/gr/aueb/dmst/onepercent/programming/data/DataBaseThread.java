@@ -23,8 +23,6 @@ public class DataBaseThread extends Thread {
         return dataBaseThread;
     }
 
-
-
     private String imName;
     /**
      * ok
@@ -34,15 +32,15 @@ public class DataBaseThread extends Thread {
         this.imName = imName;
     }
 
-    private int command;
+    private int action;
     /**
      * ok
-     * @param command ok
+     * @param action ok
      */
-    public void setCommand(int command) {
-        this.command = command;
+    public void setAction(int action) {
+        this.action = action;
     }
-
+  
     private String state;
     /**
      * ok
@@ -52,38 +50,38 @@ public class DataBaseThread extends Thread {
         this.state = state;
     }
 
-    private String means;
+    private String interface_type;
     /**
      * ok
      * @param means ok
      */
-    public void setMeans(String means) {
-        this.means = means;
+    public void setInterfaceType(String interface_type) {
+        this.interface_type = interface_type;
     }
-
-
 
     @Override
     public void run() {
-        DataBase dataBase = DataBase.getInstance();
+        DataBase database = DataBase.getInstance();
         
+        String datetime = database.getDateTime();
 
-        String datetime = dataBase.getDateTime();
-
-        int last_id = dataBase.insertMetricsToDatabase(datetime, command, state, means);
-
-        if (command == 1 || command == 2 || command == 5 || command == 6 || command == 9) {
-            dataBase.insertContainerToDatabase(last_id);
-            dataBase.getAllMetrics(); //NOT helpful
+        int last_id; 
+        // Insert in db tables data related to container (basically needed for the log/history)
+        if (action == 1 || action == 2 || action == 3 || action == 4 || action == 5) {
+            last_id = database.insertMetricsToDatabase(datetime, action, state, interface_type);
+            database.insertContainerToDatabase(last_id);
+            //dataBase.getAllMetrics(); //NOT helpful
             //dataBase.getAllContainer(); //NOT helpful
-
-
-        } else if (command == 3 || command == 4 || command == 10) {
-            dataBase.insertImageToDatabase(last_id, imName);
+            
+        // Insert in db tables data related to images (basically needed for the log/history)
+        } else if (action == 8 || action == 9 || action == 10) {
+            last_id = database.insertMetricsToDatabase(datetime, action, state, interface_type);
+            database.insertImageToDatabase(last_id, imName);
             //dataBase.getAllMetrics(); //helpful
             //dataBase.getAllImage(); //helpful
             //dataBase.getImageForSearch();
-
-        } 
+        } else if (action == 13) {
+            database.insertMetricsToDatabase(datetime, action, state, interface_type);
+        }
     }
 }

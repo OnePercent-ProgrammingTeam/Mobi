@@ -19,7 +19,7 @@ public class MenuThreadGUI extends MenuThread {
     
     @Override
     public void run() {
-        dataBaseThread.setMeans("GUI");
+        dataBaseThread.setInterfaceType("GUI");
     }
 
     /**

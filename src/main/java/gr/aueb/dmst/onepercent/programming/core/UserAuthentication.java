@@ -1,9 +1,12 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
+import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.data.DataUsers;
+import gr.aueb.dmst.onepercent.programming.exceptions.UserNotFoundException;
 
 /**
  * ok
@@ -79,12 +82,14 @@ public abstract class UserAuthentication extends SuperHttp {
     public void executeRequest(String message) {
         try {
             if (message.equals("check")) {
-                this.response = HTTP_CLIENT.execute(postRequest); // Check the user
+                this.http_response = HTTP_CLIENT.execute(postRequest); // Check the user
             }
-            entity = this.response.getEntity();
+            entity = this.http_response.getEntity();
             handleOutput(message);      
-        } catch (Exception e) {
-            e.printStackTrace(); // Print the stack trace of the error
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Oops.. something went wrong related to network connection.");
         } 
     }
 
@@ -92,7 +97,7 @@ public abstract class UserAuthentication extends SuperHttp {
      * ok
      * @param message ok
      */
-    public abstract void handleOutput(String message);
+    public abstract void handleOutput(String message) throws UserNotFoundException;
     
 }
 

@@ -61,17 +61,18 @@ public abstract class ManagerHttp extends SuperHttp {
     @Override
     public void executeRequest(String message) {
         try {
-            this.response = HTTP_CLIENT.execute(postRequest); // Start the container
-            entity = response.getEntity();   
+            this.http_response = HTTP_CLIENT.execute(postRequest); // Start the container
+            entity = http_response.getEntity();   
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(entity.getContent()));
             String inputLine;
-            ManagerHttpGUI.response1 = new StringBuilder(); 
+            ManagerHttpGUI.response_builder = new StringBuilder(); 
             if (message.equals("pull")) {
-                ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
+                ManagerHttpGUI.response_builder
+                              .append(http_response.getStatusLine().getStatusCode());
             }  else {
                 while ((inputLine = reader.readLine()) != null) {
-                    response1.append(inputLine);
+                    response_builder.append(inputLine);
                 }
             }
             

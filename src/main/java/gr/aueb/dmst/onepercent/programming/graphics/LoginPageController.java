@@ -2,9 +2,9 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 
 import java.io.IOException;
 
-import exceptions.UserNotFoundException;
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
 import gr.aueb.dmst.onepercent.programming.data.DataUsers;
+import gr.aueb.dmst.onepercent.programming.exceptions.UserNotFoundException;
 import gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI;
 import io.github.palexdev.materialfx.controls.MFXButton;
 
@@ -86,8 +86,7 @@ public class LoginPageController {
         
         failedAuthText.setText(null);
         userAuthGUI.setCredentials(usernameField.getText(), passwordField.getText());
-        userAuthGUI.checkAuth();
-        
+        userAuthGUI.checkAuth(); 
         try {
             if (userAuthGUI.getUserExistanceInDocker()) {
                 

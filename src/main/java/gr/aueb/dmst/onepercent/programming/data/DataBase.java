@@ -1,5 +1,9 @@
 package gr.aueb.dmst.onepercent.programming.data;
 
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.GREEN;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,8 +17,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.VisibleForTesting;
 
 import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
-import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
-
 
 /**
  * ok
@@ -48,7 +50,6 @@ public class DataBase {
             + username.charAt(username.length() - 1); 
     }
 
-
     //Sigleton
     private static DataBase database;
 
@@ -69,7 +70,7 @@ public class DataBase {
     /**
      * Method: createDatabase() creates tables in the H2 database.
      * Creation of 4 tables: 
-     * 1) Metrics (ID, Date, Command, State, Means)
+     * 1) Metrics (ID, Date, Action, State, Interface)
      * 2) Container(ID,C_ID, C_NAME, Status, Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)
      * 3) Image (ID,NAME)
      */
@@ -85,9 +86,9 @@ public class DataBase {
             query = "CREATE TABLE IF NOT EXISTS Metrics ("
                 + "ID INT AUTO_INCREMENT PRIMARY KEY,"
                 + "Date DATETIME,"
-                + "Command INT,"
+                + "Action INT,"
                 + "State VARCHAR(10),"
-                + "Means VARCHAR(10)"
+                + "Interface VARCHAR(10)"
                 + ");";
 
             //execute the query 
@@ -113,8 +114,6 @@ public class DataBase {
             //execute the query 
             statement.execute(query);
 
-
-
             //Query that creates the "Image" table
             query = "CREATE TABLE IF NOT EXISTS Image ("
                 + "ID INT,"
@@ -133,7 +132,7 @@ public class DataBase {
         }
     }
 
-    MonitorHttp monitorHttp = new MonitorHttpCLI();
+    MonitorHttpCLI monitor = new MonitorHttpCLI();
     /**
      * Method returns as a String the local date time
      * @return The datetime
@@ -147,48 +146,42 @@ public class DataBase {
         return datetime;
     }
 
-
     /**
      * Insert data into "Metrics"
      * @param datetime The datetime to be inserted.
-     * @param command ok
+     * @param action ok
      * @param state ok
-     * @param means ok
+     * @param interface_type ok
      * @return The ID of the last inserted record.
      */
-    public int insertMetricsToDatabase(String datetime, int command, String state, String means) {
+    public int insertMetricsToDatabase(String datetime, 
+                                       int action, 
+                                       String state, 
+                                       String interface_type) {
         int last_id = 0;
 
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-            
-             
-            query = "INSERT INTO Metrics (Date, Command, State, Means)" 
-                     + "VALUES ('" + datetime + "','" + command 
-                     + "','" + state + "','" + means + "');";
-
-
+                    
+            query = "INSERT INTO Metrics (Date, Action, State, Interface)" 
+                     + "VALUES ('" + datetime + "','" + action 
+                     + "','" + state + "','" + interface_type + "');";
 
             statement.execute(query); 
-
             query = "SELECT MAX(ID) AS LAST_ID FROM Metrics";
             ResultSet result = statement.executeQuery(query);
             while (result.next()) {
                 last_id = result.getInt("LAST_ID");
-            }
-            
+            }           
             statement.close();
             connection.close();
-
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return last_id;
     }
-
-
 
     /**
      * Insert data into "Container"
@@ -202,7 +195,7 @@ public class DataBase {
             Statement statement = connection.createStatement();
 
             
-            String[] info = monitorHttp.getTableforContainer();
+            String[] info = monitor.getTableforContainer();
 
             query = "INSERT INTO Container (ID, C_ID, C_NAME, Status,"
                 + "Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)"
@@ -220,7 +213,6 @@ public class DataBase {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Insert data into "Image"
@@ -260,16 +252,16 @@ public class DataBase {
             while (result.next()) {
                 int id = result.getInt("ID");
                 String datetime = result.getString("Date");
-                int command = result.getInt("Command");
+                int action = result.getInt("Action");
                 String state = result.getString("State");
-                String means = result.getString("Means");
+                String interface_type = result.getString("Interface");
                 
                 System.out.println();
                 System.out.println("ID of metrics: " + id);
                 System.out.println("Date of metrics: " + datetime);
-                System.out.println("Command: " + command);
+                System.out.println("Action: " + action);
                 System.out.println("State: " + state);
-                System.out.println("Means : " + means);
+                System.out.println("Interface : " + interface_type);
                 System.out.println();
             }
 
@@ -429,17 +421,11 @@ public class DataBase {
         return names;
     }
 
-
-
-
-
-
-    
     private ArrayList<String> date = new ArrayList<>();
-    private ArrayList<Integer> com = new ArrayList<>();
+    private ArrayList<Integer> actions = new ArrayList<>();
     private ArrayList<String> state = new ArrayList<>();
-    private ArrayList<String> means = new ArrayList<>();
-    private ArrayList<String> name = new ArrayList<>();
+    private ArrayList<String> interface_type = new ArrayList<>();
+    private ArrayList<String> identifier = new ArrayList<>();
     private ArrayList<String> object = new ArrayList<>();
 
     /**
@@ -451,90 +437,102 @@ public class DataBase {
             Connection connection = DriverManager.getConnection(url); 
             Statement statement = connection.createStatement(); 
               
-            query = "SELECT Metrics.Date, Metrics.Command, Metrics.State, Metrics.Means, "
-                    + "COALESCE(Image.NAME, Container.C_NAME) AS Name "
+            query = "SELECT Metrics.Date, Metrics.Action, Metrics.State, Metrics.Interface, "
+                    + "COALESCE(Image.NAME, Container.C_NAME) AS Identifier "
                     + "FROM Metrics "
                     + "LEFT JOIN Image ON Metrics.ID = Image.ID "
                     + "LEFT JOIN Container ON Metrics.ID = Container.ID "
                     + "ORDER BY Metrics.Date DESC;";
 
-                        
-                    
             ResultSet result = statement.executeQuery(query);
-    
+            String date_time;
+            int action;
+            String interfaceType;
+            String status;
+            String id;
             while (result.next()) {
-                String d = result.getString("Date");
-                int c = result.getInt("Command");
-                String s = result.getString("State");
-                String m = result.getString("Means");
-                String n = result.getString("Name");
+                /* 
+                 * Customization of the history table.
+                 * Make sure that no null values are inserted in history, where
+                 * there is the possibility of a null value. Instead, insert "N/A".
+                 */
+                date_time = result.getString("Date");
+                action = result.getInt("Action");
+                interfaceType = result.getString("Interface");
+                if (result.getString("State").isEmpty()) {
+                    status = "N/A";
+                } else {
+                    status = (result.getString("State").equals("success")) ? 
+                        GREEN + "success" + RESET : RED + "failure" + RESET;
+                }
 
-
-                date.add(d);
-                com.add(c);
-                state.add(s);
-                means.add(m);
-                name.add(n);
+                id = result.getString("Identifier").isEmpty() ? 
+                        "N/A" : result.getString("Identifier");
+                date.add(date_time);
+                actions.add(action);
+                state.add(status);
+                interface_type.add(interfaceType);
+                identifier.add(id);
             }
-
             statement.close(); 
             connection.close(); 
-           
         } catch (ClassNotFoundException | SQLException e) { 
             e.printStackTrace();
         } 
     }
 
-
-    private ArrayList<String> convertCommandtoString(ArrayList<Integer> com) {
-        ArrayList<String> commands = new ArrayList<>();
-        for (int i = 0; i < com.size(); i++) {
-            switch (com.get(i)) {
+    private ArrayList<String> convertActiontoString(ArrayList<Integer> act) {
+        ArrayList<String> acts = new ArrayList<>();
+        for (int i = 0; i < act.size(); i++) {
+            switch (act.get(i)) {
                 case 1: 
-                    commands.add("start");
+                    acts.add("start");
                     object.add("Container");
                     break;
                 case 2: 
-                    commands.add("stop");
-                    object.add("Container");
-                    break;
-                case 5: 
-                    commands.add("get plot");
-                    object.add("Container");
-                    break;
-                case 6: 
-                    commands.add("get info");
-                    object.add("Container");
-                    break;
-                case 9: 
-                    commands.add("remove");
+                    acts.add("stop");
                     object.add("Container");
                     break;
                 case 3: 
-                    commands.add("search");
-                    object.add("Image");
+                    acts.add("remove");
+                    object.add("Container");
                     break;
                 case 4: 
-                    commands.add("pull");
+                    acts.add("inspect");
+                    object.add("Container");
+                    break;
+                case 5: 
+                    acts.add("plot");
+                    object.add("Container");
+                    break;
+                case 8: 
+                    acts.add("pull");
+                    object.add("Image");
+                    break;
+                case 9: 
+                    acts.add("remove");
                     object.add("Image");
                     break;
                 case 10: 
-                    commands.add("remove");
+                    acts.add("search");
                     object.add("Image");
                     break;
+                case 13:
+                    acts.add("info");
+                    object.add("System");
                 default:
                     break;
             }
         }
-        return commands;
+        return acts;
     }
-
-
 
     /**
      * ok
      */
     public void getHistoryList() {
+        String id = "";
+        ArrayList<String> acts;
         getHistory();
         if (date.isEmpty()) {
             System.out.println("Your history is empty");
@@ -543,22 +541,26 @@ public class DataBase {
                             "Date", 
                             "Action", 
                             "Object", 
-                            "Name",
+                            "Identifier",
                             "State", 
-                            "Means");
+                            "Interface");
             System.out.println(" ");
-
-            ArrayList<String> command = convertCommandtoString(com);
+            acts = convertActiontoString(actions);
             for (int i = 0; i < date.size(); i++) {
+                if (identifier.get(i).isEmpty()) { 
+                    id = "N/A";
+                } else {
+                    id = (identifier.get(i).toString().length() > 35) ? 
+                    this.identifier.get(i).substring(0, 35).concat("...") : this.identifier.get(i);
+                }
                 System.out.printf("%-30s%-20s%-20s%-50s%-20s%-10s%n",
                                     date.get(i), 
-                                    command.get(i),
+                                    acts.get(i),
                                     object.get(i),
-                                    name.get(i),
+                                    id,
                                     state.get(i),
-                                    means.get(i));
+                                    interface_type.get(i));
             }
         }
     } 
-
 }

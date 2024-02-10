@@ -1,7 +1,5 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
-import exceptions.EmptyFieldError;
-import exceptions.PullImageException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -26,8 +24,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
+import gr.aueb.dmst.onepercent.programming.exceptions.EmptyFieldError;
+import gr.aueb.dmst.onepercent.programming.exceptions.PullImageException;
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
@@ -50,7 +49,7 @@ import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
  * Regarding to the database connectivity, the previous searches of the user are saved in the 
  * database and displayed in the GUI. User can select one of them so as to search for it again.
  * Last 5 searches are displayed in the GUI.
- * @see exceptions.PullImageException
+ * @see gr.aueb.dmst.onepercent.programming.exceptions.PullImageException
  */
 public class SearchController {
     /** ok */
@@ -112,10 +111,10 @@ public class SearchController {
             return;
         }
 
-        for (int i = 0; i < Math.min(5, arr.size()); i++) {
-            Button b = createButton(arr.get(i));
-            suggestions.add(b);
-        }
+        // for (int i = 0; i < Math.min(5, arr.size()); i++) {
+        //     Button b = createButton(arr.get(i));
+        //     suggestions.add(b);
+        // }
 
         Collections.reverse(suggestions);
         prevSearchesBox.getChildren().addAll(suggestions);

@@ -46,19 +46,24 @@ public class SuperHttp implements HttpInterface {
     /** Image name of the image that is going to be pulled or searched */
     public static String imageName;
     /** Http response return by the executed http request */
-    protected CloseableHttpResponse response;
+    protected CloseableHttpResponse http_response;
     /** Http response, read using StringBuffer */
-    public static  StringBuilder response1; // used in junit test
+    public static  StringBuilder response_builder; // used in junit test
 
     /** Last CPU Usage is the last metric for a running container */
     protected static  double lastCPUUsage;
 
    
-    
+    public String generateResponseMessage(String message) { 
+        return message;
+    }
+
+    public void printOutput(String message) {
+        System.out.println(message);
+    }
 
     /**ok */
     protected static double lastMemoryUsage;
-
 
 
     //for database
@@ -98,7 +103,7 @@ public class SuperHttp implements HttpInterface {
      * it is the query for the http request
      */
     public CloseableHttpResponse getHttpResponse() {
-        return response;
+        return http_response;
     }
 
     /**
@@ -106,7 +111,7 @@ public class SuperHttp implements HttpInterface {
      * @return ok
      */
     public StringBuilder getResponse1() {
-        return response1;
+        return response_builder;
     }
 
     /**

@@ -1,141 +1,150 @@
 package gr.aueb.dmst.onepercent.programming.cli;
 
-import com.google.common.annotations.VisibleForTesting;
-
-import exceptions.PullImageException;
-import exceptions.RemoveDockerObjectException;
-import exceptions.ActionContainerException;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.GREEN;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 
 import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
+import gr.aueb.dmst.onepercent.programming.exceptions.ActionContainerException;
+import gr.aueb.dmst.onepercent.programming.exceptions.PullImageException;
+import gr.aueb.dmst.onepercent.programming.exceptions.RemoveDockerObjectException;
+
+import com.google.common.annotations.VisibleForTesting;
+
+import java.io.IOException;
 
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 
 /**
- * ManagerHttpCLI class extends ManagerHttp and provides an implementation 
- * of managing Docker containers and images
- * using HTTP requests. It includes methods to start, stop containers, and pull images.
- * Regular ANSI color codes are defined as constants for colorful console output.
+ * A manager class responsible for executing functionalities related to Docker containers 
+ * and images management.
+ * 
+ * <p>This class is used in the CLI version of the application and extends
+ * {@link gr.aueb.dmst.onepercent.programming.core.ManagerHttp}.
+ * It provides methods to execute HTTP requests to the
+ * <a href="https://docs.docker.com/engine/api/v1.43/">Docker Engine API v1.43</a> in order 
+ * to perform various actions. These actions typically involve creating, starting, 
+ * stopping, removing containers, or pulling and removing images.
+ * 
+ * <p>Note that HTTP requests made by this class are typically POST and DELETE requests for
+ *  executing tasks, such as creating or removing resources. The retrieval of information, 
+ *  which involves GET requests, is implemented in classes related to monitoring Docker resources.
+ *  @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI
  */
 public class ManagerHttpCLI extends ManagerHttp {
     
-    /**
-     * ANSI color code for resetting text color.
-     */
-    public static final String ANSI_RESET = "\u001B[0m";
-    
-    /**
-     * ANSI color code for green text.
-     */
-    public static final String ANSI_GREEN = "\u001B[32m";
+    /** Default Constructor. */
+    public ManagerHttpCLI() { }
 
-    /**
-     * ANSI color code for yellow text.
-     */
-    public static final String ANSI_YELLOW = "\u001B[33m";
-
-    /** Method: startContainer() starts container with http request. */
+    /** Starts a container with POST HTTP request. */
     @Override
     public void startContainer() {
-        String message = "start";
-        containerId = Main.handleInput("Please type the container ID to start the container: ");
+        String path = "start";
+        containerId = ConsoleUnits.promptForInput(
+            "Please type the container ID to start the container: ");
         conId = containerId;
-        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
-        executeRequest(message);
+        postRequest = new HttpPost(DOCKER_HOST.concat("/containers/")
+                                              .concat(containerId)
+                                              .concat("/")
+                                              .concat(path));
+        executeRequest(path);
     }
 
-    /** Method: stopContainer() stops container with http request. */
+    /** Stops a container with POST HTTP request. */
     @Override
     public void stopContainer() {
-        String message = "stop";
-        containerId = Main.handleInput("Please type the container ID to stop the container: ");
+        String path = "stop";
+        containerId = ConsoleUnits.promptForInput(
+            "Please type the container ID to stop the container: ");
         conId = containerId;
-        postRequest = new HttpPost(DOCKER_HOST + "/containers/" + containerId + "/" + message);
-        executeRequest(message);
+        postRequest = new HttpPost(DOCKER_HOST.concat("/containers/")
+                                              .concat(containerId)
+                                              .concat("/")
+                                              .concat(path));
+        executeRequest(path);
     }
     
+    /** Removes a container with DELETE HTTP request. */
     @Override
     public void removeContainer() {
-        String message = "remove";
-        containerId = Main.handleInput("Please type the container ID to remove the container: ");
+        String identifier = "remove";
+        containerId = ConsoleUnits.promptForInput(
+            "Please type the container ID to remove the container: ");
         conId = containerId;
-        deleteRequest = new HttpDelete(DOCKER_HOST + 
-                                      "/containers/" + 
-                                      containerId + "?force=true");
-        
-        executeRequest(message);
+        deleteRequest = new HttpDelete(DOCKER_HOST.concat("/containers/")
+                                                  .concat(containerId)
+                                                  .concat("?force=true"));
+        executeRequest(identifier);
     }
 
-    /** Method: pullImage() pulls an image with http request, the image name is given by the user,
-     *  practically is like starting a container with an image that does not exist locally.
-     */
+    /** Pulls an image with POST HTTP request. */
     @Override
     public void pullImage() {
-        String message = "pull";
-        imageName = Main.handleInput("Please type the name of the image you would like to pull:");
+        String identifier = "pull";
+        imageName = ConsoleUnits.promptForInput(
+                "Please type the name of the image you would like to pull:");
         dataBaseThread.setImageName(imageName);
-        postRequest = new HttpPost(DOCKER_HOST + "/images/create?fromImage=" + imageName);
-        executeRequest(message);
+        postRequest = new HttpPost(DOCKER_HOST.concat("/images/create?fromImage=")
+                                              .concat(imageName));
+        executeRequest(identifier);
     }
 
+    /** Removes an image with DELETE HTTP request. */
     @Override 
     public void removeImage() {
-        String message = "removeImg";
-        imageName = Main.handleInput("Please type the name of the image you would like to remove:");
+        String identifier = "removeImg";
+        imageName = ConsoleUnits.promptForInput(
+            "Please type the ID of the image you would like to remove:");
         dataBaseThread.setImageName(imageName);
         deleteRequest = new HttpDelete(DOCKER_HOST + "/images/" + imageName);
-        executeRequest(message);
+        executeRequest(identifier);
     }
 
-
-    /** Method: executeHttpRequest(String) executes the http request 
-     * @param message the message that is given by the user.
-     * throws Exception if an error occurs while executing the http request.
+    /** Executes the HTTP request.
+     * It is the central-helper method that executes the HTTP requests.
+     * @param message the message that indicates the action that is going to be executed.
      */
     @Override
     public void executeRequest(String message) {
+        System.out.println("Please wait...");
         try {
             switch (message) {
                 case "start":
                 case "stop":
                 case "pull":
-                    this.response = HTTP_CLIENT.execute(postRequest); // Start the container
+                    this.http_response = HTTP_CLIENT.execute(postRequest);
                     break;
                 case "remove":
                 case "removeImg":
-                    this.response = HTTP_CLIENT.execute(deleteRequest); // Start the container
+                    this.http_response = HTTP_CLIENT.execute(deleteRequest);
                     break;
             }
-            entity = this.response.getEntity();     
-            handleOutput(message);     
-        } catch (Exception e) {
-            e.printStackTrace(); // Print the stack trace of the error
-            String object = null;
-            object = (message.equals("start") || message.equals("stop")) ?  "container" :  "image";
-            System.err.println("Failed to " + 
-                                message + 
-                                " the" + 
-                                object + 
-                                e.getMessage()); // Print the error message
+            entity = this.http_response.getEntity();     
+            printOutput(message);     
+        } catch (IOException e) {
+            System.out.println(RED + "Oops, an input-output error has occured..." + RESET);
         } finally {
+            //Consume the entity to release the resources of the response of the post request
             if (!(message.equals("remove") || message.equals("removeImg")))
                 EntityUtils.consumeQuietly(postRequest.getEntity()); 
         }
     }
 
-    /** Method handleOutput(String) prints the appropriate message, based on the status 
-     *  code of the http response and the request that has been done.
-     * @param message the message that indicates the action that is going to be executed. 
-     * @return the correct message
+    /**
+     * Prints the modified output, indicating the result of the action.
+     * The output indicates whether the action was successful or not.
+     * @param message The message that indicates the action that is going to be executed.
+     * @return  The output message based on the HTTP response status code and the input message.
      */
-    public String handleOutput(String message) {
+    public void printOutput(String message) {
         String output = "";
-        if (this.response == null) {
-            output = "response has not been initialized";
+        if (this.http_response == null) {
+            output = "Response has not been initialized.";
         } else {
             try {
-                output = provideMessage(message);
+                output = generateResponseMessage(message);
             } catch (ActionContainerException e) {
                 output = e.getMessage();
             } catch (PullImageException e) {
@@ -143,51 +152,46 @@ public class ManagerHttpCLI extends ManagerHttp {
             } catch (RemoveDockerObjectException e) {
                 output = e.getMessage();
             }
-        } 
+        }
         System.out.println(output);
-        return output;
-
     }
 
-    
-
     /**
-     * ok
-     * @param message ok 
-     * @return ok
+     * Retrieves the message indicating the result of the action for testing purposes.
+     * @param message The message that indicates the action that is going to be executed.
+     * @return The generated output message based on the response status code and the input message.
      */
     @VisibleForTesting
-    public String getProvideMessage(String message) {
-        return provideMessage(message);
+    public String getgeneratedResponseMessage(String message) {
+        return generateResponseMessage(message);
     }
 
     /**
-     * Retrieves the message provided by {@code provideMessage(String)} method.
-     *
-     * This method is intended for testing purposes to access the private
-     * {@code provideMessage} method, which generates output based on the HTTP
-     * response status code and the given message.
-     *
+     * Generates the output message based on the HTTP response status code and the input message.
+     * Based on the HTTP response status code and the input message, it throws the 
+     * appropriate customized exceptions and returns the customized message.
+     * 
+     *<p>Note that the methods called on the database thread are used to update the database and
+     * used later for the history/log of the application.
      * @param message The message that indicates the action that is going to be executed.
      * @return The generated output message 
      * based on the HTTP response status code and the input message.
-     * @see #provideMessage(String)
      * @throws ActionContainerException if the container is already started or stopped, not found, 
-     * or server error.
-     * @throws PullImageException if the image is not found or server error.
-     * @throws RemoveContainerException if the container is not found, bad parameter,
-     * conflict, or server error.
+     * or if there is a server error.
+     * @throws PullImageException if the image is not found or there is a server error.
+     * @throws RemoveContainerException due to bad parameter,
+     * conflict, server error, or trial to remove a non-existing object.
      */
-    private String provideMessage(String message) throws ActionContainerException,
+    public String generateResponseMessage(String message) throws ActionContainerException,
                                                         PullImageException,
                                                         RemoveDockerObjectException {
         String output = "";
         if (message.equals("start") || message.equals("stop")) {
-            switch (this.response.getStatusLine().getStatusCode()) {
+            switch (this.http_response.getStatusLine().getStatusCode()) {
                 case 204:
                     dataBaseThread.setState("success");
-                    output = ANSI_GREEN + "Container " + message  + " was successfull." +
-                        ANSI_RESET;
+                    output = GREEN + "Container " + message  + " was successfull." +
+                        RESET;
                     break;
                 case 304:
                     dataBaseThread.setState("failure");
@@ -195,16 +199,17 @@ public class ManagerHttpCLI extends ManagerHttp {
                     throw new ActionContainerException("Container already " + message + "ed.");
                 case 404:
                     dataBaseThread.setState("failure");
-                    throw new ActionContainerException("There is no such container. Try again");
+                    throw new ActionContainerException("There is no such container. Try again.");
                 case 500:
                     dataBaseThread.setState("failure");
                     throw new ActionContainerException("Server error!");
             }
         } else if (message.equals("pull")) {
-            switch (this.response.getStatusLine().getStatusCode()) {
+            switch (this.http_response.getStatusLine().getStatusCode()) {
                 case 200:
                     dataBaseThread.setState("success");
-                    output = ANSI_GREEN + "Image " + message + " was successfull." + ANSI_RESET;
+                    output = GREEN + "Image " + message + " was successfull."
+                           + RESET;
                     break;
                 case 404:
                     dataBaseThread.setState("failure");
@@ -214,14 +219,15 @@ public class ManagerHttpCLI extends ManagerHttp {
                     throw new PullImageException("Server error!");
             }
         } else if (message.equals("remove") || message.equals("removeImg")) {
-            switch (this.response.getStatusLine().getStatusCode()) {
+            switch (this.http_response.getStatusLine().getStatusCode()) {
+                case 200:
                 case 204:
                     dataBaseThread.setState("success");
-                    output = ANSI_GREEN + "Successfull removal." + ANSI_RESET;
+                    output = GREEN + "Successfull removal." + RESET;
                     break;
                 case 400:
                     dataBaseThread.setState("failure");
-                    throw new RemoveDockerObjectException("Bad parameter");
+                    throw new RemoveDockerObjectException("Bad parameter.");
                 case 404:
                     dataBaseThread.setState("failure");
                     throw new RemoveDockerObjectException("No such object found. Try again");
@@ -235,12 +241,5 @@ public class ManagerHttpCLI extends ManagerHttp {
             }
         }
         return output;
-    }
-
-    /**
-     * Default Constructor
-     */
-    public ManagerHttpCLI() {
-
     }
 }

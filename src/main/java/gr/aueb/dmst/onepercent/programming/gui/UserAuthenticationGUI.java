@@ -44,10 +44,10 @@ public class UserAuthenticationGUI extends UserAuthentication {
      */
     @Override
     public void handleOutput(String message) {
-        if (this.response == null) {
+        if (this.http_response == null) {
             return;
         } else {
-            switch (this.response.getStatusLine().getStatusCode()) {
+            switch (this.http_response.getStatusLine().getStatusCode()) {
                 case 200: 
                     userExists = true;
                     break;

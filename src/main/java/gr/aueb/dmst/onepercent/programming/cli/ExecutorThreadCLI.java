@@ -3,20 +3,24 @@ package gr.aueb.dmst.onepercent.programming.cli;
 import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 /**
- * Class: ExecutorThreadCLI is a class that extends SuperThread and represents
- * a command-line interface (CLI) implementation of an executor thread.
- *
- * @see gr.aueb.dmst.onepercent.programming.core.SuperThread
+ * An executor thread responsible for executing actions related to Docker object management.
+ * 
+ * <p>This thread is used in the CLI version of the application and extends 
+ * {@link gr.aueb.dmst.onepercent.programming.core.SuperThread}.
+ * It contains the logic for processing user input and invoking appropriate methods 
+ * to manage Docker objects, such as starting, stopping, pulling, or removing containers and images.
  */
+
 public class ExecutorThreadCLI extends SuperThread {
-    // Singleton
+    
+    /** The singleton instance of ExecutorThreadCLI. */
     private static ExecutorThreadCLI executorThreadCLI;
 
+    /** Default constructor. */
     private ExecutorThreadCLI() { }
 
     /**
-     * Method: getInstance provides a singleton instance of ExecutorThreadCLI.
-     *
+     * Returns the singleton instance of ExecutorThreadCLI.
      * @return The singleton instance of ExecutorThreadCLI.
      */
     public static ExecutorThreadCLI getInstance() {
@@ -27,35 +31,32 @@ public class ExecutorThreadCLI extends SuperThread {
     }
 
     /**
-     * This method is called when the executor thread is started.
-     * It contains the logic for handling different user inputs.
+     * Handles the user input and executes the appropriate actions. 
+     * Based on the user input, it calls the appropriate methods that execute actions.
      */
     @Override
     public void run() { 
-        ManagerHttpCLI containerManagerHttp = new ManagerHttpCLI();
+        ManagerHttpCLI manager = new ManagerHttpCLI();
         switch (this.userInput) {
             case 1:
-                containerManagerHttp.startContainer();
+                manager.startContainer();
                 break;
             case 2:
-                containerManagerHttp.stopContainer();
+                manager.stopContainer();
                 break;
-            case 4:
-                containerManagerHttp.pullImage();
+            case 3: 
+                manager.removeContainer();
                 break;
-            case 9: 
-                containerManagerHttp.removeContainer();
+            case 8:
+                manager.pullImage();
                 break;
-            case 10:
-                containerManagerHttp.removeImage();
+            case 9:
+                manager.removeImage();
                 break;
         }
-        System.out.println("container id :" + ManagerHttpCLI.containerId);
-        System.out.println("Image name : " + ManagerHttpCLI.imageName);
-        dataBaseThread.setCommand(this.userInput);
+        //Spawn the thread that runs the database of the program and stores the data.
+        dataBaseThread.setAction(this.userInput);
         Thread dataThread = new Thread(dataBaseThread);
         dataThread.start();
     }
-
 }
-

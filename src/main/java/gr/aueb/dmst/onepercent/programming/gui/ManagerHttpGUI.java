@@ -85,32 +85,31 @@ public class ManagerHttpGUI extends ManagerHttp {
             switch (message) {
                 case "start":
                 case "stop":
-                    this.response = HTTP_CLIENT.execute(postRequest);
+                    this.http_response = HTTP_CLIENT.execute(postRequest);
                     break;
                 case "pull":
-                    this.response = HTTP_CLIENT.execute(postRequest); // Start the container
-                    ManagerHttpGUI.response1 = new StringBuilder(); 
-                    ManagerHttpGUI.response1.append(response.getStatusLine().getStatusCode());
-                    System.out.println("response: " + response);
-                    System.out.println("stattus code" + response.getStatusLine().getStatusCode());
+                    this.http_response = HTTP_CLIENT.execute(postRequest); // Start the container
+                    ManagerHttpGUI.response_builder = new StringBuilder(); 
+                    ManagerHttpGUI.response_builder
+                                  .append(http_response.getStatusLine().getStatusCode());
                     return;
                 case "remove":
                 case "removeImg":
-                    this.response = HTTP_CLIENT.execute(deleteRequest); // Start the container
+                    this.http_response = HTTP_CLIENT.execute(deleteRequest); // Start the container
                     return;
             }
-            entity = response.getEntity();
+            entity = http_response.getEntity();
             System.out.println("entity " + entity);
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(entity.getContent()));
             String inputLine;
-            ManagerHttpGUI.response1 = new StringBuilder(); 
+            ManagerHttpGUI.response_builder = new StringBuilder(); 
             if (message.equals("pull")) {
                 
-                System.out.println("response1: " + response1);
+                
             }  else {
                 while ((inputLine = reader.readLine()) != null) {
-                    response1.append(inputLine);
+                    response_builder.append(inputLine);
                 }
             }  
             System.out.println("reader " + reader);

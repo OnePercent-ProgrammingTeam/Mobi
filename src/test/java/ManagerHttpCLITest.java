@@ -23,7 +23,7 @@ class ManagerHttpCLITest {
 
     @Test
      void testHandleOutput() {
-        String result1 = managerHttp.handleOutput("start");
+        String result1 = managerHttp.getgeneratedResponseMessage("start");
         assertEquals(result1, "response has not been initialized");
     }
     @Test

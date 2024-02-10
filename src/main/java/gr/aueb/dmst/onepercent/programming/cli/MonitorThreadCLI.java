@@ -7,21 +7,25 @@ import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 import java.util.Scanner;
 /**
- * MonitorThreadCLI is a thread class specifically designed 
- * for command-line interface (CLI) interactions
- * in the monitoring system. It extends SuperThread and handles various user inputs by invoking
- * corresponding methods from MonitorHttpCLI, Graph, CSV, and other related classes.
+ * A monitor thread responsible for retrieving information, related to Docker system  and Docker
+ * objects.
+ * 
+ * <p>This thread is used in the CLI version of the application and extends 
+ * {@link gr.aueb.dmst.onepercent.programming.core.SuperThread}.
+ * It contains the logic for processing user input and invoking appropriate methods 
+ * to monitor Docker objects and the docker system such as inspecting containers,
+ * listing images, and monitoring the swarm.
  */
 public class MonitorThreadCLI extends SuperThread {
-    
-    //Singleton
+
+    /** The singleton instance of MonitorThreadCLI. */
     private static MonitorThreadCLI monitorThreadCLI;
 
+    /** Default constructor. */
     private MonitorThreadCLI() { }
 
     /**
-     * Gets the instance of MonitorThreadCLI using the singleton pattern.
-     *
+     * Returns the singleton instance of MonitorThreadCLI.
      * @return The MonitorThreadCLI instance.
      */
     public static MonitorThreadCLI getInstance() {
@@ -31,14 +35,15 @@ public class MonitorThreadCLI extends SuperThread {
         return monitorThreadCLI;
     }
     
+    /** Handles the user input and executes the appropriate actions. */
     @Override
     public void run() { 
         var monitor = new MonitorHttpCLI();
         Scanner scanner = new Scanner(System.in);
-        String input; //user input 
+        String input; //User's input. 
         switch (this.userInput) {
-            case 3:
-                monitor.searchImage();
+            case 4:
+                monitor.inspectContainer();
                 break;
             case 5:
                 System.out.print("Type \"C\" for CPU usage or \"M\" for Memory usage diagram: ");
@@ -46,34 +51,38 @@ public class MonitorThreadCLI extends SuperThread {
                 Graph.isForMemory = input.equalsIgnoreCase("M");
                 Graph.executeDiagram();
                 break;
+           
             case 6:
-                monitor.inspectContainer();
+                CSV csv = new CSV();
+                csv.startProcess();   
                 break;
             case 7:
-                CSV csv = new CSV();
-                csv.startSavingData();   
-                break;
-            case 8:
-                //only for command line
+                /*
+                 * Use an object  of MonitorAPI, which is based on docker-java library on github,
+                 * not Docker Engine API 
+                 */
                 SuperAPI.createDockerClient();
-                MonitorAPI containerMonitor = new MonitorAPI();
-                containerMonitor.initializeContainerModels(true);
-                containerMonitor.getContainerList();
+                MonitorAPI monitorAPI = new MonitorAPI();
+                monitorAPI.initializeContainerModels(true);
+                monitorAPI.getContainerList();
+                break;
+            case 10:
+                monitor.searchImage();
                 break;
             case 11:
-                monitor.inspectSwarm();
-                System.out.println(monitor.formatSwarmInfo());
-                break;
-            case 13:
                 monitor.listImages();
-                //monitor.printImagesList();
-                monitor.estimateImages();
+                monitor.estimateDisplayedImages();
                 int images = scanner.nextInt();
                 monitor.printImagesList(images);
                 break;
-            case 14: 
+            case 12:
+                monitor.inspectSwarm();
+                System.out.println(monitor.formatSwarmInfo());
+                break;
+            case 13: 
                 System.out.print("Type \"D\" for Docker version or \"S\" for System overview: ");
                 input = scanner.nextLine();
+                //Input validation.
                 while (!input.equalsIgnoreCase("D") && !input.equalsIgnoreCase("S")) {
                     System.out.println("Invalid input. Please try again.");
                     input = scanner.nextLine();
@@ -84,9 +93,9 @@ public class MonitorThreadCLI extends SuperThread {
                     monitor.systemInfo();
                 }
         }
-        dataBaseThread.setCommand(this.userInput);
+        //Spawn the thread that runs the database of the program and stores the data.
+        dataBaseThread.setAction(this.userInput);
         Thread dataThread = new Thread(dataBaseThread);
         dataThread.start();
     }
-
 }

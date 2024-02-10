@@ -83,7 +83,7 @@ public class MonitorHttpGUI extends MonitorHttp {
             executeRequest("prepare storage");
 
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
+            JsonNode jsonNode = mapper.readTree(response_builder.toString());
 
             info[0] = jsonNode.get("Id").asText();
             info[1] = jsonNode.get("Name").asText().substring(1);
@@ -186,33 +186,33 @@ public class MonitorHttpGUI extends MonitorHttp {
     public void executeRequest(String message) {
         
         try {
-            response = HTTP_CLIENT.execute(getRequest);
+            http_response = HTTP_CLIENT.execute(getRequest);
 
             System.out.println(getRequest);
            
 
             BufferedReader reader = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
+                new InputStreamReader(http_response.getEntity().getContent()));
             String inputLine;
             
             synchronized (res1Lock) {
-                response1 = new StringBuilder();
+                response_builder = new StringBuilder();
             } 
             
             while ((inputLine = reader.readLine()) != null) {
-                response1.append(inputLine);
+                response_builder.append(inputLine);
                 if (message.equals("stats")) {
                     synchronized (cpuLock) {
-                        lastCPUUsage = getCPUusage(response1); //print real time CPU Usage
+                        lastCPUUsage = getCPUusage(response_builder); //print real time CPU Usage
                     }
                     
-                    response.close();
+                    http_response.close();
                     break;
                 }
             }
             
             reader.close();
-            response.close();
+            http_response.close();
            
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,7 +233,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         StringBuilder searchResult = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString()); // could use .body()
+            JsonNode jsonNode = mapper.readTree(response_builder.toString()); // could use .body()
             if (jsonNode.isArray()) {
                 for (JsonNode el : jsonNode) {
                     searchResult.append(el.get("name") + "\n" +
@@ -263,7 +263,7 @@ public class MonitorHttpGUI extends MonitorHttp {
     public ArrayList<String> getFormattedImageIdsList() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString()); 
+            JsonNode jsonNode = mapper.readTree(response_builder.toString()); 
             ArrayList<String> ids = new ArrayList<String>();
             if (jsonNode.isArray()) {
                 for (JsonNode el : jsonNode) {
@@ -287,7 +287,7 @@ public class MonitorHttpGUI extends MonitorHttp {
     public ArrayList<String> getFormattedImageNamesList() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());     
+            JsonNode jsonNode = mapper.readTree(response_builder.toString());     
             ArrayList<String> names = new ArrayList<String>();
             
             if (jsonNode.isArray()) {
@@ -319,7 +319,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         String[] swarmInfo = new String[6];
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
+            JsonNode jsonNode = mapper.readTree(response_builder.toString());
             
             swarmInfo[0] = jsonNode.get("Spec").get("Name").asText();
             swarmInfo[1] = jsonNode.get("ID").asText();
@@ -350,7 +350,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         StringBuilder sb = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jn = mapper.readTree(response1.toString());
+            JsonNode jn = mapper.readTree(response_builder.toString());
             sb.append(jn.get("ID").asText().concat("\n"));
             sb.append(jn.get("OperatingSystem").asText().concat("\n"));
             sb.append(jn.get("OSType").asText().concat("\n"));
@@ -383,7 +383,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         StringBuilder sb = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jn = mapper.readTree(response1.toString());
+            JsonNode jn = mapper.readTree(response_builder.toString());
             sb.append(jn.get("Version").asText().concat("\n"));
             sb.append(jn.get("ApiVersion").asText().concat("\n"));
             sb.append(jn.get("MinAPIVersion").asText().concat("\n"));
@@ -419,7 +419,7 @@ public class MonitorHttpGUI extends MonitorHttp {
         StringBuilder sb = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jn = mapper.readTree(response1.toString());
+            JsonNode jn = mapper.readTree(response_builder.toString());
             
             if (!(jn.get("Warnings").isEmpty()) && jn.get("Warnings").isArray()) {
                 for (JsonNode node : jn.get("Warnings")) {

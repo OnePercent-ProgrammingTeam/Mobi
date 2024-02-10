@@ -7,7 +7,10 @@ import java.time.LocalTime;
 
 
 /** Import the Jackson ObjectMapper class for formatting the JSON response.*/
-import com.fasterxml.jackson.databind.ObjectMapper; 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
+
 /** Import the Jackson JsonNode class for formatting the JSON response.*/
 import com.fasterxml.jackson.databind.JsonNode; 
 /** Import the Jackson JsonProcessingException for handling an exception that might occur. */
@@ -81,7 +84,7 @@ public abstract class MonitorHttp extends SuperHttp {
     /** Method: getFormattedStats(StringBuffer) formats the json response for stats 
      *  to a user-friendly message.
      *  that is real-time updated and printed to the console
-     *  @param response1Buffer a StringBuffer object.
+     *  @param response_buffer a StringBuffer object.
      *  @throws JsonProcessingException if an error occurs while executing the http request.
      *
      *  The code below should work too. Instead, it return 0.0. We have to check it further
@@ -99,10 +102,10 @@ public abstract class MonitorHttp extends SuperHttp {
      * @return cpu usage
      */
     
-    public double getCPUusage(StringBuilder response1Buffer) throws JsonProcessingException {
+    public double getCPUusage(StringBuilder response_buffer) throws JsonProcessingException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
+            JsonNode jsonNode = mapper.readTree(response_buffer.toString());
             double  cpu_delta = jsonNode.at("/cpu_stats/cpu_usage/total_usage").asDouble()
                             - jsonNode.at("/precpu_stats/cpu_usage/total_usage").asDouble();
             
@@ -128,14 +131,14 @@ public abstract class MonitorHttp extends SuperHttp {
 
     /**
      * ok
-     * @param response1Buffer ok
+     * @param response_buffer ok
      * @return ok
      * @throws JsonProcessingException ok
      */
-    public double getMemoryUsage(StringBuilder response1Buffer) throws JsonProcessingException {
+    public double getMemoryUsage(StringBuilder response_buffer) throws JsonProcessingException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1Buffer.toString());
+            JsonNode jsonNode = mapper.readTree(response_buffer.toString());
             double  used_memory = jsonNode.at("/memory_stats/usage").asDouble()
                             - jsonNode.at("/memory_stats/stats/cache").asDouble();
             
@@ -176,15 +179,14 @@ public abstract class MonitorHttp extends SuperHttp {
     public String[] getTableforContainer() throws JsonProcessingException {
         String[] info = new String[8];
         try {
-            System.out.println("Inside getTableforContainer() method");
             getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                     "/containers/" + 
-                                    MonitorHttp.containerId + 
+                                    MonitorHttpCLI.containerId + 
                                     "/json");
             executeRequest("prepare storage");
 
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
+            JsonNode jsonNode = mapper.readTree(response_builder.toString());
 
             info[0] = jsonNode.get("Id").asText();
             info[1] = jsonNode.get("Name").asText().substring(1);
@@ -234,7 +236,7 @@ public abstract class MonitorHttp extends SuperHttp {
             String[] str = new String[6];
 
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response1.toString());
+            JsonNode jsonNode = mapper.readTree(response_builder.toString());
             
             str[0] = jsonNode.at("/Name").asText().substring(1); //Container Name
             // We use substring() in order to ignore the "/" from the container name
