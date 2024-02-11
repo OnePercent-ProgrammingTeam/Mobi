@@ -10,6 +10,8 @@ public class DataBaseThread extends Thread {
     //Sigleton
     private static DataBaseThread dataBaseThread;
 
+    private String interface_type;
+    
     private DataBaseThread() { }
 
     /**
@@ -50,10 +52,10 @@ public class DataBaseThread extends Thread {
         this.state = state;
     }
 
-    private String interface_type;
+
     /**
-     * ok
-     * @param means ok
+     * Sets the interface type.
+     * @param interface_type The interface type can be CLI or GUI.
      */
     public void setInterfaceType(String interface_type) {
         this.interface_type = interface_type;

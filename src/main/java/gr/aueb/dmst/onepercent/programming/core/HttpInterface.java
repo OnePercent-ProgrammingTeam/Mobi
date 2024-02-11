@@ -15,7 +15,7 @@ public interface HttpInterface {
     /**
      * Executes an HTTP request with the given message.
      *
-     * @param message the message to be included in the HTTP request path or to
+     * @param path the message to be included in the HTTP request path or to
      * serve as a identifier for the request.
      */
     void executeRequest(String path);

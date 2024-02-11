@@ -1,107 +1,140 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.util.Duration;
-import javafx.scene.control.Label;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import gr.aueb.dmst.onepercent.programming.data.DataBase;
+
 import gr.aueb.dmst.onepercent.programming.exceptions.EmptyFieldError;
 import gr.aueb.dmst.onepercent.programming.exceptions.PullImageException;
+
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI;
+
 import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import javafx.animation.PauseTransition;
+
+import javafx.application.Platform;
+
+import javafx.event.ActionEvent;
+
+import javafx.fxml.FXML;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import javafx.scene.input.KeyEvent;
+
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+import javafx.scene.paint.Color;
+
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+
+import javafx.util.Duration;
+
+import javafx.scene.control.Label;
 
 /**
- * FXML Controller class.
- * Class that controls the Docker Hub page of the GUI. It is used to search for images
- * in the registry and pull them. This class provides a connection with Docker Hub
- * and the database. 
- * Regarding to Docker Hub connectivity, users can search and pull images that are uploaded
- * in Docker Hub. They are prompt to  press the search or the pull button. 
- * If they press the search button, they can specify the number of results they want to see. Then, 
- * they are prompt to enter the name of the image they want to search for. 
- * If they press the pull button, they are prompt to enter the name of the image they want to pull.
- * By exception handling, the user is informed about the status of the pull request (success,
- * failure due to internal server error, failure due to image not found)
- * Regarding to the database connectivity, the previous searches of the user are saved in the 
- * database and displayed in the GUI. User can select one of them so as to search for it again.
- * Last 5 searches are displayed in the GUI.
- * @see gr.aueb.dmst.onepercent.programming.exceptions.PullImageException
+ * Controller class for the Docker Hub page of the GUI. 
+ * 
+ * <p>It is used to search for imagesvin the registry and pull them, providing a connection to
+ * Docker Hub. Implemented through 
+ * <a href="https://docs.docker.com/docker-hub/api/latest/">Docker Hub API</a>
  */
 public class SearchController {
-    /** ok */
-    public SearchController() { }
+    /*XXX: After searching for an images and getting the results, the app does not respond.
+    Might be caused by threading issues or HTTP response. Fix it ASAP.*/
 
+    /*TO DO(Anyone): Create a graphical way to handle the error, when image pull fails. */
+    
+    /** Instance of database to store search related info. */
+    DataBase dataBase = DataBase.getInstance();
+    
+    /** A list with the suggestions, based on previous searches. */
+    ArrayList<Button> suggestions;
+
+    /** A menu thread instance. */
+    MenuThreadGUI menu_thread = new MenuThreadGUI();
+
+    /** A monitor instance. */
+    MonitorHttpGUI monitor = new MonitorHttpGUI();
+
+    /** A manager instance. */
+    ManagerHttpGUI manager = new ManagerHttpGUI();
+
+    /** Loading spinner. */
+    MFXProgressSpinner spinner;
+
+    /** Autocompleted search text field. */
     @FXML
     private TextField autoCompleteTextField;
 
+    /** The previous searches-suggestions. */
     @FXML 
     private HBox prevSearchesBox;
 
+    /**A vertical box with containers. */
     @FXML
     private VBox vboxContainer;
 
+    /**The result set. */
     @FXML
     private VBox resultSet;
 
+    /** The result count. */
     @FXML
     private TextField resultCount;
 
+    /** The parameters of the search.  */
     @FXML
     private HBox searchParameters;
 
+    /** The error text. */
     @FXML
     private Label countErrorText;
 
-    DataBase dataBase = DataBase.getInstance();
-    ArrayList<Button> suggestions;
-   
-    /**
-     * Initializes the controller class.
-     */
+    /** Default constructor. */
+    public SearchController() { }
+
+    /** Initializes the controller class. */
     @FXML
     public void initialize() {
         preparePreviousSearches();
+        //customize the loading spinner, that is shown while waiting for search results.
         spinner = new MFXProgressSpinner();
-        spinner.setRadius(30);
+        spinner.setRadius(30); 
         spinner.color1Property().setValue(new Color(0.5, 0, 0.95, 1));
         spinner.color2Property().setValue(new Color(0.5, 0, 0.95, 1));
         spinner.color3Property().setValue(new Color(0.5, 0, 0.95, 1));
         spinner.color4Property().setValue(new Color(0.5, 0, 0.95, 1));
+        //All the search results have a default icon.
         String path = "src\\main\\resources\\images\\searchPage\\searchDefault.png";
         Path imagePath = Paths.get(path);
         Image image = new Image(imagePath.toUri().toString());
-        
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(190);
         imageView.setPreserveRatio(true);
         resultSet.getChildren().add(imageView);
-
     }
 
+    /** 
+     * Prepares the previous images searched by the user.
+     */
     private void preparePreviousSearches() {
         ArrayList<String> arr = dataBase.getImageForSearch();
         suggestions = new ArrayList<Button>();
@@ -110,19 +143,17 @@ public class SearchController {
             prevSearchesBox.setVisible(false);
             return;
         }
-
         // for (int i = 0; i < Math.min(5, arr.size()); i++) {
         //     Button b = createButton(arr.get(i));
         //     suggestions.add(b);
         // }
-
         Collections.reverse(suggestions);
         prevSearchesBox.getChildren().addAll(suggestions);
     }
 
     /**
      * Handles the key pressed event.
-     * @param event the event.
+     * @param event The event.
      */
     @FXML
     void handleKeyPressed(KeyEvent event) {
@@ -139,15 +170,19 @@ public class SearchController {
         }
     }
 
+    /**
+     * Starts searching when enter is pressed.
+     * @param event The event.
+     */
     @FXML
     void searchByButton(ActionEvent event) {
         handleEnterFunctionality();
     }
 
-    MFXProgressSpinner spinner;
-
+    /**
+     * Handles the background task executed when enter pressed.
+     */
     private void handleEnterFunctionality() {
-       
         countErrorText.setVisible(false);
         if (resultCount.getText().equals("") ||
             Integer.parseInt(resultCount.getText()) > 100) {
@@ -163,37 +198,28 @@ public class SearchController {
             updatePrevSearches();
         });
         pause.play();
-        
     }
 
-    MenuThreadGUI menuThreadGUI = new MenuThreadGUI();
-
     /**
-     * Executes the search for the image.
+     * Executes the search of the image.
+     * @param action the action event.
      */
-    
-    MonitorHttpGUI monitorHttpGui = new MonitorHttpGUI();
-
-    private void executeSearch(ActionEvent e) {
+    private void executeSearch(ActionEvent action) {
         //functionality
         MonitorHttpGUI.imageName = autoCompleteTextField.getText();
         MonitorHttpGUI.searchResultCount = Integer.parseInt(resultCount.getText());
         System.out.println("Before execution");
-        menuThreadGUI.handleUserInputGUI(3);
+        menu_thread.handleUserInputGUI(3);
         System.out.println("After execution");
-        
         StringBuilder stringBuilder = MonitorThreadGUI.getInstance().getContainerMonitorHttp().
             getSearchResult(autoCompleteTextField.getText());
-        System.out.println("string builder: " + stringBuilder);
-
+        //Secure thread concurrency.
         Platform.runLater(() -> {
             resultSet.getChildren().remove(spinner);
         });
-
-        System.out.println(monitorHttpGui.getResponse1().toString());
-        int statusCode = (monitorHttpGui.getHttpResponse() != null) ?
-            monitorHttpGui.getHttpResponse().getStatusLine().getStatusCode() : 404;
-        System.out.println("status code outside switch: " + statusCode);
+        //Api did not have a 404 status code, so we had to define it:
+        int statusCode = (monitor.getHttpResponse() != null) ?
+            monitor.getHttpResponse().getStatusLine().getStatusCode() : 404;
         PopupController popupController = new PopupController();
         switch (statusCode) {
             case 200:
@@ -202,39 +228,36 @@ public class SearchController {
             case 500:
                 System.out.println("status code: " + statusCode);
                 showSearchError();
-                popupController.showPopup(e);
+                popupController.showPopup(action);
                 popupController.setErrorMessage("An Internal Server Error has occured!");
                 return;  
-            default:
+            default: //when image not found.
                 showSearchError();
                 popupController = new PopupController();
                 popupController
                 .setErrorMessage("Seems like the image you are looking for does not exist!");
-                popupController.showPopup(e);
+                popupController.showPopup(action);
                 return;
-        }    
-        
-         
+        }
+        //Customize the appearance of the search result.
         String[] imageInfo = stringBuilder.toString().
             replace("\"", "").split("\n");
-        
         for (int i = 0; i < imageInfo.length; ) {
-
             String title = imageInfo[i];
             i++;
             String description = imageInfo[i];
             i++;
             String starCount = imageInfo[i];
-            i++;
-
+            i++; 
+            //add default icon to search results.
             String imIconPathString = "src\\main\\resources\\images\\dockerHubPage\\imageIcon.png";
             Path imIconPath = Paths.get(imIconPathString);
             Image imageIconImg = new Image(imIconPath.toUri().toString());
-
             ImageView imageIcon = new ImageView(imageIconImg);
+            //set the size of it.
             imageIcon.setFitHeight(50);
             imageIcon.setFitWidth(50);
-
+            //add everything in a hbox to be displayed horizontally
             HBox imageBox = new HBox();
             imageBox.setStyle("-fx-background-color: #ffffff; " +
                 "-fx-border-radius: 20; " +
@@ -246,85 +269,69 @@ public class SearchController {
             imageBox.setMaxWidth(910);
             imageBox.setMaxHeight(100);
             imageBox.setSpacing(20);
-
+            //the vbox contains the title and the description of the search result.
             VBox titleDescBox = new VBox();
+            //customize it.
             titleDescBox.setMinWidth(550);
             titleDescBox.setMaxWidth(550);
             titleDescBox.setSpacing(10);
-
+            //create the title and the description text, based on the results.
             Text titleText = new Text(title);
             Text descText = new Text(description);
+            /*customize them, add them in a text flow and then in the vbox in orded to 
+            be shown vertically*/
             titleText.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
             descText.setStyle("-fx-font-size: 12px; -fx-fill: #555");
-
             TextFlow descTextFlow = new TextFlow(descText);
             descTextFlow.setMaxWidth(550);
             titleDescBox.getChildren().addAll(titleText, descTextFlow);
-
+            /*create a pull button for each result so as to let user pull the searched image in
+            he wants to*/
             Button pullButton = new Button("Pull");
             pullButton.setStyle("-fx-text-fill: #6200ee; " +
                 "-fx-background-color: transparent; fx-font-size: 15px;");
             pullButton.setMinWidth(100);
             pullButton.setMaxWidth(100);
-
+            //Add functionality to the button created.
             pullButton.setOnAction((ActionEvent event) -> {
                 executePull(pullButton, title, event);
             });
-            
+            //Set an image of star for the star count.
             String path = "src\\main\\resources\\images\\dockerHubPage\\star.png";
             Path imagePath = Paths.get(path);
             Image image = new Image(imagePath.toUri().toString());
-            
             ImageView starIcon = new ImageView(image);
             starIcon.setFitHeight(15);
             starIcon.setFitWidth(15);
-
             Text starCountText = new Text(starCount);
             starCountText.setStyle("-fx-text-fill: #555;");
             HBox.setMargin(starCountText, new Insets(0, 0, 0, -18));
+            //add all the components to the box of the result.
             imageBox.getChildren().
-                addAll(imageIcon, titleDescBox, pullButton, starIcon, starCountText);
-            
+                addAll(imageIcon, titleDescBox, pullButton, starIcon, starCountText); 
             resultSet.getChildren().add(imageBox);
         }
     }
-    ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
+  
     /**
      * Executes the pull for the image.
      * @throws PullImageException if the image is not found or there is an internal server error.
      */
     private void executePull(Button pullButton, String imName, ActionEvent e) {
-        //functionality
-        
+        //functionality.
         ManagerHttpGUI.imageName = imName;
-        menuThreadGUI.handleUserInputGUI(4);
-        
-        //final String ERROR_CODE_STYLE = "-fx-font-size: 50px; -fx-fill: #ff0000;font-weight: bold;
-        //final String TEXT_STYLE = "-fx-font-size: 24px;";
-        int statusCode = Integer.parseInt(managerHttpGUI.getResponse1().toString());
-        
-        //String message;
+        menu_thread.handleUserInputGUI(4);
+        int statusCode = Integer.parseInt(manager.getResponse1().toString());
         PopupController popupController = new PopupController();
         switch (statusCode) {
+            /* XXX: We have to find out why the system collapses after searching an image...
+            might be caused by threading issues or http responses/ buffers etc that 
+            are not cleared. */ 
             case 200:
-                //Text statusCodeText = new Text("Status Code");
-                //statusCodeText.setStyle("-fx-font-size: 18px;");
-            
-                //Text resultCode = new Text(managerHttpGUI.getResponse1().toString());
-                //resultCode.setStyle("-fx-font-size: 50px; -fx-fill: #3dc985; font-weight: bold;");
-
-                //Text resultText = new Text("Success! Image pulled successfully!");
-                //resultText.setStyle(TEXT_STYLE);
-                //resultSet.getChildren().remove(spinner);
                 pullButton.setText("Pulled");
                 pullButton.setStyle("-fx-text-fill: #555; " +
                     "-fx-background-color: transparent; fx-font-size: 15px;");
                 pullButton.setDisable(true);
-                /*Platform.runLater(() -> {
-                    resultSet.getChildren().addAll(statusCodeText, resultCode, resultText);
-                    System.out.println("result added");
-                });*/
-                
                 break;
             case 500:
                 popupController.showPopup(e);
@@ -335,13 +342,13 @@ public class SearchController {
                 popupController.setErrorMessage("We are sorry! Something unexpected has occured!");
                 popupController.showPopup(e);
         }
-        
     }
 
     /**
-     * Updates the previous searches of the user. It provides suggestions,
-     * based on the previous searches of the user. This is done by saving the
-     * previous searches in the database.
+     * Updates the previous searches of the user. 
+     * <p>It provides suggestions,
+     * based on the previous searches of the user. 
+     * This is done by saving the previous searches in the database.
      */
     private void updatePrevSearches() {
         boolean alreadyExists = false;
@@ -411,6 +418,7 @@ public class SearchController {
         resultSet.getChildren().clear();
     }
 
+    /** Shows a UI component indicating search error. */
     private void showSearchError() {
         clearResults();
         String path = "src\\main\\resources\\images\\searchPage\\searchError.png";

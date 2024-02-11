@@ -104,8 +104,7 @@ public class UserAuthenticationCLI extends UserAuthentication {
      *   <li>401 - Sets the output message to indicate authentication failure
      *   <li>404 - Sets the output message to indicate that the user is not found on Docker Hub 
      * </ul>
-     * 
-     * @param message The message to be handled, typically indicating the action being performed.
+     *
      */
     @Override
     public void handleOutput() throws UserNotFoundException {

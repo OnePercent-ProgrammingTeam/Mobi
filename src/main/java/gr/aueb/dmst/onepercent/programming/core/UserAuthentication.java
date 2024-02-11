@@ -95,7 +95,6 @@ public abstract class UserAuthentication extends SuperHttp {
      * <p>This method executes the HTTP request based on the provided message.
      * 
      * @param message the message provided by the user.
-     * @throws UserNotFoundException if the user is not found.
      */
     @Override
     public void executeRequest(String message) {

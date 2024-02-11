@@ -7,81 +7,77 @@ import java.util.ArrayList;
 import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+
 import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-
 /**
- * ok
+ * A UI controller that manages the user interface and functionalities of the images 
+ * page in the application. This page features a table displaying information about locally 
+ * installed images, including their names and IDs. Each row in the table includes a button 
+ * to remove the corresponding image.
  */
-
 public class ImagesPageController {
-    /** ok */
-    public ImagesPageController() { }
     
+    /** The table with the locally installed images. */
     @FXML
     private TableView<DataModel> imagesTable;
-
+    /** The column with the names of the images. */
     @FXML
     private TableColumn<DataModel, String> imagesNameCol;
-
+    /** The column with the ids of the images. */
     @FXML
     private TableColumn<DataModel, String> imagesIdCol;
-
+    /** The column with the buttons to remove images. */
     @FXML
     private TableColumn<DataModel, Button> removeCol;
-
+    /** The collection with the customized data models (embedded class). */
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
+    /** Default Constructor. */
+    public ImagesPageController() { }
+    
     /**
-     * ok
+     * Initializes the Images page with it's UI components and adds functionalities.
      */
     @FXML
     public void initialize() {
-        // Link columns to corresponding properties in DataModel
+        //Set cell values in order to be feasible to add buttons to the table.
         imagesNameCol.setCellValueFactory(new PropertyValueFactory<>("imageName"));
         imagesIdCol.setCellValueFactory(new PropertyValueFactory<>("imageId"));
-        
-        System.out.println("HELLO WORLD");
-        MonitorHttpGUI monitorHttp = new MonitorHttpGUI();
-        monitorHttp.getImagesListGUI();
+        MonitorHttpGUI monitor = new MonitorHttpGUI();
+        monitor.getImagesListGUI();
         ArrayList<String> imagesIdsList = new ArrayList<String>();
-        imagesIdsList = monitorHttp.getFormattedImageIdsList();
+        imagesIdsList = monitor.getFormattedImageIdsList();
         ArrayList<String> imagesNamesList = new ArrayList<String>();
-        imagesNamesList = monitorHttp.getFormattedImageNamesList();;
-
-
-
-
-        // Populate data from ArrayLists
+        imagesNamesList = monitor.getFormattedImageNamesList();
+        //Create customized data models (embedded class).
         for (int i = 0; i < imagesNamesList.size(); i++) {
-            
             data.add(new DataModel(
                     imagesNamesList.get(i),
                     imagesIdsList.get(i),
                     new Button()));
         }
-
         removeCol.setCellFactory(column -> new TableCell<DataModel, Button>() {
             private final Button button = new Button();
-
             @Override
             protected void updateItem(Button item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty || getTableView().getItems().size() <= getIndex()) {
                     setGraphic(null);
-                } else {     
+                } else { //style the remove buttons of the table.
                     String path = "src/main/resources/images/imagesPage/remove-icon.png";
                     Path pathToFile = Paths.get(path);
-                   
                     button.setStyle("-fx-background-color: transparent; " +
                         "-fx-background-image: url('" + pathToFile.toUri().toString() + "'); " +
                         "-fx-background-repeat: no-repeat; " +
@@ -91,14 +87,10 @@ public class ImagesPageController {
                     setGraphic(button);
                 }
             }
-
-            {
+            {   //Add functionality to the button to remove images when clicked when clicked.
                 button.setOnMouseClicked(event -> {
-                    
-                    Platform.runLater(() -> { //speed up the process
-                        
+                    Platform.runLater(() -> { //speed up the process 
                         DataModel dataModel = getTableView().getItems().get(getIndex());
-                       
                         ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
                         ManagerHttpGUI.imageName = dataModel.getImageName();
                         SuperHttp superHttp = new SuperHttp();
@@ -107,44 +99,38 @@ public class ImagesPageController {
                         data.remove(dataModel);
                         int removedIndex = getTableRow().getIndex();
                         imagesTable.getItems().remove(removedIndex);
-                  
                     });
                 }); 
             }
-    
-  
         });
-        
-    
-       
-        
-        // Set the items for the TableView
+        // Style the columns
         imagesTable.setItems(data);
         imagesNameCol.setStyle("-fx-text-fill: #111111; -fx-font-family: Malgun Gothic;" +
             "-fx-font-size: 15px; -fx-background-color: #eee; -fx-min-width: 200px;");
-        
         imagesIdCol.setStyle("-fx-text-fill: #111111; -fx-font-family: Malgun Gothic;" +
             "-fx-font-size: 15px; -fx-background-color: #eee; -fx-min-width: 200px;"); 
         removeCol.setStyle("-fx-text-fill: #111111; -fx-font-family: Malgun Gothic;" +
             "-fx-font-size: 15px; -fx-background-color: #eee; -fx-min-width: 200px;");
-        
-        // Set up the removeCol column with a custom cell factory
-        
     }
 
-    /**
-     * ok
-     */
+   /**
+    * An embedded class representing a customized data model, needed for the table,
+    * containing the container's name, id, status, time of creation, a button to start/ stop it
+    * and a button to remove it.
+    */
     public static class DataModel {
+        /** The name of the image. */
         private final String imageName;
+        /** The id of the image. */
         private final String imageId;
+        /** The button to remove the image. */
         private final Button removeButton;
         
         /**
-         * ok
-         * @param imageName ok
-         * @param imageId ok
-         * @param removeButton ok
+         * Constructor to initialize the fields.
+         * @param imageName The name of the image.
+         * @param imageId The id of the image.
+         * @param removeButton The button to remove the image.
          */
         public DataModel(String imageName, String imageId, Button removeButton) {
             this.imageName = imageName;
@@ -153,24 +139,24 @@ public class ImagesPageController {
         }
     
         /**
-         * ok
-         * @return ok
+         * Getter for image name.
+         * @return The image name.
          */
         public String getImageName() {
             return imageName;
         }
 
         /**
-         * ok
-         * @return ok
+         * Getter for image id.
+         * @return The image id.
          */
         public String getImageId() {
             return imageId;
         }
 
         /**
-         * ok
-         * @return ok
+         * Getter for the button, used to remove images.
+         * @return The remove button.
          */
         public Button getRemoveButton() {
             return removeButton;

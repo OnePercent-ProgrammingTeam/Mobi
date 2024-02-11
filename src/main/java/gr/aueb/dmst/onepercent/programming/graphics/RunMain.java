@@ -1,11 +1,11 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
-
 /**
- * RunMain serves as the entry point for the graphical user interface (GUI) application.
+ * Serves as the entry point for the graphical user interface (GUI) application.
  * It contains the main method that invokes the main method of the GUI class.
  */
 public class RunMain {
+    
     /**
      * The main method, triggering the execution of the GUI application.
      *
@@ -15,11 +15,8 @@ public class RunMain {
         MainGUI.main(args);
     }
 
-    /**
-     * Default Constructor
-     */
+    /** Default Constructor. */
     public RunMain() {
 
     }
-    
 }

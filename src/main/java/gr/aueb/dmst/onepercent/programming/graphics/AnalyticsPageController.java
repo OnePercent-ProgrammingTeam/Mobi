@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 
 import javafx.scene.chart.LineChart;
@@ -39,9 +38,11 @@ import javafx.scene.text.Text;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 
-
 /**
- * ok
+ * A UI controller of Analytics Page in the GUI of the application.
+ * 
+ * <p>It provides real-time monitoring of CPU and memory usage for selected containers, 
+ * along with information about running containers and swarm details.
  */
 public class AnalyticsPageController {
     
@@ -110,7 +111,7 @@ public class AnalyticsPageController {
     public AnalyticsPageController() { }
 
 
-    /*
+    /**
      * Initialize the page's UI components and define functionalities that should run.
      */
     @FXML
@@ -210,8 +211,174 @@ public class AnalyticsPageController {
         runningContainersTable.setItems(data);
     }
 
+    ScheduledExecutorService executorService;
+    /**
+     * Starts updating the chart. 
+     */
+    private void startUpdatingChart() {
+        cpuSeries.getData().clear();
+        memorySeries.getData().clear();
+        cpuChart.getData().add(cpuSeries);
+        memoryChart.getData().add(memorySeries);
+        System.out.println("Updating chart");
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        //The chart is updated every 5 seconds.
+        executorService.scheduleAtFixedRate(() -> {
+            updateChartData();
+        }, 0, 5, TimeUnit.SECONDS);
+        
+    }
+
+    /**
+     * Stops updating and clears the chart when the container is unselected.
+     */
+    private void stopUpdatingChart() {
+        /* when user unselects the button, 
+         * the charts are cleared and data points are vanished from both
+         * CPU and memory charts.
+         */
+        cpuSeries
+            .getData()
+            .removeAll(Collections.singleton(cpuChart.getData().setAll()));
+        memorySeries
+            .getData()
+            .removeAll(Collections.singleton(memoryChart.getData().setAll()));
+        executorService.shutdown();
+        try {
+            response.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Updates the charts with new datapoints.
+     */
+    private void updateChartData() {
+
+        //Add new data points to the series.
+        long currentTimestamp = System.currentTimeMillis();
+        //Format the timestamp to display hours, minutes and seconds.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String formattedTime = dateFormat.format(new Date(currentTimestamp));
+        //Securing thread-concurrency issues.
+        Platform.runLater(() -> {
+            double[] stats = statsPlot();
+            cpuSeries.getData().add(new XYChart.Data<>(formattedTime, stats[0]));
+            memorySeries.getData().add(new XYChart.Data<>(formattedTime, stats[1]));
+            /* Remove old datapoints to keep the chart from getting too long, 
+             * always show the latest updates
+             */
+            if (cpuSeries.getData().size() > 10) {
+                cpuSeries.getData().remove(0);
+            }
+            if (memorySeries.getData().size() > 10) {
+                memorySeries.getData().remove(0);
+            }
+        });
+    }
+
    /**
-    * An embedded class representing a customized data model, needed for the diagram and table.
+    * Returns CPU and Memory usage, after being estimated.
+    * @return A array of doubles, containing two elements: CPU usage and memory usage.
+    */
+    public double[] statsPlot() {
+        //Gather real-time data.
+        BufferedReader reader;
+        double cpu_usage = 0;
+        double memory_usage = 0;
+        try {
+            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String inputLine = reader.readLine(); // Read a new line from the response
+            if (inputLine != null) {
+                cpu_usage = monitor.getCPUusage(new StringBuilder(inputLine));
+                memory_usage = monitor.getMemoryUsage(new StringBuilder(inputLine));
+            } else {
+                /* No more lines to read, close the reader and cancel the timer
+                 * This is executed only if there are no more responses .
+                 */
+                reader.close();
+            }                                                             
+        } catch (UnsupportedOperationException | IOException e) {
+            e.printStackTrace();
+        }
+        double[] stats = {cpu_usage, memory_usage};
+        return stats;
+    }
+
+    /**
+     * Updates the rounded squared boxes, containing information about containers.
+     */
+    private void updateContainerInfo() {
+        Platform.runLater(() -> {
+            MainGUI.menuThreadGUI.handleUserInputGUI(6);
+            String[] containerInfo = MonitorThreadGUI.getInstance()
+                .getContainerMonitorHttp().getContainerInfo();
+            ipText.setText(containerInfo[0]);
+            macText.setText(containerInfo[1]);
+            networkText.setText(containerInfo[2].substring(0, 10) + "...");
+            gatewayText.setText(containerInfo[3]);
+        });
+    }
+
+    /* Methods used to let user copy the information appearing in the rounded boxes by one click. */
+    
+    /** Copies IP Address. */
+    @FXML
+    void copyIp() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection(ipText.getText());
+        clipboard.setContents(stringSelection, null);
+    }
+
+    /** Copies Mac Address. */
+    @FXML
+    void copyMac() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection(macText.getText());
+        clipboard.setContents(stringSelection, null);
+    }
+
+    /** Copies Network ID. */
+    @FXML
+    void copyNetwork() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection(monitor.getContainerInfo()[2]);
+        clipboard.setContents(stringSelection, null);
+    }
+
+    /** Copies Gateway Address. */
+    @FXML
+    void copyGateway() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection(gatewayText.getText());
+        clipboard.setContents(stringSelection, null);
+    }
+
+
+    /** Retrieves and shows swarm information in the bottom table of the page. */
+    @FXML
+    void getSwarmInfo() {
+        monitor.inspectSwarm();
+        String[] swarmInfo = monitor.getSwarmInfo();
+        swarmName.setText(swarmInfo[0]);
+        swarmId.setText(swarmInfo[1].substring(0, 10) + "...");
+        swarmVersion.setText(swarmInfo[2]);
+        swarmBorn.setText(swarmInfo[3]);
+        swarmUpdated.setText(swarmInfo[4]);
+        swarmSubnetSize.setText(swarmInfo[5]);
+    }
+
+    /** Loads Help Page, when the text pointing to it is clicked. */
+    @FXML
+    void loadHelpPage() {
+        LoginPageController.MAIN_PAGE_CONTROLLER.loadPage("HelpPage.fxml");  
+    }
+
+   /**
+    * An embedded class representing a customized data model, needed for the diagram and table,
+    * containg the running containers and the button to plot their resource consumption.
     */
     public static class DataModel {
         /** Container's name. */
@@ -257,175 +424,4 @@ public class AnalyticsPageController {
             return selection;
         }
     }
-
-    /**
-     * ok
-     */
-    public class HttpRequestTask extends Task<String> {     
-
-        /* */
-        HttpRequestTask() {
-            
-        }
-
-        @Override    
-        protected String call() throws Exception {         
-            // Perform your HTTP GET request here        
-            return null;
-        } 
-    }
-
-    ScheduledExecutorService executorService;
-
-    private void startUpdatingChart() {
-        cpuSeries.getData().clear();
-        memorySeries.getData().clear();
-
-        cpuChart.getData().add(cpuSeries);
-        memoryChart.getData().add(memorySeries);
-        System.out.println("Updating chart");
-
-        executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> {
-            updateChartData();
-        }, 0, 5, TimeUnit.SECONDS);
-        
-    }
-
-    private void stopUpdatingChart() {
-        /*when user unselects the button, 
-        the charts are cleared, data points are vanished
-        Stack Overflow solution: 
-        */
-        cpuSeries
-            .getData()
-            .removeAll(Collections.singleton(cpuChart.getData().setAll()));
-
-        memorySeries
-            .getData()
-            .removeAll(Collections.singleton(memoryChart.getData().setAll()));
-        executorService.shutdown();
-        try {
-            response.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    private void updateChartData() {
-
-        // Add new data points to the series
-        // For example:
-        long currentTimestamp = System.currentTimeMillis();
-        // Format the timestamp to display hours, minutes, and seconds
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        String formattedTime = dateFormat.format(new Date(currentTimestamp));
-        
-
-        Platform.runLater(() -> {
-            //XYChart.Series<String, Number> series = lineChart.getData().get(0);
-            double[] stats = statsPlot();
-            cpuSeries.getData().add(new XYChart.Data<>(formattedTime, stats[0]));
-            memorySeries.getData().add(new XYChart.Data<>(formattedTime, stats[1]));
-            //Math.random() * 100
-
-            // Remove old data points to keep the chart from getting too long
-            if (cpuSeries.getData().size() > 10) {
-                cpuSeries.getData().remove(0);
-            }
-            if (memorySeries.getData().size() > 10) {
-                memorySeries.getData().remove(0);
-            }
-        });
-    }
-
-    /**
-     * ok
-     * @return ok
-     */
-    public double[] statsPlot() {
-        // Simulate real-time data update every second
-        BufferedReader reader;
-        double cpu_usage = 0;
-        double memory_usage = 0;
-        try {
-            reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String inputLine = reader.readLine(); // Read a new line from the response
-            if (inputLine != null) {
-                cpu_usage = monitor.getCPUusage(new StringBuilder(inputLine));
-                memory_usage = monitor.getMemoryUsage(new StringBuilder(inputLine));
-            } else {
-                // No more lines to read, close the reader and cancel the timer
-                //This is executed only if there are not more responses 
-                reader.close();
-            }                                                             
-
-        } catch (UnsupportedOperationException | IOException e) {
-            e.printStackTrace();
-        }
-        double[] stats = {cpu_usage, memory_usage};
-        return stats;
-    }
-
-    private void updateContainerInfo() {
-        Platform.runLater(() -> {
-            MainGUI.menuThreadGUI.handleUserInputGUI(6);
-            String[] containerInfo = MonitorThreadGUI.getInstance()
-                .getContainerMonitorHttp().getContainerInfo();
-            ipText.setText(containerInfo[0]);
-            macText.setText(containerInfo[1]);
-            networkText.setText(containerInfo[2].substring(0, 10) + "...");
-            gatewayText.setText(containerInfo[3]);
-        });
-       
-        // System.out.println("Updating container info");
-        // MonitorThreadGUI monitorThreadGUI = MonitorThreadGUI.getInstance();
-    }
-
-    @FXML
-    void copyIp() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection stringSelection = new StringSelection(ipText.getText());
-        clipboard.setContents(stringSelection, null);
-    }
-
-    @FXML
-    void copyMac() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection stringSelection = new StringSelection(macText.getText());
-        clipboard.setContents(stringSelection, null);
-    }
-
-    @FXML
-    void copyNetwork() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection stringSelection = new StringSelection(monitor.getContainerInfo()[2]);
-        clipboard.setContents(stringSelection, null);
-    }
-
-    @FXML
-    void copyGateway() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection stringSelection = new StringSelection(gatewayText.getText());
-        clipboard.setContents(stringSelection, null);
-    }
-
-    @FXML
-    void getSwarmInfo() {
-        monitor.inspectSwarm();
-        String[] swarmInfo = monitor.getSwarmInfo();
-        swarmName.setText(swarmInfo[0]);
-        swarmId.setText(swarmInfo[1].substring(0, 10) + "...");
-        swarmVersion.setText(swarmInfo[2]);
-        swarmBorn.setText(swarmInfo[3]);
-        swarmUpdated.setText(swarmInfo[4]);
-        swarmSubnetSize.setText(swarmInfo[5]);
-    }
-
-    @FXML
-    void loadHelpPage() {
-        LoginPageController.MAIN_PAGE_CONTROLLER.loadPage("HelpPage.fxml");  
-    }
 }
-

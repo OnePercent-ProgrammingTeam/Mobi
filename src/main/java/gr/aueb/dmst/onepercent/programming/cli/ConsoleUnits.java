@@ -20,6 +20,9 @@ public class ConsoleUnits {
     /** ANSI escape blue color code */
     public static final String BLUE = "\u001B[34m";
 
+    /** Default constructor. */
+    public ConsoleUnits() { }
+
     /**
      * Prompts the user for input and returns the user's input as a String.
      * @param outputMessage The message to be printed before receiving input.
@@ -33,6 +36,4 @@ public class ConsoleUnits {
         scanner.nextLine();
         return input;
     } 
-
-
 }
