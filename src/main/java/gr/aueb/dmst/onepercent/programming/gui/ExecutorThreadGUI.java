@@ -1,6 +1,6 @@
-package gr.aueb.dmst.onepercent.programming.core;
+package gr.aueb.dmst.onepercent.programming.gui;
 
-import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
+import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 /**
  * Class: ExecutorThreadGUI is a class that extends SuperThread and represents

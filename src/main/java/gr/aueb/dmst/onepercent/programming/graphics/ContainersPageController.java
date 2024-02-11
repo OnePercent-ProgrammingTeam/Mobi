@@ -85,7 +85,7 @@ public class ContainersPageController {
         timeCreatedCol.setCellValueFactory(new PropertyValueFactory<>("timeCreated"));    
 
        
-        monitor.initializeContainerModels(true);
+        monitor.initializeContainerList(true);
         ArrayList<String> containerNameList = monitor.getNameList();
         ArrayList<String> containerIdList = monitor.getIdList();
         ArrayList<String> statusList = monitor.getStatusList();

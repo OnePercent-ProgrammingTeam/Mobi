@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import com.github.dockerjava.api.model.ContainerPort;
 import com.google.common.annotations.VisibleForTesting;
 
-
 /** Class: MonitorAPI is a class that contains methods that retrieves information
  * about the containers, it monitors the docker system. It is a subclass of SuperAPI.
  * @see SuperAPI
  */
 public class MonitorAPI extends SuperAPI {
     /** Field: List<ContainerModel> is the list of container models. */
-    List<ContainerModel> containerModels = new ArrayList();
+    List<Container> containers = new ArrayList();
 
     /**
      * Retrieves the list of ContainerModels.
@@ -28,8 +27,8 @@ public class MonitorAPI extends SuperAPI {
      * @return List of ContainerModels containing information about locally installed containers.
      */
     @VisibleForTesting
-    public List<ContainerModel> getContainerModels() {
-        return containerModels;
+    public List<Container> getContainerModels() {
+        return containers;
     }
         
     /**
@@ -41,13 +40,12 @@ public class MonitorAPI extends SuperAPI {
      * @param showAll Indicates whether to include both stopped and running containers (true) 
      * or only running ones (false)
      */
-    public void initializeContainerModels(boolean showAll) {
-        List<Container> containers;
+    public void initializeContainerList(boolean showAll) {
         containers = MonitorAPI.dc.listContainersCmd().withShowAll(showAll).exec();
-        containers.forEach(c -> {
-            if (c != null)
-                 containerModels.add(new ContainerModel(c));
-        }); // add all containers to containerModels list
+        // containers.forEach(c -> {
+        //     if (c != null)
+        //          containerModels.add(new ContainerModel(c));
+        // }); // add all containers to containerModels list
     }
 
    /** Method: getContainerList() prints the names of the locally installed containers, their ids, 
@@ -60,7 +58,7 @@ public class MonitorAPI extends SuperAPI {
                           "Status", 
                           "Time Created");
         System.out.println(" ");
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             long unixTimestamp = c.getCreated();
             LocalDateTime dateTime = LocalDateTime
                                     .ofInstant(Instant
@@ -78,7 +76,7 @@ public class MonitorAPI extends SuperAPI {
 
    /** Method: getContainerPorts() prints the information about the ports of the containers. */  
     public void getContainerPorts() {
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             for (ContainerPort port: c.getPorts()) {
                 System.out.println(port.getIp() + " ");
                 System.out.println(port.getPrivatePort() + " ");
@@ -92,14 +90,14 @@ public class MonitorAPI extends SuperAPI {
     /** Method: getContainerCommands() prints the command that was used to create the 
      *  container. */  
     public void getContainerCommands() {
-        containerModels.forEach(c -> System.out.println(c.getCommand()));
+        containers.forEach(c -> System.out.println(c.getCommand()));
     }
 
    
     /** Method: getContainerStatus() prints the status of the container as described in 
      *  ContainerModel.java. */
     public void getContainerStatus() {
-        containerModels.forEach(c -> System.out.println(c.getStatus()));
+        containers.forEach(c -> System.out.println(c.getStatus()));
     }
 
 
@@ -109,7 +107,7 @@ public class MonitorAPI extends SuperAPI {
      * @return ok
      */
     public boolean getContainerStatus(String id) {
-        for (ContainerModel c : containerModels) {
+        for (Container c : containers) {
             if (c.getId().equals(id)) {
                 return c.getStatus().split(" ")[0].equals("Up");
             } 
@@ -141,7 +139,7 @@ public class MonitorAPI extends SuperAPI {
    *    </code>
    */
     public void convertUnixToRealTime() {
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             long unixTimestamp = c.getCreated();
 
             // Convert Unix timestamp to LocalDateTime
@@ -170,7 +168,7 @@ public class MonitorAPI extends SuperAPI {
     public String[][] getContainerInfo() {
         ArrayList<String[]> containerInfo = new ArrayList<>();
   
-        for (ContainerModel c : containerModels) {
+        for (Container c : containers) {
             long unixTimestamp = c.getCreated();
             LocalDateTime dateTime = LocalDateTime
                                      .ofInstant(Instant
@@ -210,7 +208,7 @@ public class MonitorAPI extends SuperAPI {
      */
     public ArrayList<String> getNameList() {
         ArrayList<String> nameList = new ArrayList<>();
-        for (ContainerModel c : containerModels) {
+        for (Container c : containers) {
             StringBuilder namesBuilder = new StringBuilder();
             for (String name : c.getNames()) {
                 namesBuilder.append(name.substring(1)).append(" ");
@@ -228,7 +226,7 @@ public class MonitorAPI extends SuperAPI {
      */
     public ArrayList<String> getIdList() {
         ArrayList<String> id = new ArrayList<String>();
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             id.add(c.getId());
         });
         return id;
@@ -241,7 +239,7 @@ public class MonitorAPI extends SuperAPI {
      */
     public ArrayList<String> getStatusList() {
         ArrayList<String> status = new ArrayList<String>();
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             status.add(c.getStatus());
         });
         return status;
@@ -254,7 +252,7 @@ public class MonitorAPI extends SuperAPI {
      */
     public ArrayList<String> getTimeCreatedList() {
         ArrayList<String> created = new ArrayList<String>();
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             long unixTimestamp = c.getCreated();
 
             // Convert Unix timestamp to LocalDateTime
@@ -278,7 +276,7 @@ public class MonitorAPI extends SuperAPI {
      */
     public ArrayList<String> getImageIdList() {
         ArrayList<String> imageid = new ArrayList<String>();
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             imageid.add(c.getImageId());
         });
         return imageid;
@@ -291,7 +289,7 @@ public class MonitorAPI extends SuperAPI {
      */
     public ArrayList<String> getImageNameList() {
         ArrayList<String> imagename = new ArrayList<String>();
-        containerModels.forEach(c -> {
+        containers.forEach(c -> {
             imagename.add(c.getImage());
         });
         return imagename;

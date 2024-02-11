@@ -128,7 +128,7 @@ public class AnalyticsPageController {
         MonitorAPI monitor = new MonitorAPI();
         MonitorAPI.createDockerClient();
 
-        monitor.initializeContainerModels(false);
+        monitor.initializeContainerList(false);
         ArrayList<String> containersNamesList = monitor.getNameList();
         ArrayList<String> containersIdList = monitor.getIdList();
 

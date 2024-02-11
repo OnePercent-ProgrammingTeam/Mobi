@@ -118,8 +118,8 @@ public class MonitorHttpGUI extends MonitorHttp {
     }
    
     @Override
-    public CloseableHttpResponse getContainerStats(String GOT_TO_DELETE) {
-        String message = "stats"; // get the container statistics in json format
+    public CloseableHttpResponse getContainerStats(String message) {
+        message = "stats"; // get the container statistics in json format
         conId = containerId;
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
                                  "/containers/" + 

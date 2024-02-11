@@ -49,9 +49,8 @@ public class MonitorThreadCLI extends SuperThread {
                 System.out.print("Type \"C\" for CPU usage or \"M\" for Memory usage diagram: ");
                 input = scanner.nextLine();
                 Graph.isForMemory = input.equalsIgnoreCase("M");
-                Graph.executeDiagram();
-                break;
-           
+                Graph.displayGraph();
+                break;       
             case 6:
                 CSV csv = new CSV();
                 csv.startProcess();   
@@ -63,7 +62,7 @@ public class MonitorThreadCLI extends SuperThread {
                  */
                 SuperAPI.createDockerClient();
                 MonitorAPI monitorAPI = new MonitorAPI();
-                monitorAPI.initializeContainerModels(true);
+                monitorAPI.initializeContainerList(true);
                 monitorAPI.getContainerList();
                 break;
             case 10:

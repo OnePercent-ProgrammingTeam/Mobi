@@ -11,7 +11,7 @@ import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
  * @see gr.aueb.dmst.onepercent.programming.cli.MonitorThreadCLI
  * @see gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI
  * @see gr.aueb.dmst.onepercent.programming.cli.ExecutorThreadCLI
- * @see gr.aueb.dmst.onepercent.programming.core.ExecutorThreadGUI
+ * @see gr.aueb.dmst.onepercent.programming.gui.ExecutorThreadGUI
  * @see gr.aueb.dmst.onepercent.programming.data.DataBaseThread
  */
 public abstract class SuperThread extends Thread {

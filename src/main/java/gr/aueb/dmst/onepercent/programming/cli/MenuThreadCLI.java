@@ -57,7 +57,7 @@ public class MenuThreadCLI extends MenuThread {
         System.out.println("------------------------------------------------------------");
         SuperAPI.createDockerClient();
         MonitorAPI containerMonitor = new MonitorAPI();
-        containerMonitor.initializeContainerModels(true);
+        containerMonitor.initializeContainerList(true);
         containerMonitor.getContainerList();
         System.out.println("\n");
         do {

@@ -45,7 +45,7 @@ public class MonitorThreadGUI extends SuperThread {
                 break;
             case 5:
                 Graph graph = Graph.getInstance();
-                graph.executeDiagramGUI();
+                graph.displayGraphGUI();
                 break;
             case 6:
                 containerMonitorHttp.inspectContainer();
