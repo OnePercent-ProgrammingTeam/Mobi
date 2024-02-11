@@ -10,7 +10,6 @@ import gr.aueb.dmst.onepercent.programming.core.SuperThread;
  * It contains the logic for processing user input and invoking appropriate methods 
  * to manage Docker objects, such as starting, stopping, pulling, or removing containers and images.
  */
-
 public class ExecutorThreadCLI extends SuperThread {
     
     /** The singleton instance of ExecutorThreadCLI. */

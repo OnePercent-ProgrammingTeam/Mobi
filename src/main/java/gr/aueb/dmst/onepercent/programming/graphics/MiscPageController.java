@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 public class MiscPageController {
 
     /** ok */
-    MiscPageController() {
+    public MiscPageController() {
         
     }
 
@@ -34,12 +34,12 @@ public class MiscPageController {
 
 
     @FXML
-    void initialize() {
+    public void initialize() {
         loadNotifications(null);
     }
 
     @FXML
-    void loadHistory(ActionEvent event) {
+    public void loadHistory(ActionEvent event) {
         if (historyButton.getStyle().equals(SELECTED_TAB_STYLE)) return;
         notifButton.setStyle(SECONDARY_TAB_STYLE);
         historyButton.setStyle(SELECTED_TAB_STYLE);
@@ -47,7 +47,7 @@ public class MiscPageController {
     }
 
     @FXML
-    void loadNotifications(ActionEvent event) {
+    public void loadNotifications(ActionEvent event) {
         if (notifButton.getStyle().equals(SELECTED_TAB_STYLE)) return;
         notifButton.setStyle(SELECTED_TAB_STYLE);
         historyButton.setStyle(SECONDARY_TAB_STYLE);

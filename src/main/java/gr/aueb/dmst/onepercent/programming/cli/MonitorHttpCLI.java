@@ -5,6 +5,7 @@ import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
 
 import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.io.IOException;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -504,6 +507,54 @@ public class MonitorHttpCLI extends MonitorHttp {
         } catch (JsonProcessingException e) {
             System.out.println(ConsoleUnits.RED + 
                 "Something went wrong while processing the JSON response." + ConsoleUnits.RESET);
+        }
+    }
+
+        /** 
+     * Prepares data to be stored in a CSV file. 
+     * 
+     * <p>Retrieves information about a container
+     * and its statistics, including container name, ID, IP address, MAC address, CPU usage,
+     * and timestamp. 
+     * 
+     * @return the data that will be stored in the .csv file.
+     */
+    public String[] prepareCsvStorageData() {
+        String[] csv_info;
+        try {
+            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                    "/containers/" + 
+                                    MonitorHttp.containerId + 
+                                    "/json");
+            executeRequest("prepare storage");
+            jn = mapper.readTree(response_builder.toString());
+            csv_info = new String[6];
+            /* Insert data to the array. */
+            csv_info[0] = jn.at("/Name").asText().substring(1);
+            /* Ignore the "/" from the container name. */
+            csv_info[1] = jn.at("/Id").asText(); //Container ID
+            csv_info[2] = jn
+                     .at("/NetworkSettings/Networks/bridge/IPAddress")
+                     .asText();
+            csv_info[3] = jn
+                    .at("/NetworkSettings/Networks/bridge/MacAddress")
+                    .asText();
+            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+                                              "/containers/" + 
+                                              MonitorHttp.containerId + 
+                                              "/stats");
+            executeRequest("stats");
+            csv_info[4] = String.valueOf(lastCPUUsage);
+            LocalDate date = LocalDate.now(); 
+            LocalTime time = LocalTime.now();
+            //Date and Time in one
+            csv_info[5] = date.toString() + " " + time.toString().substring(0, 8); 
+            return csv_info;
+        } catch (Exception e) {
+            System.out.println(RED + "Something went wrong, while preparing data to be stored" 
+                                + RESET);
+            e.printStackTrace();
+            return null;
         }
     }
 }

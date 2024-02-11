@@ -1,6 +1,5 @@
 package gr.aueb.dmst.onepercent.programming.gui;
 
-
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 
 /**
@@ -18,7 +17,7 @@ public class MenuThreadGUI extends MenuThread {
     
     @Override
     public void run() {
-        dataBaseThread.setInterfaceType("GUI");
+        //dataBaseThread.setInterfaceType("GUI");
     }
 
     /**
@@ -39,9 +38,7 @@ public class MenuThreadGUI extends MenuThread {
                 //set name to the thread so as to be easier to recognize it. 
                 thread.setName("Executor"); 
                 thread.start();
-
-                waitThread();
-                
+                waitThread();     
                 break;
             case 3:
             case 5:
@@ -53,9 +50,7 @@ public class MenuThreadGUI extends MenuThread {
                 //set name to the thread so as to be easier to recognize it. 
                 thread.setName("Monitor"); 
                 thread.start();
-
-                waitThread();
-                
+                waitThread();   
                 break;
             default:
                 System.out.println("Non Valid Input.");

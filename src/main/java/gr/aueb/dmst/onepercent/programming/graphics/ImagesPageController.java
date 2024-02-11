@@ -107,7 +107,6 @@ public class ImagesPageController {
                         data.remove(dataModel);
                         int removedIndex = getTableRow().getIndex();
                         imagesTable.getItems().remove(removedIndex);
-
                   
                     });
                 }); 

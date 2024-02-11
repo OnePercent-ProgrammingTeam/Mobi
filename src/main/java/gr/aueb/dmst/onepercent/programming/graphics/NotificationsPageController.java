@@ -17,13 +17,13 @@ import javafx.scene.text.Text;
 
 public class NotificationsPageController {
     /**ok */
-    NotificationsPageController() { }
+    public NotificationsPageController() { }
 
     @FXML
     private VBox notifContentArea;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         setupNotifications();
     }
 

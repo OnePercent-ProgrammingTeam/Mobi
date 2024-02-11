@@ -1,123 +1,126 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
+import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
+
+import com.github.dockerjava.api.DockerClient;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import com.github.dockerjava.api.DockerClient;
-
-
-import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
 
 /**
- * Class: SuperHttp is a superclass that contains static variables, used in other
- * classes, representing the docker client and the http requests.
- * It is used to create a docker client and the http requests.
- * SuperHttp class implements the HttpInterface interface.
- * It is the superclass of the MonitorHttp class and ManagerHttp class.
- * @see HttpInterface
- * @see MonitorHttp
- * @see ManagerHttp
+ * A class that contains static variables used by other classes
+ * to interact with Docker Engine API via HTTP requests.
+ * 
+ * <p>It is the superclass of the {@link MonitorHttp} and {@link ManagerHttp} classes.
+ * 
+ * @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI
+ * @see gr.aueb.dmst.onepercent.programming.cli.ManagerHttpCLI
+ * @see gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI
+ * @see gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI
  */
-public class SuperHttp implements HttpInterface {
-    /** Field: DOCKER_HOST is the docker host address */
-    protected static final String DOCKER_HOST = "http://localhost:2375"; // used in junit test
-
-    /** Field: HTTP_CLIENT is a http client */
-    protected static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
-
-    /** Field: dc is a static variable, used in other classes, representing the docker client */
-    protected static DockerClient dc;
-
-    /** Field httpPost request (Post is "to request to do something e.g start container")*/
-    protected static HttpPost postRequest;
-    /** Container id of the container that is going to be started, stopped or inspected */
-    public static String containerId; // used in junit test
-
-    /**ok */
-    protected static HttpDelete deleteRequest;
-    /**
-     * Http Get request (Get is "to request to get something e.g info about
-     * containers")
-     */
-    protected static HttpGet getRequest;
-    /** Image name of the image that is going to be pulled or searched */
+public class SuperHttp {
+    
+    /** Identifier for the Docker container. */
+    public static String containerId; 
+    /** Image name for Docker operations. */
     public static String imageName;
-    /** Http response return by the executed http request */
+    /** HTTP response content stored as a StringBuilder. */
+    public static  StringBuilder response_builder; //Used in JUnit tests
+    /** The Docker daemon host URL. */
+    public static final String DOCKER_HOST = "http://localhost:2375"; //Used in JUnit tests
+    /** The HTTP client for executing HTTP requests. */
+    protected static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
+    /** The Docker client instance. */
+    protected static DockerClient dc;
+    /** HTTP POST request object. */
+    protected static HttpPost postRequest;
+    /** HTTP DELETE request object. */
+    protected static HttpDelete deleteRequest;
+    /** HTTP GET request object. */
+    protected static HttpGet getRequest;
+    /** HTTP response object. */
     protected CloseableHttpResponse http_response;
-    /** Http response, read using StringBuffer */
-    public static  StringBuilder response_builder; // used in junit test
+    /** Last CPU usage metric for a running container. */
+    protected static double lastCPUUsage;
+    /** Last memory usage metric for a running container. */
+    protected static double lastMemoryUsage;
+    /** The container ID stored for database operations. */
+    protected String conId; //Used in database
+    /** Singleton instance of the database thread. */
+    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
 
-    /** Last CPU Usage is the last metric for a running container */
-    protected static  double lastCPUUsage;
+    /** Default constructor. */
+    public SuperHttp() { }
 
-   
+    /**
+        * Generates a response message.
+        * 
+        * @param message The message to be generated.
+        * @return The generated response message.
+        */
     public String generateResponseMessage(String message) { 
         return message;
     }
 
+    /**
+    * Prints output message to the console.
+    * 
+    * @param message The message to be printed.
+    */
     public void printOutput(String message) {
         System.out.println(message);
     }
 
-    /**ok */
-    protected static double lastMemoryUsage;
-
-
-    //for database
-    /**The static field "conId" is used to keep the id of the container the user wants to find,  
-     * in order to be visible in the database. 
-     */
-    protected String conId;
     /**
-     * ok
-     * @return ok
-     */
+        * Retrieves the container ID.
+        * 
+        * @return The container ID.
+        */
     public String getContainerId() {
         return conId;
     }
 
     /**
-     * ok
-     * @param conId ok
-     */
+        * Sets the container ID.
+        * 
+        * @param conId The container ID to be set.
+        */
     public void setContainerId(String conId) {
         this.conId = conId;
     }
 
     /**
-     * ok
-     */
-    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
-
-    
-    /** Execute the http request
-     * @param message the message that indicates the action that is going to be executed
-     */
+        * Executes an HTTP request.
+        * 
+        * @param message The message indicating the action to be executed.
+        */
     public void executeRequest(String message) {
     };
-    /** Get the response of the http request
-     *  @return the response that indicates the action that is going to be executed
-     * it is the query for the http request
-     */
+
+    /**
+        * Retrieves the HTTP response.
+        * 
+        * @return The HTTP response.
+        */
     public CloseableHttpResponse getHttpResponse() {
         return http_response;
     }
 
     /**
-     * ok
-     * @return ok
-     */
+        * Retrieves the HTTP response content stored as a StringBuilder.
+        * 
+        * @return The HTTP response content as a StringBuilder.
+        */
     public StringBuilder getResponse1() {
         return response_builder;
     }
 
     /**
-     * Default Constructor
-     */
-    public SuperHttp() {
-
-    }
+        * Default constructor for the SuperHttp class.
+        */
 }

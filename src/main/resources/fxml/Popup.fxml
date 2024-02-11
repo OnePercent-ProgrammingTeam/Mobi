@@ -44,7 +44,7 @@
                   </ImageView>
                   <TextFlow maxWidth="-Infinity" minWidth="-Infinity" prefWidth="390.0">
                      <children>
-                        <Text fx:id="popupErrorText" fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="You cannot select two running containers simoultaneously. Please, unselect the selected container.">
+                        <Text fx:id="popupErrorText" fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="You cannot select two running containers simultaneously. Please, unselect the selected container.">
                            <font>
                               <Font size="15.0" />
                            </font>

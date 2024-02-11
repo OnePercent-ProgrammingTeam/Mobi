@@ -3,59 +3,55 @@ package gr.aueb.dmst.onepercent.programming.core;
 import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
 
 /**
- * Class: SuperThread is a superclass that contains a static variable, used in other classes,
- * representing the user input collected by the MenuThread.
- * It is used to create a mock object for the MenuThread class in the test classes.
- *
- * @see gr.aueb.dmst.onepercent.programming.core.MenuThread
- * @see gr.aueb.dmst.onepercent.programming.cli.MonitorThreadCLI
- * @see gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI
+ * Abstract class that serves as the superclass for all threads in the application.
+ * 
+ * <p>All thread classes in both the CLI and GUI versions of the application extend this class.
+ * 
+ * <p>Subclasses of this class should implement the specific functionality required for their
+ * respective tasks. They must override the {@code run()} method to define the behavior
+ * of the thread during execution.
+ * 
+ * <p>By extending this class, thread subclasses inherit common properties and behaviors.
+ * 
+ * <p>The {@code userInput} field stores the input provided by the user, which can be accessed
+ * and modified by subclasses as needed.
+ * 
+ * <p>The {@code dataBaseThread} field provides access to the singleton instance of the
+ * {@code DataBaseThread} class, allowing threads to interact with the database.
+ * 
+ * @see gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI
  * @see gr.aueb.dmst.onepercent.programming.cli.ExecutorThreadCLI
+ * @see gr.aueb.dmst.onepercent.programming.cli.MonitorThreadCLI
+ * 
+ * @see gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI
  * @see gr.aueb.dmst.onepercent.programming.gui.ExecutorThreadGUI
- * @see gr.aueb.dmst.onepercent.programming.data.DataBaseThread
+ * @see gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI
  */
 public abstract class SuperThread extends Thread {
-    /**
-     * Field: userInput is the input of the user that is used in threads to define his options.
-     * It represents the user input collected by the MenuThread.
-     */
+
+    /** User's input. */
     protected int userInput;
 
-    /**
-     * ok
-     */
+    /** Database thread instance. */
     protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
-    //protected Thread dataThread = new Thread(dataBaseThread);
+
+    /** Default Constructor. */
+    public SuperThread() { }
 
     /**
-     * Method: setUserInput sets the user input.
-     *
-     * @param userInput The input provided by the user.
+     * Initiates the execution of the the thread.
+     * This method overrides the run method from the Thread class 
+     * and defines the behavior of the menu thread during execution.
      */
-    public void setUserInput(int userInput) {
-        this.userInput = userInput;
-    }
+    public abstract void run();
 
-    /**
-     * Method: getUserInput gets the user input.
-     *
-     * @return The user input stored in the userInput field.
-     */
+    /** Get user's input. */
     public int getUserInput() {
         return this.userInput;
     }
 
-    /**
-     * This must be implemented as SuperThread implements Runnable.
-     * It is abstract, so children of the class must @Override it.
-     */
-    public abstract void run();
-
-    /** 
-     * Default Constructor
-     */
-    public SuperThread() {
-
+    /** Set user's input. */
+    public void setUserInput(int userInput) {
+        this.userInput = userInput;
     }
-    
 }

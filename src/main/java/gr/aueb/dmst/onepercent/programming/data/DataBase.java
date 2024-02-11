@@ -195,7 +195,7 @@ public class DataBase {
             Statement statement = connection.createStatement();
 
             
-            String[] info = monitor.getTableforContainer();
+            String[] info = monitor.retrieveContainerInfoArray();
 
             query = "INSERT INTO Container (ID, C_ID, C_NAME, Status,"
                 + "Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)"

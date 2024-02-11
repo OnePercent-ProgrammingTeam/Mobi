@@ -34,7 +34,7 @@ import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
 
 /**
- * Represents a graphical user interface for visualizing container statistics.
+ * A graphical user interface for visualizing container statistics.
  * 
  * <p>The Graph class extends the JFrame class to create and manage a graphical
  * window for displaying real-time container statistics. It provides methods for
@@ -180,7 +180,7 @@ public class Graph extends JFrame {
      */
     public void scheduleRealTimeDataUpdate(CloseableHttpResponse response, Graph ex) 
         throws UnsupportedOperationException, IOException {
-        // Create a new BufferedReader to read the response
+        /* Create a new BufferedReader to read the response. */
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
                                                                                  .getContent()));
         /* The timer is not a daemon thread, so it will not prevent the application from exiting. */

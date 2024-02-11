@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import com.github.dockerjava.api.model.Container;
 
-import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.DockerInformationRetriever;
 
 
-public class MonitorApiTest {
-    MonitorAPI obj = new MonitorAPI();
+public class DockerInformationRetrieverTest {
+    DockerInformationRetriever obj = new DockerInformationRetriever();
     TestsHelper th = TestsHelper.getInstance();
 
     /* TODO
@@ -38,7 +38,7 @@ public class MonitorApiTest {
 
     @Test
     public void testGetNameList() {
-        ArrayList<String> arr = obj.getNameList(); //setup
+        ArrayList<String> arr = obj.getContainerNames(); //setup
         List<Container> conArr = th.getAllContainers();
 
         int m = 0; //matches
@@ -48,7 +48,7 @@ public class MonitorApiTest {
                 String[] names = containerNames.split(" ");
                 boolean allNamesSame = true;
 
-                //check if each and every name of a container from MonitorApi
+                //check if each and every name of a container from DockerInformationRetriever
                 //is equal to each and every name of a container from TestsHelper
                 for (int i = 0; i < names.length; i++) {
                     if (!names[i].equals(c.getNames()[0].substring(1))) {

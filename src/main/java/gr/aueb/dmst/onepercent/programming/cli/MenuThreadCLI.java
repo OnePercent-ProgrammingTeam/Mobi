@@ -4,8 +4,7 @@ import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.YELLOW;
 
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
-import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
-import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
+import gr.aueb.dmst.onepercent.programming.core.DockerInformationRetriever;
 import gr.aueb.dmst.onepercent.programming.exceptions.InvalidInputException;
 
 import java.util.InputMismatchException;
@@ -55,10 +54,10 @@ public class MenuThreadCLI extends MenuThread {
     private void printMenu() {
         System.out.println("-LIST OF CONTAINERS-");
         System.out.println("------------------------------------------------------------");
-        SuperAPI.createDockerClient();
-        MonitorAPI containerMonitor = new MonitorAPI();
+        DockerInformationRetriever.createDockerClient();
+        DockerInformationRetriever containerMonitor = new DockerInformationRetriever();
         containerMonitor.initializeContainerList(true);
-        containerMonitor.getContainerList();
+        containerMonitor.printContainerList();
         System.out.println("\n");
         do {
             System.out.println("-MENU-");
@@ -86,7 +85,6 @@ public class MenuThreadCLI extends MenuThread {
         } while (handleUserInput());
     }
 
-
     /** Handles the user input. 
      * @return true if the user wants to run again, false otherwise.
     */
@@ -109,16 +107,21 @@ public class MenuThreadCLI extends MenuThread {
         }
         System.out.println("\nWant to run again?\n\nFor YES press Y.\nFor NO press N. ");
         System.out.print("Enter answer: ");
-        char choice = INPUT.next().charAt(0);
+        String choice = INPUT.nextLine();
         System.out.println();
-        if (choice == 'N' || choice == 'n') {
+        while (!(choice.equalsIgnoreCase("Y") || choice.equalsIgnoreCase("N"))) {
+            System.out.print("\n".concat(ConsoleUnits.RED)
+                               .concat("Wrong input, press 'Y' to continue or 'N' to exit: ")
+                               .concat(RESET));
+            choice = INPUT.nextLine();
+        }
+        if (choice.equalsIgnoreCase("N")) {
             System.out.println("Thank you!");
             INPUT.close();
             System.exit(0);
         }
-        String choiceString = Character.toString(choice);
         /* The user's input is case insensitive. */
-        return choiceString.equalsIgnoreCase("Y");
+        return choice.equalsIgnoreCase("Y");
     }
 
     /**

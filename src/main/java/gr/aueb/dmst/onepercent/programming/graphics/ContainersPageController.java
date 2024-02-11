@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import org.controlsfx.control.ToggleSwitch;
 
 
-import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
+import gr.aueb.dmst.onepercent.programming.core.DockerInformationRetriever;
 import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
 import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
@@ -75,8 +75,8 @@ public class ContainersPageController {
     @FXML
     public void initialize() {
        
-        MonitorAPI monitor = new MonitorAPI();
-        MonitorAPI.createDockerClient();
+        DockerInformationRetriever monitor = new DockerInformationRetriever();
+        DockerInformationRetriever.createDockerClient();
         setUpPieChart();
        // Link columns to corresponding properties in DataModel
         containerNameCol.setCellValueFactory(new PropertyValueFactory<>("containerName"));
@@ -86,7 +86,7 @@ public class ContainersPageController {
 
        
         monitor.initializeContainerList(true);
-        ArrayList<String> containerNameList = monitor.getNameList();
+        ArrayList<String> containerNameList = monitor.getContainerNames();
         ArrayList<String> containerIdList = monitor.getIdList();
         ArrayList<String> statusList = monitor.getStatusList();
         ArrayList<String> timeCreatedList = monitor.getTimeCreatedList();
@@ -128,7 +128,7 @@ public class ContainersPageController {
                     DataModel dataModel = getTableView().getItems().get(getIndex());
 
                     //Set button text based on container status
-                    if (monitor.getContainerStatus(dataModel.getContainerId())) {
+                    if (monitor.isContainerRunning(dataModel.getContainerId())) {
                         toggle.setSelected(true);
                         
                     } else {
@@ -220,8 +220,10 @@ public class ContainersPageController {
     int running; //number of running containers
     ObservableList<PieChart.Data> pieChartData; //data for pie chart
     private void setUpPieChart() {
-        all = MonitorAPI.dc.listContainersCmd().withShowAll(true).exec().size();
-        running = MonitorAPI.dc.listContainersCmd().withShowAll(false).exec().size();
+        all = DockerInformationRetriever.dockerClient.listContainersCmd()
+                                                     .withShowAll(true).exec().size();
+        running = DockerInformationRetriever.dockerClient.listContainersCmd()
+                                                     .withShowAll(false).exec().size();
         int stopped = all - running;
         /*initialize the labels of the chart pie */
         runningText.setText("Running: " + running);

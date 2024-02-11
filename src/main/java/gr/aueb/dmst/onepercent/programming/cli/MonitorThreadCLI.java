@@ -1,8 +1,10 @@
 package gr.aueb.dmst.onepercent.programming.cli;
 
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
+
 import gr.aueb.dmst.onepercent.programming.core.Graph;
-import gr.aueb.dmst.onepercent.programming.core.MonitorAPI;
-import gr.aueb.dmst.onepercent.programming.core.SuperAPI;
+import gr.aueb.dmst.onepercent.programming.core.DockerInformationRetriever;
 import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 import java.util.Scanner;
@@ -48,6 +50,12 @@ public class MonitorThreadCLI extends SuperThread {
             case 5:
                 System.out.print("Type \"C\" for CPU usage or \"M\" for Memory usage diagram: ");
                 input = scanner.nextLine();
+                while (!(input.equalsIgnoreCase("M") || input.equalsIgnoreCase("C"))) {
+                    System.out.print("\n" + RED +
+                        "Wrong input, type \"C\" for CPU, or \"M\" for memory usage diagram: " 
+                        + RESET);
+                    input = scanner.nextLine();
+                }
                 Graph.isForMemory = input.equalsIgnoreCase("M");
                 Graph.displayGraph();
                 break;       
@@ -57,13 +65,13 @@ public class MonitorThreadCLI extends SuperThread {
                 break;
             case 7:
                 /*
-                 * Use an object  of MonitorAPI, which is based on docker-java library on github,
-                 * not Docker Engine API 
+                 * Use an object  of DockerInformationRetriever, which is based on docker-java 
+                 * library on github, not Docker Engine API 
                  */
-                SuperAPI.createDockerClient();
-                MonitorAPI monitorAPI = new MonitorAPI();
-                monitorAPI.initializeContainerList(true);
-                monitorAPI.getContainerList();
+                DockerInformationRetriever.createDockerClient();
+                var DockerInformationRetriever = new DockerInformationRetriever();
+                DockerInformationRetriever.initializeContainerList(true);
+                DockerInformationRetriever.printContainerList();
                 break;
             case 10:
                 monitor.searchImage();
@@ -83,7 +91,9 @@ public class MonitorThreadCLI extends SuperThread {
                 input = scanner.nextLine();
                 //Input validation.
                 while (!input.equalsIgnoreCase("D") && !input.equalsIgnoreCase("S")) {
-                    System.out.println("Invalid input. Please try again.");
+                    System.out.println("\n" + RED +
+                        "Wrong input, type \"D\" for Docker version," +
+                        "or \"S\" for System overview: " + RESET);
                     input = scanner.nextLine();
                 }
                 if (input.equalsIgnoreCase("D")) {

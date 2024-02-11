@@ -18,8 +18,12 @@ import org.apache.http.entity.StringEntity;
  * and implements methods to perform the login process, handle user authentication, and 
  * manage user data related to Docker Hub (store them in application's database).
  * 
+ * <p>Mobi uses for authentication the Docker Hub credentials of the user. As a result signing in to
+ * Mobi can only be done with Docker Hub user and password.
+ * 
  * <p>It includes methods to prompt the user for credentials, securely read the password,
- * send an HTTP POST request to authenticate the user, and handle the output message based 
+ * send an HTTP POST request to 
+ * to authenticate the user, and handle the output message based 
  * on the response received from the HTTP request.
  * 
  * @see gr.aueb.dmst.onepercent.programming.core.UserAuthentication
@@ -40,7 +44,7 @@ public class UserAuthenticationCLI extends UserAuthentication {
     public void logIn() {
         /*If credentials to not match, check again until they do.*/
         checkAuth(); 
-        while (!getUserExistanceInDocker()) { //
+        while (!isSignedIn()) { //
             checkAuth();
         }
         users.createUser();
@@ -104,7 +108,7 @@ public class UserAuthenticationCLI extends UserAuthentication {
      * @param message The message to be handled, typically indicating the action being performed.
      */
     @Override
-    public void handleOutput(String message) throws UserNotFoundException {
+    public void handleOutput() throws UserNotFoundException {
         String output = "";
         if (this.http_response == null) {
             output = "Response has not been initialized";

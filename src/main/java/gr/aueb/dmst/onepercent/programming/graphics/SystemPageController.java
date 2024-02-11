@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 /** ok */
 public class SystemPageController {
     /** ok */
-    SystemPageController() { }
+    public SystemPageController() { }
 
     @FXML
     private Text api_version;

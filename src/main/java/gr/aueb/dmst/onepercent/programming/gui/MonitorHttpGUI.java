@@ -33,7 +33,7 @@ public class MonitorHttpGUI extends MonitorHttp {
     @Override
     public void inspectContainer() {
         try {
-            String[] res = this.getTableforContainer();
+            String[] res = this.retrieveContainerInfoArray();
             containerInfo[0] = res[6];
             containerInfo[1] = res[7];
             containerInfo[2] = res[4];
@@ -72,7 +72,7 @@ public class MonitorHttpGUI extends MonitorHttp {
     }
 
     @Override
-    public String[] getTableforContainer() throws JsonProcessingException {
+    public String[] retrieveContainerInfoArray() throws JsonProcessingException {
         String[] info = new String[8];
         try {
             System.out.println("Inside getTableforContainer() method");
@@ -183,14 +183,10 @@ public class MonitorHttpGUI extends MonitorHttp {
      * may throw Exception if an error occurs while executing the http request.
      */
     @Override
-    public void executeRequest(String message) {
-        
+    public void executeRequest(String message) {      
         try {
             http_response = HTTP_CLIENT.execute(getRequest);
-
             System.out.println(getRequest);
-           
-
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(http_response.getEntity().getContent()));
             String inputLine;
@@ -198,7 +194,6 @@ public class MonitorHttpGUI extends MonitorHttp {
             synchronized (res1Lock) {
                 response_builder = new StringBuilder();
             } 
-            
             while ((inputLine = reader.readLine()) != null) {
                 response_builder.append(inputLine);
                 if (message.equals("stats")) {
@@ -209,11 +204,9 @@ public class MonitorHttpGUI extends MonitorHttp {
                     http_response.close();
                     break;
                 }
-            }
-            
+            }     
             reader.close();
             http_response.close();
-           
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to " + 
@@ -222,7 +215,6 @@ public class MonitorHttpGUI extends MonitorHttp {
                                 e.getMessage()); // Print the error message
         }
     }
-
 
     /**
      * to do

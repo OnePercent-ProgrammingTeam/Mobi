@@ -1,7 +1,5 @@
 package gr.aueb.dmst.onepercent.programming.cli;
 
-import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
-
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -26,7 +24,7 @@ import java.util.TimerTask;
 public class CSV {
    
     /** Monitor object that is used to get the data of the containers. */
-    MonitorHttp monitorHttp = new MonitorHttpCLI();
+    MonitorHttpCLI monitor = new MonitorHttpCLI();
     /** A boolean that is used to check if the user has requested to terminate the process. */
     boolean exitRequested = false;
     /** The path of the folder in which the .csv file is going to be created. */
@@ -68,8 +66,8 @@ public class CSV {
      * The method gets the data of the containers and stores them in a .csv file.
      */
     private void storeData() {
-        monitorHttp.getContainerStats("CSV");
-        String[] info = monitorHttp.prepareStoragedData();
+        monitor.getContainerStats("CSV");
+        String[] info = monitor.prepareCsvStorageData();
         String filePath = Paths.get(folderPath, info[0] + "Data.csv").toString();
         createFile(filePath);
         collectData(filePath);
@@ -121,7 +119,7 @@ public class CSV {
             public void run() { // The task to run, this will be executed every second
                 if (exitRequested == false) {
                     try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
-                        String[] info = monitorHttp.prepareStoragedData();
+                        String[] info = monitor.prepareCsvStorageData();
                         writer.writeNext(info);    
                     } catch (IOException e) {
                         System.out.println(ConsoleUnits.RED + 

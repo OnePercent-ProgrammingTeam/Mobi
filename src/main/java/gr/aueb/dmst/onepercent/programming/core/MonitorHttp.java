@@ -1,182 +1,174 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-
-/** Import the Jackson ObjectMapper class for formatting the JSON response.*/
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 
 import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
 
-/** Import the Jackson JsonNode class for formatting the JSON response.*/
-import com.fasterxml.jackson.databind.JsonNode; 
-/** Import the Jackson JsonProcessingException for handling an exception that might occur. */
 import com.fasterxml.jackson.core.JsonProcessingException; 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
-/** Class: MonitorHttp is responsible for the http requests that are made to the docker daemon
- *  in order to get information about a container, get statistics about a running container
- *  or search for an image.
- *  It extends the SuperHttp class.
- *  @see SuperHttp
+import java.io.IOException;
+
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+
+/**
+ * An abstract class responsible for executing Docker monitoring functionalities via HTTP requests.
+ * Extends {@link SuperHttp}.
+ * 
+ * <p>This is the core monitoring class of the application. It  has two concrete subclasses,
+ * which are responsible for implementing specific actions, related to docker objects and docker
+ * system monitoring such as container inspection, image searching, listing of docker objects,
+ * retrieval of information about docker system, version, swarm and resource usage. 
+ * <ul>
+ *   <li>{@link gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI} for the CLI version</li>
+ *   <li>{@link gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI} for the GUI version</li>
+ * </ul>
+ * 
+ * <p>The logic behind the inheritance is that GUI and CLI versions are built on top of the same
+ * core functionality and backend logic, but they have different user interfaces serving different
+ * user needs.
+ * 
+ * <p>Note that the HTTP requests can only be GET, as this class and it's subclasses are responsible
+ * for monitoring Docker objects and system in order to retrieve information. 
+ * No POST or DELETE requests are made for management purposes, to execute tasks.
  */
 public abstract class MonitorHttp extends SuperHttp {
 
-    /**
-     * Abstract method to inspect details of a container.
-     * Implementation should provide the specific logic for inspecting container information.
-     */
+    /** Inspect  container by retrieving information about it */
     public abstract void inspectContainer();
 
-    /**
-     * Abstract method to retrieve statistics for a container.
-     *
-     * @param MIGHT_GOT_TO_REMOVE_PARAMETER The ID of the container 
-     * for which statistics are requested.
-     * 
-     * @return CloseableHttpResponse containing container statistics.
-     *         Implementation should handle the specific logic for obtaining container stats.
-     */
-    public abstract CloseableHttpResponse getContainerStats(String MIGHT_GOT_TO_REMOVE_PARAMETER);
+    /** Search for an image, uploaded on Github */
+    public abstract void searchImage();
+
+    /** Mapper to read the response. */
+    private ObjectMapper mapper;
+
+    /** Json node for reading the response. */
+    private JsonNode jsonNode;
+
+    /** Default Constructor. */
+    public MonitorHttp() { }
 
     /**
-     * Abstract method to search for Docker images.
-     * Implementation should provide the specific logic for searching images.
+     * Retrieves statistics, related to container
+     * @param identifier a String identifying the operation to be done by retrieving the stats.
      */
-    public abstract void searchImage();
-    
-    /**
-     * inspects docker swarm
-     */
+    public abstract CloseableHttpResponse getContainerStats(String identifier);
+
+    /** Inspects docker swarm. */
     public void inspectSwarm() {
         String message = "swarm";
         getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
         executeRequest(message);
     }
 
-    /** Method: getHttpResponse(String) executes the http request for getting 
-     *  stats about a running container.
-     * throws Exception if an error occurs while executing the http request.
-     * @return response
+    /**
+     * Retrieves the response of the Http request that wants send to the docker daemon.
      */
     @Override
     public CloseableHttpResponse getHttpResponse() {
         try {
             CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
-
-            //int statusCode = response.getStatusLine().getStatusCode();
-            //System.out.println("Status Code : " + statusCode);
-            //if it gets stats then store it in the database
             if (response.getStatusLine().getStatusCode() == 200) {
                 conId = containerId;
             }
-
             return response;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage()); // Print the error message
-        } 
+        } catch (IOException e) {
+            System.out.println(RED + "Something went wrong while trying to receive the response.." +
+                                                                                            RESET);
+        } catch (NullPointerException e) {
+            System.out.println(RED + "No value was found..." + RESET);
+        }
         return null;
     }
 
-    /** Method: getFormattedStats(StringBuffer) formats the json response for stats 
-     *  to a user-friendly message.
-     *  that is real-time updated and printed to the console
-     *  @param response_buffer a StringBuffer object.
-     *  @throws JsonProcessingException if an error occurs while executing the http request.
-     *
-     *  The code below should work too. Instead, it return 0.0. We have to check it further
-     *      
-     *  <code>
-     *  double cpu_delta = jsonNode.get("cpu_stats").get("cpu_usage").get("total_usage").asDouble()
-     *                - jsonNode.get("precpu_stats").get("cpu_usage").get("total_usage").asDouble();
-     *  double system_delta = jsonNode.get("cpu_stats").get("system_cpu_usage").asDouble()
-     *                      - jsonNode.get("precpu_stats").get("system_cpu_usage").asDouble();
-     *  double number_cpus = jsonNode.get("cpu_stats").get("online_cpus").asDouble();
-     *
-     *  return (system_delta!=0.0)? (cpu_delta / system_delta) * number_cpus * 100.0 : 0.0;
-     *  </code>
+    /** 
+     * Calculates and retrieves the real time CPU Usage of a running container. 
      * 
-     * @return cpu usage
+     * <p>The formula for calculatinf the resource usage can be found on:
+     * <a href="https://docs.docker.com/engine/api/v1.43/#tag/Container/operation/ContainerStats">
+     * Docker Engine API v1.43</a>
+     * 
+     * @param response_builder The builder, from which the response of the request is readden.
+     * @throws JsonProcessingException If an error occurs while executing the http request.
+     * @return CPU Usage
      */
-    
-    public double getCPUusage(StringBuilder response_buffer) throws JsonProcessingException {
+    public double getCPUusage(StringBuilder response_builder) throws JsonProcessingException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response_buffer.toString());
+            jsonNode = mapper.readTree(response_builder.toString());
             double  cpu_delta = jsonNode.at("/cpu_stats/cpu_usage/total_usage").asDouble()
                             - jsonNode.at("/precpu_stats/cpu_usage/total_usage").asDouble();
-            
             double system_delta = jsonNode.at("/cpu_stats/system_cpu_usage").asDouble()
                                 - jsonNode.at("/precpu_stats/system_cpu_usage").asDouble();
-            
             double number_cpus = jsonNode.at("/cpu_stats/online_cpus").asDouble();
             if (system_delta == 0) {
-                System.out.println("\n\nSomething went wrong.\n"
-                                 + "The formula to calculate CPU usage is:\n"
-                                 + "(cpu_delta / system_delta) * number_cpus * 100.0\n"
-                                 + "and system_delta is 0.\n" 
-                                 + "Make sure that the container is running");
+                //TO DO(Cristian Scobioala-Nicoglu): Make customized Exception
+                System.out.println(RED + "\n\nSomething went wrong.\n"
+                                 + "Make sure that the container is running" + RESET);
             }
             double cpuUsage = (cpu_delta / system_delta) * number_cpus * 100.0;
             return cpuUsage;
-
         } catch (NullPointerException e) {
-            System.out.println("------------------------------------------");
+            System.out.println(RED + "The retrieval of CPU Usage unfortunatelly failed." + RESET);
         }
         return 0.0;
     }
 
-    /**
-     * ok
-     * @param response_buffer ok
-     * @return ok
-     * @throws JsonProcessingException ok
+    /** 
+     * Calculates and retrieves the real time Memory Usage of a running container. 
+     * 
+     * <p>The formula for calculatinf the resource usage can be found on:
+     * <a href="https://docs.docker.com/engine/api/v1.43/#tag/Container/operation/ContainerStats">
+     * Docker Engine API v1.43</a>
+     * 
+     * @param response_builder The builder, from which the response of the request is readden.
+     * @throws JsonProcessingException If an error occurs while executing the http request.
+     * @return Memory Usage
      */
     public double getMemoryUsage(StringBuilder response_buffer) throws JsonProcessingException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response_buffer.toString());
+            jsonNode = mapper.readTree(response_buffer.toString());
             double  used_memory = jsonNode.at("/memory_stats/usage").asDouble()
                             - jsonNode.at("/memory_stats/stats/cache").asDouble();
-            
             double available_memory = jsonNode.at("/memory_stats/limit").asDouble();
-                                
             if (available_memory == 0) {
-                //TO DO: Make customised exception
-                System.out.println("\n\nSomething went wrong.\n"
-                                 + "The formula to calculate Memory usage is:\n"
-                                 + "(used_memory / available_memory) * 100.0\n"
-                                 + "and available_memory is 0.\n" 
-                                 + "Make sure that the container is running");
+                //TO DO(Cristian Scobioala-Nicoglu): Make customized Exception
+                System.out.println(RED + "\n\nSomething went wrong.\n"
+                                 + "Make sure that the container is running" + RESET);
             }
             double memory_usage = (used_memory / available_memory) * 100.0;
             return memory_usage;
-
         } catch (NullPointerException e) {
-            System.out.println("------------------------------------------");
+            System.out.println(RED + "The retrieval of CPU Usage unfortunatelly failed." + RESET);
         }
         return 0.0;
     }
 
     /**
-     * Method: getTableforContainer() retrieves information about a container
-     * and formats it into an array for table representation.
+     * Retrieves information about a container in an array for table representation.
+     * 
+     * <p> It is used fir inserting data into the tables of the databases and also for
+     * inspecting a container-printing information about it.
      * 
      * @return An array containing container information:
-     *         [0] Container ID
-     *         [1] Container Name
-     *         [2] Container Status
-     *         [3] Image ID
-     *         [4] Network ID
-     *         [5] Gateway
-     *         [6] IP Address
-     *         [7] Mac Address
+     *         <ul>
+     *             <li>[0] Container ID</li>
+     *             <li>[1] Container Name</li>
+     *             <li>[2] Container Status</li>
+     *             <li>[3] Image ID</li>
+     *             <li>[4] Network ID</li>
+     *             <li>[5] Gateway</li>
+     *             <li>[6] IP Address</li>
+     *             <li>[7] Mac Address</li>
+     *         </ul>
      * @throws JsonProcessingException if there is an error processing the JSON response.
      */
-    public String[] getTableforContainer() throws JsonProcessingException {
+    public String[] retrieveContainerInfoArray() throws JsonProcessingException {
         String[] info = new String[8];
         try {
             getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
@@ -184,10 +176,8 @@ public abstract class MonitorHttp extends SuperHttp {
                                     MonitorHttpCLI.containerId + 
                                     "/json");
             executeRequest("prepare storage");
-
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response_builder.toString());
-
             info[0] = jsonNode.get("Id").asText();
             info[1] = jsonNode.get("Name").asText().substring(1);
             info[2] = jsonNode.get("State").get("Status").asText();
@@ -212,68 +202,9 @@ public abstract class MonitorHttp extends SuperHttp {
                             .get("bridge")
                             .get("MacAddress")
                             .asText();
-
         } catch (NullPointerException e) {
-            System.out.println("Exception due to null value");
+            System.out.println(RED + "Exception due to null value" + RESET);
         }
         return info;
-
-    }
-
-    //TO DO: It's Kiritsai's, might be deleted, also used in csv
-    /** Method: prepareStorageData() returns a String array with the prepared 
-     *  data that will be saved in a csv file. 
-     *  @return str a String array with the data that will be saved in a csv file.
-     *  @throws NullPointerException if an error occurs while executing the http request.
-     */
-    public String[] prepareStoragedData() {
-        try {
-            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                    "/containers/" + 
-                                    MonitorHttp.containerId + 
-                                    "/json");
-            executeRequest("prepare storage");
-            String[] str = new String[6];
-
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response_builder.toString());
-            
-            str[0] = jsonNode.at("/Name").asText().substring(1); //Container Name
-            // We use substring() in order to ignore the "/" from the container name
-            str[1] = jsonNode.at("/Id").asText(); //Container ID
-            str[2] = jsonNode
-                     .at("/NetworkSettings/Networks/bridge/IPAddress")
-                     .asText(); //IP Address
-            str[3] = jsonNode
-                    .at("/NetworkSettings/Networks/bridge/MacAddress")
-                    .asText(); //Mac Address
-
-            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                              "/containers/" + 
-                                              MonitorHttp.containerId + 
-                                              "/stats");
-            executeRequest("stats");
-            
-            str[4] = String.valueOf(lastCPUUsage); //CPU Usage
-            LocalDate date = LocalDate.now(); 
-            LocalTime time = LocalTime.now();
-
-            //Date and Time in one
-            str[5] = date.toString() + " " + time.toString().substring(0, 8); 
-            
-            return str;
-          
-        } catch (Exception e) {
-            System.out.println("Exception while preparing storage of data");
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Default Constructor
-     */
-    public MonitorHttp() {
-
     }
 }

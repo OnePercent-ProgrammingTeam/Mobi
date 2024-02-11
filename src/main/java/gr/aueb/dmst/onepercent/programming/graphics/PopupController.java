@@ -20,7 +20,7 @@ import javafx.util.Duration;
 /** ok */
 public class PopupController {
     /** ok */
-    PopupController() { }
+    public PopupController() { }
 
     @FXML
     private BorderPane popupWindow;

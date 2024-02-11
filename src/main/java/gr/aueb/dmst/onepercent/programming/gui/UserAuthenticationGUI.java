@@ -43,7 +43,7 @@ public class UserAuthenticationGUI extends UserAuthentication {
      * @param message the message that indicates the action that is going to be executed. 
      */
     @Override
-    public void handleOutput(String message) {
+    public void handleOutput() {
         if (this.http_response == null) {
             return;
         } else {

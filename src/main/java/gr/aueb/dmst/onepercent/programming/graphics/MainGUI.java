@@ -31,7 +31,7 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         createMenuThread();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPage.fxml"));
         String style = "src\\main\\resources\\styles.css";
         Path stylepath = Paths.get(style);
         root.getStylesheets().add(getClass().
@@ -45,7 +45,6 @@ public class MainGUI extends Application {
         //window.initModality(Modality.APPLICATION_MODAL);
         window.initStyle(StageStyle.TRANSPARENT);
         window.setScene(scene);
-
         window.show();
     }
 

@@ -45,7 +45,7 @@ public class MonitorHttpTest {
         MonitorHttp.containerId = obj.getTestid();
         
         try {
-            String[] result = containerMonitor.prepareStoragedData();
+            String[] result = containerMonitor.prepareCsvStorageData();
             assertNotNull(result);
             assertEquals(6, result.length);
             assertEquals(obj.getTesContainer().getNames()[0].substring(1), result[0]);

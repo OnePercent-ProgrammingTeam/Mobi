@@ -88,7 +88,7 @@ public class LoginPageController {
         userAuthGUI.setCredentials(usernameField.getText(), passwordField.getText());
         userAuthGUI.checkAuth(); 
         try {
-            if (userAuthGUI.getUserExistanceInDocker()) {
+            if (userAuthGUI.isSignedIn()) {
                 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainPage.fxml")); 
                 Parent root = loader.load();
