@@ -8,6 +8,7 @@ This section provides an overview of the structural organization of the project.
 - [Visualization of the Structure](#visualization-of-the-structure)
 - [Packages](#packages)
 - [UML](#uml)
+- [Data Structures and Algorithms](#data-structures-and-algorithms)
 
 ## 🔧Useful Tools
 Mobi leverages a set of powerful tools to ensure a robust and efficient development process. These tools contribute to the project's functionality, user interface, database management, and overall performance.
@@ -301,3 +302,24 @@ To visualize the structure of our project, including inheritence, implementation
 
 ![UML Diagram](UML.png)
 
+
+## Data Structures and Algorithms
+
+### Data Structures
+Throughout the development of our project, we leveraged data structures that seemed to be pivotal in both the command-line interface (CLI) and graphical user interface (GUI) versions, facilitating diverse functionalities and operations. Specifically: 
+* **Arrays**: String[], char[], double[]
+
+The char[] helped in hiding the code of the user in cli version while the double[] helped in handling cpu and memory usages. The String[] generally facilitate the printing of the messages in the console.
+
+* **ArrayLists**: of String, Button and Integer
+
+The ArrayList of Button and String made the creation and update of the lists of containers and images easier.
+
+### Algorithms
+While our project may not extensively utilize algorithms in the traditional sense, we have employed a multitude of sophisticated techniques to optimize our functionalities and enhance the intelligence of our codebase. These strategies have enabled us to achieve efficiency gains and implement clever solutions to various challenges.
+
+* For searching purposes and functionalities, we primarily employed unconventional **SQL** queries. For instance, we implemented automated processes to populate a secret field with the user's password, sparing them from repetitive input. Additionally, we devised mechanisms to display the user's most recent five searches based on timestamps, offering personalized and efficient navigation within the system.
+
+* For ensurance of correctiveness, comprehensive validation checks were implemented to preempt exceptional scenarios. Customized exceptions were crafted to handle specific error conditions, providing tailored error messages and error handling mechanisms.
+
+* "To facilitate list refreshing in the GUI version, we employed mechanisms to discern the operational status of containers. Through systematic checks, we determined whether containers were actively running or in a stopped state.
