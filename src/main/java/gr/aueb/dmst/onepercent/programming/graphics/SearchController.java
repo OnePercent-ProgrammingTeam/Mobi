@@ -318,7 +318,7 @@ public class SearchController {
         //functionality.
         ManagerGUI.imageName = imName;
         menu_thread.handleUserInput(4);
-        int statusCode = Integer.parseInt(manager.getResponse1().toString());
+        int statusCode = Integer.parseInt(manager.getResponseBuilder().toString());
         PopupController popupController = new PopupController();
         switch (statusCode) {
             /* XXX: We have to find out why the system collapses after searching an image...

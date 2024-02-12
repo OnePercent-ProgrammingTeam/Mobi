@@ -116,7 +116,7 @@ public class SystemController {
         * 
         * @return The HTTP response content as a StringBuilder.
         */
-    public StringBuilder getResponse1() {
+    public StringBuilder getResponseBuilder() {
         return response_builder;
     }
 
