@@ -2,7 +2,7 @@
 
 Welcome to Mobi, an innovative application that provides users with enhanced control and management capabilities for containers and images.
 
-💻🔐📈☀️🔥🏆🌟⚙️🌱🚧🔗🧩🔔⚡️🎬
+💻🔐📈☀️🔥🏆🌟⚙️🌱🚧🔔⚡️🎬🧩
 
 ## Overview 
 - [Introduction](#introduction)
@@ -26,10 +26,10 @@ Explore the exciting features of Mobi by checking out our [advertisement](https:
 
 
 ## 📌About us
-Mobi was initially conceived as part of an academic programming course at the Department of Management Science and Technology (DMST), Athens University of Economics and Business (AUEB). It was developed under the supervision of our professor [Diomidis Spinellis](https://github.com/dspinellis), who provided guidance throughout the project duration.
+Mobi originated as a collaborative endeavor within an academic setting during the third semester of the Programming II course, hosted by the Department of Management Science and Technology (DMST) at the Athens University of Economics and Business (AUEB). This initiative was undertaken collectively by One Percent Programming Team under the mentorship and supervision of Professor [Diomidis Spinellis](https://github.com/dspinellis), who offered invaluable guidance and oversight throughout the entirety of the project.
 
 ## 💡Why Mobi?
-While Mobi was born from a passion for innovation and a commitment to mastering programming skills, it possesses inherent potentials that extend beyond the classroom. With its intuitive interface, robust functionalities, and efficient Docker management capabilities, Mobi has the capacity to transition from an educational endeavor to a valuable tool in the broader software landscape.
+While Mobi was born from a passion for innovation and a commitment to mastering programming skills, it possesses inherent potentials that extend beyond the classroom. With its intuitive interfaces, robust functionalities, and efficient Docker management capabilities, Mobi has the capacity to transition from an educational endeavor to a valuable tool in the broader software landscape.
 With its eye on the market, Mobi offers a user-friendly solution for Docker management, demonstrating its adaptability and value beyond the academic realm.
 
 
@@ -47,7 +47,7 @@ To learn how to navigate and utilize our project in both versions, you can consu
 ## 🤝Contribution
 If you're interested in contributing to the project, feel free to learn more [here](docs/contribution.md).
 
-## 💼Project Structure
+## 🔗Project Structure
 For further insight into our project's structure, including package organization, UML diagram, utilized tools and documentation, you can refer to [this location](docs/project_structure.md)."
 
 
