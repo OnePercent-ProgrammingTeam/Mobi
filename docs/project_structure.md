@@ -6,9 +6,10 @@ This section provides an overview of the structural organization of the project.
 ## Overview 
 - [Useful Tools](#useful-tools)
 - [Elements](#elements)
-- [After the build](after-the-build)
+  - [Before the build](#before-the-build)
+  - [After the build](#after-the-build)
 - [Packages](#packages)
-- [UML Diagram](#uml-diagram)
+- [UML](#uml)
 - [Documentation](#documentation)
 
 ## 🔧Useful Tools
@@ -31,11 +32,11 @@ This subsection outlines the contents of folders and files that:
 1. are presented in the repository's main page
 2. will be generated after the launch of the project
 
-
+### Before the build
 Visually, the structure follows this plan: 
 
 ```
-OnePercent 
+Mobi 
 ├─ .vscode
 │  └─ settings.json
 ├─ config
@@ -234,7 +235,7 @@ OnePercent
  
 ```
 
-### 📄Files
+#### 📄Files
 
 * **pom.xml**\
 The pom.xml file is a configuration file used in Maven projects. It contains project information, dependencies and build settings.
@@ -248,7 +249,7 @@ The .gitattributes file configures Git's behavior for handling line endings.
 * **README.md**\
 The README.md file provides an overview of the project. It contains essential information such as project description, installation instructions, and usage guidelines.
 
-### 📂Folders
+#### 📂Folders
 
 * **.github/workflows**\
 The .github/workflows directory contains workflows for GitHub Actions. These workflows automate the build, test, and deployment processes for the Java project using Maven.
@@ -272,7 +273,7 @@ The config folder contains configuration files necessary for maintaining code qu
   * **tests/java**\
     The tests/java directory is dedicated to unit testing using [JUnit 5](https://github.com/junit-team/junit5?tab=readme-ov-file). Within this section, you'll find Java test files, each named after the original classes, located in the **java/gr/aueb/dmst/onepercent/programming** folder, but suffixed with "Test". This naming convention indicates their purpose and association with the classes they test.
 
-## After the build
+### After the build
 TO BE BUILD
 
 ## 📦Packages

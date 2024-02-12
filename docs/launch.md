@@ -15,7 +15,7 @@ Before you begin, make sure you have the following installed on your system:
 
 * [Git](https://git-scm.com/downloads)
 * [Docker](https://www.docker.com/)
-* [Java](https://www.oracle.com/java/technologies/downloads/)<!--( JDK8/JDK11 are supported by now) installed and JAVA_HOME set.-->
+* [Java](https://www.oracle.com/java/technologies/downloads/)
 * [Maven](https://maven.apache.org/download.cgi?.)\
 Ensure Maven is installed and added to your system's PATH as needed.
 
@@ -42,14 +42,50 @@ Replace <copied_URL> with the actual URL you copied in **Step 1**.
 You are ready to proceed with the next steps of building and running our project.<br><br> 
 
 ## 🔨Build the project
+This section provides instructions on how to build out project. After cloning the project, follow the steps below:
 
+**Step 1:** Open the terminal of your preferred coding environment either it is an "integrated" or a "system" terminal.
 
-## ▶️Run the project
+**Step 2:** Navigate to the path that includes the repository by using the "cd" command.
+
+**Step 3:** Once you are in the correct directory, use the following command to build the project:
+```
+mvn package
+```
+
+## ▶Run the project
 This section provides instructions on how to run our project in your preferred coding environment, whether it be a terminal, code editor or integrated development environment (IDE), allowing you to choose the version you want.<br><br>
-🚨⚠️ Attention: You can run our project before building it, but please note that certain files, such as JAR files, compiled classes, WAR files, or generated documentation, will not be available. Therefore, you won't have access to the same privileges as when the project is fully built.
+⚠️ Attention: You can run the project **only after** building it.
+
+First of all, if you have not already followed the instructions above, you should: 
+**Step 1:** Open the terminal of your preferred coding environment either it is an "integrated" or a "system" terminal.
+
+**Step 2:** Navigate to the path that includes the repository by using the "cd" command.
 
 ### _CLI version_
-To run the cl
+To run the _CLI version_:
+**Step 3:** Navigate inside the path: `src/main/java/gr/aueb/dmst/onepercent/programming/cli`
+
+**Step 4:** Run the command: 
+```
+java Main.java
+```
+
+### _GUI version_
+To run the _GUI version_:
+**Step 3:**
+**A** Run the command: 
+```
+mvn javafx:run
+```
+**OR**
+**B** Navigate inside the path: `target`and run the command:
+```
+java -jar docker-application-1.0-SNAPSHOT.jar
+```
+**OR**
+**C** Open File Explorer and navigate to the path that includes the repository. Heading into: `target` you will find a file named **docker-application-1.0-SNAPSHOT.jar**. By clicking on the file, you have the _GUI version_ right at your fingertips, ready to explore and interact with.
+
 <!--
 ## GUI version
 

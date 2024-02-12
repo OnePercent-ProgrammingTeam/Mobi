@@ -10,10 +10,10 @@ Welcome to Mobi, an innovative application that provides users with enhanced con
 - [About us](#about-us)
 - [Why Mobi?](#why-mobi)
 - [Description](#description)
-- [Launch](#launch)
 - [Usage Guidelines](#usage-guidelines)
+- [Launch](#launch)
+- [Project Structure](#project-structure)
 - [Contribution](#contribution)
-- [Project Structure](#project-structure) 
 - [TODO List](#todo-list)
 
     
@@ -36,19 +36,17 @@ With its eye on the market, Mobi offers a user-friendly solution for Docker mana
 ## 📋Description
 Mobi offers the flexibility to run in two distinct modes, allowing users to choose the interface that best suits their preferences and workflow. Whether you prefer the efficiency of _command-line interface (CLI)_ or the visual clarity of a _graphical user interface (GUI)_, Mobi caters to your needs.
 
+## 📘Usage Guidelines
+To learn how to navigate and utilize our project in both versions, you can consult the documentation [here](docs/usage_guidelines.md).
 
 ## 🚀Launch
 To launch our project in either CLI or GUI mode, click [here](docs/launch.md).
 
-## 📘Usage Guidelines
-To learn how to navigate and utilize our project in both versions, you can consult the documentation [here](docs/usage_guidelines.md).
-
+## 🔗Project Structure
+For further insight into our project's structure, including package organization, UML diagram, utilized tools and documentation, you can refer to [this location](docs/project_structure.md).
 
 ## 🤝Contribution
 If you're interested in contributing to the project, feel free to learn more [here](docs/contribution.md).
-
-## 🔗Project Structure
-For further insight into our project's structure, including package organization, UML diagram, utilized tools and documentation, you can refer to [this location](docs/project_structure.md)."
 
 
 ## 🚩TODO List
