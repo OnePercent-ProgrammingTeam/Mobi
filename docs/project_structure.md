@@ -314,9 +314,9 @@ The `exceptions` package houses custom exception classes tailored to handle vari
 This organizational approach not only enhances code maintainability but also facilitates ease of navigation for developers contributing to different aspects of the project. The clear separation of concerns among packages ensures a modular and extensible design, promoting a scalable and efficient development process.
 
 ## 🔍UML
-To illustrate the structure of Mobi's classes and their relationships, the following UML diagram provides a visual representation:
+To visualize the structure of our project, including inheritence, implementation and dependency relationships between classes, check out the following UML diagram:
 
-![UML Diagram](src/main/resources/ok.png)
+![UML Diagram](docs/UML.png)
 
 
 
