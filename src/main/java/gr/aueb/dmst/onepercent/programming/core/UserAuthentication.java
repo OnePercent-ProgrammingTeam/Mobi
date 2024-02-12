@@ -29,7 +29,7 @@ import gr.aueb.dmst.onepercent.programming.exceptions.UserNotFoundException;
  * @see gr.aueb.dmst.onepercent.programming.cli.UserAuthenticationCLI
  * @see gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI
  */
-public abstract class UserAuthentication extends SystemController {
+public abstract class UserAuthentication extends SystemController implements HttpRequest {
 
     /** Indicates whether the user exists or not. */
     protected boolean userExists;

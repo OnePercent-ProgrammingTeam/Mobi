@@ -94,13 +94,6 @@ public class SystemController {
         this.conId = conId;
     }
 
-    /**
-        * Executes an HTTP request.
-        * 
-        * @param message The message indicating the action to be executed.
-        */
-    public void executeRequest(String message) {
-    };
 
     /**
         * Retrieves the HTTP response.

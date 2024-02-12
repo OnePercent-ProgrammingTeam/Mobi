@@ -35,7 +35,7 @@ import org.apache.http.client.methods.HttpGet;
  * for monitoring Docker objects and system in order to retrieve information. 
  * No POST or DELETE requests are made for management purposes, to execute tasks.
  */
-public abstract class Monitor extends SystemController {
+public abstract class Monitor extends SystemController implements HttpRequest {
 
     /** Inspect  container by retrieving information about it */
     public abstract void inspectContainer();
@@ -58,6 +58,20 @@ public abstract class Monitor extends SystemController {
      * @return the http response.
      */
     public abstract CloseableHttpResponse getContainerStats(String identifier);
+
+    /**
+     * Executes the HTTP request.
+     * 
+     * @param path the path or identifier of the request.
+     */
+    @Override
+    public void executeRequest(String path) {
+        try {
+            this.http_response = HTTP_CLIENT.execute(getRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /** Inspects docker swarm. */
     public void inspectSwarm() {
