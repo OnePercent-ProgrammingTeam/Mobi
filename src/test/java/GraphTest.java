@@ -12,5 +12,3 @@ public class GraphTest {
         assertEquals(obj, Graph.getInstance());
     }
 }
-    
-

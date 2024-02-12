@@ -1,6 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
+import gr.aueb.dmst.onepercent.programming.data.DatabaseThread;
 
 import com.github.dockerjava.api.DockerClient;
 
@@ -16,14 +16,14 @@ import org.apache.http.impl.client.HttpClients;
  * A class that contains static variables used by other classes
  * to interact with Docker Engine API via HTTP requests.
  * 
- * <p>It is the superclass of the {@link MonitorHttp} and {@link ManagerHttp} classes.
+ * <p>It is the superclass of the {@link Monitor} and {@link Manager} classes.
  * 
- * @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI
- * @see gr.aueb.dmst.onepercent.programming.cli.ManagerHttpCLI
- * @see gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI
- * @see gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI
+ * @see gr.aueb.dmst.onepercent.programming.cli.MonitorCLI
+ * @see gr.aueb.dmst.onepercent.programming.cli.ManagerCLI
+ * @see gr.aueb.dmst.onepercent.programming.gui.ManagerGUI
+ * @see gr.aueb.dmst.onepercent.programming.gui.MonitorGUI
  */
-public class SuperHttp {
+public class SystemController {
     
     /** Identifier for the Docker container. */
     public static String containerId; 
@@ -52,10 +52,10 @@ public class SuperHttp {
     /** The container ID stored for database operations. */
     protected String conId; //Used in database
     /** Singleton instance of the database thread. */
-    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
+    protected DatabaseThread dataBaseThread = DatabaseThread.getInstance();
 
     /** Default constructor. */
-    public SuperHttp() { }
+    public SystemController() { }
 
     /**
         * Generates a response message.

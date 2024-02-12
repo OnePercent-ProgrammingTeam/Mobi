@@ -4,9 +4,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
-import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
-import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.core.SystemController;
+import gr.aueb.dmst.onepercent.programming.gui.ManagerGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorGUI;
 
 import javafx.application.Platform;
 
@@ -55,8 +55,8 @@ public class ImagesPageController {
         //Set cell values in order to be feasible to add buttons to the table.
         imagesNameCol.setCellValueFactory(new PropertyValueFactory<>("imageName"));
         imagesIdCol.setCellValueFactory(new PropertyValueFactory<>("imageId"));
-        MonitorHttpGUI monitor = new MonitorHttpGUI();
-        monitor.getImagesListGUI();
+        MonitorGUI monitor = new MonitorGUI();
+        monitor.listImages();
         ArrayList<String> imagesIdsList = new ArrayList<String>();
         imagesIdsList = monitor.getFormattedImageIdsList();
         ArrayList<String> imagesNamesList = new ArrayList<String>();
@@ -91,10 +91,10 @@ public class ImagesPageController {
                 button.setOnMouseClicked(event -> {
                     Platform.runLater(() -> { //speed up the process 
                         DataModel dataModel = getTableView().getItems().get(getIndex());
-                        ManagerHttpGUI managerHttpGUI = new ManagerHttpGUI();
-                        ManagerHttpGUI.imageName = dataModel.getImageName();
-                        SuperHttp superHttp = new SuperHttp();
-                        superHttp.imageName = ManagerHttpGUI.imageName;
+                        ManagerGUI managerHttpGUI = new ManagerGUI();
+                        ManagerGUI.imageName = dataModel.getImageName();
+                        SystemController superHttp = new SystemController();
+                        superHttp.imageName = ManagerGUI.imageName;
                         managerHttpGUI.removeImage();
                         data.remove(dataModel);
                         int removedIndex = getTableRow().getIndex();

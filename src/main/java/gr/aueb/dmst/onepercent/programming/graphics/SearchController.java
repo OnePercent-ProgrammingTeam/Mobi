@@ -1,13 +1,13 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.Database;
 
 import gr.aueb.dmst.onepercent.programming.exceptions.EmptyFieldError;
 import gr.aueb.dmst.onepercent.programming.exceptions.PullImageException;
 
-import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
+import gr.aueb.dmst.onepercent.programming.gui.ManagerGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MenuThreadGUI;
-import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI;
 
 import io.github.palexdev.materialfx.controls.MFXProgressSpinner;
@@ -63,7 +63,7 @@ public class SearchController {
     /*TO DO(Anyone): Create a graphical way to handle the error, when image pull fails. */
     
     /** Instance of database to store search related info. */
-    DataBase dataBase = DataBase.getInstance();
+    Database dataBase = Database.getInstance();
     
     /** A list with the suggestions, based on previous searches. */
     ArrayList<Button> suggestions;
@@ -72,10 +72,10 @@ public class SearchController {
     MenuThreadGUI menu_thread = new MenuThreadGUI();
 
     /** A monitor instance. */
-    MonitorHttpGUI monitor = new MonitorHttpGUI();
+    MonitorGUI monitor = new MonitorGUI();
 
     /** A manager instance. */
-    ManagerHttpGUI manager = new ManagerHttpGUI();
+    ManagerGUI manager = new ManagerGUI();
 
     /** Loading spinner. */
     MFXProgressSpinner spinner;
@@ -136,17 +136,17 @@ public class SearchController {
      * Prepares the previous images searched by the user.
      */
     private void preparePreviousSearches() {
-        ArrayList<String> arr = dataBase.getImageForSearch();
+        ArrayList<String> arr = dataBase.getSearchSuggestions();
         suggestions = new ArrayList<Button>();
 
         if (arr.size() == 0) {
             prevSearchesBox.setVisible(false);
             return;
         }
-        // for (int i = 0; i < Math.min(5, arr.size()); i++) {
-        //     Button b = createButton(arr.get(i));
-        //     suggestions.add(b);
-        // }
+        for (int i = 0; i < Math.min(5, arr.size()); i++) {
+            Button b = createButton(arr.get(i));
+            suggestions.add(b);
+        }
         Collections.reverse(suggestions);
         prevSearchesBox.getChildren().addAll(suggestions);
     }
@@ -200,19 +200,18 @@ public class SearchController {
         pause.play();
     }
 
+    //XXX: Possible threading issues here.
     /**
      * Executes the search of the image.
      * @param action the action event.
      */
     private void executeSearch(ActionEvent action) {
         //functionality
-        MonitorHttpGUI.imageName = autoCompleteTextField.getText();
-        MonitorHttpGUI.searchResultCount = Integer.parseInt(resultCount.getText());
-        System.out.println("Before execution");
-        menu_thread.handleUserInputGUI(3);
-        System.out.println("After execution");
-        StringBuilder stringBuilder = MonitorThreadGUI.getInstance().getContainerMonitorHttp().
-            getSearchResult(autoCompleteTextField.getText());
+        MonitorGUI.imageName = autoCompleteTextField.getText();
+        MonitorGUI.searchResultCount = Integer.parseInt(resultCount.getText());
+        menu_thread.handleUserInput(3);
+        StringBuilder stringBuilder = MonitorThreadGUI.getInstance().getMonitorInstance()
+            .getSearchResult(autoCompleteTextField.getText());
         //Secure thread concurrency.
         Platform.runLater(() -> {
             resultSet.getChildren().remove(spinner);
@@ -223,10 +222,8 @@ public class SearchController {
         PopupController popupController = new PopupController();
         switch (statusCode) {
             case 200:
-                System.out.println("status code: " + statusCode);
                 break;  
             case 500:
-                System.out.println("status code: " + statusCode);
                 showSearchError();
                 popupController.showPopup(action);
                 popupController.setErrorMessage("An Internal Server Error has occured!");
@@ -319,8 +316,8 @@ public class SearchController {
      */
     private void executePull(Button pullButton, String imName, ActionEvent e) {
         //functionality.
-        ManagerHttpGUI.imageName = imName;
-        menu_thread.handleUserInputGUI(4);
+        ManagerGUI.imageName = imName;
+        menu_thread.handleUserInput(4);
         int statusCode = Integer.parseInt(manager.getResponse1().toString());
         PopupController popupController = new PopupController();
         switch (statusCode) {

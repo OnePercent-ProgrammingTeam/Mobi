@@ -146,10 +146,10 @@ public class MainPageController {
     @FXML 
     void changeToDarkMode() {
         
-        contentArea.getStylesheets()
-                   .add(getClass()
-                   .getResource("../../../../../../../resources/dark-theme.css")
-                   .toExternalForm());
+        // contentArea.getStylesheets()
+        //            .add(getClass()
+        //            .getResource("../../../../../../../resources/dark-theme.css")
+        //            .toExternalForm());
     }
 
     /**

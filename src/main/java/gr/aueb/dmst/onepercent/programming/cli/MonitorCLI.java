@@ -4,8 +4,8 @@ import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.GREEN;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
 
-import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
-import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
+import gr.aueb.dmst.onepercent.programming.core.Monitor;
+import gr.aueb.dmst.onepercent.programming.core.SystemController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,6 +22,8 @@ import org.apache.http.client.methods.HttpGet;
 
 /**
  * A monitor class responsible for executing Docker monitoring functionalities.
+ * 
+ * <p>Extends {@link gr.aueb.dmst.onepercent.programming.core.Monitor}.
  * 
  * <p>Monitoring functionalities provided include:
  * <ul>
@@ -41,10 +43,9 @@ import org.apache.http.client.methods.HttpGet;
  * <p>Note that HTTP requests made by this class are GET requests for
  *  retrieval of information. The execution of tasks, which involves POST and DELETE requests,
  *  is implemented in classes related to management of Docker object.
- *  @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI
+ *  @see gr.aueb.dmst.onepercent.programming.cli.ManagerCLI
  */
-
-public class MonitorHttpCLI extends MonitorHttp {
+public class MonitorCLI extends Monitor {
     
     /** Mapper for reading JSON. */
     private final ObjectMapper mapper = new ObjectMapper();
@@ -52,17 +53,17 @@ public class MonitorHttpCLI extends MonitorHttp {
     private JsonNode jn;
     
     /** Default Constructor. */
-    public MonitorHttpCLI() { }
+    public MonitorCLI() { }
 
     /** Retrieves information about a container, sending a GET HTTP request to the Docker daemon. */
     @Override
     public void inspectContainer() {
         String path = "json"; // get the container information in json format
-        MonitorHttp.containerId = ConsoleUnits.promptForInput(
+        Monitor.containerId = ConsoleUnits.promptForInput(
             "Please type the container ID to get info about the container: ");
         conId = containerId;
         getRequest = new HttpGet(DOCKER_HOST.concat("/containers/")
-                                            .concat(MonitorHttp.containerId)
+                                            .concat(Monitor.containerId)
                                             .concat("/").concat(path));                       
         executeRequest(path);
         //check other situations with the state
@@ -123,15 +124,16 @@ public class MonitorHttpCLI extends MonitorHttp {
 
     /** 
      * Executes the HTTP request and reads the response.
+     * @param path The path / identifier of the action that is going to be executed.
      */
     @Override
     public void executeRequest(String path) {
         try { 
-            this.http_response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
+            this.http_response = Monitor.HTTP_CLIENT.execute(getRequest);
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(this.http_response.getEntity().getContent()));
             String inputLine;
-            MonitorHttp.response_builder = new StringBuilder();
+            Monitor.response_builder = new StringBuilder();
             while ((inputLine = reader.readLine()) != null) {
                 response_builder.append(inputLine);
                 if (path.equals("stats")) {
@@ -282,11 +284,11 @@ public class MonitorHttpCLI extends MonitorHttp {
         } else {
             outputMessage = "Please type the ID of the running container to save real time data: ";
         }
-        MonitorHttp.containerId = ConsoleUnits.promptForInput(outputMessage);
+        Monitor.containerId = ConsoleUnits.promptForInput(outputMessage);
         conId = containerId;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+        getRequest = new HttpGet(Monitor.DOCKER_HOST + 
                                  "/containers/" + 
-                                 MonitorHttp.containerId + 
+                                 Monitor.containerId + 
                                  "/" + message);                        
         return getHttpResponse();
     }
@@ -522,9 +524,9 @@ public class MonitorHttpCLI extends MonitorHttp {
     public String[] prepareCsvStorageData() {
         String[] csv_info;
         try {
-            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+            getRequest = new HttpGet(Monitor.DOCKER_HOST + 
                                     "/containers/" + 
-                                    MonitorHttp.containerId + 
+                                    Monitor.containerId + 
                                     "/json");
             executeRequest("prepare storage");
             jn = mapper.readTree(response_builder.toString());
@@ -539,9 +541,9 @@ public class MonitorHttpCLI extends MonitorHttp {
             csv_info[3] = jn
                     .at("/NetworkSettings/Networks/bridge/MacAddress")
                     .asText();
-            SuperHttp.getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+            SystemController.getRequest = new HttpGet(Monitor.DOCKER_HOST + 
                                               "/containers/" + 
-                                              MonitorHttp.containerId + 
+                                              Monitor.containerId + 
                                               "/stats");
             executeRequest("stats");
             csv_info[4] = String.valueOf(lastCPUUsage);

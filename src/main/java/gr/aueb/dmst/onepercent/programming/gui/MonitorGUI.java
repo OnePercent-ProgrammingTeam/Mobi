@@ -1,5 +1,8 @@
 package gr.aueb.dmst.onepercent.programming.gui;
 
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,43 +15,100 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
+import gr.aueb.dmst.onepercent.programming.core.Monitor;
 
 /**
- * Class: MonitorHttpGUI extends MonitorHttp
- * This class provides HTTP-related functionality for the graphical user interface.
+ * A monitor class responsible for executing Docker monitoring functionalities.
+ * 
+ * <p>Extends {@link gr.aueb.dmst.onepercent.programming.core.Monitor}.
+ * 
+ * <p>Monitoring functionalities provided include:
+ * <ul>
+ *     <li> Container inspection.</li>
+ *     <li> Image searching from Docker Hub.</li>
+ *     <li> Listing of locally installed images.</li>
+ *     <li> Retrieval of information about the Docker System.</li>
+ *     <li> Retrieval of information about the Docker Version.</li>
+ *     <li> Retrieval of information about the Docker Swarm.</li>
+ *     <li> Retrieval of statistics about a running container.</li>
+ * </ul>   
+ * 
+ * <p>Execution of the monitoring functionalities is done by sending
+ * HTTP requests to the 
+ * <a href="https://docs.docker.com/engine/api/v1.43/">Docker Engine API</a>. 
+ * 
+ * <p>Note that HTTP requests made by this class are GET requests for
+ *  retrieval of information. The execution of tasks, which involves POST and DELETE requests,
+ *  is implemented in classes related to management of Docker object.
+ *  @see gr.aueb.dmst.onepercent.programming.gui.ManagerGUI
  */
-public class MonitorHttpGUI extends MonitorHttp {
+public class MonitorGUI extends Monitor {
 
+    /** Counter of the results appearing from search, default is 3. */
+    public static int searchResultCount = 3;
+
+    /** Lock for response, used for threading safety. */
+    protected static final Object response_lock = new Object();
+
+   /** Lock for response, used for threading safety. */
+    protected static final Object cpu_lock = new Object();
+
+    /** Array containg information about containers. */
     String[] containerInfo = new String[4];
 
+    /** Default Constructor. */
+    public MonitorGUI() { }
+
     /**
-     * ok
+     * Getter for container information. 
+     * @return A array containg container information.
      */
-    public static int searchResultCount = 3;
-    /** Method: inspectContainerGUI() retrieves information about a container that might be 
-     * or might not be locally installed. 
-     * This method does not show messages to command line. 
-     */
+    public String[] getContainerInfo() {
+        return containerInfo;
+    }
+    
+    /** Retrieves information about a container, sending a GET HTTP request to the Docker daemon. */
     @Override
     public void inspectContainer() {
-        try {
+        try { //Place the information in a nice order.
             String[] res = this.retrieveContainerInfoArray();
             containerInfo[0] = res[6];
             containerInfo[1] = res[7];
             containerInfo[2] = res[4];
             containerInfo[3] = res[5];
-        } catch (Exception e) {
-            System.out.print("ERROR FROM inspectContainerGUI() method ");
+        } catch (NullPointerException e) {
+            System.out.print(RED.concat("Something went wrong...").concat(RESET));
         }
     }
 
-    /**
-     * ok
-     * @return ok
+    /** Retrieves information about images, sending a GET HTTP request to the Docker daemon. */
+    public void inspectImage() {
+        String message = "/images/";
+        getRequest = new HttpGet(DOCKER_HOST.concat(message).concat(imageName).concat("/json"));
+        executeRequest(message);
+    }
+
+    /** 
+     * Searches for images, uploaded in Docker Hub, by sending an HTTP GET request to the Docker 
+     * daemon.
      */
-    public String[] getContainerInfo() {
-        return containerInfo;
+    @Override //XXX: After one search the system collapses, check below for further info
+    public void searchImage() {
+        String message = "/images/search"; // get the container statistics in json format
+        dataBaseThread.setImageName(imageName);
+        getRequest = new HttpGet(Monitor.DOCKER_HOST + 
+                                 message + 
+                                 "?term=" + 
+                                 imageName + "&limit=" + searchResultCount);
+        executeRequest(message);
+    }
+
+    /** Lists locally installed images. */
+    public void listImages() {
+        String message = "/images/json";
+        getRequest = new HttpGet(Monitor.DOCKER_HOST + message + 
+                                "?boolean=false&shared-size=true");
+        executeRequest(message);
     }
 
     /**
@@ -71,20 +131,35 @@ public class MonitorHttpGUI extends MonitorHttp {
         executeRequest(path);
     }
 
+     /**
+     * Retrieves information about a container in an array for table representation.
+     * 
+     * <p> It is used for inserting data into the tables of the databases and also for
+     * inspecting a container-printing information about it.
+     * 
+     * @return An array containing container information:
+     *         <ul>
+     *             <li>[0] Container ID</li>
+     *             <li>[1] Container Name</li>
+     *             <li>[2] Container Status</li>
+     *             <li>[3] Image ID</li>
+     *             <li>[4] Network ID</li>
+     *             <li>[5] Gateway</li>
+     *             <li>[6] IP Address</li>
+     *             <li>[7] Mac Address</li>
+     *         </ul>
+     */
     @Override
-    public String[] retrieveContainerInfoArray() throws JsonProcessingException {
+    public String[] retrieveContainerInfoArray() {
         String[] info = new String[8];
         try {
-            System.out.println("Inside getTableforContainer() method");
-            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+            getRequest = new HttpGet(Monitor.DOCKER_HOST + 
                                     "/containers/" + 
-                                    MonitorHttp.containerId + 
+                                    Monitor.containerId + 
                                     "/json");
             executeRequest("prepare storage");
-
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response_builder.toString());
-
             info[0] = jsonNode.get("Id").asText();
             info[1] = jsonNode.get("Name").asText().substring(1);
             info[2] = jsonNode.get("State").get("Status").asText();
@@ -109,117 +184,67 @@ public class MonitorHttpGUI extends MonitorHttp {
                             .get("bridge")
                             .get("MacAddress")
                             .asText();
-
         } catch (NullPointerException e) {
-            System.out.println("Exception due to null value");
+            System.out.println(RED + "Exception due to null value." + RESET);
+        } catch (JsonProcessingException e) {
+            System.out.println(RED + "Some information might be missing." + RESET);
         }
         return info;
-
     }
    
     @Override
     public CloseableHttpResponse getContainerStats(String message) {
         message = "stats"; // get the container statistics in json format
         conId = containerId;
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+        getRequest = new HttpGet(Monitor.DOCKER_HOST + 
                                  "/containers/" + 
-                                 MonitorHttp.containerId + 
+                                 Monitor.containerId + 
                                  "/" + message);                        
         return getHttpResponse();
     }
 
-    @Override
-    /** Method: searchImagesGUI() searches for an image by it's name. The result is limited to 3. 
-     * This method does not show messages to command line. */
-    public void searchImage() {
-        String message = "/images/search"; // get the container statistics in json format
-        dataBaseThread.setImageName(imageName);
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
-                                 message + 
-                                 "?term=" + 
-                                 imageName + "&limit=" + searchResultCount);
-        System.out.println(MonitorHttp.DOCKER_HOST + message + "?term=" + 
-            imageName + "&limit=10");
-        executeRequest(message);
-    }
-
-
-    /**
-     * ok
-     */
-    public void inspectImage() {
-        String message = "/images/";
-        getRequest = new HttpGet(DOCKER_HOST + message + imageName + "/json");
-        executeRequest(message);
-        System.out.println("\n" + DOCKER_HOST + message + "?name=" + imageName);
-    }
-
-    /**
-     * Method: getImagesListGUI()
-     * Sends an HTTP request to retrieve a list of images with additional information.
-     * The request includes parameters to exclude intermediate images and include shared image size.
-     * Prints the request URL to the console.
-     */
-    public void getImagesListGUI() {
-        String message = "/images/json";
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + message + 
-                                "?boolean=false&shared-size=true");
-        executeRequest(message);
-        System.out.println(MonitorHttp.DOCKER_HOST + message + 
-                                "?boolean=false&shared-size=true");
-    }
-
-
-    /** ok */
-    protected static final Object res1Lock = new Object();
-
-    /**
-     * ok
-     */
-    protected static final Object cpuLock = new Object();
-    /** Method: executeRequest(String) executes the http request for 
-     *  getting info about a container.
-     * @param message the final part of the url that is used to get the info.
-     * may throw Exception if an error occurs while executing the http request.
+    /** 
+     * Executes the HTTP request and reads the response.
+     * @param path The path / identifier of the action that is going to be executed.
      */
     @Override
-    public void executeRequest(String message) {      
+    public void executeRequest(String path) {      
         try {
             http_response = HTTP_CLIENT.execute(getRequest);
-            System.out.println(getRequest);
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(http_response.getEntity().getContent()));
             String inputLine;
-            
-            synchronized (res1Lock) {
+            //Thread security.
+            synchronized (response_lock) {
                 response_builder = new StringBuilder();
-            } 
+            }
             while ((inputLine = reader.readLine()) != null) {
                 response_builder.append(inputLine);
-                if (message.equals("stats")) {
-                    synchronized (cpuLock) {
-                        lastCPUUsage = getCPUusage(response_builder); //print real time CPU Usage
+                if (path.equals("stats")) {
+                    synchronized (cpu_lock) {
+                        lastCPUUsage = getCPUusage(response_builder);
                     }
-                    
                     http_response.close();
                     break;
                 }
-            }     
+            } //Close resources.
             reader.close();
             http_response.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Failed to " + 
-                                message + 
-                                " the container: " + 
-                                e.getMessage()); // Print the error message
+            System.err.println(RED + "Something's wrong.." + RESET);
         }
     }
 
+    /*
+     * XXX: Something's wrong with the search... After searching a image, results appear and
+     * then the program doesn't respond. Might be caused by threading issues or problem related to
+     * HTTP requests-responses.
+     */
+    
     /**
-     * to do
-     * @param string to do
-     * @return to do
+     * Returns the result of the search.
+     * @param string The autocompleted text.
+     * @return A string builder with the result of the search.
      */
     public StringBuilder getSearchResult(String string) {
         StringBuilder searchResult = new StringBuilder();
@@ -232,9 +257,7 @@ public class MonitorHttpGUI extends MonitorHttp {
                         el.get("description") + "\n" + 
                         el.get("star_count") + "\n");
                 }
-            }
-            System.out.println("after if in getsearch");
-            
+            }            
         } catch (NumberFormatException e) {
             System.out.println(e.getClass());
         } catch (JsonProcessingException e) {
@@ -246,11 +269,8 @@ public class MonitorHttpGUI extends MonitorHttp {
     }
 
     /**
-     * Method: getFormattedImageIdsList()
-     * Parses the JSON response to extract formatted image IDs.
-     *
-     * @return An ArrayList containing formatted image IDs.
-     *         If an error occurs during parsing, returns null.
+     * Returns a list with the formatted images' ids.
+     * @return An array list, containing the images ids.
      */
     public ArrayList<String> getFormattedImageIdsList() {
         try {
@@ -258,33 +278,31 @@ public class MonitorHttpGUI extends MonitorHttp {
             JsonNode jsonNode = mapper.readTree(response_builder.toString()); 
             ArrayList<String> ids = new ArrayList<String>();
             if (jsonNode.isArray()) {
-                for (JsonNode el : jsonNode) {
-                    ids.add(el.get("Id").asText());
+                for (JsonNode nd : jsonNode) {
+                    ids.add(nd.get("Id").asText());
                 }
             }
             return ids;
-        } catch (Exception e) {
-            System.out.println("Oops, something went wrong...");
+        } catch (NullPointerException e) {
+            System.out.println(RED + "Oops, something went wrong..." + RESET);
+            return null;
+        } catch (JsonProcessingException e) {
+            System.out.println(RED + "Information might be missing..." + RESET);
             return null;
         }
     }
 
     /**
-     * Method: getFormattedImageNamesList()
-     * Parses the JSON response to extract formatted image names.
-     *
-     * @return An ArrayList containing formatted image names.
-     *         If an error occurs during parsing, returns null.
+     * Returns a list with the formatted images' names.
+     * @return An array list, containing the images names.
      */
     public ArrayList<String> getFormattedImageNamesList() {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response_builder.toString());     
             ArrayList<String> names = new ArrayList<String>();
-            
             if (jsonNode.isArray()) {
                 for (JsonNode jn : jsonNode) {
-                    
                     if (jn.get("RepoTags").size() != 0) {
                         names.add(jn.get("RepoTags").get(0).asText());
                     }
@@ -292,27 +310,21 @@ public class MonitorHttpGUI extends MonitorHttp {
             }
             return names;
         } catch (JsonProcessingException e) {
-            System.out.println("-------------------------------------");
-            System.out.println("Exception in getFormattedImageNamesList() method");
+            System.out.println(RED + "Something went wrong..." + RESET);
             System.out.println(e.getClass());
-            System.out.println("-------------------------------------");
             return null;
         }
     }
-    String RESET = "\u001B[0m";
-    String RED = "\u001B[31m";
-
-
+    
     /**
-     * ok
-     * @return ok
+     * Formats and returns the information about Docker Swarm.
+     * @return A String array containg the information about Docker Swarm.
      */
     public String[] getSwarmInfo() {
         String[] swarmInfo = new String[6];
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(response_builder.toString());
-            
             swarmInfo[0] = jsonNode.get("Spec").get("Name").asText();
             swarmInfo[1] = jsonNode.get("ID").asText();
             swarmInfo[2] = jsonNode.get("Version").get("Index").asText();
@@ -333,10 +345,9 @@ public class MonitorHttpGUI extends MonitorHttp {
         return null;
     }
 
-
     /**
-     * ok
-     * @return ok
+     * Formats and returns the information about the Docker System.
+     * @return A String array containg the information about Docker System.
      */
     public StringBuilder getSystemInfo() {
         StringBuilder sb = new StringBuilder();
@@ -359,17 +370,16 @@ public class MonitorHttpGUI extends MonitorHttp {
             sb.append(jn.get("Swarm").get("LocalNodeState").asText().concat("\n"));
             return sb;
         } catch (JsonProcessingException e) {
-            System.out.println("Some information is missing...");
+            System.out.println(RED + "Some information is missing..." + RESET);
         } catch (NullPointerException e) {
-            System.out.println("Something was null");
+            System.out.println(RED + "Something was null" + RESET);
         }
         return sb.append(" ");
     }
 
-
     /**
-     * Prints the Docker Version information. It is called by the method dockerVersion().
-     * @return ok
+     * Formats the Docker Version information.
+     * @return A string Builder containing the information about docker version.
      */
     public StringBuilder getDockerVersion() {
         StringBuilder sb = new StringBuilder();
@@ -396,23 +406,24 @@ public class MonitorHttpGUI extends MonitorHttp {
                           .concat("\n")
                       );
             return sb;
-        } catch (Exception e) {
-            System.out.println("Some information is missing...");
+        } catch (JsonProcessingException e) {
+            System.out.println(RED + "Some information is missing..." + RESET);
+        } catch (NullPointerException e) {
+            System.out.println(RED + "Something went wrong." + RESET);
         }
         return sb.append(" ");
     }
 
-
     /**
-     * ok
-     * @return ok
+     * Retrieves and returns the system warnings that will be converted into notifications in UI.
+     * @return A string builder with the warnings / notifications.
      */
     public StringBuilder getWarnings() {
         StringBuilder sb = new StringBuilder();
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jn = mapper.readTree(response_builder.toString());
-            
+            //check that there are warnings.    
             if (!(jn.get("Warnings").isEmpty()) && jn.get("Warnings").isArray()) {
                 for (JsonNode node : jn.get("Warnings")) {
                     sb.append(node.asText().concat("\n"));
@@ -422,17 +433,10 @@ public class MonitorHttpGUI extends MonitorHttp {
             }
             return sb;
         } catch (JsonProcessingException e) {
-            System.out.println("Some information is missing...");
+            System.out.println(RED + "Some information is missing..." + RESET);
         } catch (NullPointerException e) {
-            System.out.println("Something was null");
+            System.out.println(RED + "Something was null" + RESET);
         }
         return sb.append(" ");
-    }
-
-    /**
-     * Default Constructor
-     */
-    public MonitorHttpGUI() {
-
     }
 }

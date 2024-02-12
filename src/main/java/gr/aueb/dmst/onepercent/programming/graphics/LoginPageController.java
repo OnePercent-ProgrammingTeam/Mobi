@@ -2,8 +2,8 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 
 import java.io.IOException;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBase;
-import gr.aueb.dmst.onepercent.programming.data.DataUsers;
+import gr.aueb.dmst.onepercent.programming.data.Database;
+import gr.aueb.dmst.onepercent.programming.data.User;
 import gr.aueb.dmst.onepercent.programming.exceptions.UserNotFoundException;
 import gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI;
 
@@ -41,7 +41,7 @@ public class LoginPageController {
     static MainPageController MAIN_PAGE_CONTROLLER;
 
     /** Instance of the database containg the users. */
-    DataUsers users = new DataUsers();
+    User users = new User();
 
     /** The text appearing when authentication is failes (credentials didn't match). */
     @FXML
@@ -86,12 +86,12 @@ public class LoginPageController {
 
     @FXML
     void passwordAction() {
-        if (users.remember(usernameField.getText()) == null) {
+        if (users.getPassword(usernameField.getText()) == null) {
             rememberBox.setSelected(false);
         } else {
             if (passwordField.getText().length() == 0) {
                 rememberBox.setSelected(true);
-                passwordField.setText(users.remember(usernameField.getText()));
+                passwordField.setText(users.getPassword(usernameField.getText()));
             } 
         }
     }
@@ -101,7 +101,7 @@ public class LoginPageController {
      */
     @FXML
     void login(ActionEvent event) {
-        DataBase metrics = DataBase.getInstance();
+        Database metrics = Database.getInstance();
         UserAuthenticationGUI userAuthGUI = new UserAuthenticationGUI();
         
         failedAuthText.setText(null);
@@ -119,10 +119,11 @@ public class LoginPageController {
                 //Remember the user if remember checkbox is clicked.
                 Boolean check = rememberBox.isSelected();
                 users.handleDataUsers(userAuthGUI.getUsername(), userAuthGUI.getPassword(), check);
-                int index = users.getUser(userAuthGUI.getUsername(), userAuthGUI.getPassword());
+                int index = users.getUserIconIndex(userAuthGUI.getUsername(), 
+                                                   userAuthGUI.getPassword());
                 MAIN_PAGE_CONTROLLER.setImageIndex(index);
-                metrics.setURL(userAuthGUI.getUsername());
-                metrics.createDatabaseMetrics();
+                metrics.setDatabaseName(userAuthGUI.getUsername());
+                metrics.createTables();
             } else {
                 throw new UserNotFoundException(usernameField.getText());
             }

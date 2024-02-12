@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.apache.http.HttpEntity;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBase;
-import gr.aueb.dmst.onepercent.programming.data.DataUsers;
+import gr.aueb.dmst.onepercent.programming.data.Database;
+import gr.aueb.dmst.onepercent.programming.data.User;
 import gr.aueb.dmst.onepercent.programming.exceptions.UserNotFoundException;
 
 /**
@@ -25,20 +25,20 @@ import gr.aueb.dmst.onepercent.programming.exceptions.UserNotFoundException;
  * <p>It is the superclass of user authentication classes in both CLI and GUI versions of the 
  * application.
  * 
- * @see SuperHttp
+ * @see SystemController
  * @see gr.aueb.dmst.onepercent.programming.cli.UserAuthenticationCLI
  * @see gr.aueb.dmst.onepercent.programming.gui.UserAuthenticationGUI
  */
-public abstract class UserAuthentication extends SuperHttp {
+public abstract class UserAuthentication extends SystemController {
 
     /** Indicates whether the user exists or not. */
     protected boolean userExists;
 
     /** The instance of the DataUsers class for user data management. */
-    protected DataUsers users = new DataUsers();
+    protected User users = new User();
 
     /** The instance of the DataBase class for database operations. */
-    protected DataBase dataBase = DataBase.getInstance();
+    protected Database dataBase = Database.getInstance();
 
     /** The username of the user. */
     protected String username;

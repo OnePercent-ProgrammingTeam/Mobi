@@ -24,7 +24,7 @@ import java.util.TimerTask;
 public class CSV {
    
     /** Monitor object that is used to get the data of the containers. */
-    MonitorHttpCLI monitor = new MonitorHttpCLI();
+    MonitorCLI monitor = new MonitorCLI();
     /** A boolean that is used to check if the user has requested to terminate the process. */
     boolean exitRequested = false;
     /** The path of the folder in which the .csv file is going to be created. */

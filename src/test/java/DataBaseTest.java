@@ -10,10 +10,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBase;
+import gr.aueb.dmst.onepercent.programming.data.Database;
 
-public class DataBaseTest {
-    DataBase dataBase = DataBase.getInstance();
+public class DatabaseTest {
+    Database dataBase = Database.getInstance();
     @Test
     public void getDateTimeTest() {
         String result = dataBase.getDateTime();
@@ -25,7 +25,7 @@ public class DataBaseTest {
 
     @Test 
     public void getImageForSearchTest() {
-        ArrayList <String> arr = dataBase.getImageForSearch();
+        ArrayList <String> arr = dataBase.getSearchSuggestions();
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(dataBase.getUrl()); 

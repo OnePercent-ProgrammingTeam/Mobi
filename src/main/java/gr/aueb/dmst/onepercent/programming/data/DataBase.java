@@ -4,30 +4,78 @@ import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.GREEN;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 
+import gr.aueb.dmst.onepercent.programming.cli.MonitorCLI;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import com.google.common.annotations.VisibleForTesting;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.annotations.VisibleForTesting;
-
-import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
-
 /**
- * ok
+ * The DataBase of the application, containing metrics for all each user.
+ * 
+ * <p>It provides methods for database connectivity, table creation, data insertion, and history
+ * retrieval.
  */
-public class DataBase {
-    /** ok */
+public class Database {
+    /** The url for database connectivity. */
     protected String url = "jdbc:h2:./databases/metricsbase";
+    
+    /** The query sent to the database. */
+    protected String query;
+
+    /** A monitor instance from CLI Version. */
+    MonitorCLI monitor = new MonitorCLI();
+
+    /** Singleton instance of database. */
+    private static Database database;
+
+    /** A list with the dates of any action happened from the user in Mobi. */
+    private ArrayList<String> date = new ArrayList<>();
+    
+    /** A list with the options-actions that the user has selected to execute. */
+    private ArrayList<Integer> actions = new ArrayList<>();
+    
+    /** A list with the result-state of the action that the user has chosen (success/failure). */
+    private ArrayList<String> state = new ArrayList<>();
+
+    /** A list with the interface type in which the user has done an action (CLI/GUI). */
+    private ArrayList<String> interface_type = new ArrayList<>();
+
+    /** A list with the object for which the task was executed (Container/Image/System). */
+    private ArrayList<String> object = new ArrayList<>();
+
+    /** A list with the identifier of the object for which the task was executed (ID/image). */
+    private ArrayList<String> identifier = new ArrayList<>();
+
+    /** Private Constructor. */
+    private Database() { }
+
+     /**
+     * Gets the singleton database instance. 
+     * There could only be one database.
+     * @return The database instance.
+     */
+    public static Database getInstance() {
+        if (database == null) {
+            database = new Database();
+        }
+        return database;
+    }
 
     /**
-     * Gets the URL used for connecting to the H2 database.
-     * This method is marked with {@code @VisibleForTesting} to make it accessible
+     * Getter for the URL, used for connecting to the H2 database.
+     * 
+     * <p>This method is marked with {@code @VisibleForTesting} to make it accessible
      * for testing purposes within the same package.
      *
      * @return The URL for connecting to the H2 database.
@@ -36,52 +84,32 @@ public class DataBase {
     public String getUrl() {
         return url;
     }
-     /** ok */
-    protected String query;
-
+    
     /**
-     * Set the name of the database of metrics to be created for safety reasons
-     * @param username ok
+     * Set the name of the database, based on user's name.
+     * @param username The name of the user.
      */
-    public void setURL(String username) {
-        url = url + "/" 
+    public void setDatabaseName(String username) {
+        url = url + "/" //Make a random name.
             + username.charAt(0) 
             + username.charAt(username.length() / 2) 
             + username.charAt(username.length() - 1); 
     }
 
-    //Sigleton
-    private static DataBase database;
-
-     
-    private DataBase() { }
-
     /**
-     * ok
-     * @return ok
-     */
-    public static DataBase getInstance() {
-        if (database == null) {
-            database = new DataBase();
-        }
-        return database;
-    }
-
-    /**
-     * Method: createDatabase() creates tables in the H2 database.
-     * Creation of 4 tables: 
+     * Creates the tables of the database.
+     * 
+     * <p>Tables created are: 
      * 1) Metrics (ID, Date, Action, State, Interface)
      * 2) Container(ID,C_ID, C_NAME, Status, Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)
      * 3) Image (ID,NAME)
      */
-    public void createDatabaseMetrics() {
+    public void createTables() {
         try {
-            Class.forName("org.h2.Driver"); //Register JDBC driver 
-            Connection connection = DriverManager.getConnection(url); //Open a connection
-            Statement statement = connection.createStatement(); 
-            //Use the connection to create a statement
-
-
+            Class.forName("org.h2.Driver"); //Register JDBC driver. 
+            Connection connection = DriverManager.getConnection(url); //Open a connection.
+            //Use the connection to create a statement.
+            Statement statement = connection.createStatement();
             //Query that creates the "Metrics" table
             query = "CREATE TABLE IF NOT EXISTS Metrics ("
                 + "ID INT AUTO_INCREMENT PRIMARY KEY,"
@@ -90,12 +118,7 @@ public class DataBase {
                 + "State VARCHAR(10),"
                 + "Interface VARCHAR(10)"
                 + ");";
-
-            //execute the query 
             statement.execute(query);
-
-
-
             //Query that creates the "Container" table
             query = "CREATE TABLE IF NOT EXISTS Container ("
                 + "ID INT,"
@@ -110,10 +133,7 @@ public class DataBase {
                 + "CONSTRAINT c1 PRIMARY KEY(ID,C_ID),"
                 + "FOREIGN KEY (ID) REFERENCES Metrics(ID)"
                 + ");";
-            
-            //execute the query 
             statement.execute(query);
-
             //Query that creates the "Image" table
             query = "CREATE TABLE IF NOT EXISTS Image ("
                 + "ID INT,"
@@ -121,54 +141,45 @@ public class DataBase {
                 + "CONSTRAINT c2 PRIMARY KEY(ID,NAME),"
                 + "FOREIGN KEY (ID) REFERENCES Metrics(ID)"
                 + ");";
-
-            //execute the query 
             statement.execute(query);
-
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
     }
 
-    MonitorHttpCLI monitor = new MonitorHttpCLI();
     /**
-     * Method returns as a String the local date time
-     * @return The datetime
+     * Retrieve current local date and time.
+     * @return The current timestamp.
      */
     public String getDateTime() {
         LocalDate date = LocalDate.now(); 
         LocalTime time = LocalTime.now();
-
-        //Date and Time in one
         String datetime = date.toString() + " " + time.toString().substring(0, 8);
         return datetime;
     }
 
     /**
-     * Insert data into "Metrics"
+     * Insert data into 'Metrics' table.
      * @param datetime The datetime to be inserted.
-     * @param action ok
-     * @param state ok
-     * @param interface_type ok
+     * @param action The action the user has chosen.
+     * @param state The result/status of the action.
+     * @param interface_type The interface in which 
      * @return The ID of the last inserted record.
      */
-    public int insertMetricsToDatabase(String datetime, 
+    public int insertIntoMetrics(String datetime, 
                                        int action, 
                                        String state, 
                                        String interface_type) {
         int last_id = 0;
-
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(url);
-            Statement statement = connection.createStatement();
-                    
+            Statement statement = connection.createStatement();    
             query = "INSERT INTO Metrics (Date, Action, State, Interface)" 
                      + "VALUES ('" + datetime + "','" + action 
                      + "','" + state + "','" + interface_type + "');";
-
             statement.execute(query); 
             query = "SELECT MAX(ID) AS LAST_ID FROM Metrics";
             ResultSet result = statement.executeQuery(query);
@@ -178,48 +189,41 @@ public class DataBase {
             statement.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
         return last_id;
     }
 
     /**
-     * Insert data into "Container"
+     * Insert data into 'Container' table.
      *
-     * @param last_id The last inserted ID in the "Metrics" table.
+     * @param last_id The last ID, inserted in the 'Metrics' table.
      */
-    public void insertContainerToDatabase(int last_id) {
+    public void insertIntoContainer(int last_id) {
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(url);
-            Statement statement = connection.createStatement();
-
-            
+            Statement statement = connection.createStatement();            
             String[] info = monitor.retrieveContainerInfoArray();
-
             query = "INSERT INTO Container (ID, C_ID, C_NAME, Status,"
                 + "Image_ID, Network_ID, Gateway, IP_Address, Mac_Address)"
                 + "VALUES ('" + last_id + "','" + info[0] + "','" + info[1] + "','" + info[2] 
                 + "','" + info[3] + "','" + info[4] + "','" + info[5] + "','" + info[6]
                 + "','" + info[7] + "');";
-            
-               
-            statement.execute(query); 
-
+            statement.execute(query);
             statement.close();
             connection.close();
-
         } catch (ClassNotFoundException | SQLException | JsonProcessingException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
     }
 
     /**
-     * Insert data into "Image"
+     * Insert data into 'Image' table.
      * @param last_id The last inserted ID in the "Metrics" table.
-     * @param name ok
+     * @param name The name of the image.
      */
-    public void insertImageToDatabase(int last_id, String name) {
+    public void insertIntoImage(int last_id, String name) {
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(url);
@@ -230,164 +234,17 @@ public class DataBase {
 
             connection.close();
             statement.close();
-
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
     }
-    
 
     /**
-     * Method for showing all metrics
-     */
-    public void getAllMetrics() {
-        try {
-            Class.forName("org.h2.Driver"); 
-            Connection connection = DriverManager.getConnection(url); 
-            Statement statement = connection.createStatement(); 
-              
-            query = "SELECT * FROM Metrics";
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                int id = result.getInt("ID");
-                String datetime = result.getString("Date");
-                int action = result.getInt("Action");
-                String state = result.getString("State");
-                String interface_type = result.getString("Interface");
-                
-                System.out.println();
-                System.out.println("ID of metrics: " + id);
-                System.out.println("Date of metrics: " + datetime);
-                System.out.println("Action: " + action);
-                System.out.println("State: " + state);
-                System.out.println("Interface : " + interface_type);
-                System.out.println();
-            }
-
-            statement.close(); 
-            connection.close(); 
-           
-        } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
-        } 
-    }
-
-    /**
-     * Method for showing the elements 
-     * of all the containers
-     */
-    public void getAllContainer() {
-        try {
-            Class.forName("org.h2.Driver"); 
-            Connection connection = DriverManager.getConnection(url); 
-            Statement statement = connection.createStatement(); 
-              
-            query = "SELECT * FROM Container";
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                int id = result.getInt("ID");
-                String cid = result.getString("C_ID");
-                String cname = result.getString("C_NAME");
-                String status = result.getString("Status");
-                String imid = result.getString("Image_ID");
-                String netid = result.getString("Network_ID");
-                String gate = result.getString("Gateway");
-                String ip = result.getString("IP_Address");
-                String mac = result.getString("Mac_Address");
-
-                
-                System.out.println("ID of metrics: " + id);
-                System.out.println("C_ID: " + cid);
-                System.out.println("C_NAME: " + cname);
-                System.out.println("Status: " + status);
-                System.out.println("Image_ID" + imid);
-                System.out.println("Network_ID: " + netid);
-                System.out.println("Gateway: " + gate);
-                System.out.println("IP_Address: " + ip);
-                System.out.println("Mac_Address: " + mac);
-                System.out.println();
-            }
-
-            statement.close(); 
-            connection.close(); 
-           
-        } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
-        } 
-    }
-
-
-    /**
-     * Method for showing the id and name of images
-     */
-    public void getAllImage() {
-        try {
-            Class.forName("org.h2.Driver"); 
-            Connection connection = DriverManager.getConnection(url); 
-            Statement statement = connection.createStatement(); 
-              
-            query = "SELECT * FROM Image";
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                int id = result.getInt("ID");
-                String imname = result.getString("NAME");
-
-                
-                System.out.println("ID of metrics: " + id);
-                System.out.println("Name of Image: " + imname);
-                System.out.println();
-            }
-
-            statement.close(); 
-            connection.close(); 
-           
-        } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
-        } 
-    }
-
-
-    /**
-     * Method for checking for some "Metrics"
-     *
-     * @param last_id The last inserted ID in the "Metrics" table.
-     */
-    public void getSomeMetrics(int last_id) {
-        try {
-            Class.forName("org.h2.Driver"); 
-            Connection connection = DriverManager.getConnection(url); 
-            Statement statement = connection.createStatement(); 
-              
-            query = "SELECT * FROM Metrics WHERE ID=" + String.valueOf(last_id);
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                int id = result.getInt("ID");
-                String datetime = result.getString("Date");
-
-                
-                System.out.println("ID of metrics: " + id);
-                System.out.println("Date of metrics: " + datetime);
-                System.out.println();
-            }
-
-            statement.close(); 
-            connection.close(); 
-           
-        } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
-        } 
-    }
-
-    /**
-     * Method for checking for "Image"
+     * Provides suggestions to the user for searching images, based on his previous searches.
      *
      * @return An ArrayList containing names of images.
      */
-    public ArrayList<String> getImageForSearch() {
+    public ArrayList<String> getSearchSuggestions() {
         ArrayList<String> names = new ArrayList<String>();
         try {
             Class.forName("org.h2.Driver"); 
@@ -399,51 +256,33 @@ public class DataBase {
                     +        "FROM Image "
                     +        "ORDER BY ID DESC "
                     +        "LIMIT 5)";
-
-                        
-                    
             ResultSet result = statement.executeQuery(query);
-    
             while (result.next()) {
                 String imname = result.getString("NAME");
                 names.add(imname);
-                System.out.println("GUI");
-                System.out.println("Name of Image: " + imname);
-                System.out.println();
             }
-
             statement.close(); 
-            connection.close(); 
-           
+            connection.close();        
         } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } 
         return names;
     }
 
-    private ArrayList<String> date = new ArrayList<>();
-    private ArrayList<Integer> actions = new ArrayList<>();
-    private ArrayList<String> state = new ArrayList<>();
-    private ArrayList<String> interface_type = new ArrayList<>();
-    private ArrayList<String> identifier = new ArrayList<>();
-    private ArrayList<String> object = new ArrayList<>();
-
     /**
-     * ok
+     * Creates the history for the user, containing information about the action he has done 
      */
-    public void getHistory() {
+    public void createHistory() {
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(url); 
             Statement statement = connection.createStatement(); 
-              
             query = "SELECT Metrics.Date, Metrics.Action, Metrics.State, Metrics.Interface, "
                     + "COALESCE(Image.NAME, Container.C_NAME) AS Identifier "
                     + "FROM Metrics "
                     + "LEFT JOIN Image ON Metrics.ID = Image.ID "
                     + "LEFT JOIN Container ON Metrics.ID = Container.ID "
                     + "ORDER BY Metrics.Date DESC;";
-
             ResultSet result = statement.executeQuery(query);
             String date_time;
             int action;
@@ -465,7 +304,6 @@ public class DataBase {
                     status = (result.getString("State").equals("success")) ? 
                         GREEN + "success" + RESET : RED + "failure" + RESET;
                 }
-
                 id = result.getString("Identifier").isEmpty() ? 
                         "N/A" : result.getString("Identifier");
                 date.add(date_time);
@@ -477,10 +315,15 @@ public class DataBase {
             statement.close(); 
             connection.close(); 
         } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } 
     }
 
+    /**
+     * Convert the user's options to text.
+     * @param act An array list containing the actions that the user has executed.
+     * @return An array list with the customizes action names.
+     */
     private ArrayList<String> convertActiontoString(ArrayList<Integer> act) {
         ArrayList<String> acts = new ArrayList<>();
         for (int i = 0; i < act.size(); i++) {
@@ -528,12 +371,12 @@ public class DataBase {
     }
 
     /**
-     * ok
+     * Prints history to the console.
      */
-    public void getHistoryList() {
+    public void printHistory() {
         String id = "";
         ArrayList<String> acts;
-        getHistory();
+        createHistory();
         if (date.isEmpty()) {
             System.out.println("Your history is empty");
         } else {

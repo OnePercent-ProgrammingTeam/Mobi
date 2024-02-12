@@ -3,7 +3,7 @@ package gr.aueb.dmst.onepercent.programming.graphics;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorGUI;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,7 +40,7 @@ public class NotificationsPageController {
      * <p>These info is accessed via Docker Engine API.
      */
     private void setupNotifications() {
-        MonitorHttpGUI monitor = new MonitorHttpGUI(); 
+        MonitorGUI monitor = new MonitorGUI(); 
         monitor.systemInfo();
         StringBuilder warnings = monitor.getWarnings();
         String[] warningList = warnings.toString().split("\n");

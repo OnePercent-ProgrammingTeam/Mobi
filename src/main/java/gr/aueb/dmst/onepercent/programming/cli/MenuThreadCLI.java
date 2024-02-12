@@ -12,7 +12,8 @@ import java.util.Scanner;
 
 
 /**
- * A central-manager thread responsible for coordinating the CLI version of the application.
+ * A central-manager thread responsible for coordinating the threads of the 
+ * CLI version of the application.
  * 
  * <p>This thread ensures proper handling of user input and execution of appropriate actions.
  * It manages the printing of the menu and user interaction. 
@@ -21,9 +22,8 @@ import java.util.Scanner;
  * 
  * @see gr.aueb.dmst.onepercent.programming.cli.ExecutorThreadCLI
  * @see gr.aueb.dmst.onepercent.programming.cli.MonitorThreadCLI
- * @see gr.aueb.dmst.onepercent.programming.cli.ManagerHttpCLI
+ * @see gr.aueb.dmst.onepercent.programming.cli.ManagerCLI
  */
-
 public class MenuThreadCLI extends MenuThread {
     
     /** The singleton instance of Executor Thread. */
@@ -160,7 +160,7 @@ public class MenuThreadCLI extends MenuThread {
                 waitThread();
                 break;
             case 14:
-                dataBase.getHistoryList();
+                dataBase.printHistory();
                 break;
             default:
                 throw new InvalidInputException("Please, type one of the recommended numbers.");

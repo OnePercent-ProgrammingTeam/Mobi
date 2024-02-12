@@ -1,61 +1,70 @@
 package gr.aueb.dmst.onepercent.programming.data;
 
-
-/** Class: DataBaseThread is a class that contains methods that 
- *  insert data in the tables so as to store the actions of the customer.
- *  @see Thread
+/**
+ * A thread for handling database operations in the background.
+ * 
+ * <p>This class is designed following the Singleton pattern.
+ * It is used in the CLI Version of the application. To be implemented in the GUI Version.
  */
-public class DataBaseThread extends Thread {
+public class DatabaseThread extends Thread {
+    //TO DO(Dionisia Koronellou): Implement the db to GUI version of the application.
 
-    //Sigleton
-    private static DataBaseThread dataBaseThread;
+    /** Singleton instance of the DataBaseThread class. */
+    private static DatabaseThread dataBaseThread;
 
+    /** The interface type (CLI or GUI) for database operations. */
     private String interface_type;
-    
-    private DataBaseThread() { }
+
+    /** The name of the image. */
+    private String image_name;
+
+    /** The action to be performed. */
+    private int action;
+
+    /** The state of the database operation. */
+    private String state;
+
+    /** Private constructor to prevent direct instantiation. */
+    private DatabaseThread() { }
 
     /**
-     * ok
-     * @return ok
+     * Retrieves the singleton instance of the DataBaseThread class.
+     * @return The singleton instance of DataBaseThread.
      */
-    public static DataBaseThread getInstance() {
+    public static DatabaseThread getInstance() {
         if (dataBaseThread == null) {
-            dataBaseThread = new DataBaseThread();
+            dataBaseThread = new DatabaseThread();
         }
         return dataBaseThread;
     }
 
-    private String imName;
     /**
-     * ok
-     * @param imName ok
+     * Sets the name of the image.
+     * @param name The name of the image.
      */
-    public void setImageName(String imName) {
-        this.imName = imName;
+    public void setImageName(String name) {
+        this.image_name = name;
     }
 
-    private int action;
     /**
-     * ok
-     * @param action ok
+     * Sets the action to be performed.
+     * @param action The action to be performed.
      */
     public void setAction(int action) {
         this.action = action;
     }
-  
-    private String state;
+
     /**
-     * ok
-     * @param state ok
+     * Sets the state of the database operation.
+     * @param state The state of the database operation.
      */
     public void setState(String state) {
         this.state = state;
     }
 
-
     /**
-     * Sets the interface type.
-     * @param interface_type The interface type can be CLI or GUI.
+     * Sets the interface type for database operations (CLI or GUI).
+     * @param interface_type The interface type (CLI or GUI).
      */
     public void setInterfaceType(String interface_type) {
         this.interface_type = interface_type;
@@ -63,27 +72,23 @@ public class DataBaseThread extends Thread {
 
     @Override
     public void run() {
-        DataBase database = DataBase.getInstance();
-        
+        Database database = Database.getInstance();
         String datetime = database.getDateTime();
-
         int last_id; 
-        // Insert in db tables data related to container (basically needed for the log/history)
-        if (action == 1 || action == 2 || action == 3 || action == 4 || action == 5) {
-            last_id = database.insertMetricsToDatabase(datetime, action, state, interface_type);
-            database.insertContainerToDatabase(last_id);
-            //dataBase.getAllMetrics(); //NOT helpful
-            //dataBase.getAllContainer(); //NOT helpful
-            
-        // Insert in db tables data related to images (basically needed for the log/history)
-        } else if (action == 8 || action == 9 || action == 10) {
-            last_id = database.insertMetricsToDatabase(datetime, action, state, interface_type);
-            database.insertImageToDatabase(last_id, imName);
-            //dataBase.getAllMetrics(); //helpful
-            //dataBase.getAllImage(); //helpful
-            //dataBase.getImageForSearch();
-        } else if (action == 13) {
-            database.insertMetricsToDatabase(datetime, action, state, interface_type);
+
+        // Insert data related to container into database
+        if (action >= 1 && action <= 5) {
+            last_id = database.insertIntoMetrics(datetime, action, state, interface_type);
+            database.insertIntoContainer(last_id);
+        }
+        // Insert data related to images into database
+        else if (action >= 8 && action <= 10) {
+            last_id = database.insertIntoMetrics(datetime, action, state, interface_type);
+            database.insertIntoImage(last_id, image_name);
+        }
+        // Insert other metrics into database
+        else if (action == 13) {
+            database.insertIntoMetrics(datetime, action, state, interface_type);
         }
     }
 }

@@ -50,8 +50,8 @@ public class UserAuthenticationCLI extends UserAuthentication {
         users.createUser();
         /*If user exists store his credentials in the database.*/
         users.handleDataUsers(getUsername(), getPassword(), false);
-        dataBase.setURL(getUsername());
-        dataBase.createDatabaseMetrics(); 
+        dataBase.setDatabaseName(getUsername());
+        dataBase.createTables(); 
     }
     
     /**

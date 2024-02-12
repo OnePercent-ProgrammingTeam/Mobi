@@ -1,7 +1,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
-import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
+import gr.aueb.dmst.onepercent.programming.core.Monitor;
+import gr.aueb.dmst.onepercent.programming.cli.MonitorCLI;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class MonitorHttpTest {
+public class MonitorTest {
 
     TestsHelper obj = TestsHelper.getInstance();
-    private MonitorHttpCLI containerMonitor;
+    private MonitorCLI containerMonitor;
 
     @BeforeEach
     // Create a new instance of MonitorHttp before each test
     public void setUp() {
-        containerMonitor = new MonitorHttpCLI();
+        containerMonitor = new MonitorCLI();
     }
 
     @Test
@@ -38,11 +38,10 @@ public class MonitorHttpTest {
         }
     }
 
-    
     @Test
        public void testPrepareStorageData() {
     // Test the testPrepareStorageData method and assert the result
-        MonitorHttp.containerId = obj.getTestid();
+        Monitor.containerId = obj.getTestid();
         
         try {
             String[] result = containerMonitor.prepareCsvStorageData();

@@ -1,6 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
+import gr.aueb.dmst.onepercent.programming.data.DatabaseThread;
 
 /**
  * Abstract class that serves as the superclass for all threads in the application.
@@ -33,7 +33,7 @@ public abstract class SuperThread extends Thread {
     protected int userInput;
 
     /** Database thread instance. */
-    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
+    protected DatabaseThread dataBaseThread = DatabaseThread.getInstance();
 
     /** Default Constructor. */
     public SuperThread() { }

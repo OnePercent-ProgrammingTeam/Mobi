@@ -7,7 +7,7 @@ import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
  * A customized exception, thrown when the user tries to remove a Docker object.
  * Extends RuntimeException, so it is an unchecked exception.
  * It is used in the CLI version of the application. 
- * {@link gr.aueb.dmst.onepercent.programming.cli.ManagerHttpCLI}
+ * {@link gr.aueb.dmst.onepercent.programming.cli.ManagerCLI}
  * It occurs based on the HTTP response status code, returned from the Docker Engine API. 
  * Consequently, it is thrown due to:
  * 1. Bad Parameter (400)

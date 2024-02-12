@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import gr.aueb.dmst.onepercent.programming.cli.MenuThreadCLI;
 
 public class MenuThreadCLITest {
-    MenuThreadCLI obj = new MenuThreadCLI();
 
+    MenuThreadCLI obj = new MenuThreadCLI();
 
     @Test
     public void testHandleUserInput() {
@@ -17,7 +17,6 @@ public class MenuThreadCLITest {
         InputStream in = new ByteArrayInputStream(s.getBytes());
         System.setIn(in);
         assertTrue(obj.handleUserInput()); //check input mismatch case
-
         s = "8\nY\n";
         in = new ByteArrayInputStream(s.getBytes()); 
         //check the case that user gives number and press Y  
@@ -31,7 +30,4 @@ public class MenuThreadCLITest {
     }
 }
 
-
-        // if user presses number and N there is no return statement as the app closes 
-        //so we cannot test this case 
 
