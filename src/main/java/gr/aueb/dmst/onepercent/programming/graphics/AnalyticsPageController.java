@@ -1,8 +1,8 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
 import gr.aueb.dmst.onepercent.programming.core.DockerInformationRetriever;
-import gr.aueb.dmst.onepercent.programming.core.MonitorHttp;
-import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.core.Monitor;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorGUI;
 import gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI;
 
 import java.awt.Toolkit;
@@ -53,7 +53,7 @@ public class AnalyticsPageController {
     /** The response return from the HTTP request that was sent. */
     CloseableHttpResponse response;
     /** A MonitorHttpGUI instance for accessing the monitoring methods. */
-    MonitorHttpGUI monitor = new MonitorHttpGUI();
+    MonitorGUI monitor = new MonitorGUI();
     /** The button that was selected. */
     Button selectedButton;
     /** Indicates whether a button has been selected or not. */
@@ -191,7 +191,7 @@ public class AnalyticsPageController {
                             selectButton.setStyle("-fx-background-color: transparent;" +
                                 "-fx-font-family: Malgun Gothic; -fx-font-size: 13px; " +
                                 "-fx-background-radius: 25; -fx-text-fill: #ddd;");
-                            MonitorHttp.containerId = dataModel.getContainerId();
+                            Monitor.containerId = dataModel.getContainerId();
                             updateContainerInfo();
                             response = monitor.getContainerStats("Graph");
                             startUpdatingChart(); 
@@ -220,7 +220,6 @@ public class AnalyticsPageController {
         memorySeries.getData().clear();
         cpuChart.getData().add(cpuSeries);
         memoryChart.getData().add(memorySeries);
-        System.out.println("Updating chart");
         executorService = Executors.newSingleThreadScheduledExecutor();
         //The chart is updated every 5 seconds.
         executorService.scheduleAtFixedRate(() -> {
@@ -312,9 +311,9 @@ public class AnalyticsPageController {
      */
     private void updateContainerInfo() {
         Platform.runLater(() -> {
-            MainGUI.menuThreadGUI.handleUserInputGUI(6);
+            MainGUI.menuThreadGUI.handleUserInput(6);
             String[] containerInfo = MonitorThreadGUI.getInstance()
-                .getContainerMonitorHttp().getContainerInfo();
+                .getMonitorInstance().getContainerInfo();
             ipText.setText(containerInfo[0]);
             macText.setText(containerInfo[1]);
             networkText.setText(containerInfo[2].substring(0, 10) + "...");

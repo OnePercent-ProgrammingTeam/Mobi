@@ -3,36 +3,41 @@ package gr.aueb.dmst.onepercent.programming.gui;
 import gr.aueb.dmst.onepercent.programming.core.SuperThread;
 
 /**
- * Class: ExecutorThreadGUI is a class that extends SuperThread and represents
- * a graphical user interface (GUI) implementation of an executor thread.
- *
- * @see gr.aueb.dmst.onepercent.programming.core.SuperThread
+ * An executor thread responsible for executing actions related to Docker object management.
+ * 
+ * <p>This thread is used in the GUI version of the application and extends 
+ * {@link gr.aueb.dmst.onepercent.programming.core.SuperThread}.
+ * It contains the logic for processing user input, generated when clicking buttons 
+ * and invoking appropriate methods to manage Docker objects, such as starting, stopping, pulling,
+ * or removing containers and images.
  */
 public class ExecutorThreadGUI extends SuperThread {
-    // Singleton
-    private static ExecutorThreadGUI executorThreadGUI;
+    
+    /** Singleton instance of executor thread. */
+    private static ExecutorThreadGUI executorThread;
 
+    /** Default constructor. */
     private ExecutorThreadGUI() { }
 
     /**
-     * Method: getInstance provides a singleton instance of ExecutorThreadGUI.
+     *  Provides a singleton instance of ExecutorThreadGUI.
      *
      * @return The singleton instance of ExecutorThreadGUI.
      */
     public static ExecutorThreadGUI getInstance() {
-        if (executorThreadGUI == null) {
-            executorThreadGUI = new ExecutorThreadGUI();
+        if (executorThread == null) {
+            executorThread = new ExecutorThreadGUI();
         }
-        return executorThreadGUI;
+        return executorThread;
     }
 
     /**
-     * This method is called when the executor thread is started.
-     * It contains the logic for handling different user inputs.
+     * Handles the user input and executes the appropriate actions. 
+     * Based on the user input, it calls the appropriate methods that execute actions.
      */
     @Override
     public void run() { 
-        var containerManagerHttp = new ManagerHttpGUI();
+        var containerManagerHttp = new ManagerGUI();
         switch (this.userInput) {
             case 1:
                 containerManagerHttp.startContainer();

@@ -40,7 +40,7 @@ public class MonitorThreadCLI extends SuperThread {
     /** Handles the user input and executes the appropriate actions. */
     @Override
     public void run() { 
-        var monitor = new MonitorHttpCLI();
+        var monitor = new MonitorCLI();
         Scanner scanner = new Scanner(System.in);
         String input; //User's input. 
         switch (this.userInput) {

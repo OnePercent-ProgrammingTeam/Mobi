@@ -1,8 +1,8 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
 import gr.aueb.dmst.onepercent.programming.core.DockerInformationRetriever;
-import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
-import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
+import gr.aueb.dmst.onepercent.programming.core.SystemController;
+import gr.aueb.dmst.onepercent.programming.gui.ManagerGUI;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -144,20 +144,20 @@ public class ContainersPageController {
                 toggle.setOnMouseClicked(event -> {
                     Platform.runLater(() -> { //Secure concurrency.
                         DataModel dataModel = getTableView().getItems().get(getIndex());
-                        ManagerHttpGUI.containerId = dataModel.getContainerId();
-                        SuperHttp superHttp = new SuperHttp();
-                        superHttp.setContainerId(ManagerHttpGUI.containerId);
+                        ManagerGUI.containerId = dataModel.getContainerId();
+                        SystemController superHttp = new SystemController();
+                        superHttp.setContainerId(ManagerGUI.containerId);
                         /*if toggle switch is switched-on, start the container and update the pie
                          *chart showing running and exited containers. If switched-off, stop the
                          *container
                          */
                         if (toggle.isSelected()) {
-                            MainGUI.menuThreadGUI.handleUserInputGUI(1);
+                            MainGUI.menuThreadGUI.handleUserInput(1);
                             running++;
                             updatePieChart();
                             dataModel.setStatus("Running");
                         } else {
-                            MainGUI.menuThreadGUI.handleUserInputGUI(2);
+                            MainGUI.menuThreadGUI.handleUserInput(2);
                             dataModel.setStatus("Exited");
                             running--;
                             updatePieChart();
@@ -191,10 +191,10 @@ public class ContainersPageController {
                     //Secure thread concurrency, related to UI components.
                     Platform.runLater(() -> {
                         DataModel dataModel = getTableView().getItems().get(getIndex());
-                        ManagerHttpGUI manager = new ManagerHttpGUI();
-                        ManagerHttpGUI.containerId = dataModel.getContainerId();
-                        SuperHttp superHttp = new SuperHttp();
-                        superHttp.containerId = ManagerHttpGUI.containerId;
+                        ManagerGUI manager = new ManagerGUI();
+                        ManagerGUI.containerId = dataModel.getContainerId();
+                        SystemController superHttp = new SystemController();
+                        superHttp.containerId = ManagerGUI.containerId;
                         manager.removeContainer();
                         data.remove(dataModel);
                         int removedIndex = getTableRow().getIndex();

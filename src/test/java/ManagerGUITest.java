@@ -7,7 +7,7 @@
 // import gr.aueb.dmst.onepercent.programming.core.SuperHttp;
 // import gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI;
 
-public class ManagerHttpGUITest {
+public class ManagerGUITest {
     // ManagerHttpGUI managerHttp = new ManagerHttpGUI();
     // TestsHelper obj = TestsHelper.getInstance();
     // @BeforeEach

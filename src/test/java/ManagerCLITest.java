@@ -9,7 +9,7 @@
 // import java.io.ByteArrayInputStream;
 
 
-class ManagerHttpCLITest {
+class ManagerCLITest {
     // private ManagerHttpCLI managerHttp;
     // TestsHelper obj = TestsHelper.getInstance();
 

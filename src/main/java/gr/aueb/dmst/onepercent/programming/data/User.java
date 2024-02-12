@@ -1,44 +1,45 @@
 package gr.aueb.dmst.onepercent.programming.data;
 
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
+import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.util.Random;
 
-
 /**
- * Class: DataUser is responsible for interacting with the embedded form of H2 database.
- * It has methods for storing data about users that use our app.
- * As a result it helps in creating tables, inserting data, and querying information.
+ * A database containing the credentials of the users.
+ * 
+ * <p>It has methods for storing data about users that use Mobi.
  */
-public class DataUsers {
+public class User {
+    
+    /** The url for database connectivity. */
     static final String urlgeneral = "jdbc:h2:./databases/user";
 
+    /** The query sent to the database. */
     String query;
 
-    /**
-     * Default constructor
-     */
-    public DataUsers() {
-    }
-
+    /** Default constructor. */
+    public User() { }
 
     /**
-     * Method: createUser() creates a table in the H2 database.
-     * The table is named "Users" and contains the names and the passwords 
-     * of the users that are signed up in our application.
+     * Creates a table for the users.
+     * 
+     * <p>The table is named 'Users' and contains the names and the passwords 
+     * of the users that are signed up in our application using Docker Hub credentials.
      */
     public void createUser() {
         try {
-            Class.forName("org.h2.Driver"); //Register JDBC driver 
+            Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(
-                                        urlgeneral); //Open a connection
+                                        urlgeneral);
             Statement statement = connection.createStatement(); 
-            //Use the connection to create a statement
-            //Query that creates the "Users" table
             query = "CREATE TABLE IF NOT EXISTS Users ("
                 + "NAME VARCHAR(50),"
                 + "PASSWORD VARCHAR(50),"
@@ -46,138 +47,117 @@ public class DataUsers {
                 + "REMEMBER BOOLEAN,"
                 + "CONSTRAINT c PRIMARY KEY(NAME,PASSWORD) "
                 + ");";
-
-            //execute the query 
             statement.execute(query);
-
             statement.close();
             connection.close();
-
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
     }
 
-
     /**
-     * Insert data into "Users" if the user does not already exist
+     * Insert data into 'Users'.
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
-     * @param remember ok
+     * @param remember The option to remember the user or not.
      */
     public void insertUsers(String username, String password, Boolean remember) {
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(urlgeneral);
-
             Random random = new Random();
-            int number = random.nextInt(17) + 1; //from 1 to 17
-
-            // Use a prepared statement to insert data into the "Users" table
+            //Randomly, a user icon of our collection will be assigned to user's profile.
+            int number = random.nextInt(17) + 1;
+            // Use a prepared statement to insert data into the "Users" table.
             String query = "INSERT INTO Users (NAME, PASSWORD, IMAGE, REMEMBER)"
                            + "VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            // Set the parameters using the user-provided values
+            // Set the parameters using the user-provided values.
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setInt(3, number);
             preparedStatement.setBoolean(4, remember);
-
-            // Execute the query
             preparedStatement.execute();
-
             preparedStatement.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
-
     }
 
-
-
    /**
-     * Method that checks the existance of the user in the table "Users"
+     * Checks the existance of the user in the table "Users".
      *
      * @param username The name of the user that is provided through the Sign up.
      * @param password The password of the user that is provided through the Sign up.
-     * @return If the user has already sign up or it is the first time
+     * @return If the user has already signed up or it is the first time.
      */
-    public boolean getUserExistanceInDatabase(String username, String password) {
-        boolean flag = false;
+    public boolean userExists(String username, String password) {
+        boolean exists = false;
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(urlgeneral); 
-            Statement statement = connection.createStatement(); 
-            
-
-    
+            Statement statement = connection.createStatement();     
             query = "SELECT count(*) AS COUNT_USERS FROM Users WHERE NAME = '" +
                      username + "' AND PASSWORD = '" + password + "'" +
                     " HAVING count(*) = 1 ;";
-
-            
             ResultSet result = statement.executeQuery(query);
-
             while (result.next()) {
-                flag = true;
+                exists = true;
             }
             statement.close(); 
             connection.close(); 
         } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } 
-        return flag;
+        return exists;
     }
 
-    
     /**
-     * ok
-     * @param username ok
-     * @param password ok
-     * @return ok
+     * Gets the index of the user icon that is as assigned to his profile by Mobi.
+     * 
+     * <p>User icons are numbered from 1 to 17.
+     * @param username The name of the user.
+     * @param password The password of the user.
+     * @return The index of the user icon.
      */
-    public int getUser(String username, String password) {
+    public int getUserIconIndex(String username, String password) {
         int image = 0;
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(urlgeneral); 
             Statement statement = connection.createStatement(); 
-            
-              
             query = "SELECT IMAGE FROM Users WHERE NAME = '" +
                     username + "' AND PASSWORD = '" + password + "';";
             ResultSet result = statement.executeQuery(query);
-
             while (result.next()) {
                 image = result.getInt("IMAGE");
             }
-            
             statement.close(); 
             connection.close(); 
-           
         } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } 
         return image;
     }
 
+    //TO DO(Anyone): Find a more secure way to transfer the password, maybe encrypted.
     /**
-     * ok
-     * @param username ok
-     * @return ok
+     * Returns the user's password, to automatically fill it at the password field of login page,
+     * if the user has selected before the 'Remember me' checkbox.
+     * @param username the name of the user
+     * @return the password of the user
      */
-    public String remember(String username) {
+    public String getPassword(String username) {
         String password = null;
         try {
             Class.forName("org.h2.Driver"); 
             Connection connection = DriverManager.getConnection(urlgeneral); 
             Statement statement = connection.createStatement(); 
             
-              
             query = "SELECT PASSWORD FROM Users WHERE NAME = '" +
                     username + "' AND REMEMBER = true;";
             ResultSet result = statement.executeQuery(query);
@@ -185,57 +165,47 @@ public class DataUsers {
             while (result.next()) {
                 password = result.getString("PASSWORD");
             }
-
             statement.close(); 
             connection.close(); 
-           
         } catch (ClassNotFoundException | SQLException e) { 
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         } 
         return password;
     }
 
     /**
-     * ok
-     * @param username ok
-     * @param rememberNew ok
+     * Set the user to be remember it, if he has selected 'Remember me'.
+     * @param username The name of the user.
+     * @param remember_me The option to remember the user or not.
      */
-    public void setRemember(String username, Boolean rememberNew) {
+    public void setRemember(String username, Boolean remember_me) {
         try {
             Class.forName("org.h2.Driver");
             Connection connection = DriverManager.getConnection(urlgeneral);
-
-            // Use a prepared statement to update data into the "Users" table
             String query = "UPDATE Users SET REMEMBER = ? WHERE NAME = '" +
-                            username + "'AND REMEMBER != " + rememberNew + ";";
+                            username + "'AND REMEMBER != " + remember_me + ";";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            // Set the parameters using the user-provided values
-            preparedStatement.setBoolean(1, rememberNew);
-
-
-            // Execute the query
+            preparedStatement.setBoolean(1, remember_me);
             preparedStatement.executeUpdate();
-
             preparedStatement.close();
             connection.close();
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println(RED + "A database error has occured." + RESET);
         }
     }
 
     /**
-     * ok
-     * @param username ok
-     * @param password ok
-     * @param rememberNew ok
+     * Handles the connection of the user to Mobi.
+     *
+     * @param username The name of the user.
+     * @param password The password of the user.
+     * @param remember_me The option to remember the user or not.
      */
-    public void handleDataUsers(String username, String password, Boolean rememberNew) {
-        if (!getUserExistanceInDatabase(username, password)) {
-            insertUsers(username, password, rememberNew);
+    public void handleDataUsers(String username, String password, Boolean remember_me) {
+        if (!userExists(username, password)) {
+            insertUsers(username, password, remember_me);
         } else {
-            //compareRemember(username, remember);
-            setRemember(username, rememberNew);
+            setRemember(username, remember_me);
         }
     }
 }
-

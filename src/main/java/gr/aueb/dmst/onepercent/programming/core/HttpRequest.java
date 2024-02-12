@@ -6,11 +6,11 @@ package gr.aueb.dmst.onepercent.programming.core;
  * <p>An interface to execute an HTTP request with the given message, which is
  * a string identifier, being a part of the path sent to the server.
  *  
- * <p>It is implemented by the {@link SuperHttp} class.
+ * <p>It is implemented by the {@link SystemController} class.
  * 
- * @see SuperHttp
+ * @see SystemController
  */
-public interface HttpInterface {
+public interface HttpRequest {
 
     /**
      * Executes an HTTP request with the given message.

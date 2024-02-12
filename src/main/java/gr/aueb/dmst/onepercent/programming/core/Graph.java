@@ -1,8 +1,8 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
-import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
-import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
-import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.cli.MonitorCLI;
+import gr.aueb.dmst.onepercent.programming.data.DatabaseThread;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorGUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,8 +44,8 @@ import org.jfree.chart.axis.DateTickUnitType;
  * <p>Containers' CPU or memory usage data can be visualized based on user preference,
  * and the class supports both command-line interface (CLI) and graphical user interface
  * (GUI) versions of the application. It interacts with 
- * {@link gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI} and 
- * {@link gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI} instances to fetch
+ * {@link gr.aueb.dmst.onepercent.programming.cli.MonitorCLI} and 
+ * {@link gr.aueb.dmst.onepercent.programming.gui.MonitorGUI} instances to fetch
  * container statistics and updates the graph accordingly.
  * 
  * <p>This class also implements singleton design pattern to ensure only one instance
@@ -54,9 +54,9 @@ import org.jfree.chart.axis.DateTickUnitType;
  * <p>Note: This class is used to visualize container statistics in real-time and is
  * an integral part of the Mobi application for Docker container management.
  * 
- * @see MonitorHttpCLI
- * @see MonitorHttpGUI
- * @see DataBaseThread
+ * @see MonitorCLI
+ * @see MonitorGUI
+ * @see DatabaseThread
  */
 
 public class Graph extends JFrame {
@@ -64,9 +64,9 @@ public class Graph extends JFrame {
     /** Indicates if the graph is for memory or cpu usage. */
     public static boolean isForMemory;
     /** Instance of MonitorHttpCLI for providing the real time data. */
-    static MonitorHttpCLI monitor_cli = new MonitorHttpCLI();
+    static MonitorCLI monitor_cli = new MonitorCLI();
     /** Instance of MonitorHttpGUI for monitoring purposes. */
-    MonitorHttpGUI monitor_gui = new MonitorHttpGUI();
+    MonitorGUI monitor_gui = new MonitorGUI();
 
     /**  Graph singleton object. */
     private static Graph graph;
@@ -148,7 +148,7 @@ public class Graph extends JFrame {
         /* Get the container statistics data using the MonitorHttpCLI instance. */
         CloseableHttpResponse response = monitor_cli.getContainerStats("Graph");
         /* Set the state of the DataBaseThread to success, used for status section in history. */
-        DataBaseThread dataBaseThread = DataBaseThread.getInstance();
+        DatabaseThread dataBaseThread = DatabaseThread.getInstance();
         dataBaseThread.setState("success");
         /* Add a window listener to handle the window closing event gracefully. */
         graph.addWindowListener(new WindowAdapter() {

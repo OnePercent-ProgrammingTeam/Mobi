@@ -11,14 +11,14 @@ import org.apache.http.util.EntityUtils;
  * An abstract class that provides common functionality for managing Docker containers and 
  * images via HTTP requests.
  * 
- * <p>Extends {@link SuperHttp} and implements {@link HttpInterface}.
+ * <p>Extends {@link SystemController} and implements {@link HttpRequest}.
  * 
  * <p>This is the core management class of the application. It has two concrete subclasses,
  * which are responsible for implementing specific actions, related to docker objects management 
  * such as starting, stopping, removing containers, and pulling images and removing.
  * <ul>
- *   <li>{@link gr.aueb.dmst.onepercent.programming.cli.ManagerHttpCLI} for the CLI version</li>
- *   <li>{@link gr.aueb.dmst.onepercent.programming.gui.ManagerHttpGUI} for the GUI version</li>
+ *   <li>{@link gr.aueb.dmst.onepercent.programming.cli.ManagerCLI} for the CLI version</li>
+ *   <li>{@link gr.aueb.dmst.onepercent.programming.gui.ManagerGUI} for the GUI version</li>
  * </ul>
  * 
  * <p>The logic behind the inheritance is that GUI and CLI versions are built on top of the same
@@ -29,13 +29,13 @@ import org.apache.http.util.EntityUtils;
  * managing Docker objects and  executing actions on them. No GET requests are made
  * for monitoring purposes, to retrieve information.
  */
-public abstract class ManagerHttp extends SuperHttp implements HttpInterface {
+public abstract class Manager extends SystemController implements HttpRequest {
     
     /** The entity of the http response, returned by the docker daemon, when a request is made. */
     protected static HttpEntity entity;
 
     /** Default Constructor. */
-    public ManagerHttp() { }
+    public Manager() { }
 
     /** Starts a docker container. */
     public abstract void startContainer();

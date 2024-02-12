@@ -14,11 +14,4 @@ public class MonitorThreadCLITest {
         assertEquals(obj, obj2);
 
     }
-
-
-
-
-
-
-    
 }

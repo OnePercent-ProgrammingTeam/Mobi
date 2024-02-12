@@ -3,38 +3,49 @@ package gr.aueb.dmst.onepercent.programming.gui;
 import gr.aueb.dmst.onepercent.programming.core.MenuThread;
 
 /**
- * MenuThreadGUI class represents the graphical user interface (GUI) implementation 
- * of the main menu thread.
- * It extends the abstract MenuThread class and is responsible for 
- * handling user input in a GUI environment.
- *
- * @see MenuThread
+ * A central-manager thread responsible for coordinating the threads of the
+ * GUI version of the application.
+ * 
+ * <p>This thread ensures proper handling of user input and execution of appropriate actions.
+ * It manages which tasks should be executed every time user presses a button.
+ * 
+ * <p>Extends {@link gr.aueb.dmst.onepercent.programming.core.MenuThread}.
+ * 
+ * @see gr.aueb.dmst.onepercent.programming.gui.ExecutorThreadGUI
+ * @see gr.aueb.dmst.onepercent.programming.gui.MonitorThreadGUI
+ * @see gr.aueb.dmst.onepercent.programming.gui.ManagerGUI
  */
 public class MenuThreadGUI extends MenuThread {
- 
-    ExecutorThreadGUI executorThreadGUI = ExecutorThreadGUI.getInstance();
-    MonitorThreadGUI monitorThreadGUI = MonitorThreadGUI.getInstance();
+    
+    /** Singleton instance of executor thread. */
+    ExecutorThreadGUI executor = ExecutorThreadGUI.getInstance();
+    /** Singleton instance of monitor thread. */
+    MonitorThreadGUI monitor = MonitorThreadGUI.getInstance();
+    
+    /**
+     * Default Constructor
+     */
+    public MenuThreadGUI() { }
     
     @Override
     public void run() {
+        //TO DO(Scobioala-Koronellou): Database Connectivity.
         //dataBaseThread.setInterfaceType("GUI");
     }
 
     /**
-     * Method: handleUserInputGUI(int answer) handles the user's input in a GUI environment.
-     * It initiates the appropriate threads based on the user's choice.
-     *
-     * @param answer The user's input representing the chosen action.
-     */
-    public void handleUserInputGUI(int answer) {
-        switch (answer) {
+     * Handles the user input.
+     * @param input The user's input.
+    */
+    public void handleUserInput(int input) {
+        switch (input) {
             case 1:
             case 2:
             case 4:
             case 9:
             case 10:
-                executorThreadGUI.setUserInput(answer);
-                thread = new Thread(executorThreadGUI);
+                executor.setUserInput(input);
+                thread = new Thread(executor);
                 //set name to the thread so as to be easier to recognize it. 
                 thread.setName("Executor"); 
                 thread.start();
@@ -45,8 +56,8 @@ public class MenuThreadGUI extends MenuThread {
             case 6:
             case 11:
             case 12:
-                monitorThreadGUI.setUserInput(answer);
-                thread = new Thread(monitorThreadGUI);
+                monitor.setUserInput(input);
+                thread = new Thread(monitor);
                 //set name to the thread so as to be easier to recognize it. 
                 thread.setName("Monitor"); 
                 thread.start();
@@ -55,12 +66,5 @@ public class MenuThreadGUI extends MenuThread {
             default:
                 System.out.println("Non Valid Input.");
         }
-    }
-
-    /**
-     * Default Constructor
-     */
-    public MenuThreadGUI() {
-
     }
 }

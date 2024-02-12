@@ -1,6 +1,6 @@
 package gr.aueb.dmst.onepercent.programming.graphics;
 
-import gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI;
+import gr.aueb.dmst.onepercent.programming.gui.MonitorGUI;
 
 import javafx.fxml.FXML;
 
@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 /** A UI Controller page, containing all the necessay system and docker version information.*/
 public class SystemPageController {
 
-    final MonitorHttpGUI monitor = new MonitorHttpGUI();
+    final MonitorGUI monitor = new MonitorGUI();
     /** The text for the api version. */
     @FXML
     private Text api_version;

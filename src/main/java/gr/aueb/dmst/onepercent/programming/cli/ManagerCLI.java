@@ -4,7 +4,7 @@ import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.GREEN;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 
-import gr.aueb.dmst.onepercent.programming.core.ManagerHttp;
+import gr.aueb.dmst.onepercent.programming.core.Manager;
 import gr.aueb.dmst.onepercent.programming.exceptions.ActionContainerException;
 import gr.aueb.dmst.onepercent.programming.exceptions.PullImageException;
 import gr.aueb.dmst.onepercent.programming.exceptions.RemoveDockerObjectException;
@@ -22,7 +22,7 @@ import org.apache.http.util.EntityUtils;
  * and images management.
  * 
  * <p>This class is used in the CLI version of the application and extends
- * {@link gr.aueb.dmst.onepercent.programming.core.ManagerHttp}.
+ * {@link gr.aueb.dmst.onepercent.programming.core.Manager}.
  * It provides methods to execute HTTP requests to the
  * <a href="https://docs.docker.com/engine/api/v1.43/">Docker Engine API v1.43</a> in order 
  * to perform various actions. These actions typically involve creating, starting, 
@@ -31,12 +31,12 @@ import org.apache.http.util.EntityUtils;
  * <p>Note that HTTP requests made by this class are typically POST and DELETE requests for
  *  executing tasks, such as creating or removing resources. The retrieval of information, 
  *  which involves GET requests, is implemented in classes related to monitoring Docker resources.
- *  @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI
+ *  @see gr.aueb.dmst.onepercent.programming.cli.MonitorCLI
  */
-public class ManagerHttpCLI extends ManagerHttp {
+public class ManagerCLI extends Manager {
     
     /** Default Constructor. */
-    public ManagerHttpCLI() { }
+    public ManagerCLI() { }
 
     /** Starts a container with POST HTTP request. */
     @Override

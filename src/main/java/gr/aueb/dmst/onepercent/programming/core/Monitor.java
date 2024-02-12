@@ -3,7 +3,7 @@ package gr.aueb.dmst.onepercent.programming.core;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RED;
 import static gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits.RESET;
 
-import gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI;
+import gr.aueb.dmst.onepercent.programming.cli.MonitorCLI;
 
 import com.fasterxml.jackson.core.JsonProcessingException; 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,15 +16,15 @@ import org.apache.http.client.methods.HttpGet;
 
 /**
  * An abstract class responsible for executing Docker monitoring functionalities via HTTP requests.
- * Extends {@link SuperHttp}.
+ * Extends {@link SystemController}.
  * 
  * <p>This is the core monitoring class of the application. It  has two concrete subclasses,
  * which are responsible for implementing specific actions, related to docker objects and docker
  * system monitoring such as container inspection, image searching, listing of docker objects,
  * retrieval of information about docker system, version, swarm and resource usage. 
  * <ul>
- *   <li>{@link gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI} for the CLI version</li>
- *   <li>{@link gr.aueb.dmst.onepercent.programming.gui.MonitorHttpGUI} for the GUI version</li>
+ *   <li>{@link gr.aueb.dmst.onepercent.programming.cli.MonitorCLI} for the CLI version</li>
+ *   <li>{@link gr.aueb.dmst.onepercent.programming.gui.MonitorGUI} for the GUI version</li>
  * </ul>
  * 
  * <p>The logic behind the inheritance is that GUI and CLI versions are built on top of the same
@@ -35,7 +35,7 @@ import org.apache.http.client.methods.HttpGet;
  * for monitoring Docker objects and system in order to retrieve information. 
  * No POST or DELETE requests are made for management purposes, to execute tasks.
  */
-public abstract class MonitorHttp extends SuperHttp {
+public abstract class Monitor extends SystemController {
 
     /** Inspect  container by retrieving information about it */
     public abstract void inspectContainer();
@@ -50,7 +50,7 @@ public abstract class MonitorHttp extends SuperHttp {
     private JsonNode jsonNode;
 
     /** Default Constructor. */
-    public MonitorHttp() { }
+    public Monitor() { }
 
     /**
      * Retrieves statistics, related to container
@@ -62,7 +62,7 @@ public abstract class MonitorHttp extends SuperHttp {
     /** Inspects docker swarm. */
     public void inspectSwarm() {
         String message = "swarm";
-        getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + "/" + message);
+        getRequest = new HttpGet(Monitor.DOCKER_HOST + "/" + message);
         executeRequest(message);
     }
 
@@ -73,7 +73,7 @@ public abstract class MonitorHttp extends SuperHttp {
     @Override
     public CloseableHttpResponse getHttpResponse() {
         try {
-            CloseableHttpResponse response = MonitorHttp.HTTP_CLIENT.execute(getRequest);
+            CloseableHttpResponse response = Monitor.HTTP_CLIENT.execute(getRequest);
             if (response.getStatusLine().getStatusCode() == 200) {
                 conId = containerId;
             }
@@ -154,7 +154,7 @@ public abstract class MonitorHttp extends SuperHttp {
     /**
      * Retrieves information about a container in an array for table representation.
      * 
-     * <p> It is used fir inserting data into the tables of the databases and also for
+     * <p> It is used for inserting data into the tables of the databases and also for
      * inspecting a container-printing information about it.
      * 
      * @return An array containing container information:
@@ -173,9 +173,9 @@ public abstract class MonitorHttp extends SuperHttp {
     public String[] retrieveContainerInfoArray() throws JsonProcessingException {
         String[] info = new String[8];
         try {
-            getRequest = new HttpGet(MonitorHttp.DOCKER_HOST + 
+            getRequest = new HttpGet(Monitor.DOCKER_HOST + 
                                     "/containers/" + 
-                                    MonitorHttpCLI.containerId + 
+                                    MonitorCLI.containerId + 
                                     "/json");
             executeRequest("prepare storage");
             ObjectMapper mapper = new ObjectMapper();

@@ -1,10 +1,10 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 
 import gr.aueb.dmst.onepercent.programming.cli.ConsoleUnits;
-
 
 public class MainTest {
     @Test

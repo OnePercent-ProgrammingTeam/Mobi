@@ -35,7 +35,7 @@ public class ExecutorThreadCLI extends SuperThread {
      */
     @Override
     public void run() { 
-        ManagerHttpCLI manager = new ManagerHttpCLI();
+        ManagerCLI manager = new ManagerCLI();
         switch (this.userInput) {
             case 1:
                 manager.startContainer();

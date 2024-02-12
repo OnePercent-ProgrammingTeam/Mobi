@@ -1,7 +1,7 @@
 package gr.aueb.dmst.onepercent.programming.core;
 
-import gr.aueb.dmst.onepercent.programming.data.DataBase;
-import gr.aueb.dmst.onepercent.programming.data.DataBaseThread;
+import gr.aueb.dmst.onepercent.programming.data.Database;
+import gr.aueb.dmst.onepercent.programming.data.DatabaseThread;
 /**
  * A central manager-coordinator thread responsible for managing 
  * other threads in the application. It serves as the backbone for handling 
@@ -19,10 +19,10 @@ public class MenuThread extends Thread {
     protected Thread thread;
 
     /** Singleton instance of DataBaseThread for database operations. */
-    protected DataBaseThread dataBaseThread = DataBaseThread.getInstance();
+    protected DatabaseThread dataBaseThread = DatabaseThread.getInstance();
     
     /** Singleton instance of DataBase for database management. */
-    protected DataBase dataBase = DataBase.getInstance();
+    protected Database dataBase = Database.getInstance();
 
     /**
      * Default constructor for MenuThread.
