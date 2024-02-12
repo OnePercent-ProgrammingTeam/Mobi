@@ -31,7 +31,7 @@ import org.apache.http.util.EntityUtils;
  * <p>Note that HTTP requests made by this class are typically POST and DELETE requests for
  *  executing tasks, such as creating or removing resources. The retrieval of information, 
  *  which involves GET requests, is implemented in classes related to monitoring Docker resources.
- *  @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttp
+ *  @see gr.aueb.dmst.onepercent.programming.cli.MonitorHttpCLI
  */
 public class ManagerHttpCLI extends ManagerHttp {
     
@@ -136,7 +136,6 @@ public class ManagerHttpCLI extends ManagerHttp {
      * Prints the modified output, indicating the result of the action.
      * The output indicates whether the action was successful or not.
      * @param message The message that indicates the action that is going to be executed.
-     * @return  The output message based on the HTTP response status code and the input message.
      */
     public void printOutput(String message) {
         String output = "";
@@ -179,7 +178,7 @@ public class ManagerHttpCLI extends ManagerHttp {
      * @throws ActionContainerException if the container is already started or stopped, not found, 
      * or if there is a server error.
      * @throws PullImageException if the image is not found or there is a server error.
-     * @throws RemoveContainerException due to bad parameter,
+     * @throws RemoveDockerObjectException due to bad parameter,
      * conflict, server error, or trial to remove a non-existing object.
      */
     public String generateResponseMessage(String message) throws ActionContainerException,

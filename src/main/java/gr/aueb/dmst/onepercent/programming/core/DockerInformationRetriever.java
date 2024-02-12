@@ -139,7 +139,7 @@ public class DockerInformationRetriever {
         return false;
     }
  
-    /*
+    /**
      * Retrieves a list of names of the containers that are installed in the user's system.
      * 
      * @return An ArrayList of Strings representing the container names.

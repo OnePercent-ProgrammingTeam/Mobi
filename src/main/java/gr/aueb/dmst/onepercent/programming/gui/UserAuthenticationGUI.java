@@ -40,7 +40,6 @@ public class UserAuthenticationGUI extends UserAuthentication {
 
     /** Method handleOutput(String) prints the appropriate message, based on the status 
      *  code of the http response and the request that has been done.
-     * @param message the message that indicates the action that is going to be executed. 
      */
     @Override
     public void handleOutput() {

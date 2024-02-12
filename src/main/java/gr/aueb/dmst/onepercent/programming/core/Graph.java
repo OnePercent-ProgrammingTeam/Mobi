@@ -76,7 +76,10 @@ public class Graph extends JFrame {
     /** Constructor. */
     private Graph() { }
 
-   /** Returns the instance of the Graph class. */
+   /**
+    * Returns the instance of the Graph class.
+    * @return The graph.
+    */
     public static Graph getInstance() {
         if (graph == null) {
             graph = new Graph();
@@ -174,9 +177,11 @@ public class Graph extends JFrame {
      * <p>The method uses a Timer to schedule the task, which executes the {@link #onRunGraph}
      * method at fixed intervals (every second) to update the real-time data.
      * 
-     * @param reader the BufferedReader from which to read real-time data
-     * @throws IOException if an I/O error occurs while reading the data
-     * @see #onRunGraph(BufferedReader, UnsupportedOperationException, Timer)
+     * @param response The response of the sent HTTP request.
+     * @param ex The graph instance.
+     * @throws IOException if an I/O error occurs while reading the data.
+     * @throws UnsupportedOperationException  if an unsupported operation is going to be executed.
+     * @see #onRunGraph(BufferedReader, Timer)
      */
     public void scheduleRealTimeDataUpdate(CloseableHttpResponse response, Graph ex) 
         throws UnsupportedOperationException, IOException {

@@ -55,6 +55,7 @@ public abstract class MonitorHttp extends SuperHttp {
     /**
      * Retrieves statistics, related to container
      * @param identifier a String identifying the operation to be done by retrieving the stats.
+     * @return the http response.
      */
     public abstract CloseableHttpResponse getContainerStats(String identifier);
 
@@ -67,6 +68,7 @@ public abstract class MonitorHttp extends SuperHttp {
 
     /**
      * Retrieves the response of the Http request that wants send to the docker daemon.
+     * @return the http response.
      */
     @Override
     public CloseableHttpResponse getHttpResponse() {
@@ -125,7 +127,7 @@ public abstract class MonitorHttp extends SuperHttp {
      * <a href="https://docs.docker.com/engine/api/v1.43/#tag/Container/operation/ContainerStats">
      * Docker Engine API v1.43</a>
      * 
-     * @param response_builder The builder, from which the response of the request is readden.
+     * @param response_buffer The builder, from which the response of the request is readden.
      * @throws JsonProcessingException If an error occurs while executing the http request.
      * @return Memory Usage
      */

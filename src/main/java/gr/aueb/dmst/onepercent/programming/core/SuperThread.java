@@ -45,12 +45,17 @@ public abstract class SuperThread extends Thread {
      */
     public abstract void run();
 
-    /** Get user's input. */
+    /** Get user's input.
+     * @return the user's input
+     */
     public int getUserInput() {
         return this.userInput;
     }
 
-    /** Set user's input. */
+    /** 
+     * Set user's input. 
+     * @param userInput The user's input.
+     */
     public void setUserInput(int userInput) {
         this.userInput = userInput;
     }

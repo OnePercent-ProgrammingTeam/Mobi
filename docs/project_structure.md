@@ -32,7 +32,207 @@ This subsection outlines the contents of folders and files that:
 2. will be generated after the launch of the project
 
 
-TODO Visually, the structure follows thia plan: 
+Visually, the structure follows this plan: 
+
+```
+OnePercent 
+├─ .vscode
+│  └─ settings.json
+├─ config
+│  ├─ checkstyle.xml
+│  └─ suppressions.xml
+├─ docs
+│  ├─ contribution.md
+│  ├─ launch.md
+│  ├─ project_structure.md
+│  ├─ todo_list.md
+│  ├─ UML.pdf
+│  ├─ UML.png
+│  └─ usage_guidelines.md
+├─ jaractions.xml
+├─ pom.xml
+├─ README.md
+├─ src
+│  ├─ main
+│  │  ├─ java
+│  │  │  └─ gr
+│  │  │     └─ aueb
+│  │  │        └─ dmst
+│  │  │           └─ onepercent
+│  │  │              └─ programming
+│  │  │                 ├─ cli
+│  │  │                 │  ├─ ConsoleUnits.java
+│  │  │                 │  ├─ CSV.java
+│  │  │                 │  ├─ ExecutorThreadCLI.java
+│  │  │                 │  ├─ Main.java
+│  │  │                 │  ├─ ManagerHttpCLI.java
+│  │  │                 │  ├─ MenuThreadCLI.java
+│  │  │                 │  ├─ MonitorHttpCLI.java
+│  │  │                 │  ├─ MonitorThreadCLI.java
+│  │  │                 │  └─ UserAuthenticationCLI.java
+│  │  │                 ├─ core
+│  │  │                 │  ├─ DockerInformationRetriever.java
+│  │  │                 │  ├─ Graph.java
+│  │  │                 │  ├─ HttpInterface.java
+│  │  │                 │  ├─ ManagerHttp.java
+│  │  │                 │  ├─ MenuThread.java
+│  │  │                 │  ├─ MonitorHttp.java
+│  │  │                 │  ├─ SuperHttp.java
+│  │  │                 │  ├─ SuperThread.java
+│  │  │                 │  └─ UserAuthentication.java
+│  │  │                 ├─ data
+│  │  │                 │  ├─ DataBase.java
+│  │  │                 │  ├─ DataBaseThread.java
+│  │  │                 │  └─ DataUsers.java
+│  │  │                 ├─ exceptions
+│  │  │                 │  ├─ ActionContainerException.java
+│  │  │                 │  ├─ EmptyFieldError.java
+│  │  │                 │  ├─ InvalidInputException.java
+│  │  │                 │  ├─ PullImageException.java
+│  │  │                 │  ├─ RemoveDockerObjectException.java
+│  │  │                 │  └─ UserNotFoundException.java
+│  │  │                 ├─ graphics
+│  │  │                 │  ├─ AnalyticsPageController.java
+│  │  │                 │  ├─ ContainersPageController.java
+│  │  │                 │  ├─ ImagesPageController.java
+│  │  │                 │  ├─ LoginPageController.java
+│  │  │                 │  ├─ MainGUI.java
+│  │  │                 │  ├─ MainPageController.java
+│  │  │                 │  ├─ MiscPageController.java
+│  │  │                 │  ├─ NotificationsPageController.java
+│  │  │                 │  ├─ PopupController.java
+│  │  │                 │  ├─ RunMain.java
+│  │  │                 │  ├─ SearchController.java
+│  │  │                 │  └─ SystemPageController.java
+│  │  │                 └─ gui
+│  │  │                    ├─ ExecutorThreadGUI.java
+│  │  │                    ├─ ManagerHttpGUI.java
+│  │  │                    ├─ MenuThreadGUI.java
+│  │  │                    ├─ MonitorHttpGUI.java
+│  │  │                    ├─ MonitorThreadGUI.java
+│  │  │                    └─ UserAuthenticationGUI.java
+│  │  └─ resources
+│  │     ├─ dark-theme.css
+│  │     ├─ fxml
+│  │     │  ├─ AnalyticsPage.fxml
+│  │     │  ├─ ContainersPage.fxml
+│  │     │  ├─ HelpPage.fxml
+│  │     │  ├─ HistoryPage.fxml
+│  │     │  ├─ ImagesPage.fxml
+│  │     │  ├─ LoginPage.fxml
+│  │     │  ├─ MainPage.fxml
+│  │     │  ├─ MiscPage.fxml
+│  │     │  ├─ NotificationsPage.fxml
+│  │     │  ├─ Popup.fxml
+│  │     │  ├─ SearchPage.fxml
+│  │     │  └─ SystemPage.fxml
+│  │     ├─ images
+│  │     │  ├─ analyticsPage
+│  │     │  │  ├─ container
+│  │     │  │  │  ├─ copyBlack.png
+│  │     │  │  │  ├─ copyWhite.png
+│  │     │  │  │  ├─ gateway.png
+│  │     │  │  │  ├─ ip.png
+│  │     │  │  │  ├─ mac.png
+│  │     │  │  │  └─ network.png
+│  │     │  │  └─ swarm
+│  │     │  │     ├─ swarm- subnet- size-icon.png
+│  │     │  │     ├─ swarm-born-icon.png
+│  │     │  │     ├─ swarm-id-icon.png
+│  │     │  │     ├─ swarm-name-icon.png
+│  │     │  │     ├─ swarm-update-icon.png
+│  │     │  │     └─ swarm-version-icon.png
+│  │     │  ├─ containersPage
+│  │     │  │  ├─ darkPurple.png
+│  │     │  │  ├─ lightPurple.png
+│  │     │  │  └─ remove-icon.png
+│  │     │  ├─ dockerHubPage
+│  │     │  │  ├─ imageIcon.png
+│  │     │  │  └─ star.png
+│  │     │  ├─ helpPage
+│  │     │  │  ├─ downloadDocker.png
+│  │     │  │  ├─ systemRequirements1.png
+│  │     │  │  ├─ systemRequirements2.png
+│  │     │  │  └─ systemRequirements3.png
+│  │     │  ├─ imagesPage
+│  │     │  │  └─ remove-icon.png
+│  │     │  ├─ intro
+│  │     │  │  ├─ anchorBigLogo.png
+│  │     │  │  ├─ anchorSmallLogo.png
+│  │     │  │  ├─ chi.png
+│  │     │  │  ├─ dockerLogo.png
+│  │     │  │  └─ powerOff.png
+│  │     │  ├─ mainPage
+│  │     │  │  ├─ miscIcon.png
+│  │     │  │  ├─ moon.png
+│  │     │  │  ├─ sun.png
+│  │     │  │  └─ userPhoto.png
+│  │     │  ├─ menuIcons
+│  │     │  │  ├─ analytics-icon.png
+│  │     │  │  ├─ anchor-solid.png
+│  │     │  │  ├─ chart-pie-solid.png
+│  │     │  │  ├─ codepen-brands.png
+│  │     │  │  ├─ cubes-solid.png
+│  │     │  │  ├─ info-circle-solid.png
+│  │     │  │  ├─ info-final.png
+│  │     │  │  ├─ logout.png
+│  │     │  │  ├─ store-solid.png
+│  │     │  │  └─ system-button-icon.png
+│  │     │  ├─ notificationsPage
+│  │     │  │  └─ dangerIcon.png
+│  │     │  ├─ popup
+│  │     │  │  ├─ miniX.png
+│  │     │  │  └─ popupX.png
+│  │     │  ├─ searchPage
+│  │     │  │  ├─ search-icon.png
+│  │     │  │  ├─ searchDefault.png
+│  │     │  │  └─ searchError.png
+│  │     │  ├─ systemIcons
+│  │     │  │  ├─ containers.png
+│  │     │  │  ├─ isolatedcontainers.png
+│  │     │  │  ├─ resources.png
+│  │     │  │  ├─ settings.png
+│  │     │  │  ├─ swarm.png
+│  │     │  │  └─ system-icon.png
+│  │     │  └─ userIcons
+│  │     │     ├─ user1.png
+│  │     │     ├─ user10.png
+│  │     │     ├─ user11.png
+│  │     │     ├─ user12.png
+│  │     │     ├─ user13.png
+│  │     │     ├─ user14.png
+│  │     │     ├─ user15.png
+│  │     │     ├─ user16.png
+│  │     │     ├─ user17.png
+│  │     │     ├─ user2.png
+│  │     │     ├─ user3.png
+│  │     │     ├─ user4.png
+│  │     │     ├─ user5.png
+│  │     │     ├─ user6.png
+│  │     │     ├─ user7.png
+│  │     │     ├─ user8.png
+│  │     │     └─ user9.png
+│  │     ├─ logback.xml
+│  │     └─ styles.css
+│  └─ test
+│     └─ java
+│        ├─ DataBaseTest.java
+│        ├─ DockerInformationRetrieverTest.java
+│        ├─ ExecutorThreadCLITest.java
+│        ├─ ExecutorThreadGUITest.java
+│        ├─ GraphTest.java
+│        ├─ IntroTest.java
+│        ├─ MainTest.java
+│        ├─ ManagerAPITest.java
+│        ├─ ManagerHttpCLITest.java
+│        ├─ ManagerHttpGUITest.java
+│        ├─ MenuThreadCLITest.java
+│        ├─ MonitorHttpTest.java
+│        ├─ MonitorThreadCLITest.java
+│        ├─ MonitorThreadGUITest.java
+│        └─ TestsHelper.java
+ 
+```
 
 ### 📄Files
 
