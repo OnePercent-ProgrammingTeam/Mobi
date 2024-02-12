@@ -10,11 +10,11 @@ Welcome to Mobi, an innovative application that provides users with enhanced con
 - [About us](#about-us)
 - [Why Mobi?](#why-mobi)
 - [Description](#description)
-- [Usage Guidelines](#usage-guidelines)
+- [Manual](#manual)
 - [Launch](#launch)
 - [Project Structure](#project-structure)
 - [Contribution](#contribution)
-- [TODO List](#todo-list)
+- [TO DO List](#to-do-list)
 
     
 
@@ -26,18 +26,23 @@ Explore the exciting features of Mobi by checking out our [advertisement](https:
 
 
 ## 📌About us
-Mobi originated as a collaborative endeavor within an academic setting during the third semester of the Programming II course, hosted by the Department of Management Science and Technology (DMST) at the Athens University of Economics and Business (AUEB). This initiative was undertaken collectively by One Percent Programming Team under the mentorship and supervision of Professor [Diomidis Spinellis](https://github.com/dspinellis), who offered invaluable guidance and oversight throughout the entirety of the project.
+Mobi originated as a collaborative endeavor within an academic setting during the third semester of the Programming II course, hosted by the Department of Management Science and Technology (DMST) at the Athens University of Economics and Business (AUEB). This initiative was undertaken collectively by One Percent Programming Team under the mentorship and supervision of Professor [Diomidis Spinellis](https://github.com/dspinellis), who offered guidance and oversight throughout the entirety of the project.
 
 ## 💡Why Mobi?
-While Mobi was born from a passion for innovation and a commitment to mastering programming skills, it possesses inherent potentials that extend beyond the classroom. With its intuitive interfaces, robust functionalities, and efficient Docker management capabilities, Mobi has the capacity to transition from an educational endeavor to a valuable tool in the broader software landscape.
-With its eye on the market, Mobi offers a user-friendly solution for Docker management, demonstrating its adaptability and value beyond the academic realm.
+While Mobi was born from a passion for innovation and a commitment to mastering programming skills, it possesses inherent potentials that extend beyond the classroom. With its intuitive interfaces, functionalities, and efficient Docker management capabilities, Mobi has the capacity to transition from an educational endeavor to a valuable tool in the broader software landscape.
+It offers a user-friendly solution for Docker management, demonstrating its adaptability and value beyond the academic realm.
 
 
 ## 📋Description
 Mobi offers the flexibility to run in two distinct modes, allowing users to choose the interface that best suits their preferences and workflow. Whether you prefer the efficiency of _command-line interface (CLI)_ or the visual clarity of a _graphical user interface (GUI)_, Mobi caters to your needs.
 
-## 📘Usage Guidelines
-To learn how to navigate and utilize our project in both versions, you can consult the documentation [here](docs/usage_guidelines.md).
+## 📘Manual
+To learn how to navigate and utilize our project in both versions, you can navigate [here](docs/manual.md).
+
+![mobi-mockup](https://github.com/OnePercent-ProgrammingTeam/Mobi/assets/147170967/8b3fa7f1-e72f-4f03-aa5e-cd9a25a5b521)
+
+
+![mobi-mock-up-gui](https://github.com/OnePercent-ProgrammingTeam/Mobi/assets/147170967/084ae74c-e5ca-4918-8d2d-bbbe4e4472ee)
 
 ## 🚀Launch
 To launch our project in either CLI or GUI mode, click [here](docs/launch.md).
@@ -51,6 +56,4 @@ If you're interested in contributing to the project, feel free to learn more [he
 
 ## 🚩TODO List
 To view remaining tasks, particularly for potential contributors, click [here](docs/todo_list.md).
-
-
 

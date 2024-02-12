@@ -5,18 +5,15 @@ This section provides an overview of the structural organization of the project.
 
 ## Overview 
 - [Useful Tools](#useful-tools)
-- [Elements](#elements)
-  - [Before the build](#before-the-build)
-  - [After the build](#after-the-build)
+- [Visualization of the Structure](#visualization-of-the-structure)
 - [Packages](#packages)
 - [UML](#uml)
-- [Documentation](#documentation)
 
 ## 🔧Useful Tools
 Mobi leverages a set of powerful tools to ensure a robust and efficient development process. These tools contribute to the project's functionality, user interface, database management, and overall performance.
 
 * **Apache Maven**\
-Our project is built and managed using Apache Maven, a powerful build and project management tool. Maven streamlines the build process, manages dependencies, and ensures a consistent and reliable build for the project.
+Our project  is built and managed using Apache Maven, a powerful build and project management tool. Maven streamlines the build process, manages dependencies, and ensures a consistent and reliable build for the project.
 
 * **JavaFX and SceneBuilder**\
 The graphical user interface (GUI) of Mobi is developed using JavaFX, a framework for building interactive applications. Scene Builder, a visual layout tool, is also integrated to enhance the design and layout of Mobi's user interface.
@@ -27,16 +24,11 @@ Mobi relies on the embedded form of the H2 Database, offering a lightweight and 
 * **Docker APIs and Repository**\
 The integration of the [Docker Hub API](https://docs.docker.com/docker-hub/api/latest/) and the [Docker Engine API](https://docs.docker.com/engine/api/v1.43/), both leveraging the HTTP protocol, helps Mobi to form the foundation for communication within the Docker ecosystem. Additionally, Mobi harnesses the capabilities of the [docker-java repository](https://github.com/docker-java/docker-java), sourced directly from GitHub.
 
-## 📚Elements
-This subsection outlines the contents of folders and files that:
-1. are presented in the repository's main page
-2. will be generated after the launch of the project
-
-### Before the build
+## Visualization of the Structure
 Visually, the structure follows this plan: 
 
 ```
-Mobi 
+Mobi
 ├─ .vscode
 │  └─ settings.json
 ├─ config
@@ -47,10 +39,10 @@ Mobi
 │  ├─ launch.md
 │  ├─ project_structure.md
 │  ├─ todo_list.md
-│  ├─ UML.pdf
 │  ├─ UML.png
 │  └─ usage_guidelines.md
 ├─ jaractions.xml
+├─ LICENSE.txt
 ├─ pom.xml
 ├─ README.md
 ├─ src
@@ -66,25 +58,25 @@ Mobi
 │  │  │                 │  ├─ CSV.java
 │  │  │                 │  ├─ ExecutorThreadCLI.java
 │  │  │                 │  ├─ Main.java
-│  │  │                 │  ├─ ManagerHttpCLI.java
+│  │  │                 │  ├─ ManagerCLI.java
 │  │  │                 │  ├─ MenuThreadCLI.java
-│  │  │                 │  ├─ MonitorHttpCLI.java
+│  │  │                 │  ├─ MonitorCLI.java
 │  │  │                 │  ├─ MonitorThreadCLI.java
 │  │  │                 │  └─ UserAuthenticationCLI.java
 │  │  │                 ├─ core
 │  │  │                 │  ├─ DockerInformationRetriever.java
 │  │  │                 │  ├─ Graph.java
-│  │  │                 │  ├─ HttpInterface.java
-│  │  │                 │  ├─ ManagerHttp.java
+│  │  │                 │  ├─ HttpRequest.java
+│  │  │                 │  ├─ Manager.java
 │  │  │                 │  ├─ MenuThread.java
-│  │  │                 │  ├─ MonitorHttp.java
-│  │  │                 │  ├─ SuperHttp.java
+│  │  │                 │  ├─ Monitor.java
 │  │  │                 │  ├─ SuperThread.java
+│  │  │                 │  ├─ SystemController.java
 │  │  │                 │  └─ UserAuthentication.java
 │  │  │                 ├─ data
-│  │  │                 │  ├─ DataBase.java
-│  │  │                 │  ├─ DataBaseThread.java
-│  │  │                 │  └─ DataUsers.java
+│  │  │                 │  ├─ Database.java
+│  │  │                 │  ├─ DatabaseThread.java
+│  │  │                 │  └─ User.java
 │  │  │                 ├─ exceptions
 │  │  │                 │  ├─ ActionContainerException.java
 │  │  │                 │  ├─ EmptyFieldError.java
@@ -107,9 +99,9 @@ Mobi
 │  │  │                 │  └─ SystemPageController.java
 │  │  │                 └─ gui
 │  │  │                    ├─ ExecutorThreadGUI.java
-│  │  │                    ├─ ManagerHttpGUI.java
+│  │  │                    ├─ ManagerGUI.java
 │  │  │                    ├─ MenuThreadGUI.java
-│  │  │                    ├─ MonitorHttpGUI.java
+│  │  │                    ├─ MonitorGUI.java
 │  │  │                    ├─ MonitorThreadGUI.java
 │  │  │                    └─ UserAuthenticationGUI.java
 │  │  └─ resources
@@ -217,22 +209,20 @@ Mobi
 │  │     └─ styles.css
 │  └─ test
 │     └─ java
-│        ├─ DataBaseTest.java
+│        ├─ DatabaseTest.java
 │        ├─ DockerInformationRetrieverTest.java
 │        ├─ ExecutorThreadCLITest.java
 │        ├─ ExecutorThreadGUITest.java
 │        ├─ GraphTest.java
-│        ├─ IntroTest.java
 │        ├─ MainTest.java
-│        ├─ ManagerAPITest.java
-│        ├─ ManagerHttpCLITest.java
-│        ├─ ManagerHttpGUITest.java
+│        ├─ ManagerCLITest.java
+│        ├─ ManagerGUITest.java
 │        ├─ MenuThreadCLITest.java
-│        ├─ MonitorHttpTest.java
+│        ├─ MonitorTest.java
 │        ├─ MonitorThreadCLITest.java
 │        ├─ MonitorThreadGUITest.java
 │        └─ TestsHelper.java
- 
+
 ```
 
 #### 📄Files
@@ -273,9 +263,6 @@ The config folder contains configuration files necessary for maintaining code qu
   * **tests/java**\
     The tests/java directory is dedicated to unit testing using [JUnit 5](https://github.com/junit-team/junit5?tab=readme-ov-file). Within this section, you'll find Java test files, each named after the original classes, located in the **java/gr/aueb/dmst/onepercent/programming** folder, but suffixed with "Test". This naming convention indicates their purpose and association with the classes they test.
 
-### After the build
-TO BE BUILD
-
 ## 📦Packages
 The source code of Mobi is located within the path: **src/main/java/gr/aueb/dmst/onepercent/programming**. The package `gr.aueb.dmst.onepercent.programming` represents the main package structure of the project, reflecting a carefully crafted organization aimed at ensuring modularity, reusability, and maintainability. Within this structure, distinct sections categorize the codebase based on functionality and purpose. Particularly:
 
@@ -283,16 +270,12 @@ The source code of Mobi is located within the path: **src/main/java/gr/aueb/dmst
 The `core` package serves as the home for superclasses that establish a common foundation in the project. These superclasses are inherited by classes used in both the `gui` and `cli` packages, promoting a consistent set of functionalities across different facets of the project.<br><br>
 
 
-
-
 The naming conventions employed for class names are symbolic, aiming at enhancing comprehensibility. The classes with the suffix:\
   &ndash; **Thread** are threads.\
-  &ndash; **Http** utilize the HTTP protocol for their operations, including handling HTTP requests and responses. These classes are supported by the [Docker Hub API](https://docs.docker.com/docker-hub/api/latest/) and the [Docker Engine API](https://docs.docker.com/engine/api/v1.43/).\
-  &ndash; **Api** use the help of the [docker-java library](https://github.com/docker-java/docker-java) to  ensure the proper execution of their functionalities.
 
 Correspondingly, the classes with the prefix:\
-  &ndash; **Monitor** primarily handle the retrieval of information related to containers, images, and the Docker environment.\
-  &ndash; **Manager** or **Execute** are tasked with overseeing the management of containers and images, executing various actions associated with them.<br><br>
+  &ndash; **Monitor** primarily are used for monitoring and specifically to handle the retrieval of information related to docker objects as containers, images, and the Docker environment.\
+  &ndash; **Manager** or **Executor** are tasked with overseeing the management of containers and images, executing various actions associated with them such as starting, stopping containers, removing docker objects etc.<br><br>
 
 
 * `cli`\
@@ -302,23 +285,19 @@ The `cli` package contains classes responsible for handling the _command-line in
 The `gui` package hosts classes dedicated to the _graphical user interface (GUI)_ functionalities of Mobi. These classes provide a visual and interactive experience for users, allowing them to navigate through containers and images effortlessly. Hence, they are denoted by the suffix **GUI** in their names.
 
 * `graphics`\
-The `graphics` package contains classes specifically designed to control FXML files associated with the GUI version of Mobi. These classes serve as intermediaries, ensuring a harmonious interaction between graphical components and the underlying logical operations presented in the `gui` package.
+The `graphics` package contains classes (controllers) specifically designed to control FXML files associated with the GUI version of Mobi. These classes serve as intermediaries, ensuring a harmonious interaction between graphical components and the underlying logical operations presented in the `gui` package.
 
 * `data`\
 The `data` package manages classes that are designed to orchestrate essential operations on the databases of our project.
 These classes encapsulate data access logic, ensuring a robust and reliable interaction with the underlying data storage. Hence, they are denoted by the prefix **Data** in their names.
 
 * `exceptions`\
-The `exceptions` package houses custom exception classes tailored to handle various error scenarios during the execution of the project. These exceptions are crafted to provide clear and informative feedback to users or developers in case of unexpected or erroneous behavior. Hence, they are denoted by the suffix **Exception** or **Error** in their names.
+The `exceptions` package houses custom exception classes tailored to handle various exceptional scenarios during the execution of the project. These exceptions are crafted to provide clear and informative feedback to users or developers in case of unexpected or erroneous behavior. Hence, they are denoted by the suffix **Exception** or **Error** in their names.
 
 This organizational approach not only enhances code maintainability but also facilitates ease of navigation for developers contributing to different aspects of the project. The clear separation of concerns among packages ensures a modular and extensible design, promoting a scalable and efficient development process.
 
 ## 🔍UML
 To visualize the structure of our project, including inheritence, implementation and dependency relationships between classes, check out the following UML diagram:
 
-![UML Diagram](docs/UML.png)
+![UML Diagram](UML.png)
 
-
-
-## 📝Documentation
-The documentation of the project can be found [here](link)
