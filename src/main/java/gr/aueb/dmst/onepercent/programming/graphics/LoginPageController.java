@@ -22,7 +22,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-
 /**
  * A UI controler that manages the user interface and functionalities of the login page
  * in the application.
@@ -82,7 +81,6 @@ public class LoginPageController {
     void initialize() {
         users.createUser();
     }
-
 
     @FXML
     void passwordAction() {

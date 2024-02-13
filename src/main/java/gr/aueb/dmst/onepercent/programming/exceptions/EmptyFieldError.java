@@ -43,5 +43,4 @@ public class EmptyFieldError extends RuntimeException {
     public String getDefaultMessage() {
         return DEFAULT_MESSAGE;
     }
-
 }

@@ -19,6 +19,7 @@ public class MenuThreadGUI extends MenuThread {
     
     /** Singleton instance of executor thread. */
     ExecutorThreadGUI executor = ExecutorThreadGUI.getInstance();
+    
     /** Singleton instance of monitor thread. */
     MonitorThreadGUI monitor = MonitorThreadGUI.getInstance();
     

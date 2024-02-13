@@ -16,7 +16,5 @@ public class RunMain {
     }
 
     /** Default Constructor. */
-    public RunMain() {
-
-    }
+    public RunMain() { }
 }

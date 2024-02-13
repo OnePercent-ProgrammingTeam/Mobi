@@ -192,6 +192,7 @@ public class MonitorGUI extends Monitor {
         return info;
     }
    
+    /** Retrieves the http response, containing container statistics. */
     @Override
     public CloseableHttpResponse getContainerStats(String message) {
         message = "stats"; // get the container statistics in json format

@@ -10,7 +10,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
-
 /**
  * A class responsible for user authentication in the CLI version of the application.
  * 

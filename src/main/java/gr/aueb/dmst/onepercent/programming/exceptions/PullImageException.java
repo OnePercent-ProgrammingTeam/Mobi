@@ -38,9 +38,7 @@ public class PullImageException extends RuntimeException {
     private String message;
   
     /** Default constructor. */
-    public PullImageException() {
-
-    }
+    public PullImageException() { }
 
     /**
      * Constructor to display the message related to the exception.

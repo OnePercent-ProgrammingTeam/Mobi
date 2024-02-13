@@ -58,6 +58,8 @@ public class AnalyticsPageController {
     Button selectedButton;
     /** Indicates whether a button has been selected or not. */
     boolean hasSelected = false;
+    /** An executor service,used for updating the chart. */
+    ScheduledExecutorService executorService;
 
     /** The gateway address text used in rounded square blocks for container inspection. */
     @FXML
@@ -211,7 +213,6 @@ public class AnalyticsPageController {
         runningContainersTable.setItems(data);
     }
 
-    ScheduledExecutorService executorService;
     /**
      * Starts updating the chart. 
      */
@@ -225,7 +226,6 @@ public class AnalyticsPageController {
         executorService.scheduleAtFixedRate(() -> {
             updateChartData();
         }, 0, 5, TimeUnit.SECONDS);
-        
     }
 
     /**
@@ -354,7 +354,6 @@ public class AnalyticsPageController {
         StringSelection stringSelection = new StringSelection(gatewayText.getText());
         clipboard.setContents(stringSelection, null);
     }
-
 
     /** Retrieves and shows swarm information in the bottom table of the page. */
     @FXML

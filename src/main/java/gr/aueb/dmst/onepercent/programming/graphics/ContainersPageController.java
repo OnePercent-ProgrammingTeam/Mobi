@@ -41,36 +41,56 @@ import org.controlsfx.control.ToggleSwitch;
  * This class is part of the gr.aueb.dmst.onepercent.programming.graphics package.
  */
 public class ContainersPageController {
+    
+    /** Number of all containers. */
+    int all;
+    
+    /** Number of running containers. */
+    int running;
+
+    /** Data of pie chart. */
+    ObservableList<PieChart.Data> pieChartData; //Data for pie chart
+    
     /** The table containing the information about the containers. */
     @FXML
     private TableView<DataModel> containerTable;
+    
     /** The column with the container names from the table. */
     @FXML
     private TableColumn<DataModel, String> containerNameCol;
+    
     /** The column with the container ids from the table. */
     @FXML
     private TableColumn<DataModel, String> containerIdCol;
+    
     /** The column with the container status from the table. */
     @FXML
     private TableColumn<DataModel, String> containerStatusCol;
+    
     /** The column with the container time of creation from the table. */
     @FXML
     private TableColumn<DataModel, String> timeCreatedCol;
+    
     /** The column with the toggle switches to start/stop the containers from the table. */
     @FXML
     private TableColumn<DataModel, ToggleSwitch> actionCol;
+    
     /** The column with the buttons to remove containers from the table. */
     @FXML
     private TableColumn<DataModel, Button> removeCol;
+    
     /** The pie chart showing running and exited containers. */
     @FXML
     private PieChart pieChart;
+    
     /** The label of the pie chart for the running containers. */
     @FXML
     private Text runningText;
+    
     /** The label of the pie chart for the exited containers. */
     @FXML
     private Text exitedText;
+    
     /** The list with the customized data models (embedded class). */
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 
@@ -204,9 +224,7 @@ public class ContainersPageController {
             }
         }); 
     }
-    int all; //Number of all containers.
-    int running; //Number of running containers
-    ObservableList<PieChart.Data> pieChartData; //Data for pie chart
+    
     private void setUpPieChart() {
         //Retrieve the quantity of locally installed containers, including running and exited.
         all = DockerInformationRetriever.dockerClient.listContainersCmd()

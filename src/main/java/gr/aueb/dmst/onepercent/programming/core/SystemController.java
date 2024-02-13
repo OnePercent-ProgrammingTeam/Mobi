@@ -94,7 +94,6 @@ public class SystemController {
         this.conId = conId;
     }
 
-
     /**
         * Retrieves the HTTP response.
         * 
@@ -112,8 +111,4 @@ public class SystemController {
     public StringBuilder getResponseBuilder() {
         return response_builder;
     }
-
-    /**
-        * Default constructor for the SuperHttp class.
-        */
 }

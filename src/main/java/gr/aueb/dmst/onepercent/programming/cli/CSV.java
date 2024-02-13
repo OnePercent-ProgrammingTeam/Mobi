@@ -72,6 +72,7 @@ public class CSV {
         createFile(filePath);
         collectData(filePath);
     }
+    
     /**
      * Creates a .csv file in the folder that the user has given.
      * @param filePath is the path that the file is going to be created.

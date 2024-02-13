@@ -32,15 +32,19 @@ public class ImagesPageController {
     /** The table with the locally installed images. */
     @FXML
     private TableView<DataModel> imagesTable;
+    
     /** The column with the names of the images. */
     @FXML
     private TableColumn<DataModel, String> imagesNameCol;
+    
     /** The column with the ids of the images. */
     @FXML
     private TableColumn<DataModel, String> imagesIdCol;
+    
     /** The column with the buttons to remove images. */
     @FXML
     private TableColumn<DataModel, Button> removeCol;
+    
     /** The collection with the customized data models (embedded class). */
     private ObservableList<DataModel> data = FXCollections.observableArrayList();
 

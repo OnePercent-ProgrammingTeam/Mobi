@@ -17,6 +17,7 @@ public class MonitorThreadGUI extends SuperThread {
     
     /** A monitor instance. */
     MonitorGUI monitor = new MonitorGUI();
+    
     /** A Singleton monitor thread instance. */
     private static MonitorThreadGUI monitor_thread;
 

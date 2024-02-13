@@ -36,5 +36,4 @@ public class ActionContainerException extends RuntimeException {
     public String getMessage() {
         return RED + super.getMessage() + RESET;
     }
-
 }
