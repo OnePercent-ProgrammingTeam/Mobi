@@ -5,3 +5,4 @@
 3. Implement database connectivity in the GUI version of the application.
 4. Connect the backend with the frontend so as to make the history visual in the GUI version.
 5. Add dark mode for the GUI.
+6. Add functionality for connecting a container to a network.

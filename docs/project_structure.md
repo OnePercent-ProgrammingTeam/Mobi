@@ -9,6 +9,7 @@ This section provides an overview of the structural organization of the project.
 - [Packages](#packages)
 - [UML](#uml)
 - [Data Structures and Algorithms](#data-structures-and-algorithms)
+-[Dependencies](#dependencies)
 
 ## 🔧Useful Tools
 Mobi leverages a set of powerful tools to ensure a robust and efficient development process. These tools contribute to the project's functionality, user interface, database management, and overall performance.
@@ -323,3 +324,27 @@ While our project may not extensively utilize algorithms in the traditional sens
 * For ensurance of correctiveness, comprehensive validation checks were implemented to preempt exceptional scenarios. Customized exceptions were crafted to handle specific error conditions, providing tailored error messages and error handling mechanisms.
 
 * "To facilitate list refreshing in the GUI version, we employed mechanisms to discern the operational status of containers. Through systematic checks, we determined whether containers were actively running or in a stopped state.
+
+## Dependencies
+
+The table below contains all the dependencies used, for the development of Mobi.
+
+| Libraries                                               | Versions    |
+|---------------------------------------------------------|-------------|
+| com.github.docker-java:docker-java                      |    3.3.4    |
+| com.github.docker-java:docker-java-transport            |    3.2.13   |
+| org.slf4j:slf4j-api                                     |    2.0.7    |
+| ch.qos.logback:logback-classic                          |    1.4.14   |
+| org.apache.httpcomponents:httpclient                    |    4.5.14   |
+| org.jfree:jfreechart                                    |    1.5.4    |
+| com.opencsv:opencsv                                     |    5.8      |
+| com.fasterxml.jackson.core:jackson-databind             |    2.16.0   |
+| org.junit.jupiter:junit-jupiter-api                     |    5.10.1   |
+| org.junit.jupiter:junit-jupiter-engine                  |    5.10.1   |
+| com.h2database:h2                                       |    2.2.222  |
+| org.openjfx:javafx-controls                             |    21.0.1   |
+| org.openjfx:javafx-fxml                                 |    21.0.1   |
+| io.github.palexdev:materialfx                           |    11.17.0  |
+| io.github.palexdev:materialfx-all                       |    11.24.0  |
+| org.glavo.materialfx:materialfx                         |    11.13.5  |
+| org.controlsfx:controlsfx                               |    11.2.0   |
