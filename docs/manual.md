@@ -22,7 +22,7 @@ Screenshots from the Help Page of the GUI version are provided in order to help 
 Notice that it is mandatory to have a docker account!
 
 2. The CLI version, despite of running on command line is user-friendly and will guide you through your docker journey.
-   A comprehensive list of all available options and functionality appears.
+   A comprehensive list of all available options and functionalities appears.
 
 3. Choose the option you want to run and provide the necessary input. You can copy the ids of the containers or images from the generated lists.
    Just select the options to list the locally installed containers or images and you are done!

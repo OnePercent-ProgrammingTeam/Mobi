@@ -9,7 +9,7 @@ This section provides an overview of the structural organization of the project.
 - [Packages](#packages)
 - [UML](#uml)
 - [Data Structures and Algorithms](#data-structures-and-algorithms)
--[Dependencies](#dependencies)
+- [Dependencies](#dependencies)
 
 ## 🔧Useful Tools
 Mobi leverages a set of powerful tools to ensure a robust and efficient development process. These tools contribute to the project's functionality, user interface, database management, and overall performance.
@@ -273,7 +273,7 @@ The `core` package serves as the home for superclasses that establish a common f
 
 
 The naming conventions employed for class names are symbolic, aiming at enhancing comprehensibility. The classes with the suffix:\
-  &ndash; **Thread** are threads.\
+  &ndash; **Thread** are threads.
 
 Correspondingly, the classes with the prefix:\
   &ndash; **Monitor** primarily are used for monitoring and specifically to handle the retrieval of information related to docker objects as containers, images, and the Docker environment.\
@@ -299,7 +299,8 @@ The `exceptions` package houses custom exception classes tailored to handle vari
 This organizational approach not only enhances code maintainability but also facilitates ease of navigation for developers contributing to different aspects of the project. The clear separation of concerns among packages ensures a modular and extensible design, promoting a scalable and efficient development process.
 
 ## 🔍UML
-To visualize the structure of our project, including inheritence, implementation and dependency relationships between classes, check out the following UML diagram:
+To visualize the structure of our project, including inheritence, implementation and dependency relationships between classes, check out the following UML diagram.
+Note that classes used in the CLI version of Mobi are colored blue and classes used in the GUI version are colored green. 
 
 ![UML Diagram](UML.png)
 
