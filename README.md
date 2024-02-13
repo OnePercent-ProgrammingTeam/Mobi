@@ -1,4 +1,4 @@
-# Mobi: your Docker captain!
+# Mobi: Your Docker Captain!
 
 Welcome to Mobi, an innovative application that provides users with enhanced control and management capabilities for containers and images.
 
